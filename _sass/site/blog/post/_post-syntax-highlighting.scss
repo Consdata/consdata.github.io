@@ -1,12 +1,23 @@
 /**
  * Syntax highlighting styles
  */
-.highlight {
+div.highlight {
   background: #fff;
+  padding: $content-padding;
   margin-bottom: 15px;
+  background: $color-code-background;
 
-  .highlighter-rouge & {
-    background: #eef;
+  pre {
+    margin: 0;
+    padding: 0;
+  }
+
+
+  pre,
+  span,
+  div,
+  code {
+    font-family: 'Ubuntu Mono', monospace;
   }
 
   .c     { color: #998; font-style: italic } // Comment

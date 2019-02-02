@@ -10,7 +10,7 @@ tags:
     - jakość kodu
 ---
 
-> “It is not enough for code to work.” Robert C. Martin, Clean Code
+<blockquote>“It is not enough for code to work.” <span>Robert C. Martin, Clean Code</span></blockquote>
 
 Pamiętam jak kilka lat temu z uporem maniaka integrowałem biblioteki statycznej analizy kodu do każdego pom.xml, który wpadł w moje ręce. Do dzisiaj wiele osób za to mnie szczerze nienawidzi. Modyfikacja pomów, konfiguracja w repozytorium każdego projektu i długie instrukcje na wiki związane z integracją IDE. Patrząc z perspektywy czasu przyznaję, że było to dość pracochłonne przedsięwzięcie. Na szczęście pojawiło się narzędzie, które nie tylko uprościło proces statycznej analizy kodu, ale także znacznie tę analizę upowszechniło.
 

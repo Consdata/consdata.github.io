@@ -1,0 +1,30 @@
+blockquote {
+  font-size: 1.4em;
+  width: 60%;
+  margin-left: 0px;
+  margin-right: auto;
+  color: #555555;
+  padding: $content-padding $content-padding $content-padding 75px;
+  border-left: 4px solid $color-logo-red;
+  position: relative;
+  background: $color-code-background;
+
+  &:before {
+    content: "\201C";
+    color: $color-logo-red;
+    font-size: 4em;
+    position: absolute;
+    left: 10px;
+    top: -20px;
+  }
+
+  span {
+    display: block;
+    font-weight: $font-weight-semibold;
+    margin-top: $content-padding;
+  }
+
+  p {
+    margin: 0;
+  }
+}
