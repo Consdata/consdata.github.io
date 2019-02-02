@@ -1,0 +1,15 @@
+.feed-subscribe {
+  // TODO
+
+  float: right;
+  margin-top: 22px;
+
+  svg {
+    color: $color-white;
+  }
+  a:hover {
+    svg {
+      color: $color-logo-red;
+    }
+  }
+}

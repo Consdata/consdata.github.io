@@ -10,29 +10,26 @@ layout: default
     {{ content }}
     <div class="blog">
         {%- if site.posts.size > 0 -%}
-        <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-        <ul class="post-list">
-            {%- for post in site.posts -%}
-            <li>
-                {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-                <span class="post-meta">{{ post.date | date: date_format }}</span>
-                <h3>
-                    <a class="post-link" href="{{ post.url | relative_url }}">
-                        {{ post.title | escape }}
-                    </a>
-                </h3>
-                {%- if site.show_excerpts -%}
-                {{ post.excerpt }}
-                {%- endif -%}
-            </li>
-            {%- endfor -%}
-        </ul>
+        <div class="post-list">
+            <ul>
+                {%- for post in site.posts -%}
+                {% assign author = site.data.authors[post.author] %}
 
-        <p class="feed-subscribe">
-            <svg class="svg-icon orange">
-                <use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use>
-            </svg>
-            <a href="{{ "/feed.xml" | relative_url }}">Subscribe</a></p>
+                <li>
+                    <h3>
+                        <a class="post-link" href="{{ post.url | relative_url }}">
+                            {{ post.title | escape }}
+                        </a>
+                    </h3>
+                    {% include post_metadata.html %}
+                    <div class="post-entry">
+                        {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
+                        <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Czytaj&nbsp;dalej]</a>
+                    </div>
+                </li>
+                {%- endfor -%}
+            </ul>
+        </div>
         {%- endif -%}
     </div>
 </div>

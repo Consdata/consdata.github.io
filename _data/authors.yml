@@ -1,0 +1,50 @@
+mmergo:
+  name:   Marcin Mergo
+  github: mmergo
+
+sucuncu:
+  name:   Sylwia Üçüncü
+  bio:    Java Developer w Consdacie i weekendowo studentka Informatyki na Politechnice Poznańskiej. Chętnie zgłębia kolejne technologie i poszerza swoją wiedzę zarówno z backendu, jak i frontendu. W wolnym czasie uwielbia jeździć na rowerze, ćwiczyć jogę i oddawać się podróżom, w celu poznania nowych miejsc.
+  image:  sucuncu.jpg
+
+glipecki:
+  name:   Grzegorz Lipecki
+  github: glipecki
+  bio:    Pasjonat nowych technologii, zafascynowany wszystkim od backendu po frontend. Na co dzień full stack developer i wyznawca software craftsmanship. W przerwach chętnie angażuje się w techniczne dyskusje i dzieli się swoją wiedzą. Autor wielu artykułów i prezentacji technicznych. W wolnych chwilach eksperymentuje z nowymi technologiami, gra w gry wideo i pielęgnuje swój ogród.
+  image:  glipecki.jpg
+
+bradlinski:
+  name:   Bartosz Radliński
+  github: m87
+  image:  bradlinski.png
+
+jwilczewski:
+  name:   Jakub Wilczewski
+  bio:    Developer ostatnio głównie backendu. Pasjonat działających systemów i zwolennik metodyki devops. Zdeklarowany przeciwnik ciężkich serwerów aplikacji. W czasie wolnym od pracy i obowiązków domowych biega po płaskim i łazi po górach.
+
+aswarcewicz:
+  name:   Adrian Swarcewicz
+  github: aswarcewicz
+  bio:    Deweloper, pasjonat dobrego kodu, mikroserwisów oraz rozwiązań pozwalających na dobre skalowanie względem rosnącego obciążenia.
+
+bbaron:
+  name:   Błażej Baron
+  bio:    Deweloper systemów finansowych. Od wielu lat zajmujący się rozwijaniem i utrzymaniem złożonych aplikacji.
+
+mpogorzelski:
+  name:   Mateusz Pogorzelski
+  github: pogoma
+  bio:    Wychowany wśród patch paneli nerd uzależniony od kodu. Absolwent Politechniki Poznańskiej. Na co dzień full stack developer w zespole Eximee. Pasjonat inżynierii wstecznej i przetwarzania języka naturalnego.
+
+tlewandowski:
+  name:   Tomasz Lewandowski
+  bio:    Projektant oraz full stack deweloper z wieloletnim doświadczeniem w tworzeniu i utrzymywaniu złożonych systemów informatycznych.
+
+kgoralski:
+  name:   Krzysztof Góralski
+  bio:    Krzysztof, programista koncentrujący się głównie na technologiach związanych z backendem aplikacji webowych i mikroserwisach. Pozostaje otwarty na każdą technologię, ceni sobie różnorodność w IT i lubi poszerzać horyzonty. Chętnie poszukuje nowych narzędzi pracy oraz dzieli się wiedzą z innymi. Nieustannie stara się doskonalić w sztuce programowania.
+
+jgrobelny:
+  name:   Jacek Grobelny
+  bio:    Jacek najlepiej czuje się w czeluściach backendu sytemów informatycznych. Lubi rozwiązywać problemy szczególnie w momencie, gdy zaczynają powstawać o nich memy. Tata dwóch urwisów. W wolnym czasie chłonie, choć nie bezkrytycznie, wszelkie przejawy popkultury ze szczególną słabością do dwunastej muzy.
+  image:  jgrobelny.jpg

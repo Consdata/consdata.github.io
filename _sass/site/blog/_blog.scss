@@ -1,3 +1,5 @@
 .blog {
+  @import "post-list";
   @import "post";
+  @import "post-metadata";
 }

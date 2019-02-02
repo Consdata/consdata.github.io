@@ -1,0 +1,34 @@
+.post-metadata {
+  $field-margin: 5px;
+
+  @include flex-container;
+  color: $color-light-gray;
+  align-items: center;
+
+  .article-author {
+    @include flex-container;
+    align-items: center;
+  }
+
+  .author-separator {
+    margin-left: $field-margin;
+  }
+
+  .author-image {
+    margin-left: $field-margin;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      max-width: 24px;
+      max-height: 24px;
+    }
+  }
+
+  .author-name {
+    margin-left: $field-margin;
+  }
+
+}

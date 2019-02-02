@@ -1,0 +1,16 @@
+<div class="post-metadata">
+    <div class="post-date">{{ post.date | date: "%d-%m-%Y" }}</div>
+    {% if post.author %}
+    <div class="article-author">
+        <div class="author-separator">•</div>
+        {% if author.image %}
+        <div class="author-image">
+            <img src="/assets/img/authors/{{author.image}}">
+        </div>
+        {% endif %}
+        {% if author.name %}
+        <div class="author-name">{{author.name}}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
