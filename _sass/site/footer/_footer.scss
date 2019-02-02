@@ -1,0 +1,16 @@
+footer {
+  @import "footer-email";
+  @import "footer-social-buttons";
+  @import "footer-legals";
+
+  background-color: $color-black;
+  height: $footer-height;
+
+  .container {
+    @include content-container;
+    @include flex-container;
+    justify-content: space-between;
+    padding-bottom: 25px;
+    padding-top: 25px;
+  }
+}

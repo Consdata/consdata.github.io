@@ -1,0 +1,14 @@
+nav {
+  @import "navbar-toggle";
+  @import "navbar-links";
+  @import "navbar-brand";
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: $color-transparent-black;
+
+  .container {
+    @include content-container;
+  }
+}

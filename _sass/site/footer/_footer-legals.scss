@@ -1,0 +1,29 @@
+.legals {
+  a {
+    text-decoration: none;
+    color: $color-light-gray;
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+
+  ul {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 25px;
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  li:first-child {
+    &:after {
+      content: " |";
+      margin-left: 10px;
+    }
+  }
+}

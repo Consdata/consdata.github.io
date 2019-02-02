@@ -1,0 +1,14 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  margin-top: $navbar-height;
+  padding-top: $content-padding;
+  padding-bottom: $content-padding;
+
+  min-height: calc(100vh - #{$navbar-height + $content-padding*2 + $footer-height});
+
+  @include content-container;
+}

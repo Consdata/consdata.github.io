@@ -1,0 +1,6 @@
+.navbar-toggle {
+  display: none;
+  @include mobile {
+    display: block;
+  }
+}
