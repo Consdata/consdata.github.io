@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Dynamiczne dodawanie komponentów w Angular 2"
-date:      2017-02-17 08:00:00 +0100
+date:      2017-02-03 08:00:00 +0100
 published: true
 author:    glipecki
 tags:

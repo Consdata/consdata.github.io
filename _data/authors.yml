@@ -1,6 +1,8 @@
 mmergo:
   name:   Marcin Mergo
   github: mmergo
+  bio:    Absolwent Politechniki Poznańskiej, od lat związany z tworzeniem oprogramowania dla sektora finansowego. W trakcie swojej kariery tworzył systemy dla największych banków w Polsce, zarówno z obszaru korporacyjnego, jak i detalicznego. Posiada doświadczenie w dostarczaniu rozwiązań dla branży energetycznej oraz sektora public. Wieloletni pracownik, Tech Lead, Architekt, oraz członek zespołu bezpieczeństwa firmy Consdata. Współorganizator oraz prelegent spotkań OWASPowych. Entuzjasta zdrowego rozsądku, aspirujący game developer.
+  image:  mmergo.jpg
 
 sucuncu:
   name:   Sylwia Üçüncü
@@ -43,10 +45,7 @@ mpogorzelski:
 tlewandowski:
   name:   Tomasz Lewandowski
   bio:    Projektant oraz full stack deweloper z wieloletnim doświadczeniem w tworzeniu i utrzymywaniu złożonych systemów informatycznych.
-
-kgoralski:
-  name:   Krzysztof Góralski
-  bio:    Krzysztof, programista koncentrujący się głównie na technologiach związanych z backendem aplikacji webowych i mikroserwisach. Pozostaje otwarty na każdą technologię, ceni sobie różnorodność w IT i lubi poszerzać horyzonty. Chętnie poszukuje nowych narzędzi pracy oraz dzieli się wiedzą z innymi. Nieustannie stara się doskonalić w sztuce programowania.
+  image:  tlewandowski.jpg
 
 jgrobelny:
   name:   Jacek Grobelny
