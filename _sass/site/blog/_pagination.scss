@@ -1,0 +1,19 @@
+.pagination {
+  @include flex-container;
+  justify-content: space-between;
+
+  .pagination-button {
+    padding: 10px;
+    border: 1px solid $color-transparent-black;
+    &:hover {
+      border-color: $color-logo-red;
+      background-color: $color-logo-red;
+      color: $color-white;
+    }
+  }
+  .placeholder {
+    padding: 10px;
+    border: 1px solid $color-light-gray;
+    color: $color-light-gray;
+  }
+}

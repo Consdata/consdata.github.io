@@ -12,7 +12,7 @@ layout: default
         {%- if site.posts.size > 0 -%}
         <div class="post-list">
             <ul>
-                {%- for post in site.posts -%}
+                {%- for post in paginator.posts -%}
                 {% assign author = site.data.authors[post.author] %}
 
                 <li class="post">
@@ -29,6 +29,20 @@ layout: default
                 </li>
                 {%- endfor -%}
             </ul>
+        </div>
+        <div class="pagination">
+            {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path }}" class="previous pagination-button" title="Poprzednia strona">Nowsze posty</a>
+            {% else %}
+            <span class="placeholder previous">Nowsze posty</span>
+            {% endif %}
+
+            {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path }}" class="next pagination-button" title="Następna strona">Starsze posty</a>
+            {% else %}
+            <span class="placeholder next">Starsze posty</span>
+            {% endif %}
+
         </div>
         {%- endif -%}
     </div>
