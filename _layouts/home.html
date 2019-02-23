@@ -15,7 +15,7 @@ layout: default
                 {%- for post in site.posts -%}
                 {% assign author = site.data.authors[post.author] %}
 
-                <li>
+                <li class="post">
                     <h3>
                         <a class="post-link" href="{{ post.url | relative_url }}">
                             {{ post.title | escape }}

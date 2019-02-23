@@ -31,7 +31,9 @@ aswarcewicz:
 
 bbaron:
   name:   Błażej Baron
+  github: 2bbar
   bio:    Deweloper systemów finansowych. Od wielu lat zajmujący się rozwijaniem i utrzymaniem złożonych aplikacji.
+  image:  bbaron.jpg
 
 mpogorzelski:
   name:   Mateusz Pogorzelski
@@ -48,5 +50,6 @@ kgoralski:
 
 jgrobelny:
   name:   Jacek Grobelny
+  github: ynleborg
   bio:    Jacek najlepiej czuje się w czeluściach backendu sytemów informatycznych. Lubi rozwiązywać problemy szczególnie w momencie, gdy zaczynają powstawać o nich memy. Tata dwóch urwisów. W wolnym czasie chłonie, choć nie bezkrytycznie, wszelkie przejawy popkultury ze szczególną słabością do dwunastej muzy.
   image:  jgrobelny.jpg
