@@ -1,8 +1,9 @@
 $tablet-breakpoint: 992px;
 $desktop-breakpoint: 1200px;
 
+$app-min-width: 320px;
 $mobile-content-width: 100%;
-$tablet-content-width: 970px;
+$tablet-content-width: 992px;
 $desktop-content-width: 1170px;
 
 $content-padding: 15px;
@@ -16,5 +17,6 @@ $font-weight-bold: 700;
 $default-font-size: 14px;
 $small-font-size: 12px;
 
-$navbar-height: 74px;
+$navbar-height-mobile: 55px;
+$navbar-height-desktop: 74px;
 $footer-height: 96px;

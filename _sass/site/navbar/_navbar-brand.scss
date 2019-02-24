@@ -1,14 +1,18 @@
 .navbar-brand {
-  float: left;
-  margin-right: 100px;
+  @include flex-container;
+  flex-direction: row;
+  align-items: center;
+  height: $navbar-height-mobile;
+
+  img {
+    width: 168px;
+    height: 19px;
+  }
 
   a {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    float: left;
-    line-height: 20px;
-  }
-  img {
-    padding-top: 10px;
+    @include flex-container;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
   }
 }
