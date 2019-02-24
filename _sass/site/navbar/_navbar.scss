@@ -9,8 +9,10 @@ nav {
   width: 100%;
   background-color: $color-russian-black;
   height: $navbar-height-mobile;
+
   @include tablet-and-desktop {
     height: $navbar-height-desktop;
+    background-color: $color-transparent-black;
     .navbar {
       @include flex-container;
       width: 100%;
