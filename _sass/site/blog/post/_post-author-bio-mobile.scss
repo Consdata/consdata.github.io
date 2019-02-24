@@ -1,13 +1,20 @@
-.author-bio {
-  display: none;
+.author-bio-mobile {
+  display: block;
   @include tablet-and-desktop {
-    @include flex-container;
+    display: none;
   }
-  margin-top: 25px;
   padding: $content-padding;
 
+  $author-image-size: 70px;
 
-  $author-image-size: 90px;
+  .header {
+    @include flex-container;
+    align-items: center;
+  }
+
+  .name-wrapper {
+    padding-left: $content-padding;
+  }
 
   .author-image {
     min-width: $author-image-size;
@@ -25,12 +32,13 @@
     }
   }
 
-  .card {
-    margin-left: $content-padding;
+  .bio {
+    margin-top: $content-padding;
+    font-size: $small-font-size;
   }
 
   .author-name {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: $font-weight-semibold;
   }
   .social-buttons {

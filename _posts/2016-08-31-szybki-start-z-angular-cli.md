@@ -36,7 +36,7 @@ Uruchamiamy projekt w trybie developerskim:
 ng serve
 ```
 Aplikacja standardowo wystawia się na localhost na porcie 4200:
-<img height="500px" src="/assets/img/posts/2016-08-31-szybki-start-z-angular-cli/1.png" />
+<img style="max-height: 500px;" src="/assets/img/posts/2016-08-31-szybki-start-z-angular-cli/1.png" />
 
 W kilku krokach dostajemy gotowy szkielet aplikacji, gotowy do rozwoju i dystrybucji.
 

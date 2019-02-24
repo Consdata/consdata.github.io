@@ -1,13 +1,18 @@
 blockquote {
-  font-size: 1.4em;
+  font-size: 1.1em;
   width: 60%;
   margin-left: 0px;
   margin-right: auto;
-  color: #555555;
-  padding: $content-padding $content-padding $content-padding 75px;
+  color: $color-dark-gray;
+  padding: $content-padding $content-padding $content-padding 40px;
   border-left: 4px solid $color-logo-red;
   position: relative;
   background: $color-code-background;
+
+  @include tablet-and-desktop {
+    font-size: 1.4em;
+    padding: $content-padding $content-padding $content-padding 75px;
+  }
 
   &:before {
     content: "\201C";
@@ -15,13 +20,21 @@ blockquote {
     font-size: 4em;
     position: absolute;
     left: 10px;
-    top: -20px;
+    top: -15px;
+    @include tablet-and-desktop {
+      top: -20px;
+    }
   }
 
   span {
+    font-size: $small-font-size;
     display: block;
     font-weight: $font-weight-semibold;
-    margin-top: $content-padding;
+    margin-top: $content-padding / 2;
+    @include tablet-and-desktop {
+      margin-top: $content-padding;
+      font-size: $default-font-size;
+    }
   }
 
   p {
