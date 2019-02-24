@@ -1,6 +1,9 @@
 .post-list {
-  padding-top: $content-padding;
-  padding-bottom: $content-padding;
+
+  @include tablet-and-desktop {
+    padding-top: $content-padding;
+    padding-bottom: $content-padding;
+  }
 
   ul {
     list-style: none;
