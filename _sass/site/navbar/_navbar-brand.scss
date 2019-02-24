@@ -3,10 +3,16 @@
   flex-direction: row;
   align-items: center;
   height: $navbar-height-mobile;
-
+  @include tablet-and-desktop {
+    height: 27px;
+  }
   img {
     width: 168px;
     height: 19px;
+    @include tablet-and-desktop {
+      width: 240px;
+      height: 27px;
+    }
   }
 
   a {

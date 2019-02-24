@@ -32,9 +32,6 @@
     width: $desktop-content-width;
   }
 
-  @include tablet {
-    width: $tablet-content-width;
-  }
 }
 
 @mixin flex-container() {

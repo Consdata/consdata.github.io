@@ -9,10 +9,22 @@ nav {
   width: 100%;
   background-color: $color-russian-black;
   height: $navbar-height-mobile;
+  @include tablet-and-desktop {
+    height: $navbar-height-desktop;
+    .navbar {
+      @include flex-container;
+      align-items: center;
+      height: $navbar-height-desktop;
+    }
+  }
 
   .container {
     @include content-container;
     @include flex-container;
     flex-direction: column;
+    @include tablet-and-desktop {
+      flex-direction: row;
+    }
   }
+
 }

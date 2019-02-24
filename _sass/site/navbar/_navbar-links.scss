@@ -29,12 +29,22 @@
   .nav {
     @include flex-container;
     flex-direction: column;
+    @include tablet-and-desktop {
+      flex-direction: row;
+      width: 100%;
+      margin-left: $content-padding;
+    }
   }
 
   .nav-link {
     @include flex-container;
     min-height: $mobile-link-height;
+    @include tablet-and-desktop {
+      min-height: 1px;
+      padding: 5px;
+    }
     align-items: center;
+
     a {
       color: $color-white;
       text-transform: uppercase;
@@ -43,8 +53,8 @@
 
   .hide-on-mobile {
     display: none;
-    @include tablet-and-desktop {
-      display: block;
+    @include desktop {
+      @include flex-container;
     }
   }
 }
