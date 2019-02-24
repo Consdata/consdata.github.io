@@ -26,7 +26,16 @@
   }
 
   .card {
+    @include flex-container;
     margin-left: $content-padding;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header {
+    @include flex-container;
+    align-items: center;
   }
 
   .author-name {
@@ -34,6 +43,7 @@
     font-weight: $font-weight-semibold;
   }
   .social-buttons {
+    margin-left: $content-padding;
     svg {
       padding: 0;
     }

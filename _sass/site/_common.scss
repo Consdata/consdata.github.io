@@ -10,9 +10,10 @@ main {
   margin-top: $navbar-height-mobile;
   padding-top: $content-padding;
   padding-bottom: $content-padding;
-
   min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $mobile-footer-height});
+
   @include tablet-and-desktop {
+    margin-top: $navbar-height-desktop;
     min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $desktop-footer-height});
   }
   @include content-container;
