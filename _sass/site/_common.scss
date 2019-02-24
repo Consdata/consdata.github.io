@@ -11,7 +11,7 @@ main {
   padding-top: $content-padding;
   padding-bottom: $content-padding;
 
-  min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $footer-height});
+  min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $mobile-footer-height});
 
   @include content-container;
 }

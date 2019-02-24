@@ -19,4 +19,7 @@ $small-font-size: 12px;
 
 $navbar-height-mobile: 55px;
 $navbar-height-desktop: 74px;
-$footer-height: 96px;
+
+$mobile-footer-item-height: 40px;
+$mobile-footer-height: $mobile-footer-item-height * 3;
+$desktop-footer-height: 96px;

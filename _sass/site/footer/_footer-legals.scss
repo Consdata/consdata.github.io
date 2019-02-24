@@ -1,4 +1,8 @@
 .legals {
+  @include flex-container;
+  justify-content: space-between;
+  align-items: center;
+
   a {
     text-decoration: none;
     color: $color-light-gray;
@@ -8,22 +12,4 @@
     }
   }
 
-  ul {
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    line-height: 25px;
-    list-style: none;
-  }
-
-  li {
-    display: inline-block;
-  }
-
-  li:first-child {
-    &:after {
-      content: " |";
-      margin-left: 10px;
-    }
-  }
 }
