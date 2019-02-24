@@ -1,5 +1,9 @@
 .feed-subscribe {
   display: none;
+  @include desktop {
+    display: block;
+  }
+  margin-left: $content-padding;
   svg {
     color: $color-white;
   }

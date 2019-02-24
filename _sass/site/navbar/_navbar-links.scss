@@ -3,7 +3,7 @@
   $mobile-link-height: 40px;
 
   @include desktop {
-    display: block;
+    @include flex-container;
   }
 
   @include mobile {
@@ -41,13 +41,19 @@
     min-height: $mobile-link-height;
     @include tablet-and-desktop {
       min-height: 1px;
-      padding: 5px;
+      padding: 6px;
+      @include desktop {
+        padding: 8px;
+      }
     }
     align-items: center;
 
     a {
       color: $color-white;
       text-transform: uppercase;
+      &:hover {
+        color: $color-logo-red;
+      }
     }
   }
 

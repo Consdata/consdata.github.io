@@ -13,8 +13,12 @@ nav {
     height: $navbar-height-desktop;
     .navbar {
       @include flex-container;
+      width: 100%;
       align-items: center;
       height: $navbar-height-desktop;
+      @include desktop {
+        justify-content: space-between;
+      }
     }
   }
 

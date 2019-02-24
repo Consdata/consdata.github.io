@@ -3,7 +3,7 @@ footer {
   @import "footer-social-buttons";
   @import "footer-legals";
 
-  background-color: $color-black;
+  background-color: $color-russian-black;
   height: $mobile-footer-height;
   @include tablet-and-desktop {
     height: $desktop-footer-height;
