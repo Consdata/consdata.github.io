@@ -2,6 +2,7 @@
   @include flex-container;
   $social-button-size: $mobile-footer-item-height;
   justify-content: center;
+  align-items: center;
 
   .social-btn {
     width: $social-button-size;

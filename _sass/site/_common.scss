@@ -12,7 +12,9 @@ main {
   padding-bottom: $content-padding;
 
   min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $mobile-footer-height});
-
+  @include tablet-and-desktop {
+    min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $desktop-footer-height});
+  }
   @include content-container;
 }
 

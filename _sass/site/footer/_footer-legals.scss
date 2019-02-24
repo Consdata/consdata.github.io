@@ -3,6 +3,18 @@
   justify-content: space-between;
   align-items: center;
 
+  @include tablet-and-desktop {
+    justify-content: flex-end;
+  }
+
+  .legals-separator {
+    display: none;
+    @include tablet-and-desktop {
+      display: block;
+      padding: 5px;
+    }
+  }
+
   a {
     text-decoration: none;
     color: $color-light-gray;
