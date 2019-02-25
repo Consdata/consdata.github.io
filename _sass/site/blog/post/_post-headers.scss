@@ -1,0 +1,22 @@
+h1 {
+  font-size: 1.5em;
+  margin-block-start: 0;
+  margin-block-end: 0.5em;
+  @include tablet-and-desktop {
+    font-size: 2em;
+  }
+}
+
+h2 {
+  font-size: 1.25em;
+  @include tablet-and-desktop {
+    font-size: 1.5em;
+  }
+}
+
+h3 {
+  font-size: 1.1em;
+  @include tablet-and-desktop {
+    font-size: 1.25em;
+  }
+}

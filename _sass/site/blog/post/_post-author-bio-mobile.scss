@@ -1,0 +1,49 @@
+.author-bio-mobile {
+  display: block;
+  @include tablet-and-desktop {
+    display: none;
+  }
+  padding: $content-padding;
+
+  $author-image-size: 70px;
+
+  .header {
+    @include flex-container;
+    align-items: center;
+  }
+
+  .name-wrapper {
+    padding-left: $content-padding;
+  }
+
+  .author-image {
+    min-width: $author-image-size;
+    max-width: $author-image-size;
+    min-height: $author-image-size;
+    max-height: $author-image-size;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      min-width: $author-image-size;
+      max-width: $author-image-size;
+      min-height: $author-image-size;
+      max-height: $author-image-size;
+    }
+  }
+
+  .bio {
+    margin-top: $content-padding;
+    font-size: $small-font-size;
+  }
+
+  .author-name {
+    font-size: 18px;
+    font-weight: $font-weight-semibold;
+  }
+  .social-buttons {
+    svg {
+      padding: 0;
+    }
+  }
+}

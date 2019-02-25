@@ -1,0 +1,11 @@
+<div class="post-metadata">
+    <div class="post-date" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%d-%m-%Y" }}</div>
+    {% if post.author %}
+    <div class="article-author" itemscope itemtype="http://schema.org/Person">
+        <div class="author-separator">•</div>
+        {% if author.name %}
+        <div class="author-name" itemprop="name">{{author.name}}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>

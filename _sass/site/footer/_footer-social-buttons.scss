@@ -1,0 +1,24 @@
+.social-buttons {
+  @include flex-container;
+  $social-button-size: $mobile-footer-item-height;
+  justify-content: center;
+  align-items: center;
+
+  .social-btn {
+    width: $social-button-size;
+    height: $social-button-size;
+    border-radius: 50%;
+    background: $color-social-buttons;
+    display: inline-block;
+    color: $color-white;
+    line-height: 46px;
+    text-align: center;
+    font-size: 24px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    &:hover {
+      background-color: $color-logo-red;
+    }
+  }
+}

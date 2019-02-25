@@ -1,0 +1,24 @@
+.post-list {
+
+  @include tablet-and-desktop {
+    padding-top: $content-padding;
+    padding-bottom: $content-padding;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post {
+    padding-top: $content-padding;
+    padding-bottom: $content-padding;
+  }
+
+  h3 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+}

@@ -1,0 +1,13 @@
+.navbar-toggle {
+  display: block;
+  background-color: $color-russian-black;
+  color: white;
+  outline: none;
+  border: none;
+  font-size: 24px;
+  padding: 0;
+
+  @include tablet-and-desktop {
+    display: none;
+  }
+}

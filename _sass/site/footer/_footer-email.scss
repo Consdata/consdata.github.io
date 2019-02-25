@@ -1,0 +1,17 @@
+.email {
+  @include flex-container;
+  justify-content: center;
+  align-items: center;
+
+  @include tablet-and-desktop {
+    justify-content: flex-start;
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-light-gray;
+    &:hover {
+      color: $color-white;
+    }
+  }
+}
