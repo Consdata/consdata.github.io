@@ -51,6 +51,7 @@
     a {
       color: $color-white;
       text-transform: uppercase;
+      &.active,
       &:hover {
         color: $color-logo-red;
       }
