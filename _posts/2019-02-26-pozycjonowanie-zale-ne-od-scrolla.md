@@ -44,8 +44,7 @@ Implementujemy proste przeliczanie pozycji nasłuchując na zdarzenie scroll:
 <iframe width="100%" height="300" src="//jsfiddle.net/gregorry/gof6we57/embedded/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 Uzyskany efekt:
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/86dZ7HguQWY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include youtube.html movie="86dZ7HguQWY" %}
 
 Okazuje się, że funkcjonalnie możemy uzyskać wszystko, czego potrzebujemy, jednak jakość rozwiązania nie jest zadowalająca. Gdy przyjrzymy się sprawie bliżej, zauważymy, że na różnych przeglądarkach mamy różne problemy z płynnym rysowaniem UI. Obserwujemy lekki pościg naszego elementu względem reszty strony - to stanowczo nie jest efekt, z którym chcemy być kojarzeni.
 
@@ -86,14 +85,13 @@ Przedstawione rozwiązanie jest najprostszym z możliwych potwierdzających teor
 W docelowym rozwiązaniu na pewno warto pomyśleć o rozdzieleniu funkcji pętli od faktycznego rysowania, wygładzaniu przesunięcia scrolla, dorzuceniu wskazówki `will-change` dla przesuwanych elementów, czy ogólnym sposobie na nasłuchiwanie na zmiany scrolla globalnie.
 
 Po wprowadzeniu zmian nasz rozwiązanie prezentuje się znacznie lepiej:
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GqopRJ1vuC8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include youtube.html movie="GqopRJ1vuC8" %}
 
 ## Sukces?
 Samodzielna obsługa scrollowania może być kusząca przy realizacji niestandardowych przepływów ekranów, animacji, czy skomplikowanych interfejsów użytkownika. Zawsze jednak należy pamiętać, że przerzucamy na własną implementację ciężar obsługi czegoś, co jest robione dobrze przez każdą przeglądarkę. Czasem lepszym rozwiązaniem będzie znalezienie uproszczeń w wymaganiach, a czasem będziemy mogli wziąć na siebie takie trade-off 🙂
 
 Czy ktoś stosuje takie podejścia? Tak, przykładem niech będzie apple.com, gdzie przewijane początkowo jest pionowe, następnie poziome i na końcu znowu pionowe 😉
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wMdNDHM2wrc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include youtube.html movie="wMdNDHM2wrc" %}
 
 ## Przydatne linki
 - [Scroll-linked effects @ MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Performance/Scroll-linked_effects)
