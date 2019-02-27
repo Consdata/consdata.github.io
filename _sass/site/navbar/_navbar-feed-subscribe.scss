@@ -1,7 +1,8 @@
 .feed-subscribe {
   display: none;
   @include desktop {
-    display: block;
+    display: flex;
+    align-items: center;
   }
   margin-left: $content-padding;
   svg {
