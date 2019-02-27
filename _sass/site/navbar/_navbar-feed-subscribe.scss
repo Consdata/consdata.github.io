@@ -3,6 +3,9 @@
   @include desktop {
     display: flex;
     align-items: center;
+    .svg-icon {
+      padding: 0;
+    }
   }
   margin-left: $content-padding;
   svg {
