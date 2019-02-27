@@ -1,8 +1,7 @@
 title: Consdata - blog techniczny
 # the subpath of your site, e.g. /blog
 baseurl: ""
-# the base hostname & protocol for your site, e.g. http://example.com
-url: ""
+url: "https://blog.consdata.tech"
 
 paginate: 5
 paginate_path: "/blog/page:num/"
