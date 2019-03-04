@@ -14,7 +14,7 @@ tags:
  
 ![bob](/assets/img/posts/2019-04-01-functional-introduction/1.jpeg)
 
-W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach, ale jako programiści zapewne sięgniemy po coś pokroju PyTorch, albo Kerasa, który pozwoli szybciej wejść w świat Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować pomysł jaki mieliśmy. 
+W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować pomysł jaki mieliśmy. 
 
 Programowanie funkcyjne nie inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. 
 
