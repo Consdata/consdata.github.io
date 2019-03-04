@@ -59,7 +59,7 @@ Dla obrazowania przykładu zróbmy sobie funkcję w Kotlinie o wdzięcznej nazwi
 <br>
 
 ## Święta trójca - filter, map, reduce
-![bob](/assets/img/posts/2019-04-01-functional-introduction/2.jpeg)
+![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.jpeg)
 
 ## Skutki uboczne programowania imperatywnego 🔰
 Impratywnego, czyli takiego z jakim mamy styczność zazwyczaj na początku drogi z programowaniem.
