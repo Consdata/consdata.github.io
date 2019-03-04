@@ -74,8 +74,7 @@ Często haskell jest praktycznym przykładem czysto funkcjonalnego języka. Niem
 Rzeczy te pojawiją się często w językach funkcjonalnych i są praktycznie spowiwem tworzącym język funkcjonalym. 
 
 
-### Przechodząc z imperatywnego do funkcyjnego świata
-
+### Z imperatywnego do funkcyjnego
 
 Przykład zerżnięty od [pysaumont](https://github.com/pysaumont)
 
