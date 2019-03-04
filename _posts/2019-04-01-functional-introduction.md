@@ -1,23 +1,37 @@
-# Wprowadzenie do świata funkcji [WIP]
+---
+layout:    post
+title:     "Wprowadzenie do świata funkcji"
+date:      2018-04-01 08:00:00 +0100
+published: false
+author:    Łukasz Sroczyński
+tags:
+    - tech
+    - kotlin
+    - java
+    - functional programming
+    
+---
+ 
 ![bob](/assets/img/posts/2019-04-01-functional-introduction/1.jpeg)
 
-// todo: wstęp
+W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach, ale jako programiści zapewne sięgniemy po coś pokroju PyTorch, albo Kerasa, który pozwoli szybciej wejść w świat Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować pomysł jaki mieliśmy. 
 
-``` notatki
-Początkowo chciałem, żebyśmy pobawili się pożyczkowym wzorcem, czyli Loan Pattern (będzie opisany kiedyś w innym wpisie), który to wywodzi się bardziej ze środowiska Scalowego. Niemniej jak to często bywa cały kierunek pisania wpisu poszedł w inną stronę podczas samego pisania. Tak samo jest z programowaniem. 
+Programowanie funkcyjne nie inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. 
 
-Co jakiś czas jest przedstawiana jakaś stara prawda, czy też adoptowane jest jakieś nowe narzędzie. Tak też nie jest już nowością, że programowanie funkcyjne zyskało na popularności i ułatwia wiele rzeczy. W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu jak chociażby Vavr, oraz JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących. 
-```
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących `Tuple`. 
 
-### Szable w dłoń i robimy funkcyjnie!
-#### Ale zacznijmy od początku... 🛤 
+## Szable w dłoń i robimy funkcyjnie!
+### Ale zacznijmy od początku... 🛤 
 Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Kluczowym konceptem jest tutaj modułowość. Możemy rozbić nasz algorytm, czy cokolwiek tam robimy na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Czyli mamy w sumie kilka najważniejszych zasad dobrego kodu spakowane do jednego worka z tego też powodu programowanie zorientowane na funkcje staje się poopularne. 
 
+<br>
 
-### OOP vs FP 🥊
+## OOP vs FP 🥊
 Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy cokolwiek innego. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
 
-#### Ważniejsze cechy funkcjonalnego podejścia: 
+<br>
+
+## Ważniejsze cechy funkcjonalnego podejścia:
 
 ⚙ Higher-order functions - przekazują funkcję jako paramter do innej funkcji - istna incepcja.
 
@@ -36,12 +50,24 @@ Dla obrazowania przykładu zróbmy sobie funkcję w Kotlinie o wdzięcznej nazwi
 
 ⚙ Anonymous classes - `() -> "czyli lambdy"`
 
-### Skutki uboczne programowania imperatywnego 🔰
+## Ważniejsze cechy funkcjonalnego podejścia: v2
+⚙ Pure Functions - 
+⚙ Immutability - 
+⚙ Referential transparency - 
+⚙ First-class citizens - 
+⚙ Higher-order functions - 
+<br>
+
+## Święta trójca - filter, map, reduce
+![bob](/assets/img/posts/2019-04-01-functional-introduction/2.jpeg)
+
+## Skutki uboczne programowania imperatywnego 🔰
 Impratywnego, czyli takiego z jakim mamy styczność zazwyczaj na początku drogi z programowaniem.
 
 Przykładowo jeśli A == 0 to zwróć B inaczej B++ oraz A--. 
 
 Mamy tutaj mutowalne zmienne, czyli w sumie niszczymy stany obiektów. Jeśli okaże się, że trzeba zmienić wymagania biznesowe to szybko okazuje się, że również zmieniamy wynik działania naszej aplikacji. Programowanie funkcyjne promuje nie-mutowalność obiektów, A.K.A. Immutability. Co jest dobre. Do tego poprzez funkcje ograniczamy interakcje naszego kodu ze światem zewnętrznym. Integracja jest dopiero po skończeniu obliczeń, potem rzucamy wyjątki, zapisujemy do bazy, czy wysyłamy coś po HTTPie. 
+
 
 ### Wracając do wejścia/wyjścia 🚪
 Funkcjny kod ma zapewnić jak najmniejszą ilość efektów ubocznych, czyli mamy `in -> out`, zamiast `in -> file -> exception -> poop -> db -> info -> out`. Takie podejście daje nam bardziej determistyczny sposób działania apki. Również testowanie takiego kodu jest łatwiejsze, bo nie potrzebujemy armii Mocków do wyizolowania przypadku testowego.
