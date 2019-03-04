@@ -3,7 +3,7 @@
 
 // todo: wstęp
 
-```
+``` notatki
 Początkowo chciałem, żebyśmy pobawili się pożyczkowym wzorcem, czyli Loan Pattern (będzie opisany kiedyś w innym wpisie), który to wywodzi się bardziej ze środowiska Scalowego. Niemniej jak to często bywa cały kierunek pisania wpisu poszedł w inną stronę podczas samego pisania. Tak samo jest z programowaniem. 
 
 Co jakiś czas jest przedstawiana jakaś stara prawda, czy też adoptowane jest jakieś nowe narzędzie. Tak też nie jest już nowością, że programowanie funkcyjne zyskało na popularności i ułatwia wiele rzeczy. W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu jak chociażby Vavr, oraz JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących. 
