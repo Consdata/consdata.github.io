@@ -5,7 +5,6 @@ date:      2019-02-26 08:00:00 +0100
 published: true
 author:    glipecki
 tags:
-    - tech
     - frontend
     - javascript
 ---

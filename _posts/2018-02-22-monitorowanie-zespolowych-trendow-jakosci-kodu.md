@@ -5,7 +5,6 @@ date:      2018-02-22 08:00:00 +0100
 published: true
 author:    glipecki
 tags:
-    - tech
     - sonarqube
     - sonarqube companion
     - jakość kodu

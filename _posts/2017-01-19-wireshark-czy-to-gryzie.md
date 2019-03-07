@@ -5,7 +5,6 @@ date:      2017-01-19 08:00:00 +0100
 published: true
 author:    tlewandowski
 tags:
-    - tech
     - wireshark
     - networks
 ---

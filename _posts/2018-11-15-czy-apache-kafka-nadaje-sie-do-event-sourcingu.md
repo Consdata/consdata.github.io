@@ -5,7 +5,6 @@ date:      2018-11-15 08:00:00 +0100
 published: true
 author:    mmergo
 tags:
-    - tech
     - event sourcing
     - apache kafka
 ---

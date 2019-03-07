@@ -5,7 +5,6 @@ date:      2018-08-07 08:00:00 +0100
 published: true
 author:    sucuncu
 tags:
-    - tech
     - algorytmy rekomendacyjne
     - python
 ---

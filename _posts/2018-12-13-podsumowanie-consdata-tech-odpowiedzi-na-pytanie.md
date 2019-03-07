@@ -5,7 +5,6 @@ date:      2018-12-13 08:00:00 +0100
 published: true
 author:    mmergo
 tags:
-    - tech
     - consdata.tech
     - event sourcing
 ---

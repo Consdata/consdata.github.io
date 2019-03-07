@@ -5,7 +5,6 @@ date:      2018-04-23 08:00:00 +0100
 published: true
 author:    bradlinski
 tags:
-    - tech
     - sonarqube
     - webhook
 ---

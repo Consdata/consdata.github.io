@@ -5,7 +5,6 @@ date:      2016-12-22 08:00:00 +0100
 published: true
 author:    jwilczewski
 tags:
-    - tech
     - hystrix
     - circuit breaker
 ---
