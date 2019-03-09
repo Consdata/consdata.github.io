@@ -11,70 +11,112 @@ tags:
     - functional programming
     
 ---
- 
-![bob](/assets/img/posts/2019-04-01-functional-introduction/1.jpeg)
 
-W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować pomysł jaki mieliśmy. 
+W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować pomysł jaki siedzi nam w głowie.
 
-Programowanie funkcyjne nie inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. 
+Programowanie funkcyjne nie inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
 
-W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących `Tuple`. 
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących `Tuple`.  
 
-## Szable w dłoń i robimy funkcyjnie!
-### Ale zacznijmy od początku... 🛤 
-Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Kluczowym konceptem jest tutaj modułowość. Możemy rozbić nasz algorytm, czy cokolwiek tam robimy na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Czyli mamy w sumie kilka najważniejszych zasad dobrego kodu spakowane do jednego worka z tego też powodu programowanie zorientowane na funkcje staje się poopularne. 
+## Ale zacznijmy od początku... 🛤 
+Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Jednym z głównych konceptów jest tutaj modułowość. Możemy rozbić nasz algorytm na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy, aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Mamy tutaj kilka najważniejszych zasad dobrego kodu spakowane do jednego worka. Jest to jeden z powodów dlaczego programowanie zorientowane na funkcje staje się poopularne. 
 
-<br>
-
-## OOP vs FP 🥊
+## Obiektowe vs Funkcyjne 🥊
 Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy cokolwiek innego. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
 
-<br>
+## Imparatywne (proceduralne) programowanie 📉
+Czyli po prostu lista instrukcji, która prowadzi Cię do celu. Dokładne kroki prowadzące do rozwiązania. Niemniej algorytm podczas wykonywanie zmienia swój stan, a to jest rzecz jakiej nie pożądamy w dzisiejszych czasach. Prowadzi to do wielu nieporządanych efektów tymbardziej w środowisku wielowątkowym. Najłatwiej jest zrozumieć na przykładzie, także napiszmy trochę pseudo-kodu.   
 
-## Ważniejsze cechy funkcjonalnego podejścia:
+IF `A == 0` RETURN `B` ELSE `B++ AND A--`
 
-⚙ Higher-order functions - przekazują funkcję jako paramter do innej funkcji - istna incepcja.
+Widzimy tutaj czarno na białym mutowalne zmienne. Zmieniamy, niszczymy stan obiektów jakimi operujemy. Możesz spytać... Dlaczego jest to złe? Powiedzmy, że pomiędzy `B++` oraz `A--` wchodzi nowe wymaganie biznesowe. W tym momencie jesteśmy w kropce, bo zmiana ta wpływa na wynik działania całego naszego algorytmu. Oczywiście nie chcemy tego.
 
-Na przykład funkcja `availableCustomers(Supplier<Boolean> customerAvailability)` przyjmuje funkcję jako parametr `Customer::isAvailable`.
+### Tak też idziemy w stronę programowania funkcyjnego 📈
+Funkcjny kod ma zapewnić jak najmniejszą ilość efektów ubocznych, czyli mamy `in -> out`. Jedną z podstawowych rzeczy jakie podejście funkcyjne promuje jest `immutability`, czyli rozwiązanie powyższego problemu. W ten sposób nie wpływamy bezpośrednio na stan obiektu, bo jest on niezmienny. Do tego pure functions (`in -> out`) zapewniają bardziej deterministyczny sposób działania aplikacji. Co ważne nie potrzebujemy armii Mocków do wyizolowania przypadku testowego.
 
-Czego wynikiem jest: `availableCustomers(Customer::isAvailable)`
+#### Prosty przykład `in -> out` w Kotlinie, z którego każdy z nas korzysta
 
-⚙ First-class citizens - czyli traktowanie funkcji jako wartości.
+* `list.map { it -> it + 1 }` - gdzie inkrementujemy każdy element kolekcji o 1.
 
-Dla obrazowania przykładu zróbmy sobie funkcję w Kotlinie o wdzięcznej nazwie `adder`: 
+#### Aby pokazać, że funkcyjnie można w każdym języku przejdzmy do JSa
+Można tu pobawić się function composition, albo inaczej function chaining. Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ten przykład pokazuje właśnie koncept nie-mutowalności obiektu gdzie jest on kopiowany zamiast zmieniania jego stanu. 
+```javascript
+function clearSomeImpurities(text) {
+  return text.toLowerCase()   
+    .trim()
+    .split(" ")
+    .join(" & ");
+}
+
+clearSomeImpurities("RiCk MoRtY") // "rick & morty"
+```
+
+### `pure functions` + `immutability` = referential transparency 🕵
+Jest to po prostu brak efektów ubocznych, czyli `in -> out` zamiast `in -> file -> exception -> poop -> db -> info -> out`. Brak zależności od zewnętrznych serisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.   
+
+Wystarczy tu po prostu przekazać <b>odpowiedni</b> argument.
+
+`sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)` 
+
+Powiedzmy, że drugi argument nie jest potrzebny. 
+
+Jest on zawsze stały w naszej aplikacji. 
+
+Taką funkcję można zoptymalizować `SOMETHING = 4`. 
+
+`sum(1, SOMETHING)`
+
+### First-class citizens 👨
+Czyli traktowanie funkcji jako wartości. Stwórzmy zatem funkcję o wdzięcznej nazwie `adder`.
 
 *  `fun add(a: Int, b: Int) = (a + b).toDouble()` - nasza funkcja.
 *  `val adder = ::add` - którą przypisujemy do zmiennej.
 *  `val adder: (Int, Int) -> Double = { a, b -> (a + b).toDouble() }` - lub to samo w ten sposób.
-*  `adder(1,1)` - po czym robimy skomplikowane obliczenia.
+*  `adder(1,1)` - pomijając użyteczność tej funkcji :)  
+
+### Higher-order functions 💎
+Przekazujemy tutaj funkcję jako paramter do innej funkcji - istna incepcja. 
+
+Zobaczmy to na [Javowym przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/HigherOrderFunctions.java)
+
+`availableCustomers(Supplier<Boolean> customerAvailability)` 
+
+Przyjmuje funkcję jako parametr `Customer::isAvailable`.
+
+Oraz podobnym [Kotlinowym przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/HigherOrderFunctions.kt)
+
+```kotlin
+fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
+    return operation(x, y)                                        
+}
+
+fun sum(x: Int, y: Int) = x + y                                   
+
+fun main() {
+    val sumResult = calculate(4, 5, ::sum)                        
+    val mulResult = calculate(4, 5) { a, b -> a * b }             
+    println("sumResult $sumResult, mulResult $mulResult")
+}
+```
+
+
+
+## A co jest najważniejsze...
+Wszystkie te zasady tyczą się większości popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascript, a także w Kotlinie, czy Scali oraz wielu innych językach.
+
+ 
+ 
+## --------------------------------
+## Notatki
+## --------------------------------
+
+## Ważniejsze cechy funkcjonalnego podejścia:
+
+
+
+
 
 ⚙ Anonymous classes - `() -> "czyli lambdy"`
-
-## Ważniejsze cechy funkcjonalnego podejścia: v2
-⚙ Pure Functions - 
-⚙ Immutability - 
-⚙ Referential transparency - 
-⚙ First-class citizens - 
-⚙ Higher-order functions - 
-<br>
-
-## Święta trójca - filter, map, reduce
-![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.png)
-
-## Skutki uboczne programowania imperatywnego 🔰
-Impratywnego, czyli takiego z jakim mamy styczność zazwyczaj na początku drogi z programowaniem.
-
-Przykładowo jeśli A == 0 to zwróć B inaczej B++ oraz A--. 
-
-Mamy tutaj mutowalne zmienne, czyli w sumie niszczymy stany obiektów. Jeśli okaże się, że trzeba zmienić wymagania biznesowe to szybko okazuje się, że również zmieniamy wynik działania naszej aplikacji. Programowanie funkcyjne promuje nie-mutowalność obiektów, A.K.A. Immutability. Co jest dobre. Do tego poprzez funkcje ograniczamy interakcje naszego kodu ze światem zewnętrznym. Integracja jest dopiero po skończeniu obliczeń, potem rzucamy wyjątki, zapisujemy do bazy, czy wysyłamy coś po HTTPie. 
-
-
-### Wracając do wejścia/wyjścia 🚪
-Funkcjny kod ma zapewnić jak najmniejszą ilość efektów ubocznych, czyli mamy `in -> out`, zamiast `in -> file -> exception -> poop -> db -> info -> out`. Takie podejście daje nam bardziej determistyczny sposób działania apki. Również testowanie takiego kodu jest łatwiejsze, bo nie potrzebujemy armii Mocków do wyizolowania przypadku testowego.
-
-### Przechodząc z imperatywnego do funkcyjnego
-//todo: 
-
 
 ## Czas na trochę mięsa 🍗
 Kod będzie w Kotlinie. Myślę, że o wiele lepiej oddaje różne idea programowania funkcyjnego bez zbędnego boilercode'u.
@@ -119,7 +161,18 @@ Mamy tutaj żywy przykład efektu ubocznego o jakim mówiliśmy wcześniej. Na p
 // todo: W Javie można skorzystać z Tuple(T, R) od Vavr
 
 // todo: W Kotlinie `Purchase(donut, payment)` , `Pair(T, R)`
- 
+
+
+## Ważniejsze cechy funkcjonalnego podejścia: v2
+⚙ Pure Functions - 
+⚙ Immutability - 
+⚙ Referential transparency - 
+⚙ First-class citizens - 
+⚙ Higher-order functions - 
+<br>
+
+## Święta trójca - filter, map, reduce
+![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.png) 
 
 #### Na początek zacznijmy od starego i wciąż dobrego (co warto podkreślić) TryCatcha:
 todo:  
