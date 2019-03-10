@@ -126,7 +126,7 @@ Albo po prostu
 val adder: (Int, Int) -> Double = { a, b -> (a + b).toDouble() }
 
 adder(1,1) // 2.0 
-// Pomijając użyteczność tej funkcji :)  
+// Jak widać jedna z bardziej przydatnych funkcji jakie tutaj zrobiliśmy :)   
 ```
 
 ### Higher-order functions 💎
