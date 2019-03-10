@@ -68,8 +68,8 @@ function clearSomeImpurities(text) {
 clearSomeImpurities("RiCk MoRtY") // "rick & morty"
 ```
 
-### Jak już jesteśmy przy JSie to zobaczmy przykładzie świętej trójcy
-### Czyli `filter`, `map`, `reduce`
+### Jak już jesteśmy przy JSie to musimy zobaczyć świętą trójcę
+#### czyli `filter`, `map`, `reduce`
 
 ```
 let films = [
