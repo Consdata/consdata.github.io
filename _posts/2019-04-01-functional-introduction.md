@@ -13,11 +13,13 @@ tags:
     
 ---
 
-W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu. Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
+W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w tym przypadku). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
 
-Programowanie funkcyjne nie inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
+Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
 
-W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. W tym wpisie zacznijmy od omówienia funkcjnego podejścia oraz jedenej z podstawowych struktr danych tam istniejących `Tuple`. 
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcjonalności z Javy, czy też innych funkcyjnych języków. 
+
+W tym wpisie zacznijmy od omówienia funkcjnego podejścia. Następnie omówimy sobie kilka podstawowych struktr danych tam istniejących między innymi `Value` oraz `Tuple`.
 
 **Jako, że funkcyjnie można w każdym języku to opiszemy sobie to podejście na przykładzie Kotlina, Javy oraz JSa!**
 
@@ -54,24 +56,31 @@ Gdzie inkrementujemy ilość zamówień o 1.
 
 **W funkcyjnym programowaniu skupiamy się na tym co chcemy osiągnąć, a nie tym co chcemy zrobić. Drobna, a jednak znaczna różnica.**
 
-#### Dlaczego immutability jest ważne? 
+#### Dlaczego immutability jest ważne?
 ```
-final Date date = new Date(); // 2019.04.01
+// Wezmę sobie dzisiejszą datę... | 2019.04.01 
+final Date date = new Date(); 
 
+// Wrzucę to do mapy... Przyda się później...
 final HashMap<Date, Object> map = new HashMap<>();
-map.put(date, "value"); // // 2019.04.01
+map.put(date, "value"); 
 
-date.setTime(123); // tylko ustawię nową datę i można iść po kawę
+// Wiele linijek dalej...
 
-map.containsKey(date); // false
-// 1970... cóż :) 
+var magicNumber = 123 
+date.setTime(magicNumber); // ale w sumie to tylko ustawię nową datę i można iść po kawę...
+
+// Sprawdzę, czy aby na pewno moja data jest na miejscu...
+map.containsKey(date);  // false
+
+date // 1970... no i nie będzie kawy... eh.  
 ```
 
-W tym przykładzie chyba nie ma nic więcej do dodania. Immutability usuwa to wiele problemów na jakie możemy się napotkać. Jedynym kosztem jest częstsze odśmiecanie przez JVMowy Garbage Collector.
+Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że nie-mutowalność rozwiązuje problemy zanim się pojawią. Kosztem jest oczywiście pożeranie większych ilości pamięci. Może nie do końca pamięci, ale zdecydowanie częstsze uruchomianie odśmiecania przez Garbage Collectora. A to z kolei powoduje częstsze `stop-the-world`, czyli moment, w którym pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. 
 
-### Co działa tak samo w innych językach
-#### Aby pokazać, że funkcyjnie można w każdym języku przejdzmy do JSa
-Pobawmy się function composition (function chaining). Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ten przykład pokazuje koncept nie-mutowalności (immutability) obiektu gdzie jest on kopiowany zamiast zmieniania jego stanu.
+#### Odetchnijmy na chwilę od Javy i przejdźmy do JSa 
+### Tam też można funkcyjnie, nawet bardziej aniżeli w Javie
+Pobawmy się zatem function composition (function chaining). Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ponownie jest tutaj immutability gdzie obiekt jest on kopiowany zamiast zmieniania jego stanu.
 
 ```javascript
 function clearSomeImpurities(text) {
