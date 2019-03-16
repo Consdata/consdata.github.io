@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Wprowadzenie do świata funkcji"
+title:     "Wejście do świata funkcji"
 date:      2018-04-01 08:00:00 +0100
 published: false
 author:    Łukasz Sroczyński
@@ -25,7 +25,7 @@ W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funk
 Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Jednym z głównych konceptów jest tutaj modułowość. Możemy rozbić nasz algorytm na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy, aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Mamy tutaj kilka najważniejszych zasad dobrego kodu spakowane do jednego worka. Jest to jeden z powodów dlaczego programowanie zorientowane na funkcje staje się poopularne. 
 
 ## Obiektowe vs Funkcyjne 🥊
-Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy cokolwiek innego. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
+Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy jak w tym przypadku funkcyjny paradygmat. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
 
 ## Imparatywne (proceduralne) programowanie 📉
 Jest to po prostu lista instrukcji, która prowadzi Cię do celu. Dokładne kroki prowadzące do rozwiązania. Niemniej algorytm podczas wykonywanie zmienia swój stan, a to jest rzecz jakiej nie pożądamy w dzisiejszych czasach. Prowadzi to do wielu nieporządanych efektów tymbardziej w środowisku wielowątkowym. Najłatwiej jest zrozumieć na przykładzie, także napiszmy trochę pseudo-kodu.   
@@ -35,6 +35,7 @@ IF `A == 0` RETURN `B` ELSE `B++ AND A--`
 Widzimy tutaj czarno na białym mutowalne zmienne. Zmieniamy, niszczymy stan obiektów jakimi operujemy. Możesz spytać... Dlaczego jest to złe? Powiedzmy, że pomiędzy `B++` oraz `A--` wchodzi nowe wymaganie biznesowe. W tym momencie jesteśmy w kropce, bo zmiana ta wpływa na wynik działania całego naszego algorytmu. Oczywiście nie chcemy tego.
 
 **W imparatywnym programowaniu skupiamy się na tym co chcemy zrobić. Wykonujemy konkretne czynności.**
+
 
 ### Tak też idziemy w stronę programowania funkcyjnego 📈
 Funkcjny kod ma zapewnić jak najmniejszą ilość efektów ubocznych, czyli mamy `in -> out`. Jedną z podstawowych rzeczy jakie podejście funkcyjne promuje jest `immutability`, czyli rozwiązanie powyższego problemu. W ten sposób nie wpływamy bezpośrednio na stan obiektu, bo jest on niezmienny. Do tego pure functions (`in -> out`) zapewniają bardziej deterministyczny sposób działania aplikacji. Co ważne nie potrzebujemy armii Mocków do wyizolowania przypadku testowego.
@@ -51,11 +52,26 @@ orders.map { it.amount + 1 }
 
 Gdzie inkrementujemy ilość zamówień o 1.
 
-**W funkcyjnym programowaniu skupiamy się na tym co chcemy osiągnąć.**
+**W funkcyjnym programowaniu skupiamy się na tym co chcemy osiągnąć, a nie tym co chcemy zrobić. Drobna, a jednak znaczna różnica.**
+
+#### Dlaczego immutability jest ważne? 
+```
+final Date date = new Date(); // 2019.04.01
+
+final HashMap<Date, Object> map = new HashMap<>();
+map.put(date, "value"); // // 2019.04.01
+
+date.setTime(123); // tylko ustawię nową datę i można iść po kawę
+
+map.containsKey(date); // false
+// 1970... cóż :) 
+```
+
+W tym przykładzie chyba nie ma nic więcej do dodania. Immutability usuwa to wiele problemów na jakie możemy się napotkać. Jedynym kosztem jest częstsze odśmiecanie przez JVMowy Garbage Collector.
 
 ### Co działa tak samo w innych językach
 #### Aby pokazać, że funkcyjnie można w każdym języku przejdzmy do JSa
-Można tu pobawić się function composition, albo inaczej function chaining. Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ten przykład pokazuje koncept nie-mutowalności (immutability) obiektu gdzie jest on kopiowany zamiast zmieniania jego stanu.
+Pobawmy się function composition (function chaining). Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ten przykład pokazuje koncept nie-mutowalności (immutability) obiektu gdzie jest on kopiowany zamiast zmieniania jego stanu.
 
 ```javascript
 function clearSomeImpurities(text) {
@@ -68,8 +84,7 @@ function clearSomeImpurities(text) {
 clearSomeImpurities("RiCk MoRtY") // "rick & morty"
 ```
 
-### Jak już jesteśmy przy JSie to musimy zobaczyć świętą trójcę
-#### czyli `filter`, `map`, `reduce`
+### Pozostając przy JSie zobaczymy świętą trójcę, czyli `filter`, `map`, `reduce`
 
 ```
 let films = [
@@ -92,23 +107,22 @@ function getTotalTimeSpent(films) {
 getTotalTimeSpent(films); // 1221
 ```
 
+To co widzisz powyżej to higher-order function, które omówimy już za chwilę.
 
 ### `pure functions` + `immutability` = referential transparency 🕵
-Jest to po prostu brak efektów ubocznych, czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out`. Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane. 
+Jest to po prostu brak efektów ubocznych, czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out`. Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.
+
+W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy. 
 
 Wystarczy tu po prostu przekazać <b>odpowiedni</b> argument.
 
 `sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)` 
 
-Powiedzmy, że drugi argument nie jest potrzebny. 
+Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji. 
 
-Jest on zawsze stały w naszej aplikacji. 
+Taką funkcję można by zoptymalizować `SOMETHING = 4` >> `sum(1, SOMETHING)`
 
-Taką funkcję można by zoptymalizować `SOMETHING = 4`.
-
-`sum(1, SOMETHING)`
-
-Co do wyjątków to jest to tylko częściowa prawda. Metoda może oczywiście zgłosić OutOfMemoryException, albo StackOverflow. Niemniej tego typu wyjątki to te, na które nie mamy bezpośredniego wpływu. Są one bardziej sygnałem że mamy większy problem w apce o jaki powinniśmy się zatroszczyć i to jak najszybciej.
+Co do wyjątków to jest to tylko częściowa prawda. Metoda może oczywiście zgłosić OutOfMemoryException, albo inne typu StackOverflow. Niemniej tego typu wyjątki to te, na które nie mamy bezpośredniego wpływu. Są one bardziej sygnałem że mamy większy problem w apce o jaki powinniśmy się zatroszczyć i to jak najszybciej.
 
 ### First-class citizens 👨
 Czyli traktowanie funkcji jako wartości. Stwórzmy zatem funkcję o wdzięcznej nazwie `adder`.
@@ -136,9 +150,7 @@ Czyli przekazanie funkcji jako paramter do innej funkcji - istna incepcja.
 
 Metoda: `availableCustomers(Supplier<Boolean> customerAvailability)` 
 
-Przyjmuje supplier jako paramter.
-
-Możemy tutaj przekazać method-reference: `Customer::isAvailable` 
+Przyjmuje supplier jako paramter. Możemy tutaj przekazać method-reference: `Customer::isAvailable` 
 
 `HigherOrderFunctions.availableCustomers(Customer::isAvailable)`
 
@@ -156,7 +168,7 @@ fun sum(x: Int, y: Int) = x + y
 fun main() {
     val sumResult = calculate(4, 5, ::sum)                        
     val mulResult = calculate(4, 5) { a, b -> a * b }             
-    println("sumResult $sumResult, mulResult $mulResult")
+    println("sumResult $sumResult, mulResult $mulResult") // sumResult 9, mulResult 20
 }
 ```
 
@@ -168,13 +180,62 @@ listOfNumbers.filter(evenNumber); // [0, 2, 4, 6, 8, 10]
 ```
 Gdzie przekazaliśmy funkcję `evenNumber` jako argument do funkcji `filter`.
 
-#### No to jeszcze 
+Wcześniej w tym wpisie już poznałeś bardziej skomplikowany przykład `filter`, `map`, `reduce`.
+
+### Co daje vavr, arrow? 
+### Tuple, Value
+
+`Function2<Integer, Integer, Integer> sum = (a, b) -> a + b`
+
+`CheckedFunction2<Integer, Interger, Integer> sum = (a, b) -> a + b`
+
+### Memoization - [java example](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/Memoization.java)
+
+```
+Function0<UUID> memoizedRandomUUID = Function0.of(UUID::randomUUID).memoized();
+
+memoizedRandomUUID.apply(); // 80cc9c17...
+memoizedRandomUUID.apply(); // 80cc9c17...
+```
+
+### Tuples
+
+```
+var tuple = Tuple.of("Something ", 1)
+        .map(
+            s -> s.concat("else"),
+            i -> i + 1
+        );
+
+tuple // (Something else, 2)
+```
+
 
 
 ## A co jest ważne...
 Wszystkie te zasady tyczą się wszystkich popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascript, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić część obliczeń. 
 
+## Dodatki
+Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src).
+
+Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz tutaj aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
+
+Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie. Czyli będzie o DDD, które umożliwia TDD oraz dlaczego warto również pisać testy w BDD. :)
  
+## Dlaczego Kotlin?
+
+Jeśliby wziąć pod uwagę trzy języki pod względem funkcyjności to byłyby one w takiej kolejności: 
+
+**Java -> Kotlin -> Scala**
+
+Z czego biblioteka vavr implementuje właśnie rzeczy z Scali.
+
+1. Łatwiejsze, czytelniejsze tworzenie obiektów immutable
+
+* `val name: String = 'qwerty'` zamiast `final String name = 'qwerty'` ewentualnie lombokowego `val name = 'qwerty'`, czasami jednak warto dodać zwracany typ, a tego Java nam nie umożliwia. 
+
+2. 
+
  
 ## --------------------------------
 ## Notatki
@@ -239,7 +300,7 @@ Mamy tutaj żywy przykład efektu ubocznego o jakim mówiliśmy wcześniej. Na p
 <br>
 
 ## Święta trójca - filter, map, reduce
-![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.png) 
+![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.png)
 
 #### Na początek zacznijmy od starego i wciąż dobrego (co warto podkreślić) TryCatcha:
 todo:  
