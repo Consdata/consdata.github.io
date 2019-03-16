@@ -200,7 +200,7 @@ memoizedRandomUUID.apply(); // 80cc9c17...
 
 ### Tuples [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/TupleExample.java)
 
-```
+```java
 var tuple = Tuple.of("Something ", 1)
         .map(
             s -> s.concat("else"),
@@ -212,7 +212,7 @@ tuple // (Something else, 2)
 
 ### Kilka różnych struktur typu `Value` [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/ValueExample.java)
 
-```
+```java
 
 // Option
 val result1 = Option.of(null)
