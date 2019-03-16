@@ -121,7 +121,19 @@ To co widzisz powyżej to higher-order function, które omówimy już za chwilę
 ### `pure functions` + `immutability` = referential transparency 🕵
 Jest to po prostu brak efektów ubocznych, czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out`. Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.
 
-W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy. 
+W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy.
+
+W poniższym przykładzie interesują nas tylko pozytywny wynik. Ewentualnie jeśli coś pójdzie nie tak to wyświetlić komunikat.
+
+```java
+divide(1, 1)
+    .onFailure(e -> System.out.println("Sorry. Not possible."))
+    .onSuccess(System.out::println);
+
+Try<Integer> divide(Integer dividend, Integer divisor) {
+    return Try.of(() -> dividend / divisor);
+}
+```
 
 Wystarczy tu po prostu przekazać <b>odpowiedni</b> argument.
 
@@ -265,7 +277,7 @@ Jeśliby wziąć pod uwagę trzy języki pod względem funkcyjności to byłyby 
 
 **Java -> Kotlin -> Scala**
 
-Z czego biblioteka vavr implementuje właśnie rzeczy z Scali.
+Z czego biblioteka vavr implementuje właśnie rzeczy ze Scali.
 
 1. Łatwiejsze, czytelniejsze tworzenie obiektów immutable
 
