@@ -57,30 +57,32 @@ Gdzie inkrementujemy ilość zamówień o 1.
 **W funkcyjnym programowaniu skupiamy się na tym co chcemy osiągnąć, a nie tym co chcemy zrobić. Drobna, a jednak znaczna różnica.**
 
 #### Dlaczego immutability jest ważne?
-```
-// Wezmę sobie dzisiejszą datę... | 2019.04.01 
-final Date date = new Date(); 
+```java
+// Weźmy sobie dzisiejszą datę... | 2019.04.01 
+val date = new Date(); 
 
-// Wrzucę to do mapy... Przyda się później...
-final HashMap<Date, Object> map = new HashMap<>();
+// Wrzućmy to do mapy... Przyda się na później...
+val map = new HashMap<Date, String>();
 map.put(date, "value"); 
 
 // Wiele linijek dalej...
 
-var magicNumber = 123 
-date.setTime(magicNumber); // ale w sumie to tylko ustawię nową datę i można iść po kawę...
+val magicNumber = 123 
+date.setTime(magicNumber); // To jeszcze tylko ustawię nową datę i można iść po kawę...
 
-// Sprawdzę, czy aby na pewno moja data jest na miejscu...
+// Sprawdzę, czy aby na pewno data jest na miejscu...
 map.containsKey(date);  // false
 
-date // 1970... no i nie będzie kawy... eh.  
+date // 1970... chyba jednak nie będzie kawy :(  
 ```
 
-Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że nie-mutowalność rozwiązuje problemy zanim się pojawią. Kosztem jest oczywiście pożeranie większych ilości pamięci. Może nie do końca pamięci, ale zdecydowanie częstsze uruchomianie odśmiecania przez Garbage Collectora. A to z kolei powoduje częstsze `stop-the-world`, czyli moment, w którym pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. 
+**Disclaimer:** Powyższy kod jest w Javie. Ostatnio odkryłem, że lombok posiada `val`, czyli `final`. Typ obiektu jest zgadywany przez kompilator, czyli to samo co w Kotlinie oraz Scali. Całkiem fajne. Sam kod jest sporo czytelniejszy, a do tego bezpieczniejszy.
 
-#### Odetchnijmy na chwilę od Javy i przejdźmy do JSa 
-### Tam też można funkcyjnie, nawet bardziej aniżeli w Javie
-Pobawmy się zatem function composition (function chaining). Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ponownie jest tutaj immutability gdzie obiekt jest on kopiowany zamiast zmieniania jego stanu.
+Przechodząc do konkretów. Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że nie-mutowalność rozwiązuje problemy zanim się pojawią. Kosztem jest oczywiście pożeranie większych ilości pamięci. Hmm, może nie do końca duże ilości pamięci są pożerane, ale zdecydowanie triggeruje to częstsze uruchomianie się odśmiecania w Garbage Collectorze. A to z kolei powoduje częstsze `stop-the-world`, czyli moment, w którym pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. 
+
+### Odetchnijmy na chwilę od Javy i przejdźmy do JSa 
+#### Tu też można funkcyjnie! W sumie nawet bardziej aniżeli w Javie
+Pobawmy się zatem function composition (function chaining). Co oznacza nie mniej nie więcej, że wynik poprzedniej funkcji jest przekazywany do kolejnej. Ponownie jest tutaj immutability gdzie obiekt jest kopiowany zamiast zmieniania jego stanu.
 
 ```javascript
 function clearSomeImpurities(text) {
@@ -93,7 +95,8 @@ function clearSomeImpurities(text) {
 clearSomeImpurities("RiCk MoRtY") // "rick & morty"
 ```
 
-### Pozostając przy JSie zobaczymy świętą trójcę, czyli `filter`, `map`, `reduce`
+### Jeśli jesteśmy już przy JSie
+#### To zobaczmy jeszcze na świętą trójcę, czyli `filter`, `map`, `reduce`
 
 ```
 let films = [
@@ -104,13 +107,13 @@ let films = [
 
 const byType = (film) => film.type == "X";
 const getTotalTimeWatched = (film) => film.totalTimeWatched;
-const totalWatchedTimeSum = (acc, amount) => acc + amount;
+const sumOfTotalTimeWatched = (acc, amount) => acc + amount;
 
 function getTotalTimeSpent(films) {
     return films
             .filter(byType)
             .map(getTotalTimeWatched)
-            .reduce(totalWatchedTimeSum, 0);
+            .reduce(sumOfTotalTimeWatched, 0);
 }
 
 getTotalTimeSpent(films); // 1221
@@ -119,15 +122,31 @@ getTotalTimeSpent(films); // 1221
 To co widzisz powyżej to higher-order function, które omówimy już za chwilę.
 
 ### `pure functions` + `immutability` = referential transparency 🕵
-Jest to po prostu brak efektów ubocznych, czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out`. Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.
+**Referential transparency** - jest to po prostu brak efektów ubocznych.
+
+Czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out` 
+
+Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.
+
+#### Pure, czyli wynik jest zawsze ten sam dla wejściowych parametrów `in`
+
+```java
+// Nie jest to referencyjnie przezroczyste
+Math.random(); // Wynik jest różny za każdym razem
+
+
+// Jest referencyjnie przezroczyste
+// Funkcja jest deterministyczna 
+Math.max(1, 2); // Wynik zawsze jest taki sam
+``` 
 
 W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy.
 
-W poniższym przykładzie interesują nas tylko pozytywny wynik. Ewentualnie jeśli coś pójdzie nie tak to wyświetlić komunikat.
+W poniższym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/ValueExample.java) interesuje nas tylko pozytywny wynik. Ewentualnie jeśli coś pójdzie nie to można wyświetlić komunikat.
 
 ```java
 divide(1, 1)
-    .onFailure(e -> System.out.println("Sorry. Not possible."))
+    .onFailure(e -> System.out.println("Sorry, not possible."))
     .onSuccess(System.out::println);
 
 Try<Integer> divide(Integer dividend, Integer divisor) {
@@ -139,7 +158,7 @@ Wystarczy tu po prostu przekazać <b>odpowiedni</b> argument.
 
 `sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)` 
 
-Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji. 
+Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji.
 
 Taką funkcję można by zoptymalizować `SOMETHING = 4` >> `sum(1, SOMETHING)`
 
@@ -203,7 +222,15 @@ Gdzie przekazaliśmy funkcję `evenNumber` jako argument do funkcji `filter`.
 
 Wcześniej w tym wpisie już poznałeś bardziej skomplikowany przykład `filter`, `map`, `reduce`.
 
-### Co daje vavr, arrow? 
+## Co daje vavr w Javie?  
+
+1. immutable collections - standardowa Java ma remove, at, clear, wszystkie te metody łamią enkapsulację twojej klasy.
+
+Czego się wystrzegać? Jeśli widzisz, że metoda zwraca `void` to wiedz, że coś się dzieje. Dlaczego?
+
+Jeśli metoda nie zwraca niczego to znak, że jest to jakiś efekt uboczny. To o czym mówiliśmy kilka akapitów temu.
+
+
 ### Tuple, Value
 
 `Function2<Integer, Integer, Integer> sum = (a, b) -> a + b`
@@ -261,13 +288,81 @@ System.out.println(result3.get());
 
 ```
 
+### Functional sugar 🍩 🍰 🍨
+
+#### Klasycznie dla wielbicieli nulli
+
+1. Najgorszy przypadek. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+
+```java
+private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
+    User user = userRepository.findOne("123");
+
+    if (user != null) {
+        Address address = user.getAddress();
+        if (address != null) {
+            return address.getStreet();
+        }
+    }
+
+    return null;
+    }
+```
+
+2. Używanie `isPresent()` jest równie złe jak używanie `get()` gdzie w sumie wrzucasz zmienną do wrappera, a potem i tak pobierasz NullPointerException. Bez sensu. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+
+```java
+    private Optional<Address> badCascadingOptionalPileOfCrap() {
+        Optional<User> user = Optional.ofNullable(userRepository.findOne("123"));
+
+        if (user.isPresent()) {
+            Optional<Address> address = Optional.ofNullable(user.get().getAddress());
+
+            if (address.isPresent()) {
+                return address;
+            }
+        }
+
+    return Optional.empty();
+    }
+```
+
+3. Funkcyjnie - podobnie można zrobić z `Optional`, ale `Option` ma więcej opcji z jakich można korzystać. Do tego jest łatwiejszy w korzystaniu, bo ma tylko jedną metodę `Option.of()` co wprowadza mniej dwuznaczności gdzie `Optional.of()` oraz `Optional.ofNullable()` nie jest już tak oczywisty. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+
+```java
+private Option<String> muchBetterWithOption() {
+    return optionUserRepository.findOne("123")
+        .flatMap(OptionUser::getAddress)
+        .map(OptionAddress::getStreet)
+        .getOrElse(Option.none());
+}
+```
+
+4. A jak to wygląda w Kotlinie? Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/WorkingWithOptionalCode.kt).
+
+```kotlin
+user.address.street // tylko tyle wystarczy xD 
+
+//Można też dodać String?, a potem sprawdzić elvisem
+data class Address(val street: String?)
+
+user.address.street ?: "null detected lets display default message instead of a street"
+
+```
+
+
+
 ## A co jest ważne...
-Wszystkie te zasady tyczą się wszystkich popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascript, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić część obliczeń. 
+Wszystkie te zasady tyczą się większości popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić większą część obliczeń. 
 
 ## Dodatki
-Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src).
+Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src). 
 
-Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz tutaj aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
+Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego języka. :)
+
+[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.   
+
+Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
 
 Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie. Czyli będzie o DDD, które umożliwia TDD oraz dlaczego warto również pisać testy w BDD. :)
  
