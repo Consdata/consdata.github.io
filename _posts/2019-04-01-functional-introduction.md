@@ -291,8 +291,7 @@ System.out.println(result3.get());
 ### Functional sugar 🍩 🍰 🍨
 
 #### Klasycznie dla wielbicieli nulli
-
-1. Najgorszy przypadek. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+Prawdopodobnie najgorszy przypadek. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
 ```java
 private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
@@ -301,7 +300,10 @@ private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
     if (user != null) {
         Address address = user.getAddress();
         if (address != null) {
-            return address.getStreet();
+            String street = address.getStreet();
+            if(street != null) {
+                return street; // ufff.. to jest prawdziwa praca.
+            }
         }
     }
 
@@ -314,42 +316,43 @@ private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
 ```java
     private Optional<Address> badCascadingOptionalPileOfCrap() {
         Optional<User> user = Optional.ofNullable(userRepository.findOne("123"));
-
-        if (user.isPresent()) {
+        
+        if (user.isPresent()) 
             Optional<Address> address = Optional.ofNullable(user.get().getAddress());
-
-            if (address.isPresent()) {
-                return address;
-            }
-        }
+            
+            if (address.isPresent())
+                Optional<String> street = Optional.ofNullable(address.get().getStreet());
+                
+	             if(street.isPresent())
+                     return street; // potem się dziwić, że ludzie nie lubią Optionali...
 
     return Optional.empty();
     }
 ```
 
-3. Funkcyjnie - podobnie można zrobić z `Optional`, ale `Option` ma więcej opcji z jakich można korzystać. Do tego jest łatwiejszy w korzystaniu, bo ma tylko jedną metodę `Option.of()` co wprowadza mniej dwuznaczności gdzie `Optional.of()` oraz `Optional.ofNullable()` nie jest już tak oczywisty. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+### Bardziej funkcyjnie
+
+Podobnie można zrobić z `Optional`, ale lepiej jest użyć `Option` od vavra, bo ma po prostu więcej opcji z jakich można wybierać. Do tego jest łatwiejszy w korzystaniu, bo ma tylko jedną metodę `Option.of()` co wprowadza mniej dwuznaczności gdzie Optional nie jest już tak oczywisty. 
+
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
 ```java
 private Option<String> muchBetterWithOption() {
     return optionUserRepository.findOne("123")
-        .flatMap(OptionUser::getAddress)
-        .map(OptionAddress::getStreet)
+        .flatMap(User::getAddress)
+        .map(Address::getStreet)
         .getOrElse(Option.none());
 }
 ```
 
-4. A jak to wygląda w Kotlinie? Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/WorkingWithOptionalCode.kt).
+### A jak to wygląda w Kotlinie? 
+
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/WorkingWithOptionalCode.kt).
 
 ```kotlin
-user.address.street // gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem kawy :D
-
-//Można też dodać String?, a potem sprawdzić elvisem
-data class Address(val street: String?)
-
-user.address.street ?: "null detected lets display default message instead of a street"
-
+user?.address?.street ?: "null was found instead of a street :("
 ```
-
+Gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem kawy. ☕
 
 
 ## A co jest ważne...
@@ -364,7 +367,7 @@ Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego jęz
 
 Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
 
-Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie. Czyli będzie o DDD, które umożliwia TDD oraz dlaczego warto również pisać testy w BDD. :)
+Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie. Czyli będzie o DDD, TDD, BDD oraz hexagonal architecture. Potem dojdzie CQRS oraz event sourcing.
  
 ## Dlaczego Kotlin?
 
