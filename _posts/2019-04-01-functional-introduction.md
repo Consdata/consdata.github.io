@@ -341,7 +341,7 @@ private Option<String> muchBetterWithOption() {
 4. A jak to wygląda w Kotlinie? Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/WorkingWithOptionalCode.kt).
 
 ```kotlin
-user.address.street // tylko tyle wystarczy xD 
+user.address.street // gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem kawy :D
 
 //Można też dodać String?, a potem sprawdzić elvisem
 data class Address(val street: String?)
