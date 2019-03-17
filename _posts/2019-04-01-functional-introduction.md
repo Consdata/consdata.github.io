@@ -17,9 +17,25 @@ W naszym programistycznym świecie stare prawdy często wracają do łask mimo s
 
 Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
 
-W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcjonalności z Javy, czy też innych funkcyjnych języków. 
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcjonalności z Javy, czy też innych funkcyjnych języków.
 
-W tym wpisie zacznijmy od omówienia funkcjnego podejścia. Następnie omówimy sobie kilka podstawowych struktr danych tam istniejących między innymi `Value` oraz `Tuple`.
+**Będziemy używać tych rzeczy:**
+
+```
+// Kotlin
+implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+implementation 'org.jetbrains.kotlin:kotlin-reflect'
+implementation 'io.arrow-kt:arrow-core:0.8.2'
+
+// Java
+implementation 'io.vavr:vavr:0.10.0'
+implementation 'org.projectlombok:lombok:1.18.6'
+implementation 'org.apache.commons:commons-lang3:3.7'
+```
+
+Zacznijmy od omówienia funkcjnego podejścia. 
+
+Następnie omówimy sobie kilka podstawowych struktr danych tam istniejących między innymi `Value` oraz `Tuple`.
 
 **Jako, że funkcyjnie można w każdym języku to opiszemy sobie to podejście na przykładzie Kotlina, Javy oraz JSa!**
 
@@ -76,9 +92,9 @@ map.containsKey(date);  // false
 date // 1970... chyba jednak nie będzie kawy :(  
 ```
 
-**Disclaimer:** Powyższy kod jest w Javie. Ostatnio odkryłem, że lombok posiada `val`, czyli `final`. Typ obiektu jest zgadywany przez kompilator, czyli to samo co w Kotlinie oraz Scali. Całkiem fajne. Sam kod jest sporo czytelniejszy, a do tego bezpieczniejszy.
+**Disclaimer:** Powyższy kod jest w Javie. Ostatnio odkryłem, że lombok posiada `val`, czyli `final` plus typ obiektu jest zgadywany przez kompilator, czyli to samo co w Kotlinie oraz Scali. Całkiem fajne. Sam kod jest sporo czytelniejszy, a do tego wciąż bezpieczny.
 
-Przechodząc do konkretów. Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że nie-mutowalność rozwiązuje problemy zanim się pojawią. Kosztem jest oczywiście pożeranie większych ilości pamięci. Hmm, może nie do końca duże ilości pamięci są pożerane, ale zdecydowanie triggeruje to częstsze uruchomianie się odśmiecania w Garbage Collectorze. A to z kolei powoduje częstsze `stop-the-world`, czyli moment, w którym pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. 
+Przechodząc do konkretów. Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że nie-mutowalność rozwiązuje problemy zanim się pojawią. Kosztem jest oczywiście pożeranie większych ilości pamięci. Hmm, może nie do końca duże ilości pamięci są pożerane, ale zdecydowanie triggeruje to częstsze uruchomianie się odśmiecania w Garbage Collectorze. A to z kolei powoduje częstsze `stop-the-world`, czyli moment, w którym pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się.
 
 ### Odetchnijmy na chwilę od Javy i przejdźmy do JSa 
 #### Tu też można funkcyjnie! W sumie nawet bardziej aniżeli w Javie
@@ -124,25 +140,29 @@ To co widzisz powyżej to higher-order function, które omówimy już za chwilę
 ### `pure functions` + `immutability` = referential transparency 🕵
 **Referential transparency** - jest to po prostu brak efektów ubocznych.
 
-Czyli `in -> out` zamiast `in -> file -> exception -> db -> info -> out` 
+Czyli `in -> out` zamiast `in -> file -> exception -> db -> whatever -> 💩 -> info -> out` 
 
-Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane.
+Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty. Funkcja zawsze zwraca to co powinna. Jest deterministyczna. Nie zgłosi wyjątku. Nie przestanie działać z powodu braku danych z API, bazy, czy jakiegoś urządzenia IoT zbierającego dane. Po prostu działa i zawsze zwraca to samo przy podanych argumentach. 
 
-#### Pure, czyli wynik jest zawsze ten sam dla wejściowych parametrów `in`
+**Pure** - czyli wynik jest zawsze ten sam dla tych samych danych wejściowych `in`
 
 ```java
 // Nie jest to referencyjnie przezroczyste
 Math.random(); // Wynik jest różny za każdym razem
 
-
-// Jest referencyjnie przezroczyste
+// Jest referencyjnie przezroczysta
 // Funkcja jest deterministyczna 
 Math.max(1, 2); // Wynik zawsze jest taki sam
-``` 
 
-W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy.
+```
 
-W poniższym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/ValueExample.java) interesuje nas tylko pozytywny wynik. Ewentualnie jeśli coś pójdzie nie to można wyświetlić komunikat.
+W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy. 
+
+W kolejnym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java) interesuje nas tylko pozytywny wynik. 
+
+Ewentualnie jeśli coś pójdzie nie tak to można wyświetlić komunikat.
+
+Ale niekoniecznie musimy to robić, bo zakładamy, że użytkownik zna matematykę.
 
 ```java
 divide(1, 1)
@@ -154,15 +174,17 @@ Try<Integer> divide(Integer dividend, Integer divisor) {
 }
 ```
 
-Wystarczy tu po prostu przekazać <b>odpowiedni</b> argument.
+Wystarczy po prostu przekazać odpowiedni argument.
 
-`sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)` 
+`sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)`
 
 Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji.
 
 Taką funkcję można by zoptymalizować `SOMETHING = 4` >> `sum(1, SOMETHING)`
 
-Co do wyjątków to jest to tylko częściowa prawda. Metoda może oczywiście zgłosić OutOfMemoryException, albo inne typu StackOverflow. Niemniej tego typu wyjątki to te, na które nie mamy bezpośredniego wpływu. Są one bardziej sygnałem że mamy większy problem w apce o jaki powinniśmy się zatroszczyć i to jak najszybciej.
+Co do wyjątków to jest to tylko częściowa prawda. Metoda może oczywiście zgłosić OutOfMemoryException, StackOverflow, czy inne. Niemniej tego typu wyjątki to te, na które nie mamy bezpośredniego wpływu. Są one bardziej sygnałem że mamy większy problem w apce o jaki powinniśmy się zatroszczyć i to jak najszybciej.
+
+Jeśli funkcja zwraca `void` to jest całkiem dobry znak, że niekoniecznie jest czysta. Dobrym przykładem jest `List` ze standardowej biblioteki, która udostępnia metody zmieniające stan `add()`, `remove()` oraz inne. Jest to jeden z powodów dlaczego lepiej używać vavra.   
 
 ### First-class citizens 👨
 Czyli traktowanie funkcji jako wartości. Stwórzmy zatem funkcję o wdzięcznej nazwie `adder`.
@@ -186,7 +208,7 @@ adder(1,1) // 2.0
 ### Higher-order functions 💎
 Czyli przekazanie funkcji jako paramter do innej funkcji - istna incepcja. 
 
-#### Na początek zobaczmy na [prosty przykład w Javie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/HigherOrderFunctions.java)
+#### Na początek zobaczmy na [prosty przykład w Javie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/HigherOrderFunctions.java)
 
 Metoda: `availableCustomers(Supplier<Boolean> customerAvailability)` 
 
@@ -196,7 +218,7 @@ Przyjmuje supplier jako paramter. Możemy tutaj przekazać method-reference: `Cu
 
 Jeśli nie wiesz, czym są **@FunctionalInterface** z Javy 8 to zerknij [tutaj](http://www.braintelligence.pl/tutorial-java-8-up-to-11-most-important-things-to-know-about-modern-java/) gdzie opisałem większość nowości w Javie od 8 do 11.
 
-#### Bardziej funkcyjny [przykład w Kotlinie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/HigherOrderFunctions.kt)
+#### Bardziej skomplikowany funkcyjny [przykład w Kotlinie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/HigherOrderFunctions.kt)
 
 ```kotlin
 fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
@@ -237,7 +259,7 @@ Jeśli metoda nie zwraca niczego to znak, że jest to jakiś efekt uboczny. To o
 
 `CheckedFunction2<Integer, Interger, Integer> sum = (a, b) -> a + b`
 
-### Memoization - [java example](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/Memoization.java)
+### Memoization - [java example](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/Memoization.java)
 
 ```
 Function0<UUID> memoizedRandomUUID = Function0.of(UUID::randomUUID).memoized();
@@ -246,7 +268,7 @@ memoizedRandomUUID.apply(); // 80cc9c17...
 memoizedRandomUUID.apply(); // 80cc9c17...
 ```
 
-### Tuples [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/TupleExample.java)
+### Tuples [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/TupleExample.java)
 
 ```java
 var tuple = Tuple.of("Something ", 1)
@@ -258,40 +280,76 @@ var tuple = Tuple.of("Something ", 1)
 tuple // (Something else, 2)
 ```
 
-### Kilka różnych struktur typu `Value` [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/ValueExample.java)
+### Kilka różnych struktur typu `Value` [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java)
+
+Option praktycznie to samo co Optional, z tą różnicą, że ma tylko jedną metodę `Option.of()`.
+
+Gdzie Optional jest bardziej dwuznaczny, bo ma `Optional.of()` oraz `Optional.ofNullable()` co niezawsze jest oczywiste jak użyć i gdzie.
+
+Do [przykładu](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java)!
 
 ```java
-
 // Option
 val result1 = Option.of(null)
         .map(Object::toString)
         .map(String::toLowerCase)
         .getOrElse(() -> "option default");
 
-System.out.println(result1); // option default
+result1 // option default
+```
 
+Try, bo kto lubi obsługiwać checked exceptions. To, czy checked exceptions są dobre to sprawa indywidualna, bo są tutaj dwa obozy. Warto mieć na uwadze, że jednak większość języków tego nie ma. Kotlin, C#, Scala. Jeśli chcemy pisać funkcyjnie to checked exceptions przeszkadzają nam dość mocno.
 
+[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) przykład, a tutaj implementacja [Usera](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/domain/user/User.java).
+
+```java
+// Klasycznie brzydki kod
+try {
+    User.legacyAccountNumberCheck("123");
+} catch (IllegalArgumentException ex) {
+    log.error(ex.getMessage());
+}
+
+// Funkcyjnie piękny kod
+lift(User::legacyAccountNumberCheck)
+    .apply("123")
+    .getOrElse("DEFAULT")
+```
+
+Kolejny bardziej praktyczny [przykład](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java)
+
+```java
 // Try
-val result2 = Try.of(() -> new URL("BLAAH//hHttp://braintelligence.pl"))
+val result2 = Try.of(() -> new URL("KABOOM-http://braintelligence.pl"))
         .map(URL::getHost)
         .getOrElse(() -> "google.pl");
 
-System.out.println(result2); // google.pl
+result2 // google.pl
+```
 
+A jeśli chcemy zrobić [Lazy initialization](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java) i odroczyć stworzenie obiektu do momentu jego wykorzystania, można użyć `Lazy`.
 
-// Lazy (is memoized and its referentially transparent)
+```java
+// Lazy 
 val result3 = Lazy.of(UUID.randomUUID())
         .map(Object::toString)
         .map(String::toUpperCase);
 
-System.out.println(result3.get());
+result3.get()
 
 ```
 
 ### Functional sugar 🍩 🍰 🍨
 
-#### Klasycznie dla wielbicieli nulli
-Prawdopodobnie najgorszy przypadek. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+#### Klasycznie dla wielbicieli nulla
+
+Prawdopodobnie najgorszy przypadek.
+
+Jedno, że sprawdzanie `!= null` jest katorgą i jest kompletnie nieczytelne.
+
+To drugie zwracanie domyślnego nulla `return null` na końcu prowadzi do wielu problemów jak chociażby to co tutaj robimy.
+
+Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
 ```java
 private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
@@ -302,7 +360,7 @@ private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
         if (address != null) {
             String street = address.getStreet();
             if(street != null) {
-                return street; // ufff.. to jest prawdziwa praca.
+                return street; // ufff.. to się nazywa praca, a nie tam jakiś biblioteki używają...
             }
         }
     }
@@ -311,7 +369,15 @@ private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
     }
 ```
 
-2. Używanie `isPresent()` jest równie złe jak używanie `get()` gdzie w sumie wrzucasz zmienną do wrappera, a potem i tak pobierasz NullPointerException. Bez sensu. Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+#### Ktoś powiedział, że Optionale są lepsze od nulla, trzeba zatem używać
+
+Podobnie zły przypadek jak powyżej. Jedyny plus to zwracanie `Optional.empty()`
+
+Używanie `isPresent()` jest podobnie złe jak używanie `get()` (przynajmniej w tym przypadku). 
+
+Wołając `get()` całkowicie wyrzucamy to co dodaliśmy do optionala i rzucamy NullPointerException.
+
+Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
 ```java
     private Optional<Address> badCascadingOptionalPileOfCrap() {
@@ -330,11 +396,13 @@ private String badCascadingPileOfCrapAndNull_WorstOfTheWorstest() {
     }
 ```
 
-### Bardziej funkcyjnie
+#### No to może zrobić ten kod bardziej funkcyjnym? 
 
-Podobnie można zrobić z `Optional`, ale lepiej jest użyć `Option` od vavra, bo ma po prostu więcej opcji z jakich można wybierać. Do tego jest łatwiejszy w korzystaniu, bo ma tylko jedną metodę `Option.of()` co wprowadza mniej dwuznaczności gdzie Optional nie jest już tak oczywisty. 
+Zastosowanie `Optional` lub `Option` w tym przykładzie wyglądałoby podobnie. 
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
+Niemniej vavr posiada dużo więcej metod pomocniczych z jakich można wybierać.
+
+Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
 ```java
 private Option<String> muchBetterWithOption() {
@@ -345,15 +413,20 @@ private Option<String> muchBetterWithOption() {
 }
 ```
 
-### A jak to wygląda w Kotlinie? 
+#### A jak to wygląda w Kotlinie?
 
 Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/WorkingWithOptionalCode.kt).
 
 ```kotlin
-user?.address?.street ?: "null was found instead of a street :("
+user?.address?.street
 ```
+
 Gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem kawy. ☕
 
+```
+// Można jeszcze dodać elvisa z jakąś domyślną wartością
+user?.address?.street ?: "nasty null was found instead of a street :("
+```
 
 ## A co jest ważne...
 Wszystkie te zasady tyczą się większości popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić większą część obliczeń. 
@@ -363,7 +436,7 @@ Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankac
 
 Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego języka. :)
 
-[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.   
+[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.
 
 Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
 
@@ -380,81 +453,3 @@ Z czego biblioteka vavr implementuje właśnie rzeczy ze Scali.
 1. Łatwiejsze, czytelniejsze tworzenie obiektów immutable
 
 * `val name: String = 'qwerty'` zamiast `final String name = 'qwerty'` ewentualnie lombokowego `val name = 'qwerty'`, czasami jednak warto dodać zwracany typ, a tego Java nam nie umożliwia. 
-
-2. 
-
- 
-## --------------------------------
-## Notatki
-## --------------------------------
-
-## Ważniejsze cechy funkcjonalnego podejścia:
-
-
-⚙ Anonymous classes - `() -> "czyli lambdy"`
-
-## Czas na trochę mięsa 🍗
-Kod będzie w Kotlinie. Myślę, że o wiele lepiej oddaje różne idea programowania funkcyjnego bez zbędnego boilercode'u.
-
-Choćby zapis typu funkcji wygląda następująco `(A) -> B`.
-
-Gdzie w Javie byłoby to `Function <? super T, ? extends R>`.
-
-Jak się zapewne domyślasz powyższy kod to dobrze nam znana metoda ` .map { } `
-
-Kotlin bardzo upraszcza kod. Stworzyłem dla ciebie prostą katę, abyś mógł porównać: [Java](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/katas/src/main/java/pl/braintelligence/katas/Java_1_SocketsPairs.java) oraz [Kotlin](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/katas/src/main/kotlin/pl/braintelligence/katas/Kotlin_1_SocketsPairs.kt), a tutaj [Test Jednostkowy](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/katas/src/test/groovy/pl/braintelligence/katas/_1_SocketsPairsTest.groovy).
-
-Oczywiście jest to moja implementacja, także jeśli znasz lepszy sposób na zrobienie tego [zadanka](https://www.hackerrank.com/challenges/sock-merchant/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup) nie krępuj się zrobić PR. 
-
-<br>
-
-
-#### Nie język czyni programowanie funkcyjnym, a podejście 🖐 [WIP]
-Często haskell jest praktycznym przykładem czysto funkcjonalnego języka. Niemniej to nie język czyni programowanie funkcyjnym. Takowy język daje nam tyle, że jest bardziej przyjazny dla tego podejścia. Funkcyjnie można pisać w większości języków.
-
-// todo: anonymous functions, closures, lazy-evaluation 
-
-Rzeczy te pojawiją się często w językach funkcjonalnych i są praktycznie spowiwem tworzącym język funkcjonalym. 
-
-
-### Z imperatywnego do funkcyjnego
-
-Przykład wzięty od [pysaumont](https://github.com/pysaumont)
-
-```kotlin
-fun buy(creditCard: CreditCard): Donut {
- val donut = Donut()
- creditCard.charge(Donut.price)
- return donut
-} 
-``` 
-
-Mamy tutaj żywy przykład efektu ubocznego o jakim mówiliśmy wcześniej. Na pierwszy rzut oka ten kawałek kodu nie wygląda podejrzanie zwykły blokujący się kod, ale potwór kryje się w implementacji. Obciążenie karty zapewne ma jakiś rodzaj uwierzytelniania, po czym pobierany jest stan rachunku, a na końcu rejestrowana jest transakcja. A na końcu mamy pączka, bo kto nie lubi pączków. :)   
-
-// todo: Taki kod jest bardzo trudno przetestować..
-
-// todo: W Javie można skorzystać z Tuple(T, R) od Vavr
-
-// todo: W Kotlinie `Purchase(donut, payment)` , `Pair(T, R)`
-
-
-## Ważniejsze cechy funkcjonalnego podejścia: v2
-⚙ Pure Functions - 
-⚙ Immutability - 
-⚙ Referential transparency - 
-⚙ First-class citizens - 
-⚙ Higher-order functions - 
-<br>
-
-## Święta trójca - filter, map, reduce
-![filter-map-reduce](/assets/img/posts/2019-04-01-functional-introduction/2.png)
-
-#### Na początek zacznijmy od starego i wciąż dobrego (co warto podkreślić) TryCatcha:
-todo:  
-#### Czas na mięso 🍗  (Loan Pattern) 
-Pożyczkowy wzorzec wywodzi się bardziej ze środowiska Scalowego...
-
-todo:  
-
-#### jOOλ.append(Vavr).build()
-todo:  
