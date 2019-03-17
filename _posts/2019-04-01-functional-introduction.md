@@ -147,20 +147,25 @@ Brak zależności od zewnętrznych serwisów, plików, czy nastroju programisty.
 **Pure** - czyli wynik jest zawsze ten sam dla tych samych danych wejściowych `in`
 
 ```java
-// Nie jest to referencyjnie przezroczyste
+// Nie jest to referencyjnie przezroczyste.
 Math.random(); // Wynik jest różny za każdym razem
 
-// Jest referencyjnie przezroczysta
-// Funkcja jest deterministyczna 
+// Jest referencyjnie przezroczysta. Jest deterministyczna.
 Math.max(1, 2); // Wynik zawsze jest taki sam
 
 ```
 
 W całych tych skutkach ubocznych nie chodzi o świat bez nich, ale o to, aby nie musieć się z nimi borykać bezpośrednio. Ponownie wracamy do podstaw, czyli enkapsulacji. Chcemy po prostu ukryć pewne rzeczy, które są w danym momencie zbędne, niezwiązane z danych kontekstem w jakim działamy. 
 
-W kolejnym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java) interesuje nas tylko pozytywny wynik. 
+Wystarczy po prostu przekazać odpowiedni argument.
 
-Ewentualnie jeśli coś pójdzie nie tak to można wyświetlić komunikat.
+`sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)`
+
+Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji. Taką funkcję można by zoptymalizować `SOMETHING = 4` >> `sum(1, SOMETHING)`
+
+Jeśli funkcja zwraca `void` to jest całkiem dobry znak, że niekoniecznie jest pure. Dobrym przykładem jest `List` ze standardowej biblioteki, która udostępnia metody zmieniające stan `add()`, `remove()` i inne. Jest to jeden z powodów dlaczego lepiej używać vavra.   
+
+W kolejnym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java) interesuje nas tylko pozytywny wynik. Ewentualnie jeśli coś pójdzie nie tak to można wyświetlić komunikat.
 
 Ale niekoniecznie musimy to robić, bo zakładamy, że użytkownik zna matematykę.
 
@@ -174,17 +179,7 @@ Try<Integer> divide(Integer dividend, Integer divisor) {
 }
 ```
 
-Wystarczy po prostu przekazać odpowiedni argument.
-
-`sum(1, sum(1, sum(1,2)))` == `sum(1, sum(1, 3))` == `sum(1, 4)`
-
-Teraz powiedzmy, że drugi argument nie jest potrzebny. Jest on zawsze stały w naszej aplikacji.
-
-Taką funkcję można by zoptymalizować `SOMETHING = 4` >> `sum(1, SOMETHING)`
-
 Co do wyjątków to jest to tylko częściowa prawda. Metoda może oczywiście zgłosić OutOfMemoryException, StackOverflow, czy inne. Niemniej tego typu wyjątki to te, na które nie mamy bezpośredniego wpływu. Są one bardziej sygnałem że mamy większy problem w apce o jaki powinniśmy się zatroszczyć i to jak najszybciej.
-
-Jeśli funkcja zwraca `void` to jest całkiem dobry znak, że niekoniecznie jest czysta. Dobrym przykładem jest `List` ze standardowej biblioteki, która udostępnia metody zmieniające stan `add()`, `remove()` oraz inne. Jest to jeden z powodów dlaczego lepiej używać vavra.   
 
 ### First-class citizens 👨
 Czyli traktowanie funkcji jako wartości. Stwórzmy zatem funkcję o wdzięcznej nazwie `adder`.
@@ -204,6 +199,8 @@ val adder: (Int, Int) -> Double = { a, b -> (a + b).toDouble() }
 adder(1,1) // 2.0 
 // Jak widać jedna z bardziej przydatnych funkcji jakie tutaj zrobiliśmy :)   
 ```
+
+A tutaj znajdziesz [przykład](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/FirstClassCitizen.kt).
 
 ### Higher-order functions 💎
 Czyli przekazanie funkcji jako paramter do innej funkcji - istna incepcja. 
@@ -431,25 +428,9 @@ user?.address?.street ?: "nasty null was found instead of a street :("
 ## A co jest ważne...
 Wszystkie te zasady tyczą się większości popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić większą część obliczeń. 
 
-## Dodatki
-Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src). 
+## Podsumowanie, dodatki, przemyślenia, co dalej?
+Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src). Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego języka. A [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.
 
-Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego języka. :)
+Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy DDD, TDD (czego w sumie nie zobaczysz, bo jest to bardziej podejście do modelowania domeny, no ale pierw trzeba mieć podział na domenę/infrastrukturę w projekcie).
 
-[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.
-
-Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy.
-
-Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie. Czyli będzie o DDD, TDD, BDD oraz hexagonal architecture. Potem dojdzie CQRS oraz event sourcing.
- 
-## Dlaczego Kotlin?
-
-Jeśliby wziąć pod uwagę trzy języki pod względem funkcyjności to byłyby one w takiej kolejności: 
-
-**Java -> Kotlin -> Scala**
-
-Z czego biblioteka vavr implementuje właśnie rzeczy ze Scali.
-
-1. Łatwiejsze, czytelniejsze tworzenie obiektów immutable
-
-* `val name: String = 'qwerty'` zamiast `final String name = 'qwerty'` ewentualnie lombokowego `val name = 'qwerty'`, czasami jednak warto dodać zwracany typ, a tego Java nam nie umożliwia. 
+Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie, czyli będzie o DDD, TDD, BDD oraz hexagonal architecture. Potem dojdzie CQRS oraz event sourcing. Oczywiście wszystko ze Spockiem oraz Kotlinem. Jeszcze jedna rzecz na jaką patrzę przychylnym okiem to Vert.x, ale to oznacza częściowe lub całkowite odejście od Springa. ;)
