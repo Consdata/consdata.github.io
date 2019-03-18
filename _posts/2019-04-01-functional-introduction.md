@@ -13,6 +13,18 @@ tags:
     
 ---
 
+More click-baits titles: 
+
+alternative-title "Świat monadów, vavra oraz Kotlina, czyli wstęp do świata funkcji"
+
+alternative-title "Świat monadów, funktorów, vavra, kotlina, słowem wstęp do świata funkcji"
+comment: opisz co to Functor...
+
+alternative-title "Świat monadów, funktorów, vavra, do tego Kotlin, czyli wstęp do funkcji"
+
+alternative-title "Świat monadów, funktorów, Kotlina, Vavra, czyli wszystko co potrzebne do..."
+
+
 W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w tym przypadku). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
 
 Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
@@ -33,6 +45,17 @@ implementation 'org.projectlombok:lombok:1.18.6'
 implementation 'org.apache.commons:commons-lang3:3.7'
 ```
 
+**Co omówimy?**
+
+* Programowanie funkcjnie, czyli co? Przecież piszę metody! 
+* Czy funkcje to naturalny wróg obiektówki?
+* Co tworzy funkcyjne podejście, czyli `pure functions` + `immutability` = referential transparency 🕵
+* First-class citizens, Higher-order functions w Kotlinie, Javie oraz JSie
+* Kiedyś bez znajomości guavy nie powinieneś się pokazywać publicznie, dzisiaj jest to vavr
+* Na koniec wiele przykładów funkcyjnych, a na koniec Kotlinowa wisienka na torcie
+
+[Kody znajdziesz tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages).
+
 Zacznijmy od omówienia funkcjnego podejścia. 
 
 Następnie omówimy sobie kilka podstawowych struktr danych tam istniejących między innymi `Value` oraz `Tuple`.
@@ -42,7 +65,7 @@ Następnie omówimy sobie kilka podstawowych struktr danych tam istniejących mi
 ## Ale zacznijmy od początku... 🛤 
 Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Jednym z głównych konceptów jest tutaj modułowość. Możemy rozbić nasz algorytm na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy, aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Mamy tutaj kilka najważniejszych zasad dobrego kodu spakowane do jednego worka. Jest to jeden z powodów dlaczego programowanie zorientowane na funkcje staje się poopularne. 
 
-## Obiektowe vs Funkcyjne 🥊
+## Czy funkcje to naturalny wróg obiektówki? 🥊
 Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy jak w tym przypadku funkcyjny paradygmat. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
 
 ## Imparatywne (proceduralne) programowanie 📉
@@ -268,7 +291,7 @@ memoizedRandomUUID.apply(); // 80cc9c17...
 ### Tuples [(przykład na githubie)](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/TupleExample.java)
 
 ```java
-var tuple = Tuple.of("Something ", 1)
+val tuple = Tuple.of("Something ", 1)
         .map(
             s -> s.concat("else"),
             i -> i + 1
@@ -283,7 +306,7 @@ Option praktycznie to samo co Optional, z tą różnicą, że ma tylko jedną me
 
 Gdzie Optional jest bardziej dwuznaczny, bo ma `Optional.of()` oraz `Optional.ofNullable()` co niezawsze jest oczywiste jak użyć i gdzie.
 
-Do [przykładu](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java)!
+Do [przykładu](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java) 🙆‍♂️
 
 ```java
 // Option
@@ -295,9 +318,9 @@ val result1 = Option.of(null)
 result1 // option default
 ```
 
-Try, bo kto lubi obsługiwać checked exceptions. To, czy checked exceptions są dobre to sprawa indywidualna, bo są tutaj dwa obozy. Warto mieć na uwadze, że jednak większość języków tego nie ma. Kotlin, C#, Scala. Jeśli chcemy pisać funkcyjnie to checked exceptions przeszkadzają nam dość mocno.
+Try, bo kto lubi obsługiwać checked exceptions. To, czy są dobre to sprawa indywidualna, bo są tutaj dwa obozy. Warto mieć na uwadze, że jednak większość języków tego nie ma. Kotlin, C#, Scala. Jeśli chcemy pisać funkcyjnie to przeszkadzają nam dość mocno.
 
-[Tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) przykład, a tutaj implementacja [Usera](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/domain/user/User.java).
+[Tutaj poniższy kod](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java), a tutaj implementacja [Usera](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/domain/user/User.java).
 
 ```java
 // Klasycznie brzydki kod
@@ -316,7 +339,6 @@ lift(User::legacyAccountNumberCheck)
 Kolejny bardziej praktyczny [przykład](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java)
 
 ```java
-// Try
 val result2 = Try.of(() -> new URL("KABOOM-http://braintelligence.pl"))
         .map(URL::getHost)
         .getOrElse(() -> "google.pl");
@@ -344,7 +366,7 @@ Prawdopodobnie najgorszy przypadek.
 
 Jedno, że sprawdzanie `!= null` jest katorgą i jest kompletnie nieczytelne.
 
-To drugie zwracanie domyślnego nulla `return null` na końcu prowadzi do wielu problemów jak chociażby to co tutaj robimy.
+To drugie zwracanie domyślnego nulla `return null` na końcu prowadzi do wielu problemów. 
 
 Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
@@ -393,11 +415,11 @@ Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and
     }
 ```
 
-#### No to może zrobić ten kod bardziej funkcyjnym? 
+#### No to może zrobić ten kod bardziej funkcyjnym?
 
 Zastosowanie `Optional` lub `Option` w tym przykładzie wyglądałoby podobnie. 
 
-Niemniej vavr posiada dużo więcej metod pomocniczych z jakich można wybierać.
+Niemniej vavr posiada dużo więcej metod pomocniczych z jakich można wybierać oraz jak było powiedziane poprzednio jest mniej dwuznaczny.
 
 Pełny przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/WorkingWithOptionalCode.java).
 
@@ -425,12 +447,12 @@ Gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem
 user?.address?.street ?: "nasty null was found instead of a street :("
 ```
 
-## A co jest ważne...
+### A co jest ważne...
 Wszystkie te zasady tyczą się większości popularnych języków, także jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić większą część obliczeń. 
 
 ## Podsumowanie, dodatki, przemyślenia, co dalej?
 Jeśli chcesz zobaczyć małe porównanie Kotlina oraz Javy na prostych zadankach możesz zerknąć [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src). Kiedyś jak w końcu nauczę się Scali to również dojdą tam katy z tego języka. A [tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/BetterJavaWithVavr.java) kilka praktycznych przykładów wykorzystania Vavra.
 
-Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy DDD, TDD (czego w sumie nie zobaczysz, bo jest to bardziej podejście do modelowania domeny, no ale pierw trzeba mieć podział na domenę/infrastrukturę w projekcie).
+Jeśli interesuje Cię Kotlin i chcesz zobaczyć trochę większy [przykład apki do zarządzania projektami](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz w linku aplikację, która przeszła transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy DDD, TDD (czego w sumie nie zobaczysz, bo jest to bardziej podejście do modelowania domeny, no ale pierw trzeba mieć podział na domenę/infrastrukturę w projekcie).
 
-Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt [sklepu internetowego](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie, czyli będzie o DDD, TDD, BDD oraz hexagonal architecture. Potem dojdzie CQRS oraz event sourcing. Oczywiście wszystko ze Spockiem oraz Kotlinem. Jeszcze jedna rzecz na jaką patrzę przychylnym okiem to Vert.x, ale to oznacza częściowe lub całkowite odejście od Springa. ;)
+Jako, że tamten projekt nie dał mi takiej swobody jaką bym chciał to postanowiłem zrobić jakże innowacyjny projekt sklepu w architekturze mikroserwisów [online-store](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Jak na razie jest lista produktów oraz kategorii. Całkiem prawdopodobne, że kolejne wpisy będą właśnie w tym temacie, czyli będzie o DDD, TDD, BDD oraz hexagonal architecture. Potem dojdzie CQRS oraz event sourcing. Oczywiście wszystko ze Spockiem oraz Kotlinem. Jeszcze jedna rzecz na jaką patrzę przychylnym okiem to Vert.x, ale to oznacza częściowe lub całkowite odejście od Springa, ale możliwe, że się mylę. ;)
