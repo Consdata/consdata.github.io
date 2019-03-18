@@ -23,7 +23,7 @@ comment: opisz co to Functor...
 alternative-title "Świat monadów, funktorów, vavra, do tego Kotlin, czyli wstęp do funkcji"
 
 alternative-title "Świat monadów, funktorów, Kotlina, Vavra, czyli wszystko co potrzebne do..."
-
+comment: chyba najlepsze
 
 W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w tym przypadku). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
 
