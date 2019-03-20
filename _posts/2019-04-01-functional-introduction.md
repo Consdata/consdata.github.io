@@ -28,7 +28,7 @@ W naszym programistycznym świecie stare prawdy często wracają do łask mimo s
 
 Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
 
-W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavr, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcjonalności z Javy, czy też innych funkcyjnych języków.
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcyjności ze Scali, czy też innych funkcyjnych języków.
 
 **Będziemy używać tych rzeczy:**
 
