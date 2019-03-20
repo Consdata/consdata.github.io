@@ -82,7 +82,7 @@ Funkcjny kod ma zapewnić jak najmniejszą ilość efektów ubocznych, czyli mam
 
 #### Prosty przykład `in -> out` w Kotlinie `.map { }`
 
-```
+```kotlin
 data class Order(val name: String, val amount: Int)
 
 val orders = listOf( Order("product1", 10), Order("product2", 30) )
@@ -136,7 +136,7 @@ clearSomeImpurities("RiCk MoRtY") // "rick & morty"
 ### Jeśli jesteśmy już przy JSie
 #### To zobaczmy jeszcze na świętą trójcę, czyli `filter`, `map`, `reduce`
 
-```
+```javascript
 let films = [
 { title: "Rick & Morty", type: "X", totalTimeWatched: 333 },
 { title: "Game of Thrones", type: "X", totalTimeWatched: 888 },
