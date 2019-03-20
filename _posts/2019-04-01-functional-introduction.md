@@ -45,13 +45,11 @@ implementation 'org.apache.commons:commons-lang3:3.7'
 ```
 
 **Co omówimy?**
-
-* Programowanie funkcjnie, czyli co? Przecież piszę metody! 
-* Czy funkcje to naturalny wróg obiektówki?
-* Co tworzy funkcyjne podejście, czyli `pure functions` + `immutability` = referential transparency 🕵
+* Obiektówka vs Funkcyjne?
+* Co tworzy podejście funkcyjnym: czyli `pure functions` + `immutability` = referential transparency 🕵
 * First-class citizens, Higher-order functions w Kotlinie, Javie oraz JSie
-* Kiedyś bez znajomości guavy nie powinieneś się pokazywać publicznie, dzisiaj jest to vavr
-* Na koniec wiele przykładów funkcyjnych, a na koniec Kotlinowa wisienka na torcie
+* Kiedyś znajomość Guavy było must-have, dzisiaj jest to dodakowo vavr
+* Na koniec spora garść wykorzystania przykładów funkcyjnych
 
 [Kody znajdziesz tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages).
 
