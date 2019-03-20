@@ -65,7 +65,7 @@ Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Jednym z 
 ## Czy funkcje to naturalny wróg obiektów? 🥊
 Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy jak w tym przypadku funkcyjny paradygmat. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach. 
 
-## Imparatywne (proceduralne) programowanie 📉
+## Paradygmat proceduralny, czyli programowanie imparatywne 📉
 Jest to po prostu lista instrukcji, która prowadzi Cię do celu. Dokładne kroki prowadzące do rozwiązania. Niemniej algorytm podczas wykonywanie zmienia swój stan, a to jest rzecz jakiej nie pożądamy w dzisiejszych czasach. Prowadzi to do wielu nieporządanych efektów tymbardziej w środowisku wielowątkowym. Najłatwiej jest zrozumieć na przykładzie, także napiszmy trochę pseudo-kodu.   
 
 IF `A == 0` RETURN `B` ELSE `B++ AND A--`
