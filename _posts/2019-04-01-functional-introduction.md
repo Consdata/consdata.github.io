@@ -100,7 +100,7 @@ val magicNumber = 123
 date.setTime(magicNumber); // To jeszcze tylko ustawię nową datę i można iść po kawę...
 
 // Sprawdzę, czy aby na pewno data jest na miejscu...
-map.containsKey(date);  // false, ale chwila przecież zrobiłem zmienną jako immutable
+map.containsKey(date);  // false, ale chwila przecież zrobiłem zmienną jako niezmienną
 
 date // 1970... chyba jednak nie będzie kawy :(  
 ```
