@@ -1,24 +1,14 @@
----
-layout:    post
-title:     "Java, darmowa czy nie?"
-date:      2019-03-22 22:00:00 +0100
-published: false
-author:    jwilczewski
-tags:
-    - tech
-    - java
----
-
 15 stycznia tego roku światło dzienne ujrzał JDK 8u202 - ostatni darmowy update JDK 8. Darmowy do zastosowań komercyjnych. Wersja JDK 8 była pierwszą wersją LTS (Long Time Support) i była z nami od marca 2014 roku. Co dalej? Czy można zostać na JDK 8? Czy przesiadać się na kolejną wersję?
+
 ![title](/assets/img/posts/2019-03-22-java-darmowa-czy-nie/title.png)
 
 ## Oracle JDK vs OpenJDK
 
 W obecnej sytuacji szczególnego znaczenia nabierają różnice pomiędzy JDK releasowanym przez Oracle a OpenJDK.
-* [OpenJDK](http://openjdk.java.net/) jest projektem open source dostarczającym implementację  Java Platform, Standard Edition. Projekt działa od 2007 roku, a jednym z głównym kontrybutorów jest Oracle.
+* [OpenJDK](http://openjdk.java.net/) jest projektem open source dostarczającym implementację  Java Platform, Standard Edition. Projekt działa od 2007 roku, a jednym z głównych kontrybutorów jest Oracle.
 * [Oracle JDK](https://www.oracle.com/technetwork/java/javase/overview/index.html) natomiast to implementacja Java Platform dostarczana i supportowana przez Oracle w ramach OTN (Oracle Technology Network).
 
-Obydwie wersję mają w zasadzie ten sam code base. Techniczne różnice są niewielkie i dotyczą głównie narzędzi i deploymentu. Różnice, które z punktu widzenia ostanich zmian są naistotniejsze to licencjonowanie i cykl wydawniczy.
+Obydwie wersję mają w zasadzie ten sam code base. Techniczne różnice są niewielkie i dotyczą głównie narzędzi i deploymentu. Różnice, które z punktu widzenia ostanich zmian są najbardziej istotnie to licencjonowanie i cykl wydawniczy.
 
 ## Licencjonowanie i opłaty
 
@@ -30,9 +20,6 @@ W Oracle JDK model licencjonowania różni się w zależności od wersji. Wersj
 * mnożnika [Oracle Processor Core Factor](http://www.oracle.com/us/corporate/contracts/processor-core-factor-table-070634.pdf)
 
 Wg. aktualnego [cennika](https://www.oracle.com/assets/java-se-subscription-pricelist-5028356.pdf) za jeden obliczony na podstawie mnożnika core zapłacimy 25$ przy założeniu, że corów jest mnie niż 99.
-
-https://upperedge.com/oracle/using-java-heres-how-oracles-new-2019-java-se-licensing-affects-you/
-https://www.oracle.com/technetwork/java/java-se-support-roadmap.html
 
 ## Cykl wydawniczy
 
@@ -46,9 +33,13 @@ Oracle będzie publikował nowe wydania wersji raz na kwartał. Dotyczy to zaró
 
 ## Skąd wziąć darmową wersję?
 
-Czy jesteśmy zatem skazani na "własnoręczne" budowanie JDK? Na szczęście nie. Istnieje jeszcze kilku dostawców, którzy będą publikować kolejne wydania bazujące na OpenJDK:
-* AdoptOpenJDK - sponsorowana przez
-* Amazon - chmura
-* Azul
-* RedHat - wersja 7
-* SAP
+Czy jesteśmy zatem skazani na "własnoręczne" budowanie JDK? Na szczęście nie. Istnieje jeszcze kilku dostawców, którzy będą publikować kolejne wydania bazujące na OpenJDK. Z tych bardziej obiecujących warto wymienić:
+* [AdoptOpenJDK](https://adoptopenjdk.net/) - warte zainteresowania chociażby ze względu na zróżnicowany zbiór sponsorów (IBM, Microsoft Azure, Azul Systems)
+* [Amazon](https://aws.amazon.com/corretto/) - te wersję będą używane w chmurze AWS można więc liczyć na solidny support
+* [Azul](https://www.azul.com/products/zulu-enterprise/) - dostarczają darmową implementację JDK, z opcją płatnego wsparcia  
+* [RedHat](https://access.redhat.com/articles/1299013) - planuje dostarczać pakiety z updateami JDK dla wersji 8 na RHEL 6 i RHEL7 do 2023 roku, a dla wersji 11 na RHEL7 do 2024 roku.
+
+## Przydatne linki
+- [Java is still free](https://medium.com/@javachampions/java-is-still-free-2-0-0-6b9aa8d6d244)
+- [Oracle Java SE Support Roadmap](https://www.oracle.com/technetwork/java/java-se-support-roadmap.html)
+- [Update and FAQ on the Java SE Release Cadence](https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence)
