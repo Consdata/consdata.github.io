@@ -37,12 +37,12 @@ implementation 'org.apache.commons:commons-lang3:3.7'
 
 **Oraz omówimy te rzeczy:**
 
-* Parę słów o programowaniu imparatywnym, proceduralnym, obiektowym, funkcyjnym.
+* Parę słów o programowaniu imparatywnym, proceduralnym, obiektowym oraz funkcyjnym.
 * Funkcyjne, czyli: `pure functions` + `immutability` = referential transparency 🕵
 * First-class citizens, Higher-order functions w Kotlinie, Javie oraz JSie.
-* Co znać w dzisiajszej Javie? 
-* Monads, Memoization, Values oraz inne potencjalnie niezrozumiałe pojęcia.
-* Do tego spora garść przykładów funkcyjnych porównujących Kotlina z Javą. Każdy znajdzie coś dla siebie.
+* Co znać w dzisiajszej Javie? Co w Kotlinie? 
+* Monads, Memoization, Values oraz inne funkcyjne struktury.
+* Do tego spora garść funkcyjnych przykładów porównujących Kotlina z Javą. Każdy znajdzie coś dla siebie.
 
 [Kody z wpisu znajdziesz tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages)
 
