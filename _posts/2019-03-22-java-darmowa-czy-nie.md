@@ -1,3 +1,14 @@
+---
+layout:    post
+title:     "Java darmowa, czy nie?"
+date:      2019-03-22 08:00:00 +0100
+published: true
+author:    jwilczewski
+tags:
+    - tech
+    - java
+---
+
 15 stycznia tego roku światło dzienne ujrzał JDK 8u202 - ostatni darmowy update JDK 8. Darmowy do zastosowań komercyjnych. Wersja JDK 8 była pierwszą wersją LTS (Long Time Support) i była z nami od marca 2014 roku. Co dalej? Czy można zostać na JDK 8? Czy przesiadać się na kolejną wersję?
 
 ![title](/assets/img/posts/2019-03-22-java-darmowa-czy-nie/title.png)
