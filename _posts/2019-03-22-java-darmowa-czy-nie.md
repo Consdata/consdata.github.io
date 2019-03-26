@@ -19,7 +19,7 @@ tags:
 
 W obecnej sytuacji szczególnego znaczenia nabierają różnice pomiędzy JDK releasowanym przez Oracle a OpenJDK.
 * [OpenJDK](http://openjdk.java.net/) jest projektem open source dostarczającym implementację  Java Platform, Standard Edition. Projekt działa od 2007 roku, a jednym z głównych kontrybutorów jest Oracle.
-* [Oracle JDK](https://www.oracle.com/technetwork/java/javase/overview/index.html) natomiast to implementacja Java Platform dostarczana i supportowana przez Oracle w ramach OTN (Oracle Technology Network).
+* [Oracle JDK](https://www.oracle.com/technetwork/java/javase/overview/index.html) natomiast to dystrybucja JDK dostarczana i supportowana przez Oracle w ramach OTN (Oracle Technology Network).
 
 Obydwie wersję mają w zasadzie ten sam code base. Techniczne różnice są niewielkie i dotyczą głównie narzędzi i deploymentu. Różnice, które z punktu widzenia ostatnich zmian są najbardziej istotnie to licencjonowanie i cykl wydawniczy.
 
@@ -28,9 +28,9 @@ Obydwie wersję mają w zasadzie ten sam code base. Techniczne różnice są nie
 OpenJDK jest projektem open source licencjonowanym w oparciu o GNU General Public License, version 2 with CE.
 
 W Oracle JDK model licencjonowania różni się w zależności od wersji. Wersje sprzed wersji 11 licencjonowane są w oparciu o [Oracle BCL (Binary Code Licence)](https://www.oracle.com/technetwork/java/javase/terms/license/index.html). Od wersji 11 Oracle JDK licencjonowane jest w oparciu o [Oracle Java SE OTN License](https://www.oracle.com/technetwork/java/javase/terms/license/javase-license.html), **który nie pozwala na komercyjne użycie**. Jeżeli chcemy używać tej wersji do zastosowań komercyjnych musimy wykupić subskrypcję "[Oracle Java SE subscription](https://www.oracle.com/java/java-se-subscription.html)". Subskrypcja jest rozliczana w cyklu miesięcznym, a końcowa cena zależy od:
-* sposobu użycia (desktop/serwer)
-* liczby rdzeni
-* mnożnika [Oracle Processor Core Factor](http://www.oracle.com/us/corporate/contracts/processor-core-factor-table-070634.pdf)
+* sposobu użycia (desktop/serwer),
+* liczby rdzeni,
+* mnożnika [Oracle Processor Core Factor](http://www.oracle.com/us/corporate/contracts/processor-core-factor-table-070634.pdf).
 
 Według aktualnego [cennika](https://www.oracle.com/assets/java-se-subscription-pricelist-5028356.pdf) za jeden, obliczony na podstawie mnożnika, core zapłacimy 25$ przy założeniu, że corów jest mniej niż 99.
 
@@ -47,9 +47,9 @@ Oracle będzie publikował nowe wydania wersji raz na kwartał. Dotyczy to zaró
 ## Skąd wziąć darmową wersję?
 
 Czy zatem wybierając wersję LTS jesteśmy skazani na "własnoręczne" budowanie OpenJDK? Na szczęście nie. Istnieje jeszcze kilku dostawców, którzy będą publikować kolejne wydania bazujące na OpenJDK. Z tych bardziej obiecujących warto wymienić:
-* [AdoptOpenJDK](https://adoptopenjdk.net/) - warte zainteresowania chociażby ze względu na zróżnicowany zbiór sponsorów (IBM, Microsoft Azure, Azul Systems)
-* [Amazon Corretto](https://aws.amazon.com/corretto/) - ta wersja będzie używana w chmurze AWS można więc liczyć na solidny support
-* [Azul](https://www.azul.com/products/zulu-enterprise/) - dostarczają darmową implementację JDK z opcją płatnego wsparcia  
+* [AdoptOpenJDK](https://adoptopenjdk.net/) - warte zainteresowania chociażby ze względu na zróżnicowany zbiór sponsorów (IBM, Microsoft Azure, Azul Systems),
+* [Amazon Corretto](https://aws.amazon.com/corretto/) - ta wersja będzie używana w chmurze AWS można więc liczyć na solidny support,
+* [Azul](https://www.azul.com/products/zulu-enterprise/) - dostarczają darmową implementację JDK z opcją płatnego wsparcia,  
 * [RedHat](https://access.redhat.com/articles/1299013) - planuje dostarczać pakiety z aktualizacjami JDK dla wersji 8 na RHEL 6 i RHEL7 do 2023 roku, a dla wersji 11 na RHEL7 do 2024 roku.
 
 ## Przydatne linki
