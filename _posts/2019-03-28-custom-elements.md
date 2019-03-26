@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Krótkie wprowadzenie do Custom Elements"
-date:      2019-03-07 08:00:00 +0100
+date:      2019-03-28 08:00:00 +0100
 published: true
 author:    mpogorzelski
 tags:
@@ -22,7 +22,7 @@ W tym artykule skupimy się jedynie na **Custom Elements** (oraz w mniejszym sto
 
 ## Wsparcie przez główne przeglądarki
 <div class="img-with-legend">
-<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-21-custom-elements/browser_support.png" />
+<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-28-custom-elements/browser_support.png" />
 <span class="img-legend">Wsparcie custom components przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-03-16</span>
 </div>
 
@@ -201,11 +201,12 @@ style.innerHTML = `
 `;
 this.shadowRoot.appendChild(style);
 ``` 
-Dzięki użyciu Shadow DOM style, które włąśnie dodaliśmy nie wypływają poza element.
+Dzięki użyciu Shadow DOM style, które właśnie dodaliśmy nie wypływają poza element.
 
 Voilà! 
 
-### Rozszerzanie istniejących elementów
+### Mały bonus - Rozszerzanie istniejących elementów
+
 Poza możliwością zdefiniowania nowego elementu specyfikacja Custom Elements pozwala na rozszerzenie już istniejących elementów. Załóżmy, że chcemy dokonać prostej modyfikacji elementu `<a>` polegającej na tym, że przejście do łącza nastąpi dopiero po potwierdzeniu przez użytkownika. Poniżej kod przykładowego elementu:
 ```typescript
 class LinkWithConfirmation extends HTMLAnchorElement {
