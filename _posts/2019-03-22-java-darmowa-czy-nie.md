@@ -1,17 +1,16 @@
 ---
 layout:    post
 title:     "Java darmowa, czy nie?"
-date:      2019-03-28 08:00:00 +0100
+date:      2019-03-21 08:00:00 +0100
 published: true
 author:    jwilczewski
 tags:
     - java
 ---
-> End of Public Updates for Oracle JDK 8
-> 
-> Oracle will not post further updates of Java SE 8 to its public download sites for commercial use after January 2019. Customers who need continued access to critical bug fixes and security fixes as well as general maintenance for Java SE 8 or previous versions can get long term support through Oracle Java SE Subscription or Oracle Java SE Desktop Subscription. For more information, and details on how to receive longer term support for Oracle JDK 8, please see the Oracle Java SE Support Roadmap.
->
-> *[https://www.oracle.com/technetwork/java/javase/overview/index.html](https://www.oracle.com/technetwork/java/javase/overview/index.html)*
+<blockquote><strong>End of Public Updates for Oracle JDK 8</strong><br />
+Oracle will not post further updates of Java SE 8 to its public download sites for commercial use after January 2019. Customers who need continued access to critical bug fixes and security fixes as well as general maintenance for Java SE 8 or previous versions can get long term support through Oracle Java SE Subscription or Oracle Java SE Desktop Subscription. For more information, and details on how to receive longer term support for Oracle JDK 8, please see the Oracle Java SE Support Roadmap.
+<span><a href="https://www.oracle.com/technetwork/java/javase/overview/index.html">https://www.oracle.com/technetwork/java/javase/overview/index.html</a></span>
+</blockquote>
 
 15 stycznia tego roku światło dzienne ujrzał JDK 8u202 - ostatni darmowy update JDK 8. Darmowy do zastosowań komercyjnych. Wersja JDK 8 była pierwszą wersją LTS (Long-Term-Support) i była z nami od marca 2014 roku. Co dalej? Czy można zostać na JDK 8? Czy przesiadać się na kolejną wersję?
 
