@@ -5,7 +5,6 @@ date:      2017-01-05 08:00:00 +0100
 published: true
 author:    glipecki
 tags:
-    - tech
     - angular
     - spring boot
 ---

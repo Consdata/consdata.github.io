@@ -5,7 +5,6 @@ date:      2016-08-31 08:00:00 +0100
 published: true
 author:    glipecki
 tags:
-    - tech
     - angular
 ---
 

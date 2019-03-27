@@ -5,7 +5,6 @@ date:      2016-12-08 08:00:00 +0100
 published: true
 author:    jgrobelny
 tags:
-    - tech
     - sonarqube
     - jakość kodu
 ---

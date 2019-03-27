@@ -5,7 +5,6 @@ date:      2018-03-26 08:00:00 +0100
 published: true
 author:    jgrobelny
 tags:
-    - tech
     - terraform
     - aws
 ---

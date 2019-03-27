@@ -5,7 +5,6 @@ date:      2017-02-03 08:00:00 +0100
 published: true
 author:    glipecki
 tags:
-    - tech
     - angular
 ---
 Od pewnego czasu pracuję nad świeżym projektem opartym o Angular 2. Częścią projektu jest prezentowanie użytkownikowi dynamicznie generowanych elementów interfejsu. Nie jesteśmy w stanie zaprojektować z wyprzedzeniem ekranów, nie znając ani ich struktury, ani konkretnych kontrolek.
