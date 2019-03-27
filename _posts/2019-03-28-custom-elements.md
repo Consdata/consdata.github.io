@@ -13,7 +13,7 @@ tags:
 ## Custom element, co to takiego?
 Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.
 Na Web Components składają sie następujące specyfikacje:
-- **Templates** - wprowadza element `<template>`, który pozwala na wyrenderowanie jego zawartości dopiero na żądanie stworzenia jego kopii. Dzięki temu problem z przedwczesnym ładowaniem danych nie występuje, 
+- **Templates** - wprowadza element `<template>`, który pozwala na wyrenderowanie jego zawartości dopiero na żądanie stworzenia kopii. Dzięki temu problem z przedwczesnym ładowaniem danych nie występuje, 
 - **HTML imports** - tworzone komponenty mogą zawierać szablony (**Templates**) i kod (**Custom elements**), specyfikacja ta pozwala wydzielić obie te części do oddzielnego pliku HTML i importować go za pomocą `<link rel="import" href="plik-komponentu.html" />`,
 - **Shadow DOM** - specyfikacja ta pozwala na enkapsulację DOM'u oraz styli. Każdy element może mieć swój shadow root, który jest wyświetlany jako jego zawartość, przy czym zawartość ta jest odseparowana logicznie od pozostałych elementów DOM,
 - **Custom Elements** - specyfikuje sposób tworzenia własnych elementów DOM oraz dostarcza obiekty do kontrolowania cyklu życia elementu.
@@ -224,7 +224,7 @@ class LinkWithConfirmation extends HTMLAnchorElement {
 }
 customElements.define('link-with-confirmation', LinkWithConfirmation, { extends: 'a' });
 ```
-Zwróćmy uwagę, że w ostatnim parametrze metody `define` przekazaliśmy obiekt `{ extends: 'a' }`, który informuje, że bedziemy rozszerzać element `<a>`.
+Zwróćmy uwagę, że w ostatnim parametrze metody `define` przekazaliśmy obiekt `{ extends: 'a' }`, który informuje, że będziemy rozszerzać element `<a>`.
 Aby skorzystać z napisanego elementu musimy użyć elementu `<a>` z atrybutem `is` o wartości `link-with-confirmation`, a nie `<link-with-confirmation>`:
 ```html
 <a is="link-with-confirmation" href="https://consdata.com">consdata.com</a>
