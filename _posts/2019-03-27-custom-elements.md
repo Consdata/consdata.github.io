@@ -1,11 +1,10 @@
 ---
 layout:    post
 title:     "Krótkie wprowadzenie do Custom Elements"
-date:      2019-03-28 08:00:00 +0100
+date:      2019-03-27 11:00:00 +0100
 published: true
 author:    mpogorzelski
 tags:
-    - tech
     - frontend
     - custom elements
     - web components
