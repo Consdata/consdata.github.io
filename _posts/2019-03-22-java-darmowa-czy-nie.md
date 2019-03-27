@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Java darmowa, czy nie?"
-date:      2019-03-28 08:00:00 +0100
+date:      2019-03-27 10:00:00 +0100
 published: true
 author:    jwilczewski
 tags:
