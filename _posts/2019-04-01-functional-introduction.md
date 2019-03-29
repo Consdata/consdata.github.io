@@ -15,11 +15,11 @@ tags:
 
 TODO("Aktualizacja linków")
 
-W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w tym przypadku). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
+W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w przypadku tych bibliotek). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
 
-Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, a przedewszystkim łatwo testowalny. Oddzielamy kod, który jest zależny od innych usług. W ten sposób nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę. 
+Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, bezpieczniejszy, a przedewszystkim łatwo testowalny - czego chcieć więcej? Oddzielamy kod jaki jest zależy od innych usług (zewnętrznego świata). Takim sposobem nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę.
 
-W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Wszystkie te rzeczy to po prostu przemapowanie funkcyjności ze Scali, czy też innych funkcyjnych języków.
+W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Vavr oraz Arrow jest po prostu implementacja rzeczy naturalnie występujących w chociażby Scali.
 
 **Będziemy używać tych rzeczy:**
 
@@ -27,10 +27,10 @@ W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funk
 // Kotlin
 implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 implementation 'org.jetbrains.kotlin:kotlin-reflect'
-implementation 'io.arrow-kt:arrow-core:0.8.2'
+implementation 'io.arrow-kt:arrow-core:0.8.2' 
 
 // Java
-implementation 'io.vavr:vavr:0.10.0' // Wszystkie przykłady z wpisu wykorzystują Vavra!
+implementation 'io.vavr:vavr:0.10.0' // Wszystkie przykłady z Javy wykorzystują Vavra!
 implementation 'org.projectlombok:lombok:1.18.6'
 implementation 'org.apache.commons:commons-lang3:3.7'
 ```
@@ -40,11 +40,11 @@ implementation 'org.apache.commons:commons-lang3:3.7'
 * Parę słów o programowaniu imparatywnym, proceduralnym, obiektowym oraz funkcyjnym.
 * Funkcyjne, czyli: `pure functions` + `immutability` = referential transparency 🕵
 * First-class citizens, Higher-order functions w Kotlinie, Javie oraz JSie.
-* Co znać w dzisiajszej Javie? Co w Kotlinie? 
+* Co znać w dzisiajszej Javie? Plus porównanie do Kotlina.
 * Monads, Memoization, Values oraz inne funkcyjne struktury.
 * Do tego spora garść funkcyjnych przykładów porównujących Kotlina z Javą. Każdy znajdzie coś dla siebie.
 
-[Kody z wpisu znajdziesz tutaj](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages)
+[Kody z wpisu znajdziesz tutaj (w formie JUnitowych testów).](https://github.com/braintelligencePL/snippets-of-jvm-languages)
 
 **Jako, że funkcyjnie można w każdym języku to opiszemy sobie to podejście na przykładzie Kotlina, Javy oraz JSa!**
 
@@ -52,7 +52,7 @@ implementation 'org.apache.commons:commons-lang3:3.7'
 Funkcjnie, czyli mamy... funkcje. Mają one jakieś wejście/wyjście. Jednym z głównych konceptów jest tutaj modułowość. Możemy rozbić nasz algorytm na mniejsze pod-funkcje. Jak wiadomo nasze umysły mają tylko ograniczoną ilość RAMu do rozwiązywania codziennych problemów, dlatego wymyślamy koncepty, paradygmaty, standardy, aby uprościć to wszystko. Małe moduły mogą być kodzone szybko i być łatwo testowane. Do tego jest możliwe ich re-używanie. Mamy tutaj kilka najważniejszych zasad dobrego kodu spakowane do jednego worka. Jest to jeden z powodów dlaczego programowanie zorientowane na funkcje staje się poopularne. 
 
 ## Funkcje naturalnym wrogiem obiektów? 💣
-Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy jak w tym przypadku funkcyjny paradygmat. Zazwyczaj stoją ku temu powody i tymi powodami najczęsciej jest rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wsprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach.
+Jak to zwykle bywa czasami jest hype na nowy język, framework, metodykę, czy jak w tym przypadku funkcyjny paradygmat. Zazwyczaj stoją ku temu powody. Najczęsciej jest to rozwiązanie jakiegoś problemu, który niektórym z nas akurat przeszkadzał. Niemniej ważne, że przy takich sprawach wprowadzamy rozwiązanie do problemu, a nie problem do rozwiązania. Używanie FP wcale nie znaczy, że OOP jest już passé. Wręcz przeciwnie oba paradygmaty doskonale ze sobą współpracują. Dobra... Może nie do końca współpracują, ale bardziej zastępują lub uzpełniają niektóre techniki zawierające się w innych paradygmatach.
 
 ## Paradygmat proceduralny, imparatywny 📉
 Jest to po prostu lista instrukcji, która prowadzi Cię do celu. Dokładne kroki prowadzące do rozwiązania. Niemniej algorytm podczas wykonywanie zmienia swój stan, a to jest rzecz jakiej nie pożądamy w dzisiejszych wielowątkowych czasach. Prowadzi to do wielu nieporządanych efektów. Najłatwiej jest zrozumieć na przykładzie, także napiszmy trochę pseudo-kodu.   
@@ -107,7 +107,7 @@ date // 1970... chyba jednak nie będzie kawy :(
 
 **Disclaimer:** Powyższy kod jest w Javie. Ostatnio odkryłem, że lombok posiada `val`, czyli `final` plus typ obiektu jest zgadywany przez kompilator, czyli to samo co w Kotlinie oraz Scali. Całkiem fajne. Sam kod jest sporo czytelniejszy, a do tego wciąż równie bezpieczny.
 
-Przechodząc do konkretów. Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że immutability rozwiązuje problemy zanim się pojawią. Kosztem niezmienności obiektów jest oczywiście pożeranie większych ilości pamięci, ale w obecnych czasach nie jest to zbyt wielkim problemem. Inna rzecz, że raczej nie zobserwujemy znacząco większego zużycia pamięci przez JVMkę. Stosunokowo bardziej prawdopodobny scenariusz to częstsze odśmiecanie przez Garbage Collectora. To z kolei powoduje częstsze `stop-the-world`, czyli moment w jakim pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. To akurat nie jest rzecz jakiej pożądamy, ale nie można mieć wszystkiego.
+Przechodząc do konkretów. Oczywiście nikt już nie używa starego mutowalnego `java.util.Date`, ale pokazuje to, że immutability rozwiązuje problemy zanim się pojawią. Kosztem niezmienności obiektów jest oczywiście pożeranie większych ilości pamięci, ale w obecnych czasach nie jest to zbyt wielkim problemem. Inna rzecz, że raczej nie zobserwujemy znacząco większego zużycia pamięci przez JVMkę. Bardziej prawdopodobnym scenariuszem to częstsze odśmiecanie przez Garbage Collectora. To z kolei powoduje częstsze `stop-the-world`, czyli moment w jakim pamięć jest odśmiecana i wszelkie wątki, które wykonywały swoje zadania zatrzymują się. To akurat nie jest rzecz jakiej pożądamy, ale nie można mieć wszystkiego.
 
 **Jeśli niebardzo wiesz co to immutability oraz co się stało z date to [przykłady z opisem znajdziesz tu](http://www.braintelligence.pl/tutorial-java-8-up-to-11-most-important-things-to-know-about-modern-java/).**
 
@@ -210,12 +210,12 @@ val adder: (Int, Int) -> Double = { a, b -> (a + b).toDouble() }
 adder(1,1) // 2.0 
 ```
 
-[Przykład na Githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/kotlin/pl/braintelligence/functional_bricks/FirstClassCitizen.kt)
+[Przykład na Githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/kotlin/pl/braintelligence/functional_bricks/FirstClassCitizen.kt)
 
 ## Higher-order functions 🌀
 Czyli przekazanie funkcji jako paramter do innej funkcji - istna incepcja. 
 
-### Na początek zobaczmy na [prosty przykład w Javie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/HigherOrderFunctions.java)
+### Na początek zobaczmy na [prosty przykład w Javie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/HigherOrderFunctions.java)
 
 `HigherOrderFunctions.availableCustomers(Customer::isAvailable)`
 
@@ -223,11 +223,7 @@ Metoda: `availableCustomers(Supplier<Boolean> customerAvailability)`
 
 Przyjmuje suppliera/funkcję jako paramter. Następnie przekazujemy method-reference: `Customer::isAvailable`, czyli po prostu metoda z klasy Customer.
 
-
-
-**Jeśli jeszcze nie nadrobiłeś zadania domowego z funkcyjnych interfejsów w Javie to możesz zerknąć [tutaj]((http://www.braintelligence.pl/tutorial-java-8-up-to-11-most-important-things-to-know-about-modern-java/)) gdzie opisałem większość nowości w Javie od 8 do 11.**
-
-### Trochę bardziej złożony [przykład w Kotlinie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/HigherOrderFunctions.kt)
+### Trochę bardziej złożony [przykład w Kotlinie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/functional-bricks/src/main/kotlin/pl/braintelligence/kotlin/HigherOrderFunctions.kt)
 
 ```kotlin
 fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
@@ -256,15 +252,16 @@ Wcześniej w tym wpisie już poznałeś bardziej skomplikowany przykład `filter
 
 ## Struktury funkcyjne w Javie, Kotlinie
 
-Zacznijmy od tych najbardziej przydatnych. 
+Zacznijmy od tych najbardziej przydatnych/popularnych. 
 
-`Value` - czyli po prostu finale obiekty A.K.A. immutable objects. Dostajemy thread-safety za darmo! 
+## Obiekty typu: `Value`
+Czyli po prostu finale obiekty A.K.A. immutable objects gdzie dostajemy thread-safety za darmo! 
 
-### `Option` - czyli obrona przed nullem!
+### `Option` - obrona przed nullem!
 Jest to praktycznie to samo co Optional. Różnica jest taka, że ma tylko jedną metodę `Option.of()`. 
 
 
-Optional jest bardziej dwuznaczny. Ma dwie metody `.of()` oraz `.ofNullable()` co nie zawsze jest oczywiste jak użyć. Odnośnie optionali pisałem więcej [w tym wpisie](http://www.braintelligence.pl/tutorial-java-8-up-to-11-most-important-things-to-know-about-modern-java/). Tym samym przejdźmy zwinnie do [przykładu z wykorzystaniem Option](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/OptionExamples.java). 🙆‍♂️
+Optional jest bardziej dwuznaczny. Ma dwie metody `.of()` oraz `.ofNullable()` co nie zawsze jest oczywiste jak użyć. Odnośnie optionali pisałem więcej [w tym wpisie](http://www.braintelligence.pl/tutorial-java-8-up-to-11-most-important-things-to-know-about-modern-java/). Tym samym przejdźmy zwinnie do [przykładu z wykorzystaniem Option](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/OptionExamples.java). 🙆‍♂️
 
 #### 1️⃣ Na początek klasycznie dla wielbicieli nulla
 
@@ -290,7 +287,7 @@ private String badCascadingPileOfCrapAndNullReturnedWorst() {
     }
 ```
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.java).
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.java).
 
 #### 2️⃣ Dobra ktoś powiedział, że Optionale są lepsze od nulla
 
@@ -315,7 +312,7 @@ Podobnie zły przypadek jak powyżej. Jedyny plus to zwracanie `Optional.empty()
     }
 ```
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.java)
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/java/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.java)
 
 #### 3️⃣ No to może zrobić ten kod bardziej funkcyjnym?
 
@@ -332,7 +329,7 @@ private Option<String> fetchStreetFromDB() {
 }
 ```
 
-W powyższym przykładzie `flatMap` spłaszcza strukturę do tego co chcemy. Działa ona w następujący sposób: 
+Nie wiesz jak działa `flatMap`? Zobaczmy na kolejny przykład gdzie spłaszczamy strukturę do tego co chcemy. 
 
 ```
 // Mając listę list spłaszczasz do listy
@@ -355,9 +352,9 @@ val result = Option.of(null)
 result // DEFAULT
 ```
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/OptionExamples.java).
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/OptionExamples.java).
 
-#### 4️⃣ Jak zrobić to samo w Kotlinie?
+#### 4️⃣ Jak zrobić to samo w Kotlinie? 🍒
 
 ```kotlin
 user?.address?.street
@@ -365,7 +362,7 @@ user?.address?.street
 
 Gdy koledzy obok kończą pisać funkcję w Javie Ty właśnie wracasz z kubkiem kawy. ☕
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/kotlin/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.kt).
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/main/kotlin/pl/braintelligence/functional_bricks/WorkingWithOptionalCode.kt).
 
 
 ```
@@ -375,13 +372,13 @@ user?.address?.street ?: "nasty null was found instead of a street :("
 
 Każdy obiekt oznaczony `?` jest uznawany za potencjał do zwrócenia nulla - można go wywołać safe-callem. Więcej w [dokumentacji](https://kotlinlang.org/docs/reference/null-safety.html). Dla wielbicieli NPE jest również `user!!`, które wyrzuci najpopularniejszy wyjątek.
 
-Podobno twórcy w początkowej fazie rozwoju chcieli tam wrzucić 10 wykrzykników. Fajnie by to wyglądało: `user!!!!!!!!!!`. Przynajmniej każdy by się dobrze zastanowił przed rzuceniem NPE. 😃
+Podobno twórcy w początkowej fazie rozwoju chcieli tam wrzucić 10 wykrzykników. Fajnie by to wyglądało: `user!!!!!!!!!!`. Przynajmniej każdy by się dobrze zastanowił przed rzuceniem NPE. Tak czy inaczej tak czy inaczej jeśli używasz Kotlina unikaj `!!` są to po prostu asercje, które nie mogą być zweryfikowane przez kompilator. 😃
 
 ### Error handling - catch them all❗ 
 
 **Co najczęściej robimy z wyjątkami w Javie?** Oczywiście wrzucamy do worka z "unchecked-exceptions", czyli Runtime'u tworzymy/zostawiamy problem na później. Z drugiej mamy jeszcze checked-exceptions, które to są sprawdzane podczas compile-time, czyli wtedy jak piszemy nasz kod w IDE. Jest to zasadniczo dobry pomysł, ale nie dogaduje się z lambdami i funkcyjnym światem. Pisząc w Javie często tworzymy wrapper do takich wyjątków. Jako, że funkcyjne podejście zyskuje na popularności to tym bardziej nie będziemy chcieli się bezpośrednio borykać z niewygodnymi wyjątkami. W Kotlinie, Scali, C# wszystkie wyjątki są unchecked, także problem z lambdami nie istnieje. 
 
-**Mamy kilka struktur do wyjątków wprost ze Scali i funkcyjnego świata:**
+**Mamy kilka struktur do wyjątków wprost ze funkcyjnego świata Scali, Haskella:**
 
 * `Try<Value>` - coś może się popsuć i warto na to zareagować lub też nic nie robić.
 * `Either<Exception, Value>` - albo wyjątek po lewej, albo prawidłowa wartość po prawej. 
@@ -408,7 +405,7 @@ Try.of(() -> User.findUserInfoByAccountNumber("123"))
     .onSuccess(System.out::println);
 ```
 
-W kolejnym [przykładzie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java) dodatkowo reagujemy na brak pozytywnego wyniku: 
+W kolejnym [przykładzie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java) dodatkowo reagujemy na brak pozytywnego wyniku: 
 
 ```java
 divide(1, 1)
@@ -428,9 +425,13 @@ divide(1, 0)
 )
 
 fun divide(dividend: Int, divisor: Int) = Try { dividend / divisor }
-```
+``` 
+Lambdy w Kotlinie są przekazywane jako `function literals`, czyli nie są deklarowane jak w Javie tylko są przekazywane jako wyrażenie `{ }`. Zagadka dla ciebie, który `fold` jest z Kotlina, a który z Javy.  
 
-Bardziej praktyczny [przykład w Javie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java): 
+- `fold(Function<? super Throwable, ? extends X> ifFail, Function<? super T, ? extends X> f)`
+- `fold(ifFailure: (Throwable) -> B, ifSuccess: (A) -> B)`
+
+Bardziej praktyczny [przykład w Javie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java): 
 
 ```java
 val result = Try.of(() -> new URL("KABOOM-http://braintelligence.pl"))
@@ -440,16 +441,16 @@ val result = Try.of(() -> new URL("KABOOM-http://braintelligence.pl"))
 result // google.pl
 ```
 
-Oraz [to samo w Kotlinie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/arrow/TryExample.kt):
+Oraz [to samo w Kotlinie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/arrow/TryExample.kt):
 
-```
+```kotlin
 val result = Try { URL("BLAAH//hHttp://braintelligence.pl") }
     .map { it.host }
     .getOrElse { "google.pl" }
 
 ```
 
-Na koniec minimalnie bardziej złożony [w Javie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java).
+Na koniec minimalnie bardziej złożony [w Javie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java).
 
 ```java
 val result = fetchArticlesFromFacebook()
@@ -459,7 +460,7 @@ val result = fetchArticlesFromFacebook()
                 .map(Article::getName);
 ```
 
-Oraz dla porównania [w Kotlinie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/arrow/TryExample.kt)
+Oraz dla porównania [w Kotlinie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/arrow/TryExample.kt)
 
 ```kotlin
 val result = fetchArticlesFromFacebook()
@@ -484,7 +485,7 @@ Mamy zasadniczo dwa przypadki, albo danych nie ma `Option`, albo coś poszło ni
 
 Jednym z problemów wyjątków jest to, że są one wyrzucane i nie mamy do nich bezpośrednio dostępu. Tutaj robimy wrapppera na wyjątek. Taki prosty zabieg pozwala nam powiązać wyjątek bezpośrednio z obiektem gdzie wystąpił. 
 
-Kolejne przykłady zrobimy już tylko w Kotlinie.
+Jako, że dobrze rozwiązałeś zagadkę z foldem to w nagrodę przykłady będą w Kotlinie.
 
 1️⃣ Powiedzmy, że chcemy sparsować String do Int. W tym celu tworzymy strasznego Regexa 😱
 `fun isNumber(str: String) = str.matches(Regex("-?[0-9]+"))`
@@ -498,7 +499,9 @@ fun classicalParse(str: String): Int = when (isNumber(str)) {
 }
 ```
 
-Mamy wyjątek. Jest on rzucany do konsoli, ale nie jest on powiązany z obiektem. Jeśli byśmy chcieli odpowiednio zaaragować na rzucony wyjątek to jest drobny problem. Jest on rzucony i zakończył wykonywanie obecnego wątku w programie. Nie możemy zareagować. 
+Jeśli tak jak ja nie przepadasz za ifami to w Kotlinie dobrą praktyką jest zamienianie ich na strukturę `when(...)`.
+
+Wrcając do konrektów mamy tutaj wyjątek. Jest on rzucany do konsoli, ale nie jest on powiązany z obiektem. Jeśli byśmy chcieli odpowiednio zaaragować na rzucony wyjątek to jest drobny problem. Jest on rzucony i zakończył wykonywanie obecnego wątku w programie. Nie możemy zareagować. 
 
 3️⃣ A co się stanie jeśli zrobimy wrapppera na wyjątek? Do tego powiążemy wyjątek z obiektem z jakim koegzystuje?
 
@@ -512,7 +515,7 @@ fun eitherParse(str: String) = when (isNumber(str)) {
 Teraz tak mamy: `eitherParse("123aa")`, które zwraca `Left(Exception)`: 
 `Left(a=java.lang.NumberFormatException: 123aa is not a valid integer.)`
 
-W drugim przykładzie w przypadku powodzenia, możemy odrazu przemapować wynik, w tradycyjnym podejściu nie mieli byśmy takiej możliwośći. 
+Możemy teraz przemapować wynik, w tradycyjnym podejściu nie mieliśmy takiej możliwośći. 
 
 ```kotlin
 val result = eitherParse("123")
@@ -522,13 +525,12 @@ val result = eitherParse("123")
 
 Co zwróci nam, albo message `"123a is not a valid integer."`, albo `126`.
 
-Możemy też utworzyć kilka wyjątków np. DomainErrors.XXX i odpowiednie reagować jeśli któryś z nich zostanie wywołany. TODO()
 
 ### Pattern Matching
 
-Czyli po prostu armia if-else-if-else-if... 
+Czyli po prostu armia if-else-if-else-if w czystej Javie
 
-```
+```java
 private String matchStatusCode(HttpStatus httpStatus) {
     if (httpStatus == HttpStatus.OK) {
         return "all fine";
@@ -541,12 +543,9 @@ private String matchStatusCode(HttpStatus httpStatus) {
 }
 ```
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/matching_pattern/MatchingPatternExamples.java).
-
-
 Ten sam kod w Vavrze. Może to być przydatne kiedy musimy reagować na różne sposoby. 
 
-```
+```java
 Match(httpStatus).of(
     Case($(HttpStatus.OK), "all fine"),
     Case($(HttpStatus.NOT_FOUND), "nothing here"),
@@ -555,7 +554,7 @@ Match(httpStatus).of(
 );
 ```
 
-Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/matching_pattern/MatchingPatternExamples.java)
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/matching_pattern/MatchingPatternExamples.java)
 
 Pattern matching daje nam sporo przydatnych rzeczy. Można łączyć inne funkcyjne struktury ze sobą przez co kod może stać się bardziej czytelny. Niemniej łatwo jest tutaj przesadzić przez co kod stanie się nieczytelny. Niestety w Javie jest to dość rozlazłe. 
 
@@ -572,16 +571,17 @@ Match(expression).of(
 )
 
 // Tylko, że w pewnym momencie staje się to po prostu nieczytelne.
-// Bardziej skomplikowany przykład Matchingu mógłby wyglądać następująco.
 
+// 1...
 Case($(allOf(isNotNull(),isIn(1,2,3))), "Number found")
 
+// 2...
 Case(Person($(), Address($_, $())), (name, number) -> name + ", " + number)
 ```
 
-W Kotlinie mamy switcha na sterydach, czyli `when`. Posiada on wiele ulepszeń, ale mimo wszystko nie pozwala na taki pattern matching jak jest natywnie dostępny w Scali. 
+W Kotlinie mamy switcha na sterydach, czyli `when`. Posiada on wiele ulepszeń, ale mimo wszystko nie pozwala na taki pattern matching jak jest natywnie dostępny w Scali.
 
-```
+```kotlin
 when (statusCode) {
     HttpStatus.OK -> "all fine"
     HttpStatus.NOT_FOUND -> "nothing here"
@@ -589,14 +589,17 @@ when (statusCode) {
     else -> "DEFAULT"
 }
 ```
- Przykład [na githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/standard/MatchingPattern)
+Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/tree/master/jvm-languages-snippets/src/test/kotlin/pl/braintelligence/functional_kotlin/standard/MatchingPattern)
 
+Oczywiście jest tego więcej i warto sobie polecam poczytać dokumentację Arrowa na temat błędów. Jest tam między innymi przykład z akumulacją błędów oraz parę innych fajnych artykułów.  
+
+* [Error Handling - Arrow](https://arrow-kt.io/docs/patterns/error_handling/).
 
 ## Kilka losowych funkcyjnych snippetów
 
 #### Memoization
 
-Czyli dana jest zapamiętana (cached, memoized). Niewiele jest tutaj do dodania. Oszczędza to zasoby jeśli potrzebujemy.
+Czyli dana jest zapamiętana (cached, memoized). Oszczędza to zasoby jeśli potrzebujemy.
 
 ```java
 Function0<UUID> memoizedRandomUUID = Function0.of(UUID::randomUUID).memoized();
@@ -605,11 +608,11 @@ memoizedRandomUUID.apply(); // 80cc9c17...
 memoizedRandomUUID.apply(); // 80cc9c17...
 ```
 
-Przykład na [githubie](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/Memoization.java).
+Przykład na [githubie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/Memoization.java).
 
 #### Lazy
 
-Rozszerzeniem powyższego może być `Lazy`. Daje to nam [lazy initialization](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java), czyli odroczenie stworzenia obiektu do momentu jego wykorzystania. Inaczej mówiąc jest to taki monadyczny kontener, który reprezentuje `lazy evaluated value`. Wartość jest zapamiętana (cached, memoized) i zwracana bez potrzeby ponownego wykonywania obliczeń. Oszczędza to pamięć jeśli potrzebujemy.
+Rozszerzeniem powyższego może być `Lazy`. Daje to nam [lazy initialization](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/functional-bricks/src/main/java/pl/braintelligence/java/ValueExample.java), czyli odroczenie stworzenia obiektu do momentu jego wykorzystania. Inaczej mówiąc jest to taki monadyczny kontener, który reprezentuje `lazy evaluated value`. Wartość jest zapamiętana (cached, memoized) i zwracana bez potrzeby ponownego wykonywania obliczeń. Oszczędza to pamięć jeśli potrzebujemy.
 
 ```java
 // Lazy 
@@ -623,7 +626,7 @@ result.get() // 52EA7812...
 
 W Kotlinie wygląda to podobnie tyle, że w Arrow podobna struktura nazywa się Eval oraz sam Kotlin posida `by lazy` do takich rzeczy.
 
-```
+```kotlin
 val result = Eval.now(UUID.randomUUID())
         .value.toString().toUpperCase()
 ```
@@ -656,13 +659,12 @@ Podsumowyjąc Kotlin jest w moich oczach takim equilibrium pomiędzy złożonoś
 Podsumowując podsumowanie Kotlin to język tworzony przez JetBrains, które to tworzy swoje nowe zabawki właśnie w tym języku jak i przepisuje już istniejące Javowe usługi na Kotlina. Ponadto poparcie ze strony Google powoduje to, że prawdopodobnie w niedalekiej przyszłości zobaczymy coraz więcej Kotlina również na backendzie.
 
 Przechodząc na koniec do Javy to jest to taki samochód w sędziwym wieku. Gdzieniegdzie już jest pordzewiały (np. java.utils.date), ale wciąż jest utrzymywany w dobrym stanie. Musisz wiedzieć jak go używać oraz które części nie są już tak nowe i jakie były zastąpione przez nowe. Tak też kolejne biblioteki robią go ładniejszym, ale istnieją pewne ograniczenia co do tego gdzie można zajść. Jest to w końcu język, który ma swoje lata, a do tego ma w zamyśle wsteczną kompatybilność. Jest to pewnie rzeczy, która zrobiła Javę tak popularną. Z drugiej ogranicza rozwój do przodu, nie można mieć wszystkiego co nie?  
-
 **Tak czy inaczej jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić sporą część obliczeń.**
 
 ## Podsumowanie, dodatki, przemyślenia, co dalej?
 
-* [Code-Katas](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/katas/src) - porównujące te same kawałki kodu w Javie oraz Kotlinie wraz z testami w Spocku.
-* [Code-Snippets](https://github.com/braintelligencePL/snippets-and-katas-of-jvm-languages/tree/master/jvm-languages-snippets/src) - wszystko co we wpisie oraz dodatkowe przykłady jakie nie były użyte we wpisie.
+* [Code-Katas](https://github.com/braintelligencePL/snippets-of-jvm-languages/tree/master/katas/src) - porównujące te same kawałki kodu w Javie oraz Kotlinie wraz z testami w Spocku.
+* [Code-Snippets](https://github.com/braintelligencePL/snippets-of-jvm-languages/tree/master/jvm-languages-snippets/src) - wszystko co we wpisie oraz dodatkowe przykłady jakie nie były użyte we wpisie.
 
 Jeśli podobnie jak mnie interesuje Cię Kotlin i chcesz zobaczyć większy [backendowy przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz tutaj aplikację do zarządzania projektami (coś jak Trello). Przeszła ona transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy DDD, BDD, TDD. Jeśli masz jakieś uwagi to PR mile widziany. A [tutaj opis projektu](http://www.braintelligence.pl/prawie-trywialna-aplikacja-do-zarzadzania-projektami/). Trochę tak porzuciłem go na rzecz kolejnego, ale postaram się zrobić jakiś follow-up co tam się zadziało.
 
