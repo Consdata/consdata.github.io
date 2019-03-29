@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Świat Kotlina, Javy, Vavra, Arrowa, czyli wszystko co potrzebne do programowania funkcyjnego."
+title:     "Wejście do świata funkcyjnego."
 date:      2018-04-01 08:00:00 +0100
 published: false
 author:    Łukasz Sroczyński
@@ -12,8 +12,6 @@ tags:
     - functional programming
     
 ---
-
-TODO("Aktualizacja linków")
 
 W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w przypadku tych bibliotek). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
 
