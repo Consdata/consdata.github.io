@@ -78,7 +78,7 @@ Wchodzi lista zamówień `in`, a wychodzi `out` lista zamówień powiększona o 
 
 **W funkcyjnym programowaniu skupiamy się na tym co chcemy osiągnąć, a nie tym co chcemy zrobić. Drobna, a jednak znaczna różnica co zobaczymy już za chwilę.**
 
-### Czemu immutability jest ważne?
+### Na pohybel mutantom! Czyli immutability jest ważne?
 
 * łatwiejsze w użyciu obiekty oraz mniej rzeczy może pójść nie tak
 * mniej interakcji pomiędzy innymi częściami aplikacji
