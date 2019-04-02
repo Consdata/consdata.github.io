@@ -372,7 +372,7 @@ Podobno twórcy w początkowej fazie rozwoju chcieli tam wrzucić 10 wykrzyknik�
 
 ### Error handling - catch them all❗ 
 
-**Co najczęściej robimy z wyjątkami w Javie?** Oczywiście wrzucamy do worka z "unchecked-exceptions", czyli Runtime'u tworzymy/zostawiamy problem na później. Z drugiej mamy jeszcze checked-exceptions, które to są sprawdzane podczas compile-time, czyli wtedy jak piszemy nasz kod w IDE. Jest to zasadniczo dobry pomysł, ale nie dogaduje się z lambdami i funkcyjnym światem. Pisząc w Javie często tworzymy wrapper do takich wyjątków. Jako, że funkcyjne podejście zyskuje na popularności to tym bardziej nie będziemy chcieli się bezpośrednio borykać z niewygodnymi wyjątkami. W Kotlinie, Scali, C# wszystkie wyjątki są unchecked, także problem z lambdami nie istnieje. 
+**Co najczęściej robimy z wyjątkami w Javie?** A no wrzucamy do worka z unchecked-exceptions, czyli Runtime'u tworzymy/zostawiamy problem na później. Z drugiej strony mamy checked exceptions i propagujemy sobie wyjątki dalej. Te drugie to te, które są sprawdzane podczas czasu kompilacji, czyli jak piszemy nasz kod w IDE. Jest to prawie dobry pomysł, ale nie dogaduje się z lambdami i funkcyjnym światem. Pisząc w Javie często tworzymy wrapper do takich wyjątków. Jako, że funkcyjne podejście zyskuje na popularności to tym bardziej nie będziemy chcieli się bezpośrednio borykać z niewygodnymi wyjątkami. W Kotlinie, Scali, C# wszystkie wyjątki są unchecked, także problem z lambdami (oraz niewygodnym kompilatorem) nie istnieje.
 
 **Mamy kilka struktur do wyjątków wprost ze funkcyjnego świata Scali, Haskella:**
 
