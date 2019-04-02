@@ -274,7 +274,7 @@ private String badCascadingPileOfCrapAndNullReturnedWorst() {
         if (address != null) {
             String street = address.getStreet();
             if(street != null) {
-                return street; // ufff.. to się nazywa praca, a nie tam jakiś biblioteki używają...
+                return street; // ufff.. to się nazywa praca, a nie tam jakieś cuda używają...
             }
         }
     }
