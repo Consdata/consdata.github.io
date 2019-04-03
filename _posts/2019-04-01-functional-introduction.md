@@ -13,9 +13,21 @@ tags:
     
 ---
 
-W naszym programistycznym świecie stare prawdy często wracają do łask mimo swoich lat. Choćby algorytmy machine learningowe oraz modele statystyczne, które to były głównie na uczelniach i w bardzo wąskiej grupie biznesów teraz zyskują na popularności. Dzieje się to za sprawą tego, że próg wejścia zmniejsza się z każdą nową biblioteką, która ułatwia kolejną rzecz. Można operować na surowych algorytmach machine learningowych, ale jako programiści zapewne sięgniemy po coś pokroju PyTorcha, albo Kerasa, który to pozwoli nam szybciej wejść w świata Deep Learningu (w przypadku tych bibliotek). Przy pomocy narzędzi będziemy w stanie szybciej stworzyć prototyp i przetestować nasz pomysł.
+Programowanie funkcyjne ostatnio coraz bardziej zyskuje na popularności i jeśli zaczniemy się tym trochę interesować to szybko wychodzą jakieś dziwne nazwy jak monady, funktory, endofunctory oraz inne... Co to w ogóle jest? W dużym uproszczeniu to co sobie tutaj omówimy to są takie kontenery (monadyczne struktury) na dane. Mają one określone efekty jak: 
 
-Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czystszy, bezpieczniejszy, a przede wszystkim łatwo testowalny. Takim sposobem nie potrzebujemy armii Mocków jako zaślepek oraz mamy potencjalnie mniej możliwych błędów na produkcji. Oczywiście nie usuwa to wszystkich rodzajów błędów, ale zdecydowanie czyni kod bardziej bezpiecznym. A to w jaki sposób to robi omówimy sobie za chwilę.
+* Czegoś nie ma, coś się nie przesłało, albo nie było tego od początku `Option`
+* Coś się spier... wykrzaczyło. Lecą jakieś wyjątki. `Try`, `Either`.
+* Asynchronicznie to kiedyś coś dostaniesz. W przyszłości `Future`.
+
+## Ale czym jest ta `monada`? 
+Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak String jest typem). Do ten kontener ma jakiś efekt, czyli to co wymieniliśmy powyżej. Trochę tak jak w jakimś RPGu. Mamy Wizarda, który dodakowo ma jakieś efekty, ale jeśli weźmiemy Warriora to ma on inny zestaw efektów. Monady... Cóż trudno dokładnie wyjaśnić, czym dokładnie są w jednym zdaniu. Oficjalnie jest to: 
+
+`A Monad is just a monoid in the category of endofunctors` - no..
+
+Jeśli interesuje Cię trochę teorii to odsyłam do fajnych wpisów na stronce biblioteki Arrowa (kotlin)
+
+* (The Monad Tutorial)[https://arrow-kt.io/docs/patterns/monads/]
+* (Monad Comprehension)(https://arrow-kt.io/docs/patterns/monad_comprehensions/)
 
 W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Vavr oraz Arrow jest po prostu implementacja rzeczy naturalnie występujących w chociażby Scali.
 
