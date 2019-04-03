@@ -19,7 +19,7 @@ Programowanie funkcyjne nie jest inne. Pozwala nam pisać kod, który jest czyst
 
 W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Vavr oraz Arrow jest po prostu implementacja rzeczy naturalnie występujących w chociażby Scali.
 
-**Będziemy używać tych rzeczy:**
+**Będziemy używać tych bibliotek:**
 
 ```
 // Kotlin
@@ -33,7 +33,7 @@ implementation 'org.projectlombok:lombok:1.18.6'
 implementation 'org.apache.commons:commons-lang3:3.7'
 ```
 
-**Oraz omówimy te rzeczy:**
+**Oraz omówimy te zagadnienia:**
 
 * Parę słów o programowaniu imparatywnym, proceduralnym, obiektowym oraz funkcyjnym.
 * Funkcyjne, czyli: `pure functions` + `immutability` = referential transparency 🕵
