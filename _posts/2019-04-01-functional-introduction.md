@@ -382,9 +382,11 @@ Podobno twórcy w początkowej fazie rozwoju chcieli tam wrzucić 10 wykrzyknik�
 
 ### Error handling - catch them all❗ 
 
-Co najczęściej robimy z wyjątkami w Javie? Wrzucamy do worka z unchecked-exceptions, czyli Runtime'u tworzymy/zostawiamy problem na później. Z drugiej strony mamy checked exceptions. Musimy je obsłużyć. Często widzimy cały call stack z każdego wywołania metody jaka doprowadziła do faktycznego miejsca gdzie wystąpił błąd. Jest to prawie dobry pomysł, ale nie dogaduje się z lambdami i funkcyjnym światem. Pisząc w Javie często tworzymy wrapper do takich wyjątków. Jako, że funkcyjne podejście zyskuje na popularności to tym bardziej nie będziemy chcieli się bezpośrednio borykać z niewygodnymi wyjątkami. W Kotlinie, Scali, C# wszystkie wyjątki są unchecked, także problem z lambdami (oraz niewygodnym kompilatorem) nie istnieje.
+Wyjątki... czyli coś poszło nie po naszej myśli, albo wiedzieliśmy, że taka sytuacja może mieć miejsce i daliśmy odpowiedni komunikat - wyjątek. Mamy w Javie dwa rodzaje wyjątków checked (sprawdzane podczas kompilacji - gdy piszesz kod w IDE) oraz unchecked takie, które lecą dopiero podczas działania aplikacji (runtime). W Kotlinie wszystkie są descendentami Throwable, a ten rozszerza Kotlinowy runtime, który to potem jest podłączony do Javy. 
 
-**Mamy kilka struktur do wyjątków wprost ze funkcyjnego świata Scali, Haskella:**
+Wracając do checked exceptions nie lubią się one zbytnio z lambdami i funkcyjnym światem. Pisząc w Javie często tworzymy wrapper do takich wyjątków (albo monadyczny kontener). Jako, że funkcyjne podejście zyskuje na popularności to tym bardziej nie będziemy chcieli się bezpośrednio borykać z niewygodnymi wyjątkami. W Kotlinie, Scali, C# wszystkie wyjątki są unchecked, także problem z lambdami (oraz niewygodnym kompilatorem) nie istnieje.
+
+**Mamy kilka struktur do wyjątków wprost ze funkcyjnego świata Scali oraz Haskella:**
 
 * `Try<Value>` - coś może się popsuć i warto na to zareagować lub też nic nie robić.
 * `Either<Exception, Value>` - albo wyjątek po lewej, albo prawidłowa wartość po prawej. 
