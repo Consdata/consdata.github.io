@@ -425,6 +425,11 @@ Lambdy w Kotlinie są przekazywane jako `function literals`, czyli nie są dekla
 - `fold(Function<? super Throwable, ? extends X> ifFail, Function<? super T, ? extends X> f)`
 - `fold(ifFailure: (Throwable) -> B, ifSuccess: (A) -> B)`
 
+Myślę, że nawet mr. Senior z 20 latami doświadczenia miałby problemy z powiedzeniem co się dzieje w Javowym kodzie. Z drugiej strony w Kotlinie widać to czarno na białym. 
+
+* Uproszczona funkcja w Kotlinie: `(A) -> (B) -> C`
+* Uproszczona funkcja w Javie: `Function<A, Function<B, C>>`
+
 Bardziej praktyczny [przykład w Javie](https://github.com/braintelligencePL/snippets-of-jvm-languages/blob/master/jvm-languages-snippets/src/test/java/pl/braintelligence/functional_java/vavr/value/TryExample.java): 
 
 ```java
