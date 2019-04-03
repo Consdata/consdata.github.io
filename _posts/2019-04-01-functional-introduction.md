@@ -26,8 +26,8 @@ Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak Strin
 
 Jeśli interesuje Cię trochę teorii to odsyłam do fajnych wpisów na stronce biblioteki Arrowa (kotlin)
 
-* (The Monad Tutorial)[https://arrow-kt.io/docs/patterns/monads/]
-* (Monad Comprehension)(https://arrow-kt.io/docs/patterns/monad_comprehensions/)
+* [The Monad Tutorial](https://arrow-kt.io/docs/patterns/monads/)
+* [Monad Comprehension](https://arrow-kt.io/docs/patterns/monad_comprehensions/)
 
 W Javie mamy różne funkcyjne bibliteki umożliwiające tworzenie bardziej funkcyjnego kodu. Można użyć Vavra, albo JOOλ. W Kotlinie mamy Arrow choć sam język jest tutaj z natury funkcyjny. Vavr oraz Arrow jest po prostu implementacja rzeczy naturalnie występujących w chociażby Scali.
 
