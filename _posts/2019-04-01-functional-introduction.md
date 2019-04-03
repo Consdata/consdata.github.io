@@ -20,7 +20,7 @@ Programowanie funkcyjne ostatnio coraz bardziej zyskuje na popularności i jeśl
 * Asynchronicznie to kiedyś coś dostaniesz. W przyszłości `Future`.
 
 ## Ale czym jest `monad`? 
-Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak String jest typem). Do kontener ten ma jakiś efekt (to co wymieniliśmy powyżej). Trochę tak jak w jakimś RPGu. Mamy Wizarda, który dodakowo ma jakieś efekty, ale jeśli weźmiemy Warriora to ma on inny zestaw efektów. Bardziej oficjalna definicja monada to: 
+Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak String jest typem). Do kontener ten ma jakiś efekt (to co wymieniliśmy powyżej). Bardziej oficjalna definicja monada to: 
 
 `A Monad is just a monoid in the category of endofunctors` - no...
 
