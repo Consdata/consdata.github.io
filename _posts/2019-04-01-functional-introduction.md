@@ -312,9 +312,7 @@ Przykład [na githubie](https://github.com/braintelligencePL/snippets-of-jvm-lan
 
 #### 3️⃣ No to może zrobić ten kod bardziej funkcyjnym?
 
-Zastosowanie `Optional` lub `Option` w tym przykładzie wyglądałoby podobnie. 
-
-Niemniej vavr posiada dużo więcej metod pomocniczych z jakich można wybierać oraz jak było powiedziane poprzednio jest mniej dwuznaczny.
+Zastosowanie Optional lub Option w tym przykładzie wyglądałoby podobnie, ale lepiej używać Vavra. Posiada dużo więcej metod pomocniczych z jakich można wybierać oraz jak było powiedziane poprzednio jest mniej dwuznaczny. Generalnie lepiej używać Vavra zamiast standardowej biblioteki.
 
 ```java
 private Option<String> fetchStreetFromDB() {
