@@ -495,8 +495,6 @@ fun classicalParse(str: String): Int = when (isNumber(str)) {
 
 Jeśli tak jak ja nie przepadasz za ifami to w Kotlinie dobrą praktyką jest zamienianie ich na strukturę `when(...)`.
 
-Wrcając do konrektów mamy tutaj wyjątek. Jest on rzucany do konsoli, ale nie jest on powiązany z obiektem. Jeśli byśmy chcieli odpowiednio zaaragować na rzucony wyjątek to jest drobny problem. Jest on rzucony i zakończył wykonywanie obecnego wątku w programie. Nie możemy zareagować. 
-
 3️⃣ A co się stanie jeśli zrobimy wrapppera na wyjątek? Do tego powiążemy wyjątek z obiektem z jakim koegzystuje?
 
 ```kotlin
