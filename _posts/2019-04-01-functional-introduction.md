@@ -15,8 +15,8 @@ tags:
 
 Programowanie funkcyjne ostatnio coraz bardziej zyskuje na popularności i jeśli zaczniemy się tym trochę interesować to szybko wychodzą jakieś dziwne nazwy jak monady, funktory, endofunctory oraz inne... Co to w ogóle jest? W dużym uproszczeniu to co sobie tutaj omówimy to są takie kontenery (monadyczne struktury) na dane. Mają one określone efekty jak: 
 
-* Czegoś nie ma, coś się nie przesłało, albo nie było tego od początku `Option`
-* Coś się spier... wykrzaczyło. Lecą jakieś wyjątki. `Try`, `Either`.
+* Czegoś nie ma, coś się nie przesłało, albo nie było tego od początku `Option`.
+* Coś się wykrzaczyło. Lecą jakieś wyjątki. `Try`, `Either`.
 * Asynchronicznie to kiedyś coś dostaniesz. W przyszłości `Future`.
 
 ## Ale czym jest ta `monad`? 
