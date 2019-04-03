@@ -24,7 +24,7 @@ Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak Strin
 
 `A Monad is just a monoid in the category of endofunctors` - no..
 
-Jeśli interesuje Cię trochę teorii to odsyłam do fajnych wpisów na stronce biblioteki Arrowa (kotlin)
+Jeśli interesuje Cię trochę teorii to odsyłam do fajnych wpisów na stronce biblioteki Arrow (kotlin)
 
 * [The Monad Tutorial](https://arrow-kt.io/docs/patterns/monads/)
 * [Monad Comprehension](https://arrow-kt.io/docs/patterns/monad_comprehensions/)
