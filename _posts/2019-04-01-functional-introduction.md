@@ -22,7 +22,7 @@ Programowanie funkcyjne ostatnio coraz bardziej zyskuje na popularności i jeśl
 ## Ale czym jest `monad`? 
 Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak String jest typem). Do kontener ten ma jakiś efekt (to co wymieniliśmy powyżej). Bardziej oficjalna definicja monada to: 
 
-`A Monad is just a monoid in the category of endofunctors` - no...
+`A Monad is just a monoid in the category of endofunctors` 
 
 Jeśli interesuje Cię trochę teorii to odsyłam do fajnych wpisów na stronce biblioteki Arrow (kotlin)
 
