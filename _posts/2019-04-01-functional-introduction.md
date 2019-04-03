@@ -19,7 +19,7 @@ Programowanie funkcyjne ostatnio coraz bardziej zyskuje na popularności i jeśl
 * Coś się spier... wykrzaczyło. Lecą jakieś wyjątki. `Try`, `Either`.
 * Asynchronicznie to kiedyś coś dostaniesz. W przyszłości `Future`.
 
-## Ale czym jest ta `monada`? 
+## Ale czym jest ta `monad`? 
 Bardzo upraszaczając jest to taki monadyczny typ - kontener (podobnie jak String jest typem). Do ten kontener ma jakiś efekt, czyli to co wymieniliśmy powyżej. Trochę tak jak w jakimś RPGu. Mamy Wizarda, który dodakowo ma jakieś efekty, ale jeśli weźmiemy Warriora to ma on inny zestaw efektów. Monady... Cóż trudno dokładnie wyjaśnić, czym dokładnie są w jednym zdaniu. Oficjalnie jest to: 
 
 `A Monad is just a monoid in the category of endofunctors` - no..
