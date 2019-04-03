@@ -47,7 +47,7 @@ implementation 'org.apache.commons:commons-lang3:3.7'
 
 **Oraz omówimy te zagadnienia:**
 
-* Parę słów o programowaniu imparatywnym, proceduralnym, obiektowym oraz funkcyjnym.
+* Parę słów o programowaniu imperatywnym, proceduralnym, obiektowym oraz funkcyjnym.
 * Funkcyjne, czyli: `pure functions` + `immutability` = referential transparency 🕵
 * First-class citizens, Higher-order functions w Kotlinie, Javie oraz JSie.
 * Co znać w dzisiajszej Javie? Plus porównanie do Kotlina.
