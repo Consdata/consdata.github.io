@@ -673,11 +673,5 @@ Przechodząc na koniec do Javy to jest to taki samochód w sędziwym wieku. Gdzi
 
 **Tak czy inaczej jeśli potrafimy coś zrobić w Javie to potrafimy to samo w Javascriptcie, Kotlinie, czy Scali. W każdym z tych języków znajdziemy filter, map, reduce, które pozwoli nam zrobić sporą część obliczeń.**
 
-## Podsumowanie, dodatki, przemyślenia, co dalej?
-
 * [Code-Snippets](https://github.com/braintelligencePL/snippets-of-jvm-languages/tree/master/jvm-languages-snippets/src) - wszystko co we wpisie oraz dodatkowe przykłady jakie nie były użyte we wpisie.
 * [Code-Katas](https://github.com/braintelligencePL/snippets-of-jvm-languages/tree/master/katas/src) - porównujące te same kawałki kodu w Javie oraz Kotlinie wraz z testami w Spocku.
-
-Jeśli podobnie jak mnie interesuje Cię Kotlin i chcesz zobaczyć większy [backendowy przykład](https://github.com/braintelligencePL/project-manager-kotlin) to znajdziesz tutaj aplikację do zarządzania projektami (coś jak Trello). Przeszła ona transformację z layered architecture na hexagonal architecture, czyli porty i adaptery oraz parę innych fajnych rzeczy DDD, BDD, TDD. Jeśli masz jakieś uwagi to PR mile widziany. A [tutaj opis projektu](http://www.braintelligence.pl/prawie-trywialna-aplikacja-do-zarzadzania-projektami/). Trochę tak porzuciłem go na rzecz kolejnego, ale postaram się zrobić jakiś follow-up co tam się zadziało.
-
-W następnych wpisach skupimy się [na tym projekcie](https://github.com/braintelligencePL/online-store-microservices-kotlin-angular7/tree/master/online-store-backend). Mikroserwisy oraz hexagonal architecture. Do tego testy architektury. Tak! Nie przesłyszałeś się będziemy [testować apkę pod względem architektonicznym w ArchUnit](https://github.com/braintelligencePL/project-manager-kotlin/tree/master/src/test/kotlin/pl/braintelligence/projectmanager/core/team). Jest to po prostu zestaw zasad jakie nakładamy sobie przed stworzeniem projektu, aby pozostał poukładany od początku do końca. Potem dojdzie CQRS oraz Event Sourcing. Wszystko ze Spockiem oraz Kotlinem. Do usłyszenia wkrótce!
