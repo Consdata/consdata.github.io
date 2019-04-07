@@ -1,0 +1,122 @@
+---
+layout:    post
+title:     "Programowanie imperatywne vs funkcyjne"
+date:      2019-04-10 9:00:00 +0100
+published: false
+author:    Łukasz Sroczyński
+tags:
+    - backend
+    - kotlin
+    
+---
+
+Programowanie funkcyjne pozwala nam pisać kod, który jest czystszy, bezpieczniejszy, a przede wszystkim łatwo testowalny. Oczywiście FP ma również wady z czego jedną z nich może być zbyt duże pójście w abstrakcję co powoduje, że kod staje się niezrozumiały.
+
+## Różnica między kodem imperatywnym, a funkcyjnym?
+Imperatywnie znaczy tyle, że mutujemy zmienne, sprawdzamy warunki (if, else) oraz robimy wiele potencjalnie niebezpiecznych operacji. Na sam koniec tworzymy wynik. W takim świecie ciągle zmieniającego się stanu bardzo łatwo o błąd. Można sobie wyobrazić, że taki kod jest dosłownie szyty na miarę. Program składa się wtedy z rzeczy, które "coś robią". Ma on jakiś stan wejściowy, przejściowy oraz wyjściowy. W funkcyjnym podejściu metoda przyjmuje jakieś generyczne argumenty i zwraca wynik. Jest to możliwe dzięki kompozycji funkcji. Tak też programy funkcjne składają się z części, które "są czymś".
+
+### Dajmy przykład, w którym dodajesz dwie liczby:
+* W podejściu imperatywnym dodajemy liczby i tworzymy wynik. Skupiamy się na tym co chcemy zrobić.
+* W podejściu funkcyjnym dodane liczby to jest wynik. (drobna, a jednak znaczna różnica o czym się zaraz przekonamy)
+
+### Imperatywny przykład
+Chcemy tylko nieparzyste liczby: 
+
+```kotlin
+// Kotlin
+val numbers = listOf(1, 2, 3, 4, 5)
+val odds = ArrayList<Int>()
+
+for (index in 0..numbers.lastIndex) {
+    val item = numbers[index]
+    if (item % 2 != 0) odds.add(item)
+}
+```
+Powyższy kod jest zbudowany z wyrażeń. Coś bierzemy, coś dodajemy, coś zmieniamy, coś warunkujemy. Mutujemy zmienne przez co kod nie jest bezpieczny. W obecnych funkcyjnych czasach mimo wszystko rzadko spotyka się powyższy kod i dobrze, bo jest on kompletnie nieczytelny. Skupiamy się tutaj na tym co chcemy zrobić. Jest to po prostu seria mutacji oddzielonych od siebie warunkami.
+
+### Funkcyjny przykład
+```kotlin
+// Kotlin
+val numbers = listOf(1, 2, 3, 4, 5)
+val odds = numbers.filter { it % 2 != 0 }
+```
+W końcu coś z czym większość z nas spotka się na codzień, czyli funkcyjny kod. Proste i szybkie nie potrzeba nawet komentarza. Skupiamy się na tym co chcemy osiągnać. 
+
+## Czy da się napisać program bez efektu ubocznego? 
+Krótka odpowiedź. Nie da się. Chodzi nam bardziej o to, żeby nie mieć obserwowalnych efektów ubocznych. Co to znaczy? Wyjaśnimy sobie już za chwilkę. Zazwyczaj jak piszemy apkę to mamy widoczny efekt - wynik. Zapisaliśmy coś do bazy danych, wysłaliśmy coś po HTTPie, wrzuciliśmy jakiś event na kolejkę, wygenerowaliśmy raport i tak dalej. Integrujemy się ze światem zewnętrznym. W programowaniu funkcyjnym chodzi o odłożenie efektów ubcznych do czasu  wykonania obliczeń, a nie podczas ich.
+
+```kotlin
+// Kotlin
+fun multiply(val a: Int, val b: Int) = a * b
+fun divide(a: Int, b: Int) = a / b
+ 
+multiply(123456789, 123456789) // -1757895751
+divive(123456789, 0) // ArithmeticException: / by zero
+```
+Powyższy program nie jest funkcyjny dlatego, że mogą w nim wystąpić efekty uboczne. Jeśli przekręcimy Inta to dostaniemy ujemną wartość. W drugim przypadku dostaniemy wyjątek czego również się nie spodziewaliśmy. Nasze początkowe założenie, że funkcja pomnoży/podzieli wynik jest błędna. Oczywiście rzadko kiedy sytuacja jest, aż tak trywialna, ale można sobie wyobrazić, że to wszystko jest jakimś zapytaniem do bazy, albo inną operacją. Chodzi o to, aby nasze funkcje były deterministyczne, czyli wynik zawsze jest taki sam dla podanych argumentów. Jeśli są jakieś efekty uboczne to wiemy, jakie i odpowiednio na nie reagujemy. 
+
+```kotlin
+// Kotlin
+fun multiply(a: Int, b: Int) = a * b.toFloat()
+fun divide(a: Int, b: Int) = a / b.toFloat()
+ 
+multiply(123456789, 123456789) // 1.52415794E16
+divide(123456789, 0) // Infinity
+
+result.isInfinite().maybe { print("You should learn the basics of math, probably.") }
+```
+
+W tym momencie dla każdej możliwej wartości będzie ten sam wynik. Również w przypadku poprzedniego wyjątku teraz 
+zostanie zwrócony obiekt **Infinity**, na którym możemy działać dalej z naszym kodem. Można użyć extension function z Kotlina, które pozwala rozszerzyć każdą metodę o dodatkowe funkcjonalności. W tym przypadku zaciągnęliśmy biblioteką Arrow, która zrobiła za nas trochę magii `maybe { ... }`, które zwraca `none()` dla braku wartości lub `some()` jeśli coś jest. W Javie niby też mamy obiekty, ale Kotlin poszedł krok dalej, bo dosłownie wszystko obiektem. Tak też zamiast `void` jest `Unit`, a gdy wiemy, że metoda zawsze się nie udaje to jest `Nothing`. Jest to przydatne chociażby w metodzie `TODO("")` która zwraca właśnie `Nothing`. Jest jeszcze `Any` dla wartości non-nullable oraz `Any?` dla nullable co ma swój odpowiednik w Javowym `Object`. Na tym zakończmy te rozważania, bo jest to poza zakresem wpisu. Potraktujmy to jako ciekawostkę, bo rzeczy te przydają się również w programowaniu funkcyjnym.
+
+Gdy wiemy czego się spodziewać po funkcji i zawsze zwraca ona prawidłową wartość można nazwać ją czystą. Znaczy to tyle, że takie pure functions nie mają żadnych efektów ubocznych. To co zwraca zależy tylko i wyłącznie od parametrów jakie podaliśmy. Dobrym przykładem są funkcje z klasy Math. Gdzie biorąc `sqrt(2.0)` wiemy, że wynikiem jest zawsze jakiś obiekt typu Double (jak było wcześniej powiedziane w Kotlinie wszystko jest obiektem również prymitywy, których bądź co bądź po prostu nie ma).
+
+## To jak pisać bardziej funkcyjnie?
+
+```
+// Na początek imperatywny przykład
+fun buyBook(creditCard: CreditCard): Book {
+    val book = Book(name = "12 Rules for Life")
+    creditCard.performPayment(book.price)
+    return book
+}
+```
+
+Powyższy kod jest trudny do przetestowania. Musielibyśmy sobie zamockować proces weryfikacji w banku, czy karta w ogóle istnieje, czy posiada środki na koncie i tak dalej. Dopiero po tym zwracamy film. Zróbmy to trochę inaczej. Co jeśliby przetestować to bez kontaktu z bankiem? Moglibyśmy powiązać płatność z książką.
+
+```
+// Bardziej funkcyjny przykład
+fun buyPetersonBook(creditCard: CreditCard): Pair<Book, Payment> {
+    val book = Book(name = "12 Rules for Life", price = BigDecimal("50"))
+    val payment = Payment(creditCard, book.price)
+    return Pair(book, payment)
+}
+
+class Payment(val creditCard: CreditCard, val price: BigDecimal)
+class Book(val name: String, val price: BigDecimal)
+
+// W Javie użylibyśmy Tuple od Vavra
+```
+
+Zauważ, że teraz nie obchodzi nas jak zaaraguje bank. Czy karta zostanie przyjęta, czy odrzucona - nie jest to istotne w tym kontekście. Można też zmodyfikować ten kod i umożliwić kupno różnych przedmiotów. Po czym agregować płatności i dopiero pod koniec wysłać zapytanie do banku. Przetestowanie powyższego kodu jednostkowo jest mega proste.
+
+```
+@Test 
+fun `Should buy peterson book`() {
+    // given:
+    val creditCard = CreditCard()
+    val bookStore = BookStore()
+
+    // when:
+    val purchase = bookStore.buyPetersonBook(creditCard)
+
+   // then:
+   assertThat(petersonBookPrice) 
+      .isEqualTo(purchase.first.price) 
+ 
+   assertThat(creditCard)
+       .isEqualTo(purchase.second.creditCard) 
+}
+```
+
+
