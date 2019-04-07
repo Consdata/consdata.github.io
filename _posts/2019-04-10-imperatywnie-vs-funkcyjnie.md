@@ -23,7 +23,6 @@ Imperatywnie znaczy tyle, że mutujemy zmienne, sprawdzamy warunki (if, else) or
 Chcemy tylko nieparzyste liczby: 
 
 ```kotlin
-// Kotlin
 val numbers = listOf(1, 2, 3, 4, 5)
 val odds = ArrayList<Int>()
 
@@ -36,7 +35,6 @@ Powyższy kod jest zbudowany z wyrażeń. Coś bierzemy, coś dodajemy, coś zmi
 
 ### Funkcyjny przykład
 ```kotlin
-// Kotlin
 val numbers = listOf(1, 2, 3, 4, 5)
 val odds = numbers.filter { it % 2 != 0 }
 ```
@@ -46,7 +44,6 @@ W końcu coś z czym większość z nas spotka się na codzień, czyli funkcyjny
 Krótka odpowiedź. Nie da się. Chodzi nam bardziej o to, żeby nie mieć obserwowalnych efektów ubocznych. Co to znaczy? Wyjaśnimy sobie już za chwilkę. Zazwyczaj jak piszemy apkę to mamy widoczny efekt - wynik. Zapisaliśmy coś do bazy danych, wysłaliśmy coś po HTTPie, wrzuciliśmy jakiś event na kolejkę, wygenerowaliśmy raport i tak dalej. Integrujemy się ze światem zewnętrznym. W programowaniu funkcyjnym chodzi o odłożenie efektów ubcznych do czasu  wykonania obliczeń, a nie podczas ich.
 
 ```kotlin
-// Kotlin
 fun multiply(val a: Int, val b: Int) = a * b
 fun divide(a: Int, b: Int) = a / b
  
@@ -56,7 +53,6 @@ divive(123456789, 0) // ArithmeticException: / by zero
 Powyższy program nie jest funkcyjny dlatego, że mogą w nim wystąpić efekty uboczne. Jeśli przekręcimy Inta to dostaniemy ujemną wartość. W drugim przypadku dostaniemy wyjątek czego również się nie spodziewaliśmy. Nasze początkowe założenie, że funkcja pomnoży/podzieli wynik jest błędna. Oczywiście rzadko kiedy sytuacja jest, aż tak trywialna, ale można sobie wyobrazić, że to wszystko jest jakimś zapytaniem do bazy, albo inną operacją. Chodzi o to, aby nasze funkcje były deterministyczne, czyli wynik zawsze jest taki sam dla podanych argumentów. Jeśli są jakieś efekty uboczne to wiemy, jakie i odpowiednio na nie reagujemy. 
 
 ```kotlin
-// Kotlin
 fun multiply(a: Int, b: Int) = a * b.toFloat()
 fun divide(a: Int, b: Int) = a / b.toFloat()
  
@@ -73,7 +69,7 @@ Gdy wiemy czego się spodziewać po funkcji i zawsze zwraca ona prawidłową war
 
 ## To jak pisać bardziej funkcyjnie?
 
-```
+```kotlin
 // Na początek imperatywny przykład
 fun buyBook(creditCard: CreditCard): Book {
     val book = Book(name = "12 Rules for Life")
@@ -84,7 +80,7 @@ fun buyBook(creditCard: CreditCard): Book {
 
 Powyższy kod jest trudny do przetestowania. Musielibyśmy sobie zamockować proces weryfikacji w banku, czy karta w ogóle istnieje, czy posiada środki na koncie i tak dalej. Dopiero po tym zwracamy film. Zróbmy to trochę inaczej. Co jeśliby przetestować to bez kontaktu z bankiem? Moglibyśmy powiązać płatność z książką.
 
-```
+```kotlin
 // Bardziej funkcyjny przykład
 fun buyPetersonBook(creditCard: CreditCard): Pair<Book, Payment> {
     val book = Book(name = "12 Rules for Life", price = BigDecimal("50"))
@@ -100,7 +96,7 @@ class Book(val name: String, val price: BigDecimal)
 
 Zauważ, że teraz nie obchodzi nas jak zaaraguje bank. Czy karta zostanie przyjęta, czy odrzucona - nie jest to istotne w tym kontekście. Można też zmodyfikować ten kod i umożliwić kupno różnych przedmiotów. Po czym agregować płatności i dopiero pod koniec wysłać zapytanie do banku. Przetestowanie powyższego kodu jednostkowo jest mega proste.
 
-```
+```kotlin
 @Test 
 fun `Should buy peterson book`() {
     // given:
