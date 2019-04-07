@@ -10,7 +10,7 @@ tags:
     
 ---
 
-Programowanie funkcyjne pozwala nam pisać kod, który jest czystszy, bezpieczniejszy, a przede wszystkim łatwo testowalny. Oczywiście FP ma również wady z czego jedną z nich może być zbyt duże pójście w abstrakcję co powoduje, że kod staje się niezrozumiały. To jakie są różnice pomiędzy innymi paradygmatami? 
+Programowanie funkcyjne w ostatnich latach stało się bardzo popularne. Umożliwia nam to pisanie kodu, który jest czystszy, bezpieczniejszy, a przede wszystkim łatwo testowalny. Oczywiście FP ma również wady z czego jedną z nich może być zbyt duże pójście w abstrakcję co powoduje, że kod staje się niezrozumiały. Omówimy sobie w takim razie jakie są różnice pomiędzy imperatywnym podejściem, a tym funkcyjnym. 
 
 ## Różnica między kodem imperatywnym, a funkcyjnym?
 Imperatywnie znaczy tyle, że mutujemy zmienne, sprawdzamy warunki (if, else) oraz robimy wiele potencjalnie niebezpiecznych operacji. Na sam koniec tworzymy wynik. W takim świecie ciągle zmieniającego się stanu bardzo łatwo o błąd. Można sobie wyobrazić, że taki kod jest dosłownie szyty na miarę. Program składa się wtedy z rzeczy, które "coś robią". Ma on jakiś stan wejściowy, przejściowy oraz wyjściowy. W funkcyjnym podejściu metoda przyjmuje jakieś generyczne argumenty i zwraca wynik. Jest to możliwe dzięki kompozycji funkcji. Tak też programy funkcjne składają się z części, które "są czymś".
