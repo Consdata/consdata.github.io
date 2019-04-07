@@ -71,8 +71,8 @@ Gdy wiemy czego się spodziewać po funkcji i zawsze zwraca ona prawidłową war
 
 ```kotlin
 // Na początek imperatywny przykład
-fun buyBook(creditCard: CreditCard): Book {
-    val book = Book(name = "12 Rules for Life")
+fun buyBook(bookName: String, creditCard: CreditCard): Book {
+    val book = Book(name = bookName)
     creditCard.performPayment(book.price)
     return book
 }
@@ -82,8 +82,8 @@ Powyższy kod jest trudny do przetestowania. Musielibyśmy sobie zamockować pro
 
 ```kotlin
 // Bardziej funkcyjny przykład
-fun buyPetersonBook(creditCard: CreditCard): Pair<Book, Payment> {
-    val book = Book(name = "12 Rules for Life")
+fun buyBook(bookName: String, creditCard: CreditCard): Pair<Book, Payment> {
+    val book = Book(name = bookName)
     val payment = Payment(creditCard, book.price)
     return Pair(book, payment)
 }
@@ -98,13 +98,13 @@ Zauważ, że teraz nie obchodzi nas jak zaaraguje bank. Czy karta zostanie przyj
 
 ```kotlin
 @Test 
-fun `Should buy peterson book`() {
+fun `Should buy book`() {
     // given:
     val creditCard = CreditCard()
     val bookStore = BookStore()
 
     // when:
-    val purchase = bookStore.buyPetersonBook(creditCard)
+    val purchase = bookStore.buyBook("12 rules for life", creditCard)
 
    // then:
    assertThat(petersonBookPrice) 
@@ -114,5 +114,5 @@ fun `Should buy peterson book`() {
        .isEqualTo(purchase.second.creditCard) 
 }
 ```
-
+Moglibyśmy oczwyiście zrobić ten przykład bardziej generycznym gdzie kupowanie książkek byłoby kupo
 
