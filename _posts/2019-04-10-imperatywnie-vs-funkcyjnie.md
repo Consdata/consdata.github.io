@@ -83,7 +83,7 @@ Powyższy kod jest trudny do przetestowania. Musielibyśmy sobie zamockować pro
 ```kotlin
 // Bardziej funkcyjny przykład
 fun buyPetersonBook(creditCard: CreditCard): Pair<Book, Payment> {
-    val book = Book(name = "12 Rules for Life", price = BigDecimal("50"))
+    val book = Book(name = "12 Rules for Life")
     val payment = Payment(creditCard, book.price)
     return Pair(book, payment)
 }
