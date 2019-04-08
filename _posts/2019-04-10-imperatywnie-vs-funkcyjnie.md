@@ -13,9 +13,26 @@ tags:
 Programowanie funkcyjne w ostatnich latach stało się bardzo popularne. Umożliwia nam to pisanie kodu, który jest czystszy, bezpieczniejszy, a przede wszystkim łatwo testowalny. Oczywiście FP ma również wady z czego jedną z nich może być zbyt duże pójście w abstrakcję co powoduje, że kod staje się niezrozumiały. Omówimy sobie w takim razie jakie są różnice pomiędzy imperatywnym podejściem, a tym funkcyjnym. 
 
 ## Różnica między kodem imperatywnym, a funkcyjnym?
-Imperatywnie znaczy tyle, że mutujemy zmienne, sprawdzamy warunki (if, else) oraz robimy wiele potencjalnie niebezpiecznych operacji. Na sam koniec tworzymy wynik. W takim świecie ciągle zmieniającego się stanu bardzo łatwo o błąd. Można sobie wyobrazić, że taki kod jest dosłownie szyty na miarę. Program składa się wtedy z rzeczy, które "coś robią". Ma on jakiś stan wejściowy, przejściowy oraz wyjściowy. W funkcyjnym podejściu metoda przyjmuje jakieś generyczne argumenty i zwraca wynik. Jest to możliwe dzięki kompozycji funkcji. Tak też programy funkcjne składają się z części, które "są czymś".
+Imperatywny kod to ten z którym najczęściej spotykamy się na początku naszej przygody z programowaniem. Jest to bowiem najbardziej naturalny sposób w jaki można pisać aplikację. Tworzymy tutaj ciąg instrukcji jaki nasz program wykonuje (step-by-step). Opisujemy dokładne czynności jakie muszą być wykonane podczas działania algorytmu. Podczas tych kroków zmieniamy stan systemu modyfikując go, a wynikiem końcowym jest zwrócona wartość lub też inny efekt.
 
-### Dajmy przykład, w którym dodajesz dwie liczby:
+Cechy imperatywnego kodu: 
+
+* zmieniający się stan podczas każdej iteracji
+* kolejność wykonywania jest ważna (step-by-step)
+* wywołujemy funkcje, pętle, warunki
+
+Mówiąc o imperatywnym podejściu nie można nie wspomnieć o najbardziej popularnym z paragymatów, czyli obiektówce. Skupiamy się tutaj na hierarchii klas, enkapsulacji oraz wielu, wielu innych elementach przekraczających zakres tego wpisu. Generalnie myślimy w kontekście obiektów. Wbrew pozorom większość popularnych języków obiektowych wspiera/wywodzi się właśnie z imparatywnego/proceduralnego podejścia. Aby przejść z tego paradygmatu na ten bardziej matematyczny/funkcyjny trzeba zmienić myślenie. 
+
+Podchodząc do programowania funkcyjnego nie myślimy już o obiektach. Obiektem uwielbienia stają się tutaj funkcje. Główną różnicą pomiędzy imperatywnym, a funkcyjnym jest to, że w tym pierwszym przypisujemy wartości zmiennym oraz mutujemy je, a w funkcyjnym zwracamy wartość w bezstanowy sposób. Dzięki temu możemy po prostu używać funkcji patrząc na ich `input` oraz `output`.  
+
+Cechy funkcyjnego kodu: 
+
+* stan nie istnieje
+* kolejność wykonywania nie jest ważna (często może być asynchroniczna)
+
+Główną różnicą jest tutaj to, że fukcyjne programy są bardziej ekspresyjne. Piszemy mniej kodu robiąc to samo co w imperatywnym. Ponadto dzięki niemutowalności oraz większej kontroli nad efektami ubocznymi nasze aplikacje są bardziej deterministyczne. Dzięki czemu czasami uciekniemy od wielowątkowych problemów jak race-conditions, deadlocks oraz inne. Jak i również nie musimy już przejmować się kolejnością wykonywania działań w naszym kodzie.  
+ 
+### Pokażmy na przykładzie gdzie dodajmy dwie liczby: 
 * W podejściu imperatywnym dodajemy liczby i tworzymy wynik. Skupiamy się na tym co chcemy zrobić.
 * W podejściu funkcyjnym dodane liczby to jest wynik. (drobna, a jednak znaczna różnica o czym się zaraz przekonamy)
 
