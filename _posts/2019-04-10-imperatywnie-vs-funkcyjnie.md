@@ -87,12 +87,14 @@ zostanie zwrócony obiekt **Infinity**, na którym możemy działać dalej z nas
 // Na początek imperatywny przykład
 fun buyBook(bookName: String, creditCard: CreditCard): Book {
     val book = Book(name = bookName)
-    creditCard.performPayment(book.price)
+    creditCard.performPayment(book.price) // efekt uboczny 
     return book
 }
 ```
 
-Powyższy kod jest trudny do przetestowania. Musielibyśmy sobie zamockować proces weryfikacji w banku, czy karta w ogóle istnieje, czy posiada środki na koncie i tak dalej. Dopiero po tym zwracamy film. Zróbmy to trochę inaczej. Co jeśliby przetestować to bez kontaktu z bankiem? Moglibyśmy powiązać płatność z książką.
+Mamy tutaj funkcję `performPayment`, która mogłaby zwracać Unit, czyli odpowiednik Javowego void. Jest to całkiem dobry znak, że funkcja nie jest czysta. Ma ona efekty uboczne. Moglibyśmy trafić na moment, w którym serwis od jakiego jesteśmy zależy nie odpowiada, albo po prostu jest coś z nim nie tak. W programowaniu funkcyjnym jest wiele struktur, koncepcji, które służą do ukrywania efektów ubocznych takie jak Try, Either, Option, IO oraz dużo więcej. Są to takie monadyczne struktury do tworzenia wrappera do operacji jaką wykonujemy. Oprócz wrappowania mają one zawsze jakiś określony efekt. Choćby efekt braku danych co jest obsługiwane przez Optional w standardowej Javie, albo poprzez Option w vavrze. W Kotlinie to samo mamy out-of-box. Non-Nullability jest wbudowane w język.
+
+W naszym poniższym przykładzie stworzymy sobie coś co nazwiemy `Purchase`. Mogłoby to być zastąpione poprzez Tuple, albo Pair, czyli taki bardziej generyczny kontener na łączenie różnych elementów ze sobą, aby tworzyły inny obiekt. Chodzi o to, aby stworzyć taki byt umożliwiający przekazywanie obiektu całościowo. Wracając jeszcze na chwilkę do powyższego kodu jest on dość trudny do przetestowania. Musielibyśmy sobie zamockować proces weryfikacji w banku, czy karta w ogóle istnieje, czy posiada środki na koncie i tak dalej. Dopiero po tym zwracamy film. Możemy zrobić to trochę inaczej. Co jeśliby przetestować to bez kontaktu z bankiem? Moglibyśmy powiązać płatność z książką.
 
 ```kotlin
 // Bardziej funkcyjny przykład
