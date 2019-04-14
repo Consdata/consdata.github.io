@@ -76,13 +76,10 @@ fun divide(a: Int, b: Int) = a / b.toFloat()
 multiply(123456789, 123456789) // 1.52415794E16
 divide(123456789, 0) // Infinity
 
-result.isInfinite().maybe { print("You should learn the basics of math, probably.") }
 ```
 
 W tym momencie dla każdej możliwej wartości będzie ten sam wynik. Również w przypadku poprzedniego wyjątku teraz 
-zostanie zwrócony obiekt **Infinity**, na którym możemy działać dalej z naszym kodem. Można użyć extension function z Kotlina, które pozwala rozszerzyć każdą metodę o dodatkowe funkcjonalności. W tym przypadku zaciągnęliśmy biblioteką Arrow, która zrobiła za nas trochę magii `maybe { ... }`, które zwraca `none()` dla braku wartości lub `some()` jeśli coś jest.
-
-Gdy wiemy czego się spodziewać po funkcji i zawsze zwraca ona prawidłową wartość można nazwać ją czystą. Znaczy to tyle, że takie pure functions nie mają żadnych efektów ubocznych. To co zwraca zależy tylko i wyłącznie od parametrów jakie podaliśmy. Dobrym przykładem są funkcje z klasy Math. Gdzie biorąc `sqrt(2.0)` wiemy, że wynikiem jest zawsze jakiś obiekt typu Double (jak było wcześniej powiedziane w Kotlinie wszystko jest obiektem również prymitywy, których bądź co bądź po prostu nie ma).
+zostanie zwrócony obiekt **Infinity**, na którym możemy działać dalej z naszym kodem. Gdy wiemy czego się spodziewać po funkcji i zawsze zwraca ona prawidłową wartość można nazwać ją czystą. Znaczy to tyle, że takie pure functions nie mają żadnych efektów ubocznych. To co zwraca zależy tylko i wyłącznie od parametrów jakie podaliśmy. Dobrym przykładem są funkcje z klasy Math. Gdzie biorąc `sqrt(2.0)` wiemy, że wynikiem jest zawsze jakiś obiekt typu Double.
 
 ## To jak pisać bardziej funkcyjnie?
 
@@ -105,10 +102,11 @@ fun buyBook(bookName: String, creditCard: CreditCard): Pair<Book, Payment> {
     return Pair(book, payment)
 }
 
-class Payment(val creditCard: CreditCard, val price: BigDecimal)
-class Book(val name: String, val price: BigDecimal)
+data class Purchase(val book: String, val payment: Payment)
+data class Payment(val creditCard: CreditCard, val price: BigDecimal)
+data class Book(val name: String, val price: BigDecimal)
 
-// W Javie użylibyśmy Tuple od Vavra
+// Można też użyć Pair od Kotlina oraz Tuple od Javy (Vavr)
 ```
 
 Zauważ, że teraz nie obchodzi nas jak zaaraguje bank. Czy karta zostanie przyjęta, czy odrzucona - nie jest to istotne w tym kontekście. Można też zmodyfikować ten kod i umożliwić kupno różnych przedmiotów. Po czym agregować płatności i dopiero pod koniec wysłać zapytanie do banku. Przetestowanie powyższego kodu jednostkowo jest mega proste.
