@@ -98,13 +98,13 @@ W naszym poniższym przykładzie stworzymy sobie coś co nazwiemy `Purchase`. Mo
 
 ```kotlin
 // Bardziej funkcyjny przykład
-fun buyBook(bookName: String, creditCard: CreditCard): Pair<Book, Payment> {
+fun buyBook(bookName: String, creditCard: CreditCard): Purchase {
     val book = Book(name = bookName)
     val payment = Payment(creditCard, book.price)
-    return Pair(book, payment)
+    return Purchase(book, payment)
 }
 
-data class Purchase(val book: String, val payment: Payment)
+data class Purchase(val book: Book, val payment: Payment)
 data class Payment(val creditCard: CreditCard, val price: BigDecimal)
 data class Book(val name: String, val price: BigDecimal)
 
