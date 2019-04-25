@@ -1,3 +1,12 @@
+layout:    post
+title:     "Korzyści wynikające użycia Node Version Manager"
+date:      2019-04-25 10:11:00 +0100
+published: false
+author:    Krzysztof Czechowski
+tags:
+    - node
+
+
 # Pare zdań dla wygodnej zmiany wersji node
 
 
