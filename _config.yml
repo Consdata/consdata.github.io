@@ -12,6 +12,9 @@ sass:
   sass_dir: _sass
   style: compressed
 
+disqus:
+  shortname: consdata-tech
+
 # Build settings
 markdown: kramdown
 plugins:
