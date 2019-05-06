@@ -2,7 +2,7 @@
 layout:    post
 title:     "Przykłady refatoryzacji na podstawie książki Martina Fowlera i Kenta Becka 'Refactoring'"
 published: false
-date:      2019-04-29 9:00:00 +0100
+date:      2019-05-06 9:15:00 +0100
 author:    sucuncu
 tags:
     - refaktoryzacja
@@ -12,11 +12,11 @@ tags:
 Książka "Refactoring" Martina Fowlera i Kenta Becka została po raz pierwszy wydana w 1999 roku i często określana jest jako pozycja wybitna, ponadczasowa, jako must read każdego programisty. 
 Dodatkowo w tym roku wyszła jej druga edycja. Po co? 
 
-Martin podkreśla przecież, że notatki z lat dziewięćdziesiątych, które tworzył i ogólnie zasady refaktoryzacji wciąż są aktualne i wciąż sam ich używa. Mimo to wszystkie jej rozdziały zostały przepisane, a przede wszystkim zmienił się język wykorzystany w przykładach- wtedy wybrali Javę, tym razem postawili na JavaScript.
+Martin podkreśla przecież, że notatki z lat dziewięćdziesiątych, które tworzył i ogólnie zasady refaktoryzacji wciąż są aktualne i wciąż sam ich używa. Mimo to wszystkie jej rozdziały zostały przepisane, a przede wszystkim zmienił się język wykorzystany w przykładach - wtedy wybrali Javę, tym razem postawili na JavaScript.
 
 Dominująca część tej pozycji to katalog reguł refaktoryzacji wraz z motywacją, sposobem jej wykonania i oczywiście kodem. 
 Zanim jednak tam dotrzemy, Fowler próbuje wytłumaczyć, po co w ogóle refaktoryzować i kiedy to robić.
-I to, co najbardziej wyniosłam z tej lektury to podejście, które przewija się w niej bardzo często:  mianowicie, że refaktoryzacja powinna być "częścią naturalnego flow programisty". 
+I to, co najbardziej wyniosłam z tej lektury to podejście, które przewija się w niej bardzo często: mianowicie, że refaktoryzacja powinna być "częścią naturalnego flow programisty". 
 
 Gdy podchodzimy do zadania, chcemy dodać nową funkcjonalność, powinniśmy móc ją wprowadzić w zastany kod w sposób łatwy i ładny. Jeśli jednak jego stan nam na to nie pozwala, może powinniśmy pokusić się o jego reorganizację, tak żebyśmy mogli później szybko i bez wyrzutów sumienia wprowadzać zmiany. Bardzo trafnie opisuje to cytat:
 
@@ -48,7 +48,7 @@ function calculateVelocity(exhaustVelocity, massFraction){
 }
 ```
 
-Następnie wprowadzimy strukturę służącą do komunikacji.
+Następnie wprowadzimy strukturę służącą do komunikacji (Introduce Parameter Object).
 
 ```typescript
 function solveIdealRocketEquation(specificImpulse, initialMass, finalMass) {
@@ -94,7 +94,7 @@ function aggregateStarsData(stars){
 	    }
 	totalMass += s.mass
     }
-return {highestTemperature: highestTemperature, totalMass: totalMass}
+    return {highestTemperature: highestTemperature, totalMass: totalMass}
 }
 ```
 W powyższym przykładzie obliczamy łączną masę gwiazd oraz znajdujemy gwiazdę, której temperatura jest najwyższa. Wyliczenia te przetwarzane są w tej samej pętli, chociaż są od siebie niezależne. Minusem tego podejścia jest to, że za każdym razem, gdy będziemy chcieli taką pętlę zmodyfikować, będziemy musieli zrozumieć obie te rzeczy. Podzielmy ją więc na dwie, tak abyśmy mogli próbować zrozumieć tylko tę część, którą musimy zmodyfikować (Split Loop).
@@ -134,7 +134,8 @@ function totalMass(stars){
 	let totalMass = 0;
 	for (const s of stars) {
 		totalMass += s.mass
-	}	
+	}
+	return totalMass;
 }
 
 ```
@@ -157,4 +158,4 @@ function totalMass(stars){
 
 "Refactoring" Fowlera i Becka to książka, którą na pewno docenią osoby, które pracują przy dużych i długofalowych projektach. Wtedy bowiem potrzeba refaktorowania jest bezdyskusyjna, jednak jest on czasochłonny i ryzykowny. Łatwo wpaść w pułapkę, w której zmiany, które dodajemy, wprowadzają bałagan do kodu i tłumaczone są pośpiechem. Jednak czas, który zaoszczędzimy przy jej dodawaniu, zostanie zjedzony w całości, a pewnie i przekroczony, gdy kolejna osoba będzie musiała wejść w nasze klasy i zrozumieć, jak to właściwie działa.
 
-Podejdźmy więc do problemu zdrowo i po prostu- zawsze zostawiajmy kod choć odrobinę lepszym, niż ten który zastaliśmy;)
+Podejdźmy więc do problemu zdrowo i po prostu - zawsze zostawiajmy kod choć odrobinę lepszym, niż ten który zastaliśmy;)
