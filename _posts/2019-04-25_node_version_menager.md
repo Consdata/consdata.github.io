@@ -13,7 +13,7 @@ JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje si
 
 Dlatego tym bardziej warto zainteresować się rozwiązaniami które mają na celu ułatwić nam życie.
 Jednym z takich rozwiązań jest nvm czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
-Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami Node nie wymagające od nas uprawnień administratora.
+Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami Node niewymagające od nas uprawnień administratora.
 
 ## Zalety
 \+ instalacja nie wymaga uprawnień root'a
