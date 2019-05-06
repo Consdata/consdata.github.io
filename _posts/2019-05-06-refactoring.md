@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Przykłady refatoryzacji na podstawie książki Martina Fowlera i Kenta Becka 'Refactoring'"
-published: false
+published: true
 date:      2019-05-06 9:15:00 +0100
 author:    sucuncu
 tags:
