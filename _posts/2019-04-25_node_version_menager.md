@@ -9,10 +9,10 @@ tags:
 
 
 # Krótkie wprowadzenie do nvm
-JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień w którym nie powstał nowy framework do JS’a jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu i zmieniające to jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js i różne silniki w przeglądarkach i mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
+JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JS’a jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
 
-Dlatego tym bardziej warto zainteresować się rozwiązaniami które mają na celu ułatwić nam życie.
-Jednym z takich rozwiązań jest nvm czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
+Dlatego tym bardziej warto zainteresować się rozwiązaniami, które mają na celu ułatwić nam życie.
+Jednym z takich rozwiązań jest nvm, czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
 Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami Node niewymagające od nas uprawnień administratora.
 
 ## Zalety
@@ -37,11 +37,21 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 
       nvm ls-remote
 
+    Zwróci nam wynik w postaćl listy dostępnych wersji z zaznaczoną obecnie używaną.
+
+      v0.1.14
+      ...
+      v10.15.0
+      ->  v10.15.1
+      v10.15.2
+      ...
+      v12.2.0
+
 - instalacja najnowszej wersji Node
 
       nvm install Node
 
-- instalacja konkretnej wersji Node (po instalacji aktualnie używaną wersją jest ta ostatnio zainstalowana)
+- instalacja konkretnej wersji Node (po instalacji aktualnie używaną wersją jest ta ostatnio zainstalowana).
 
       nvm install {VERSION}
 
@@ -64,12 +74,13 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 
 ### Ponadto nvmrc.
 Warto pamiętać, że w ramach projektu możemy łatwo ustalić jak wersja Node ma być wykorzystywana, a nvm zajmie się resztą.
-Do projektu wytarczy dodać plik nvmrc.
+Do projektu wystarczy dodać plik nvmrc.
 
       9.0.1
-i wystarczy
+
+i wykonać polecenie
 
       nvm use
 
-### Warto pamiętać, że
-Nvm dodaje swoje 5 groszy do .bashrc co spowalnia dzialanie termianala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt który chcemy ponosić.
+### Uwaga na koniec
+Nvm zwiększa objętość pliku .bashrc co spowalnia dzialanie termianala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
