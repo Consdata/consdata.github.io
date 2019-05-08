@@ -8,7 +8,7 @@ tags:
     - node
 
 
-# Krótkie wprowadzenie do nvm
+# Krótkieee wprowadzenie do nvm
 JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JS’a jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
 
 Dlatego tym bardziej warto zainteresować się rozwiązaniami, które mają na celu ułatwić nam życie.
@@ -58,6 +58,16 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 - wylistowanie wszytskich zainstalowanych wersji
 
       nvm ls
+      
+    zwraca nam listę aktualnie zainstalowanych wersji
+    
+      v8.6.0
+      ->  v10.15.1
+      v12.1.2
+      default -> 10.* (-> v10.15.1)
+      node -> stable (-> v10.15.1) (default)
+      stable -> 10.15 (-> v10.15.1) (default)
+
 
 - użycie konkretnej wersji
 
@@ -83,4 +93,4 @@ i wykonać polecenie
       nvm use
 
 ### Uwaga na koniec
-Nvm zwiększa objętość pliku .bashrc co spowalnia dzialanie termianala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
+Nvm zwiększa objętość pliku .bashrc co spowalnia działanie termianala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
