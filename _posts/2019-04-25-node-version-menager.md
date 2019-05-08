@@ -119,7 +119,7 @@ Cel jest prosty - umożliwić nam szybkie i łatwe przeskakiwanie między wersja
 
 ### Ponadto .nvmrc.
 Warto pamiętać, że w ramach projektu możemy łatwo ustalić jak wersja Node ma być wykorzystywana, a nvm zajmie się resztą.
-Do projektu wystarczy dodać plik nvmrc.
+Do projektu wystarczy dodać plik .nvmrc.
 
       9.0.1
 
