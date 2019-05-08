@@ -129,3 +129,6 @@ i wykonać polecenie
 
 ### Uwaga na koniec
 Nvm zwiększa objętość pliku .bashrc co spowalnia działanie terminala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
+
+### Link do projektu
+<https://github.com/nvm-sh/nvm/blob/master/README.md>
