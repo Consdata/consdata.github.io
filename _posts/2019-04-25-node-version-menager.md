@@ -1,24 +1,26 @@
+---
 layout:    post
-title:     "Korzyści wynikające użycia Node Version Manager"
-date:      2019-05-10 14:00:00 +0100
+title:     "Korzyści wynikające użycia z Node Version Manager"
+date:      2019-04-30 14:00:00 +0100
 published: true
 author:    kczechowski
 tags:
     - nvm
     - node
+---
 
-Krótkie wprowadzenie do nvm
+## Krótkie wprowadzenie do nvm
 
 JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JS’a jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
 
 Dlatego tym bardziej warto zainteresować się rozwiązaniami, które mają na celu ułatwić nam życie.
-Jednym z takich rozwiązań jest nvm, czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
-Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami Node niewymagające od nas uprawnień administratora.
+Jednym z nich jest nvm, czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
+Cel jest prosty - umożliwić nam szybkie i łatwe przeskakiwanie między wersjami Node niewymagające uprawnień administratora.
 
 ## Zalety
 \+ instalacja nie wymaga uprawnień root'a,
 
-\+ dostępne wiele wersji Node,
+\+ dostęp do wielu wersji Node,
 
 \+ szybkie i wygodne zmiany wersji noda,
 
@@ -33,11 +35,11 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 
 ## Podstawowe polecenia nvm
 
-- wylistowanie wszytskich dostępnych wersji
+- wylistowanie wszystkich dostępnych wersji
 
       nvm ls-remote
 
-    Zwróci nam wynik w postaćl listy dostępnych wersji z zaznaczoną obecnie używaną.
+    Zwróci nam wynik w postaci listy dostępnych wersji z zaznaczoną obecnie używaną.
 
       v0.1.14
       ...
@@ -75,7 +77,7 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
       Checksums matched!
       Now using node v8.6.0 (npm v5.3.0)
 
-- wylistowanie wszytskich zainstalowanych wersji
+- wylistowanie wszystkich zainstalowanych wersji
 
       nvm ls
 
@@ -89,7 +91,7 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 
       nvm use Node {VERSION}
       
-    vnm potwierdzi nam zmianę wersjii
+    nvm potwierdzi nam zmianę wersji
     
       $ nvm use 12.2.0
       Now using node v12.2.0 (npm v6.9.0)
@@ -99,7 +101,7 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
 
       nvm run {VERSION} index.js
       
-    tu również nie będziemy mieć wątpliwości z jaką wersją uruchomiliśmy aplikacje
+    tu również nie będziemy mieć wątpliwości z jaką wersją uruchomiliśmy aplikację
     
       $ nvm run 8.6.0 index.js 
       Running node v8.6.0 (npm v5.3.0)
@@ -115,7 +117,7 @@ Cel jest prosty umożliwić na szybkie i latwe przeskakiwanie między wersjami N
       Uninstalled node v8.6.0
 
 
-### Ponadto nvmrc.
+### Ponadto .nvmrc.
 Warto pamiętać, że w ramach projektu możemy łatwo ustalić jak wersja Node ma być wykorzystywana, a nvm zajmie się resztą.
 Do projektu wystarczy dodać plik nvmrc.
 
@@ -126,4 +128,4 @@ i wykonać polecenie
       nvm use
 
 ### Uwaga na koniec
-Nvm zwiększa objętość pliku .bashrc co spowalnia działanie termianala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
+Nvm zwiększa objętość pliku .bashrc co spowalnia działanie terminala, trzeba się zastanowić czy na środowisku produkcyjnym jest to koszt, który chcemy ponosić.
