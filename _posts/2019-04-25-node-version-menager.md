@@ -60,6 +60,22 @@ Cel jest prosty - umożliwić nam szybkie i łatwe przeskakiwanie między wersja
       Computing checksum with sha256sum
       Checksums matched!
       Now using node v12.2.0 (npm v6.9.0)
+      
+- instalacja najnowszej wersji oznaczonej jako Long-term support
+
+      nvm install --lts
+      
+    poniżej rezultat
+    
+       $ nvm install --lts
+       Installing latest LTS version.
+       Downloading and installing node v10.15.3...
+       Downloading https://nodejs.org/dist/v10.15.3/node-v10.15.3-linux-x64.tar.xz...
+       ######################################################################### 100,0%
+       Computing checksum with sha256sum
+       Checksums matched!
+       Now using node v10.15.3 (npm v6.4.1)
+
 
 - instalacja konkretnej wersji Node (po instalacji aktualnie używaną wersją jest ta ostatnio zainstalowana)
 
