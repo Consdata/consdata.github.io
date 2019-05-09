@@ -91,6 +91,11 @@ Cel jest prosty - umożliwić nam szybkie i łatwe przeskakiwanie między wersja
       Checksums matched!
       Now using node v8.6.0 (npm v5.3.0)
 
+- przestawienie domyślnej wersji Node
+
+      $ nvm alias default 10.15.1
+      default -> 10.15.1 (-> v10.15.1)
+
 - wylistowanie wszystkich zainstalowanych wersji
 
       nvm ls
