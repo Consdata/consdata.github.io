@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Korzyści wynikające użycia z Node Version Manager"
-date:      2019-05-10 14:00:00 +0100
+date:      2019-05-09 17:00:00 +0100
 published: true
 author:    kczechowski
 tags:
@@ -9,25 +9,21 @@ tags:
     - node
 ---
 
-JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JS’a jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
+JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JSa jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.
 
 Dlatego tym bardziej warto zainteresować się rozwiązaniami, które mają na celu ułatwić nam życie.
 Jednym z nich jest nvm, czyli Node Version Manager, który ma nam pomóc zarządzać wersjami Node.js.
 Cel jest prosty - umożliwić nam szybkie i łatwe przeskakiwanie między wersjami Node niewymagające uprawnień administratora.
 
 ## Zalety
-\+ instalacja nie wymaga uprawnień root'a,
-
-\+ dostęp do wielu wersji Node,
-
-\+ szybkie i wygodne zmiany wersji noda,
-
+\+ instalacja nie wymaga uprawnień roota,\\
+\+ dostęp do wielu wersji Node,\\
+\+ szybkie i wygodne zmiany wersji noda,\\
 \+ możliwość wykorzystania różnych wersji Node dla różnych projektów.
 
 ## Wady
 
-\- nvm manipuluje .bashrc,
-
+\- nvm manipuluje .bashrc,\\
 \- lag na starcie bash.
 
 
