@@ -19,22 +19,19 @@ Cechy imperatywnego kodu:
 
 * zmieniający się stan podczas każdej iteracji
 * kolejność wykonywania jest ważna (step-by-step)
-* wywołujemy funkcje, pętle, warunki
 
-Mówiąc o imperatywnym podejściu nie można nie wspomnieć o najbardziej popularnym z paragymatów, czyli obiektówce. Skupiamy się tutaj na hierarchii klas, enkapsulacji oraz wielu, wielu innych elementach przekraczających zakres tego wpisu. Generalnie myślimy w kontekście obiektów. Wbrew pozorom większość popularnych języków obiektowych wspiera/wywodzi się właśnie z imparatywnego/proceduralnego podejścia. Aby przejść z tego paradygmatu na ten bardziej matematyczny/funkcyjny trzeba zmienić myślenie. 
-
-Podchodząc do programowania funkcyjnego nie myślimy już o obiektach. Obiektem uwielbienia stają się tutaj funkcje. Główną różnicą pomiędzy imperatywnym, a funkcyjnym jest to, że w tym pierwszym przypisujemy wartości zmiennym oraz mutujemy je, a w funkcyjnym zwracamy wartość w bezstanowy sposób. Dzięki temu możemy po prostu używać funkcji patrząc na ich `input` oraz `output`.  
+Główną różnicą pomiędzy kodem imperatywnym, a funkcyjnym jest to, że w tym pierwszym zmieniamy stan obiektów, a w funkcyjnym zwracamy wartość w bezstanowy sposób. Dzięki temu możemy po prostu używać funkcji patrząc na ich `input` oraz `output`.
 
 Cechy funkcyjnego kodu: 
 
-* stan nie istnieje
-* kolejność wykonywania nie jest ważna (często może być asynchroniczna)
+* bezstanowy
+* kolejność wykonywania nie zawsze jest ważna
 
-Główną różnicą jest tutaj to, że fukcyjne programy są bardziej ekspresyjne. Piszemy mniej kodu robiąc to samo co w imperatywnym. Ponadto dzięki niemutowalności oraz większej kontroli nad efektami ubocznymi nasze aplikacje są bardziej deterministyczne. Dzięki czemu czasami uciekniemy od wielowątkowych problemów jak race-conditions, deadlocks oraz inne. Jak i również nie musimy już przejmować się kolejnością wykonywania działań w naszym kodzie.  
- 
-### Pokażmy na przykładzie gdzie dodajmy dwie liczby: 
+Główną różnicą jest tutaj to, że fukcyjne programy są bardziej czytelne. Piszemy mniej kodu robiąc to samo co w imperatywnym. Ponadto dzięki niemutowalności oraz większej kontroli nad efektami ubocznymi można łatwiej przewidzieć wynik programu. Czasami dzięki temu można uciec od wielowątkowych problemów jak race-conditions, deadlocks oraz inne. Jak i również nie musimy już przejmować się kolejnością wykonywania działań w naszym kodzie.
+
+### Przykład dodawania dwóch liczb
 * W podejściu imperatywnym dodajemy liczby i tworzymy wynik. Skupiamy się na tym co chcemy zrobić.
-* W podejściu funkcyjnym dodane liczby to jest wynik. (drobna, a jednak znaczna różnica o czym się zaraz przekonamy)
+* W podejściu funkcyjnym dodane liczby to jest wynik.
 
 ### Imperatywny przykład
 Chcemy tylko nieparzyste liczby: 
@@ -48,14 +45,14 @@ for (index in 0..numbers.lastIndex) {
     if (item % 2 != 0) odds.add(item)
 }
 ```
-Powyższy kod jest zbudowany z wyrażeń. Coś bierzemy, coś dodajemy, coś zmieniamy, coś warunkujemy. Mutujemy zmienne przez co kod nie jest bezpieczny. W obecnych funkcyjnych czasach mimo wszystko rzadko spotyka się powyższy kod i dobrze, bo jest on kompletnie nieczytelny. Skupiamy się tutaj na tym co chcemy zrobić. Jest to po prostu seria mutacji oddzielonych od siebie warunkami.
+Powyższy kod jest zbudowany z wyrażeń. Skupiamy się tutaj na tym co chcemy zrobić. Jest to po prostu seria mutacji oddzielonych od siebie warunkami.
 
 ### Funkcyjny przykład
 ```kotlin
 val numbers = listOf(1, 2, 3, 4, 5)
 val odds = numbers.filter { it % 2 != 0 }
 ```
-Teraz coś z tym większość z nas ma więcej styczności, czyli bardziej funkcyjny kod. Skupiamy się na tym co chcemy osiągnać.
+Bardziej funkcyjny przykład. Skupiamy się na tutaj na tym co chcemy osiągnać.
 
 ## Czy da się napisać program bez efektu ubocznego? 
 Krótka odpowiedź. Nie da się. Chodzi nam bardziej o to, żeby nie mieć obserwowalnych efektów ubocznych. Co to znaczy? Wyjaśnimy sobie już za chwilkę. Zazwyczaj jak piszemy apkę to mamy widoczny efekt - wynik. Zapisaliśmy coś do bazy danych, wysłaliśmy coś po HTTPie, wrzuciliśmy jakiś event na kolejkę, wygenerowaliśmy raport i tak dalej. Integrujemy się ze światem zewnętrznym. W programowaniu funkcyjnym chodzi o odłożenie efektów ubcznych do czasu  wykonania obliczeń, a nie podczas ich.
