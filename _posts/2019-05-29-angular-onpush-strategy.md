@@ -17,11 +17,7 @@ Załóżmy, że mamy przed sobą kod aplikacji odpowiedzialnej za zarządzanie h
 
 //tutaj zdjęcie komponentów
 
-Angular dla każdego komponentu tworzy odpowiadający jemu (komponentowi) ChangeDetector. Uzupełnimy więc drzewo komponentów, żeby bardziej zobrazować tę sytuację.
-
-// drugie zdjecie z changedetectorami
-
-Widząc jak to wygląda, możemy przejść dalej: czyli jak to działa.
+Angular dla każdego komponentu tworzy odpowiadający jemu (komponentowi) ChangeDetector. Przejdźmy dalej, czyli jak to działa?
 
 ### Jak to działa?
 Domyślnie ChangeDetector nasłuchuje na każdą zmianę stanu aplikacji - zmianę inputów, zmianę modelu prezentowanego na templatce, wywołania asynchroniczne, zdarzenia DOM, interwały. Każda taka zmiana powoduje porównanie obecnie prezentowanych w drzewie DOM wartości do tych, które przechowuje komponent - w momencie wykrycia różnic komponent oznaczany jest jako "brudny" - proces ten nazywa się "dirty checking". Następnie dokonywana jest projekcja modelu na drzewo DOM, czyli faktyczne zaktualizowanie widoku.
@@ -30,9 +26,9 @@ Domyślnie ChangeDetector nasłuchuje na każdą zmianę stanu aplikacji - zmian
 Detekcja zmian w każdym świeżo utworzonym komponencie ustawiona jest na wartość ChangeDetectionStrategy.Default, co przekłada się na detekcję zmian strategią CheckAlways. Strategia ta sprawia, że podczas każdego zmianu stanu aplikacji sprawdzane jest całe drzewo komponentów. Wyobraźmy sobie sytuację, kiedy zdarzenie DOM zostało wyemitowane przez CowComponent. Angular zanim sprawdziłby komponent, który faktycznie wyemitował zdarzenie, musiałby sprawdzić wszystkie komponenty, zgodnie z utworzonym przez siebie drzewem. Spójrzmy na obrazek:
 
 // zdjecie obrazujace sprawdzanie komponentow
-Strzałki obrazują kierunek przechodzenia przez drzewo mechanizmu detekcji. Jest to prosty przykład, gdyż drzewo jest bardzo proste. Wyobraźmy sobie jednak drzewo zbudowane z setek tysięcy komoponentów, a każdy komponent emitowałby parę zdarzeń na sekundę. Z każdą zmianą Angular musiałby na nowo przeszukać całe drzewo komponentów celem znalezienia tego komponentu, który wyemitował zmianę. Dość sporo obliczeń, czyż nie?
+Strzałki obrazują kierunek przechodzenia przez drzewo mechanizmu detekcji. Jest to prosty przykład, gdyż drzewo jest bardzo proste. Wyobraźmy sobie jednak drzewo zbudowane z setek komoponentów. Z każdą zmianą Angular musiałby na nowo przeszukać całe drzewo komponentów celem znalezienia tego komponentu, który wyemitował zmianę. Dość sporo obliczeń, czyż nie?
 ## Strategia onPush
-Na szczęście Angular pozwala nam na zmianę domyślnej strategii detekcji zmian. Jeżeli nie chcemy korzystać z domyślnego mechanizmu, to na ratunek przychodzi nam strategia onPush! Strategia ta mówi nam, że komponent zależny jest tylko i wyłącznie od swoich inputów. Taki komponent nazywamy "czystym". Zmiana propagowana jest w momencie zmiany referencji inputów komponentu jak i w przypadku wyemitowania zdarzenia DOM w szablonie komponentu (np. kliknięcie w przycisk - event onclick). Co więcej, komponent emitujący zmianę z wykorzystaniem strategii onPush powiadamia mechanizm detekcji Angulara, że to właśnie on wyemitował zmianę! To drastycznie zmniejsza koszt przeszukania drzewa komponentów, gdyż Angular wie, którego komponentu szukać :). Zdjęcie poniżej pozwoli zobrazować tę sytuację.
+Na szczęście Angular pozwala nam na zmianę domyślnej strategii detekcji zmian. Jeżeli nie chcemy korzystać z domyślnego mechanizmu, to na ratunek przychodzi nam strategia onPush! Strategia ta mówi nam, że komponent zależny jest tylko i wyłącznie od swoich inputów. Taki komponent nazywamy "czystym". Zmiana propagowana jest w momencie zmiany referencji inputów komponentu jak i w przypadku wyemitowania zdarzenia DOM w szablonie komponentu (np. kliknięcie w przycisk - event onclick). Co więcej, komponent emitujący zmianę z wykorzystaniem strategii onPush powiadamia mechanizm detekcji Angulara, że to właśnie on wyemitował zmianę! To drastycznie zmniejsza koszt przeszukania drzewa komponentów, gdyż Angular wie, którego komponentu szukać, albo który komponent pominąć. Zdjęcie poniżej pozwoli zobrazować tę sytuację.
 // zdjęcie z wywołaniem mechanizmu zmian na jednym komponencie
 
 ### Jak używać?
