@@ -16,17 +16,14 @@ Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecnoś�
 * ekspozycja przypadków brzegowych,
 * ułatwienie zrozumienia działania kodu osobom, które go nie tworzyły.
 
-
 W wielu nowoczesnych aplikacjach internetowych, w tym np. we wnioskach Eximee, **duża część logiki znajduje się po stronie klienckiej**, hipokryzją byłoby pominięcie testów w tak istotnym elemencie aplikacji, bo przecież wiadomo, że najszybciej wychodzą na jaw błędy właśnie po stronie klienckiej. Niemniej nawet przy ogromnej liczbie narzędzi wspomagających proces pisania testów jednostkowych, programiści mogą mieć problem z **wyznaczeniem właśnie tych jednostek**.
 ## Co testować
 Niezależnie od tego jaki framework został użyty w danym projekcie, zawsze możemy z niego wydzielić komponenty. Przeważnie jest to JavaScriptowa klasa z jakimś odniesieniem do szablonu HTML. W praktyce możemy podzielić te komponenty na dwa typy: 
 * **komponent prezentacyjny**, który **nie posiada logiki biznesowej** i jego jedynymi zadaniami są wyświetlenie szablonu na podstawie wejścia i ew. przekazanie jakiegoś zdarzenia (np. kliknięcia, wciśnięcia klawisza itp.) do komponentu nadrzędnego,
 * komponent, który **używa i zarządza innymi komponentami** nie zajmując się jednocześnie zbytnio prezentacją.
 
-
 Brak tego podziału może znacząco utrudnić pisanie testów jednostkowych, co zresztą okaże się bardzo szybko przy próbie napisania ich do słabo zaprojektowanego komponentu.
 Uważam, że testowanie komponentów prezentacyjnych jest zasadne tylko w przypadku, gdy wejście w jakiś sposób zmienia jego zachowanie lub obsługa uaktualnienia widoku jest skomplikowana (np. animacja przeliczając atrybuty elementu w locie). **Najważniejsze jest zwiększenie pokrycia logiki biznesowej.**
-
 
 ## Testowanie logiki biznesowej
 W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu możemy wydzielić logikę, np. do osobnego serwisu lub serwisów. Serwisy testuje się o wiele prościej niż komponenty, ze względu na brak szablonu i jasno zdefiniowane wejścia i wyjścia metod. Niech przykładem będzie komponent wybory daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
@@ -122,22 +119,18 @@ describe('DatePicker', () => {
         fixture = TestBed.createComponent(DatePicker);
     });
 
-
     it('should return formatted date from timestamp', () => {
         // given
         const hostElement = fixture.nativeElement;
         const input: HTMLInputElement = hostElement.querySelector('input');
 
-
         // when
         fixture.componentInstance.value = '2018-07-01';
         fixture.detectChanges();
-
 
         // then
         expect(input.value).toBe('1 lipca 2018');
     });
 });
 ```
-
 Jak widać testy znacząco spuchły, utraciły na czytelności oraz stały się zależne od szablonu. Różnica w liczbie linijek może nie jest kolosalna, ale wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność. Jednocześnie kuszące jest, aby upublicznić metodę "format" tylko na potrzebny testów.
