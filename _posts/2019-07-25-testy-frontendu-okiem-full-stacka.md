@@ -10,13 +10,13 @@ tags:
     - angular
 ---
 
-Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecność frameworków ułatwiających tę czynność w projektach, z którymi stykamy się na co dzień, nie powinna na żadnym chociaż trochę doświadczonym programiście robić wrażenia. Nie trzeba pewnie Ciebie przekonywać, że **jedne z wielu zalet pisania testów jednostkowych**, to:
+Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecność frameworków ułatwiających tę czynność w projektach, z którymi stykamy się na co dzień, nie powinna na żadnym chociaż trochę doświadczonym programiście robić wrażenia. Nie trzeba pewnie Cię przekonywać, że **jedne z wielu zalet pisania testów jednostkowych**, to:
 * zmuszenie twórcy do zastanowienia się nad zadaniem sprawdzanego kodu (co może potencjalnie poprawić architekturę aplikacji),
 * ułatwienie wczesnego wyłapywania błędów,
 * ekspozycja przypadków brzegowych,
 * ułatwienie zrozumienia działania kodu osobom, które go nie tworzyły.
 
-W wielu nowoczesnych aplikacjach internetowych, w tym np. we wnioskach Eximee, **duża część logiki znajduje się po stronie klienckiej**, hipokryzją byłoby pominięcie testów w tak istotnym elemencie aplikacji, bo przecież wiadomo, że najszybciej wychodzą na jaw błędy właśnie po stronie klienckiej. Niemniej nawet przy ogromnej liczbie narzędzi wspomagających proces pisania testów jednostkowych, programiści mogą mieć problem z **wyznaczeniem właśnie tych jednostek**.
+W wielu nowoczesnych aplikacjach internetowych, w tym np. we wnioskach Eximee, **duża część logiki znajduje się po stronie klienckiej**, hipokryzją byłoby pominięcie testów w tak istotnym elemencie aplikacji, bo przecież wiadomo, że najszybciej wychodzą na jaw błędy właśnie tam. Niemniej nawet przy ogromnej liczbie narzędzi wspomagających proces pisania testów jednostkowych, programiści mogą mieć problem z **wyznaczeniem właśnie tych jednostek**.
 ## Co testować
 Niezależnie od tego jaki framework został użyty w danym projekcie, zawsze możemy z niego wydzielić komponenty. Przeważnie jest to JavaScriptowa klasa z jakimś odniesieniem do szablonu HTML. W praktyce możemy podzielić te komponenty na dwa typy: 
 * **komponent prezentacyjny**, który **nie posiada logiki biznesowej** i jego jedynymi zadaniami są wyświetlenie szablonu na podstawie wejścia i ew. przekazanie jakiegoś zdarzenia (np. kliknięcia, wciśnięcia klawisza itp.) do komponentu nadrzędnego,
@@ -76,7 +76,7 @@ describe('FormatterService', () => {
 });
 ```
 
-Zaprojektowany w ten sposób komponent pozwolił na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. Tak wyglądałyby by testy, jeśli zaniedbamy wyżej zaproponowany podział:
+Zaprojektowany w ten sposób komponent pozwolił na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. Tak wyglądałyby by testy, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
 komponent: 
 ```typescript
 @Component({
