@@ -76,7 +76,7 @@ describe('FormatterService', () => {
 });
 ```
 
-Zaprojektowany w ten sposób komponent pozwolił na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. Tak wyglądałyby by testy, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
+Zaprojektowany w ten sposób komponent pozwolił na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. Tak wyglądałyby testy, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
 komponent: 
 ```typescript
 @Component({
