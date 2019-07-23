@@ -6,6 +6,8 @@ date:      2019-07-25 10:00:00 +0100
 author:    mmendlik
 tags:
     - unit test
+    - jasmine
+    - angular
 ---
 
 Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecność frameworków ułatwiających tę czynność w projektach, z którymi stykamy się na co dzień, nie powinna na żadnym chociaż trochę doświadczonym programiście robić wrażenia. Nie trzeba pewnie Ciebie przekonywać, że **jedne z wielu zalet pisania testów jednostkowych**, to:
