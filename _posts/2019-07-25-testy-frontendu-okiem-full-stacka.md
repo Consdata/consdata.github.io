@@ -29,7 +29,8 @@ Uważam, że testy jednostkowe komponentów prezentacyjnych są zasadne tylko w 
 W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu możemy wydzielić logikę, np. do osobnego serwisu, czyli w praktyce klasy odpowiedzialnej za jakąś funkcjonalność z możliwością używania jej w wielu miejsciach (np. serwis zarządzający widocznością popupów w aplikacji). Serwisy testuje się o wiele prościej niż komponenty, ze względu na brak szablonu i związanego z frameworkiem narzutu (serwis może być zwykłą JavaScriptową klasą). Niech przykładem będzie komponent wyboru daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
 
 ## Praktyka na przykładzie Jasmine i Angulara
-Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. Tak wyglądałyby testy, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
+
+Tak wyglądałby komponent, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
 komponent: 
 ```typescript
 @Component({
@@ -42,8 +43,7 @@ export class DatePicker implements OnChanges  {
     @Input value: string;
     formattedValue: string;
 
-
-    constructor(private service: FormatterService ) {
+    constructor() {
     }
     
     ngOnChanges(changes: SimpleChanges): void {
@@ -53,7 +53,6 @@ export class DatePicker implements OnChanges  {
     onValueChange(event: string): void {
         ...
     }
-
 
     private format(string: value): string {
         ...
@@ -88,7 +87,7 @@ describe('DatePicker', () => {
 ```
 Jak widać testy znacząco spuchły, utraciły na czytelności oraz stały się zależne od szablonu. Różnica w liczbie linijek może nie jest kolosalna, ale wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność. Jednocześnie kuszące jest, aby upublicznić metodę "format" tylko na potrzebny testów.
 
-Mając przykładowy komponent:
+Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. 
 ```typescript
 @Component({
     selector: 'date-picker',
