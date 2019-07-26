@@ -26,10 +26,10 @@ Brak tego podziału może znacząco utrudnić pisanie testów jednostkowych, co 
 Uważam, że testy jednostkowe komponentów prezentacyjnych są zasadne tylko w przypadku, gdy wejście w jakiś sposób zmienia jego zachowanie lub obsługa uaktualnienia widoku jest skomplikowana (np. animacja przeliczając atrybuty elementu w locie). **Najważniejsze jest zwiększenie pokrycia logiki biznesowej.**
 
 ## Testowanie logiki biznesowej
-W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu możemy wydzielić logikę, np. do osobnego serwisu, czyli w praktyce klasy odpowiedzialnej za jakąś funkcjonalność z możliwością używania jej w wielu miejsciach (np. serwis zarządzający widocznością popupów w aplikacji). Serwisy testuje się o wiele prościej niż komponenty, ze względu na brak szablonu i związanego z frameworkiem narzutu (serwis może być zwykłą JavaScriptową klasą). Niech przykładem będzie komponent wyboru daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
+W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu możemy wydzielić logikę, np. do osobnego serwisu, czyli w praktyce klasy odpowiedzialnej za jakąś funkcjonalność z możliwością używania jej w wielu miejsciach (np. serwis zarządzający widocznością popupów w aplikacji). Serwisy testuje się o wiele prościej niż komponenty, ze względu na brak szablonu i związanego z frameworkiem narzutu (serwis może być zwykłą JavaScriptową klasą).
 
 ## Praktyka na przykładzie Jasmine i Angulara
-
+Niech przykładem będzie komponent wyboru daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
 Tak wyglądałby komponent, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
 komponent: 
 ```typescript
@@ -85,7 +85,7 @@ describe('DatePicker', () => {
     });
 });
 ```
-Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku. Wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność.
+Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku (TestBed, ComponentFixture). Wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność.
 
 Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. 
 ```typescript
