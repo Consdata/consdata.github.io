@@ -85,7 +85,7 @@ describe('DatePicker', () => {
     });
 });
 ```
-Jak widać testy znacząco spuchły, utraciły na czytelności oraz stały się zależne od szablonu. Różnica w liczbie linijek może nie jest kolosalna, ale wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność. Jednocześnie kuszące jest, aby upublicznić metodę "format" tylko na potrzebny testów.
+Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku. Wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność.
 
 Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. 
 ```typescript
