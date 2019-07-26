@@ -20,7 +20,7 @@ W wielu nowoczesnych aplikacjach internetowych, w tym np. we wnioskach Eximee, *
 ## Co testować
 Niezależnie od tego jaki framework został użyty w danym projekcie, zawsze możemy z niego wydzielić komponenty. Przeważnie jest to JavaScriptowa klasa z jakimś odniesieniem do szablonu HTML. Akurat w tym artykule jako przykład użyty został Angular. W praktyce możemy podzielić te komponenty na dwa typy: 
 * **komponent prezentacyjny**, który **nie posiada logiki biznesowej** i jego jedynymi zadaniami są wyświetlenie szablonu na podstawie wejścia i ew. przekazanie jakiegoś zdarzenia (np. kliknięcia, wciśnięcia klawisza itp.) do komponentu nadrzędnego,
-* komponent, który **używa i zarządza innymi komponentami** nie zajmując się jednocześnie zbytnio prezentacją.
+* komponent, który **używa i zarządza innymi komponentami** nie zajmując się jednocześnie prezentacją.
 
 Brak tego podziału może znacząco utrudnić pisanie testów jednostkowych, co zresztą okaże się bardzo szybko przy próbie napisania ich do słabo zaprojektowanego komponentu.
 Uważam, że testy jednostkowe komponentów prezentacyjnych są zasadne tylko w przypadku, gdy wejście w jakiś sposób zmienia jego zachowanie lub obsługa uaktualnienia widoku jest skomplikowana (np. animacja przeliczając atrybuty elementu w locie). **Najważniejsze jest zwiększenie pokrycia logiki biznesowej.**
