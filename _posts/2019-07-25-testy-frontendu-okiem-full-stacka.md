@@ -2,7 +2,7 @@
 layout:    post
 title:     "Testy jednostkowe frontendu okiem programisty full stack"
 published: true
-date:      2019-07-26 10:00:00 +0100
+date:      2019-07-25 10:00:00 +0100
 author:    mmendlik
 tags:
     - unit test
@@ -32,7 +32,7 @@ W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu m
 Niech przykładem będzie komponent wyboru daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
 Tak wyglądałby komponent, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
 
-###Komponent: 
+### Komponent
 ```typescript
 @Component({
     selector: 'date-picker',
@@ -65,7 +65,7 @@ export class DatePicker implements OnChanges  {
 }
 ```
 
-### Test:
+### Test
 ```typescript
 let fixture: ComponentFixture<DatePicker>;
 describe('DatePicker', () => {
