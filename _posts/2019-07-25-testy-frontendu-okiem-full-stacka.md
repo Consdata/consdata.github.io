@@ -43,7 +43,7 @@ export class DatePicker implements OnChanges  {
     @Input value: string;
     formattedValue: string;
 
-    constructor() {
+    constructor(private datePickerRestService: DatePickerRestService) {
     }
     
     ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +57,10 @@ export class DatePicker implements OnChanges  {
     private format(string: value): string {
         ...
     }
+    
+    private sendValue(value: string): void {
+       this.datePickerRestService.send(value);
+    }
 }
 ```
 
@@ -64,9 +68,20 @@ test:
 ```typescript
 let fixture: ComponentFixture<DatePicker>;
 describe('DatePicker', () => {
+    class DatePickerRestServiceMock implements Partial<DatePickerRestService> {
+        sendValue(): void {
+        }
+    }
+
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [DatePicker]
+            declarations: [DatePicker],
+            providers: [
+              {
+                  provide: DatePickerRestService,
+                  useClass: DatePickerRestServiceMock
+              }
+            ]
         });
         fixture = TestBed.createComponent(DatePicker);
     });
