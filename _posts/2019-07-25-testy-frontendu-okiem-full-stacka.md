@@ -148,4 +148,6 @@ describe('FormatterService', () => {
 
 });
 ```
+Nie trzeba się martwić o dodatkowe zależności, można się skupić tylko na testowaniu funkcjonalności.
+
 Jak widać przy odpowiednim podejściu pisanie testów jednostkowych funkcjonalności na frontendzie nie musi się tak bardzo różnić od tworzenia ich dla części backendowej gdy wie się co i w jaki sposób testować, wtedy samo pisanie testów staje się o wiele prostsze.
