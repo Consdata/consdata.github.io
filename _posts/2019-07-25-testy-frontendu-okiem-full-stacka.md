@@ -41,7 +41,7 @@ Tak wyglądałby komponent, jeśli zaniedbalibyśmy wyżej zaproponowany podzia�
     `
 })
 export class DatePicker implements OnChanges  {
-    @Input value: string;
+    @Input() value: string;
     formattedValue: string;
 
     constructor(private datePickerRestService: DatePickerRestService) {
@@ -114,7 +114,7 @@ Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkc
     `
 })
 export class DatePicker implements OnChanges  {
-    @Input value: string;
+    @Input() value: string;
     formattedValue: string;
 
     constructor(private service: FormatterService ) {
