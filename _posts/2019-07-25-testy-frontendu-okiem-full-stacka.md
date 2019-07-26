@@ -69,7 +69,7 @@ test:
 let fixture: ComponentFixture<DatePicker>;
 describe('DatePicker', () => {
     class DatePickerRestServiceMock implements Partial<DatePickerRestService> {
-        sendValue(): void {
+        send(): void {
         }
     }
 
