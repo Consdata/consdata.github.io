@@ -31,7 +31,8 @@ W pierwszej kolejności powinniśmy się zastanowić nad tym, czy z komponentu m
 ## Praktyka na przykładzie Jasmine i Angulara
 Niech przykładem będzie komponent wyboru daty z formatterem - zakładając, że cała logika znajduje się w komponencie, trzeba będzie zadbać o stworzenie jego instancji ze wszystkimi zależnościami pisząc testy dla formattera, następnie zasymulować zdarzenie wpisania danych w pole tekstowe. Gdyby wydzielono wcześniej osobny serwis do formatowania, to wystarczyłoby przetestować tylko jego logikę. Testy całego komponentu możemy przeprowadzić zaślepiając odpowiednie zależności, co znacznie ułatwi pracę.
 Tak wyglądałby komponent, jeśli zaniedbalibyśmy wyżej zaproponowany podział:
-komponent: 
+
+###Komponent: 
 ```typescript
 @Component({
     selector: 'date-picker',
@@ -64,7 +65,7 @@ export class DatePicker implements OnChanges  {
 }
 ```
 
-test:
+### Test:
 ```typescript
 let fixture: ComponentFixture<DatePicker>;
 describe('DatePicker', () => {
@@ -102,7 +103,9 @@ describe('DatePicker', () => {
 ```
 Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku (TestBed, ComponentFixture). Wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność.
 
-Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem. 
+Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem.
+
+### Komponent 
 ```typescript
 @Component({
     selector: 'date-picker',
@@ -127,7 +130,9 @@ export class DatePicker implements OnChanges  {
 }
 ```
 
-test serwisu formattera mógłby wyglądać następująco:
+Test serwisu formattera mógłby wyglądać następująco:
+
+### Test
 ```typescript
 describe('FormatterService', () => {
 
