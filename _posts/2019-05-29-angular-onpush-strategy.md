@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Angular - detekcja zmian strategią onPush"
-date:      2019-08-05 07:00:00 +0100
+date:      2019-08-08 07:00:00 +0100
 published: true
 author:    kgabara
 tags:
