@@ -62,10 +62,20 @@ kczechowski:
   bio:    Kriss nie wiedział co o sobie napisać, więc zrobię to za niego ja, jego współlokator. Nadzwyczaj skromny mimo wielu zasług w postaci produkcji przyszłych Juniorów z byłych humanistów. Zawsze pomocny, niezastąpiony przewodnik, który nie pozwala zejść na pokuszenie - Hej Kriss! Idziesz z nami naimprezę? - A zrobiłeś już dziś commita? (No i siadasz i coś tam męczysz zamiast tańczyć z dziewczynami na mieście). Koneser pizzy (podobno najlepiej smakuje po 2 w nocy), mistrz mrożonek, smakosz napojów energetycznych. Mógłby częściej zmywać naczynia. Spoko gość.
   image:  kczechowski.jpg
 
+pswierzko:
+  name:   Piotr Świerzko
+  github: swierzy89
+  bio:    Zainspirowany przyszłością. Uzależniony od informacji - swój dzień zaczyna i kończy od przejrzenia newsów o samochodach elektrycznych i rakietach kosmicznych. Założyciel serwisu zapierwszymrazem.pl. Na co dzień full stack developer w Consdacie. Szczególny nacisk kładzie na jakość tworzonych aplikacji zarówno pod względem czystości kodu, jak i designu.
+  image:  pswierzko.jpg
+
+mmendlik:
+  name:   Marcin Mendlik
+  github: martini449
+  bio:    Najswobodniej czuje się w tematach frontedowych, chociaż nie boi się zajrzeć od czasu do czasu pod maskę. Miał okazję przyglądać się i uczestniczyć w niecodziennej wymianie warstwy prezentacji w dwóch różnych, niezależnych systemach dla jednych z największych banków w Polsce. W wolnym czasie gra na konsolach, instrumentach strunowych szarpanych lub nerwach.
+  image:  mmendlik.jpg
+
 kgabara:
   name:   Konrad Gabara
   github: arg3s
   bio:    Fullstack developer wannabe. Ceni sobie rozwój, zarówno w obszarze backendu jak i frontendu. Zasadę życiową, jaką wyznaje jest "Inwestycja w siebie jest jak inwestycja w alkohol - zawsze się zwraca".
   image:  kgabara.jpg
-
-
