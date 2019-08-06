@@ -8,7 +8,7 @@ tags:
     - angular
     - frontend
 ---
-Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasza aplikacja przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian.
+Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian.
 
 
 ## Detekcja zmian
