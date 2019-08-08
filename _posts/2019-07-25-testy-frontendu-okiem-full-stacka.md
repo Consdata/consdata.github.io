@@ -101,7 +101,7 @@ describe('DatePicker', () => {
     });
 });
 ```
-Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku (TestBed, ComponentFixture). Wraz z dodawaniem funkcjonalności i zależności będzie coraz trudniej będzie utrzymać klarowność.
+Jak widać testy są słabo czytelne, ponieważ widoczne są detale implementacyjne związane z działaniem frameworku (TestBed, ComponentFixture). Wraz z dodawaniem funkcjonalności i zależności coraz trudniej będzie utrzymać klarowność.
 
 Zaprojektowany w ten sposób komponent pozwoli na przetestowanie głównej funkcjonalności nie przejmując się zależnościami komponentu i jego szablonem.
 
