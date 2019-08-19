@@ -422,3 +422,5 @@ export class BlueComponent {
 ```
 
 ![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-xx-xx-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg)
+
+Tryb **ShadowDom** daje nam taki sam oczekiwany rezultat jak domyślny tryb. W sekcji `<head>` nie ma już żadnych styli, natomiast są ukryte w **Shadow Root** elementów DOM.
