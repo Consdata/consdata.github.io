@@ -10,12 +10,12 @@ tags:
     - kapsułkowanie
 ---
 
-Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem styli - czyli tym jak style z jednego komponentu wpływają na inne komponenty.  
+Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem (enkapsulacją) stylów - czyli tym jak style z jednego komponentu wpływają na inne komponenty.  
 Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest **Shadow DOM**.
 
 ## Shadow DOM
 
-**Shadow DOM** wprowadza enkapsulację do DOM'u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia od dokumentu, w którym znajduje się dany element. Przykładem może być np. znacznik HTML `<video>`
+Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym znajduje się dany element. Przykładem może być np. elment HTML `<video>`
 
 ```html
 <video width="320" height="240">
@@ -24,10 +24,11 @@ Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest **Shadow D
 </video>
 ```
 
-Po włączeniu opcji wyświetlania Shadow Root w przeglądarce:  
+Po włączeniu opcji wyświetlania Shadow Root w przeglądarce (na przykładzie Google Chrome):  
 ![Devtools Configuration](/assets/img/posts/2019-08-22-view-encapsulation/devtools_config_shadow_dom.jpg)
+<span class="img-legend">DevTools > Settings > Preferences > Elements</span>
 
-możemy zobaczyć z czego tak naprawdę składa się znacznik `<video>`:  
+możemy zobaczyć z czego tak naprawdę składa się element `<video>`:  
 
 ```html
 <video width="320" height="240">
@@ -110,32 +111,35 @@ możemy zobaczyć z czego tak naprawdę składa się znacznik `<video>`:
 </video>
 ```
 
-**Shadow DOM** ukrywa całą implementację pod prostym tagiem.  
-Dzięki temu style zaaplikowane do naszego elementu nie wpływają na inne elementy DOM'u.
+Shadow DOM ukrywa całą implementację pod prostym tagiem.  
+Dzięki temu style zaaplikowane do naszego elementu nie wpływają na inne elementy DOM-u.
+
+![Shadow DOM browser support](/assets/img/posts/2019-08-22-view-encapsulation/shadow-dom-browser-support.png)
+<span class="img-legend">Wsparcie Shadow DOM przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-08-20</span>
 
 ## View Encapsulation w Angularze
 
-Domyślnie Angular korzysta z własnego kapsułkowania styli (**ViewEncapsulation.Emulated**), ale udostępnia jeszcze 2 inne tryby kapsułkowania.  
+Domyślnie Angular korzysta z własnego kapsułkowania stylów (`ViewEncapsulation.Emulated`), ale udostępnia jeszcze 2 inne tryby kapsułkowania (plus jeden deprecated).  
 
 Aby zmienić domyślny tryb kapsułkowania, wystarczy dodać odpowiednią opcję w dekoratorze `@Component`, np.:  
 `encapsulation: ViewEncapsulation.ShadowDom`
 
-Omówimy je na przykładzie kodu z [**projektu demo.**](https://github.com/Michuu93/view-encapsulation-demo)
+Omówimy je na przykładzie kodu z [projektu demo.](https://github.com/Michuu93/view-encapsulation-demo)
 
 Projekt demo składa się z 4 komponentów:
 
-* **app-root** - główny komponent zawierający w sobie pozostałe 3 komponenty
-* **app-red**
-* **app-green**
-* **app-blue**
+* [`app-root`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/app.component.ts) - główny komponent zawierający w sobie pozostałe 3 komponenty
+* [`app-red`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/red-module/red.component.ts)
+* [`app-green`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/green-module/green.component.ts)
+* [`app-blue`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/blue-module/blue.component.ts)
 
-Każdy z komponentów **app-red**, **app-green** oraz **app-blue** składa się z jednego paragrafu z odpowiednim kolorem tekstu dla tego znacznika. Pozwoli to na zobrazowanie nakładania się oraz kapsułkowania styli.
+Każdy z komponentów `app-red`, `app-green` oraz `app-blue` składa się z jednego paragrafu z odpowiednim kolorem tekstu dla tego znacznika. Pozwoli to na zobrazowanie nakładania się oraz kapsułkowania stylów.
 
-### 1. ViewEncapsulation.None
+### ViewEncapsulation.None
 
 Brak kapsułkowania, czyli style utworzone w komponencie są globalne (w sekcji `<head>`).  
 W tym trybie znaczniki HTML i odpowiadające im selektory CSS wyglądają tak samo jak te, które napisaliśmy w kodzie.  
-Może to spowodować niechciane nadpisywanie styli lub dodawanie ich do elementów, które nie posiadają żadnego stylu.
+Może to spowodować niechciane nadpisywanie stylów lub dodawanie ich do elementów, które nie posiadają żadnego stylu.
 
 ```typescript
 import {Component, ViewEncapsulation} from '@angular/core';
@@ -218,11 +222,11 @@ export class BlueComponent {
 </body>
 ```
 
-![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg)
+![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg){:class="img-left"}
 
-Jak widzimy, wszystkie style paragrafów zostały dodane w sekcji `<head>`, co spowodowało nadpisanie tego stylu ostatnim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu **app-green**, który nie posiada żadnego stylu i powinien mieć domyślny kolor.
+Jak widzimy, wszystkie style paragrafów zostały dodane w sekcji `<head>`, co spowodowało nadpisanie tego stylu ostatnim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć domyślny kolor.
 
-### 2. ViewEncapsulation.Emulated (default)
+### ViewEncapsulation.Emulated (default)
 
 Domyślny tryb kapsułkowania w Angularze, w którym style są domknięte w komponencie.  
 W tym trybie style również znajdują się z sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je ze znacznikami HTML pochodzącymi z tego samego komponentu.  
@@ -317,13 +321,13 @@ export class BlueComponent {
 </body>
 ```
 
-![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg)
+![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg){:class="img-left"}
 
 Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami, dzięki czemu uzyskaliśmy oczekiwany efekt - każdy paragraf ma swój kolor zdefiniowany w stylach komponentu.
 
-### 3. ViewEncapsulation.ShadowDom
+### ViewEncapsulation.ShadowDom
 
-Kapsułkowanie oparte na **Shadow DOM** (wymaga wsparcia przeglądarki dla Shadow DOM).
+Kapsułkowanie oparte na Shadow DOM (wymaga wsparcia przeglądarki dla Shadow DOM).
 W tym trybie style nie są dodawane w sekcji `<head>`, a istnieją w **Shadow Root**.  
 **Uwaga!** W tym trybie style rodzica mają wpływ na elementy dziecka (ponieważ style nie posiadają dodatkowych atrybutów i aplikują się do wszystkich elementów z poddrzewa komponentu).
 
@@ -421,14 +425,14 @@ export class BlueComponent {
 </body>
 ```
 
-![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg)
+![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg){:class="img-left"}
 
-Tryb **ShadowDom** daje nam taki sam oczekiwany rezultat jak domyślny tryb. W sekcji `<head>` nie ma już żadnych styli, natomiast są ukryte w **Shadow Root** elementów DOM'u.
+Tryb Shadow DOM daje nam taki sam oczekiwany rezultat jak domyślny tryb. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u.
 
-### ~~4. ViewEncapsulation.Native~~
+### ~~ViewEncapsulation.Native~~
 
-Do niedawna zamiast `ViewEncapsulation.ShadowDom` dostępny był tryb `ViewEncapsulation.Native`. Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu **Shadow DOM**.
+Do niedawna zamiast `ViewEncapsulation.ShadowDom` dostępny był tryb `ViewEncapsulation.Native`. Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu Shadow DOM.
 
 ---
 
-Podsumowując, powinniśmy unikać braku kapsułkowania styli, ponieważ powoduje to często niechciane efekty. Powinniśmy korzystać z domyślnego trybu kapsułkowania jaki oferuje nam Angular, lub z trybu wykorzystującego **Shadow DOM** jeśli mamy ku temu konkretne powody.
+Podsumowując, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty. Powinniśmy korzystać z domyślnego trybu kapsułkowania jaki oferuje nam Angular, lub z trybu wykorzystującego Shadow DOM jeśli mamy ku temu konkretne powody.
