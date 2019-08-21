@@ -2,7 +2,7 @@
 layout:    post
 title:     "View Encapsulation w Angularze - czyli o kapsułkowaniu słów kilka"
 published: true
-date:      2019-08-22 08:00:00 +0100
+date:      2019-08-20 08:00:00 +0100
 author:    mhoja
 tags:
     - angular
@@ -15,7 +15,7 @@ Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest **Shadow D
 
 ## Shadow DOM
 
-Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym znajduje się dany element. Przykładem może być np. elment HTML `<video>`
+Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym znajduje się dany element. Przykładem może być np. element HTML `<video>`
 
 ```html
 <video width="320" height="240">
@@ -133,13 +133,15 @@ Projekt demo składa się z 4 komponentów:
 * [`app-green`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/green-module/green.component.ts)
 * [`app-blue`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/blue-module/blue.component.ts)
 
-Każdy z komponentów `app-red`, `app-green` oraz `app-blue` składa się z jednego paragrafu z odpowiednim kolorem tekstu dla tego znacznika. Pozwoli to na zobrazowanie nakładania się oraz kapsułkowania stylów.
+Każdy z komponentów `app-red`, `app-green` oraz `app-blue` składa się z jednego paragrafu z odpowiednim kolorem tekstu dla tego elementu. Oprócz tego istnieją 3 branche, po jednym dla każdego z omawianych trybów, co pozwoli na zobrazowanie nakładania się oraz kapsułkowania stylów.
 
 ### ViewEncapsulation.None
 
 Brak kapsułkowania, czyli style utworzone w komponencie są globalne (w sekcji `<head>`).  
-W tym trybie znaczniki HTML i odpowiadające im selektory CSS wyglądają tak samo jak te, które napisaliśmy w kodzie.  
+W tym trybie elementy HTML i odpowiadające im selektory CSS wyglądają tak samo jak te, które napisaliśmy w kodzie.  
 Może to spowodować niechciane nadpisywanie stylów lub dodawanie ich do elementów, które nie posiadają żadnego stylu.
+
+W tym przykładzie usunęliśmy styl paragrafu w komponencie `app-green`. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.None)
 
 ```typescript
 import {Component, ViewEncapsulation} from '@angular/core';
@@ -192,6 +194,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
 export class BlueComponent {
 }
 ```
+
+Wynikowy kod HTML:
 
 ```html
 <head>
@@ -222,16 +226,19 @@ export class BlueComponent {
 </body>
 ```
 
-![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg){:class="img-left"}
+![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg)
+<span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Jak widzimy, wszystkie style paragrafów zostały dodane w sekcji `<head>`, co spowodowało nadpisanie tego stylu ostatnim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć domyślny kolor.
+Jak widzimy, oba style paragrafów zostały dodane w sekcji `<head>`, co spowodowało nadpisanie pierwszego stylu drugim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć kolor domyślny.
 
 ### ViewEncapsulation.Emulated (default)
 
 Domyślny tryb kapsułkowania w Angularze, w którym style są domknięte w komponencie.  
-W tym trybie style również znajdują się z sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je ze znacznikami HTML pochodzącymi z tego samego komponentu.  
-Dzięki temu na stronie może istnieć kilka komponentów zawierających znacznik tego samego typu, ale z różnymi stylami.  
+W tym trybie style również znajdują się z sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je z elementami HTML pochodzącymi z tego samego komponentu.  
+Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.  
 **Uwaga!** W tym trybie style rodzica nie mają wpływu na elementy dziecka (ponieważ każdy element otrzymuje własny, unikalny atrybut).
+
+W tym przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue` i usunęliśmy jego style. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated)
 
 ```typescript
 import {Component} from '@angular/core';
@@ -258,12 +265,7 @@ import {Component} from '@angular/core';
     selector: 'app-green',
     template: `
         <p>Green paragraph!</p>
-    `,
-    styles: [`
-        p {
-            color: green;
-        }
-    `]
+    `
 })
 export class GreenComponent {
 }
@@ -275,6 +277,7 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'app-blue',
     template: `
+        <app-green></app-green>
         <p>Blue paragraph!</p>
     `,
     styles: [`
@@ -287,20 +290,17 @@ export class BlueComponent {
 }
 ```
 
+Wynikowy kod HTML:
+
 ```html
 <head>
     <style>
-        p[_ngcontent-dql-c0] {
+        p[_ngcontent-pes-c0] {
             color: red;
         }
     </style>
     <style>
-        p[_ngcontent-dql-c1] {
-            color: green;
-        }
-    </style>
-    <style>
-        p[_ngcontent-dql-c2] {
+        p[_ngcontent-pes-c1] {
             color: blue;
         }
     </style>
@@ -308,28 +308,38 @@ export class BlueComponent {
 
 <body>
     <app-root ng-version="8.2.2">
-        <app-red _nghost-dql-c0="">
-            <p _ngcontent-dql-c0="">Red paragraph!</p>
+        <app-red _nghost-pes-c0>
+            <p _ngcontent-pes-c0>Red paragraph!</p>
         </app-red>
-        <app-green _nghost-dql-c1="">
-            <p _ngcontent-dql-c1="">Green paragraph!</p>
-        </app-green>
-        <app-blue _nghost-dql-c2="">
-            <p _ngcontent-dql-c2="">Blue paragraph!</p>
+        <app-blue _nghost-pes-c1>
+            <app-green _ngcontent-pes-c1>
+                <p>Green paragraph!</p>
+            </app-green>
+            <p _ngcontent-pes-c1>Blue paragraph!</p>
         </app-blue>
     </app-root>
 </body>
 ```
 
-![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg){:class="img-left"}
+![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_result.jpg)
+<span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami, dzięki czemu uzyskaliśmy oczekiwany efekt - każdy paragraf ma swój kolor zdefiniowany w stylach komponentu.
+Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny.
+
+Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0` do stylu oraz do elementu HTML. W ten sposób style dodane w sekcji `<head>` aplikują się tylko do odpowiednich elementów z tego samego komponentu. Oprócz tego dodany został atrybut `_nghost-pes-c0`. Z czego składają się nazwy atrybutów?
+
+* `_ngcontent` - określa typ elementu, w tym przypadku zawartość komponentu
+* `_nghost` - określa element `root` komponentu
+* `-pes-` - jest to wygenerowany ciąg znaków
+* `c0` - numeruje kolejno elementy
 
 ### ViewEncapsulation.ShadowDom
 
 Kapsułkowanie oparte na Shadow DOM (wymaga wsparcia przeglądarki dla Shadow DOM).
 W tym trybie style nie są dodawane w sekcji `<head>`, a istnieją w **Shadow Root**.  
 **Uwaga!** W tym trybie style rodzica mają wpływ na elementy dziecka (ponieważ style nie posiadają dodatkowych atrybutów i aplikują się do wszystkich elementów z poddrzewa komponentu).
+
+W tym przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue`, usunęliśmy jego style i ustawiliśmy domyślny tryb kapsułkowania. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.ShadowDom)
 
 ```typescript
 import {Component, ViewEncapsulation} from '@angular/core';
@@ -351,19 +361,13 @@ export class RedComponent {
 ```
 
 ```typescript
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
     selector: 'app-green',
     template: `
         <p>Green paragraph!</p>
-    `,
-    styles: [`
-        p {
-            color: green;
-        }
-    `],
-    encapsulation: ViewEncapsulation.ShadowDom
+    `
 })
 export class GreenComponent {
 }
@@ -375,6 +379,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 @Component({
     selector: 'app-blue',
     template: `
+        <app-green></app-green>
         <p>Blue paragraph!</p>
     `,
     styles: [`
@@ -387,6 +392,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
 export class BlueComponent {
 }
 ```
+
+Wynikowy kod HTML:
 
 ```html
 <head>
@@ -403,15 +410,6 @@ export class BlueComponent {
             </style>
             <p>Red paragraph!</p>
         </app-red>
-        <app-green>
-            #shadow-root
-            <style>
-                p {
-                    color: green;
-                }
-            </style>
-            <p>Green paragraph!</p>
-        </app-green>
         <app-blue>
             #shadow-root
             <style>
@@ -419,15 +417,19 @@ export class BlueComponent {
                     color: blue;
                 }
             </style>
+            <app-green>
+                <p>Green paragraph!</p>
+            </app-green>
             <p>Blue paragraph!</p>
         </app-blue>
     </app-root>
 </body>
 ```
 
-![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_and_shadow_dom_result.jpg){:class="img-left"}
+![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_shadow_dom_result.jpg)
+<span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Tryb Shadow DOM daje nam taki sam oczekiwany rezultat jak domyślny tryb. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u.
+Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski.
 
 ### ~~ViewEncapsulation.Native~~
 
