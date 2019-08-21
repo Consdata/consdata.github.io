@@ -15,7 +15,7 @@ Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest **Shadow D
 
 ## Shadow DOM
 
-Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym znajduje się dany element. Przykładem może być np. element HTML `<video>`
+Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym się znajduje. Przykładem może być np. element HTML `<video>`
 
 ```html
 <video width="320" height="240">
@@ -119,16 +119,16 @@ Dzięki temu style zaaplikowane do naszego elementu nie wpływają na inne eleme
 
 ## View Encapsulation w Angularze
 
-Domyślnie Angular korzysta z własnego kapsułkowania stylów (`ViewEncapsulation.Emulated`), ale udostępnia jeszcze 2 inne tryby kapsułkowania (plus jeden deprecated).  
+Domyślnie Angular korzysta z własnego kapsułkowania stylów (`ViewEncapsulation.Emulated`), ale udostępnia jeszcze 3 inne tryby kapsułkowania (w tym jeden deprecated).  
 
 Aby zmienić domyślny tryb kapsułkowania, wystarczy dodać odpowiednią opcję w dekoratorze `@Component`, np.:  
 `encapsulation: ViewEncapsulation.ShadowDom`
 
-Omówimy je na przykładzie kodu z [projektu demo.](https://github.com/Michuu93/view-encapsulation-demo)
+Omówimy je na przykładzie kodu z projektu demo. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo)
 
 Projekt demo składa się z 4 komponentów:
 
-* [`app-root`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/app.component.ts) - główny komponent zawierający w sobie pozostałe 3 komponenty
+* [`app-root`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/app.component.ts) - główny komponent zawierający w sobie pozostałe komponenty
 * [`app-red`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/red-module/red.component.ts)
 * [`app-green`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/green-module/green.component.ts)
 * [`app-blue`](https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/blue-module/blue.component.ts)
@@ -141,7 +141,8 @@ Brak kapsułkowania, czyli style utworzone w komponencie są globalne (w sekcji 
 W tym trybie elementy HTML i odpowiadające im selektory CSS wyglądają tak samo jak te, które napisaliśmy w kodzie.  
 Może to spowodować niechciane nadpisywanie stylów lub dodawanie ich do elementów, które nie posiadają żadnego stylu.
 
-W tym przykładzie usunęliśmy styl paragrafu w komponencie `app-green`. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.None)
+W przykładzie usunęliśmy styl paragrafu w komponencie `app-green`.  
+[Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.None)
 
 ```typescript
 import {Component, ViewEncapsulation} from '@angular/core';
@@ -229,7 +230,7 @@ Wynikowy kod HTML:
 ![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Jak widzimy, oba style paragrafów zostały dodane w sekcji `<head>`, co spowodowało nadpisanie pierwszego stylu drugim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć kolor domyślny.
+Jak widzimy, style zostały dodane w sekcji `<head>`, co spowodowało nadpisanie pierwszego stylu paragrafu drugim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć kolor domyślny.
 
 ### ViewEncapsulation.Emulated (default)
 
@@ -238,7 +239,8 @@ W tym trybie style również znajdują się z sekcji `<head>`, ale posiadają do
 Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.  
 **Uwaga!** W tym trybie style rodzica nie mają wpływu na elementy dziecka (ponieważ każdy element otrzymuje własny, unikalny atrybut).
 
-W tym przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue` i usunęliśmy jego style. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated)
+W przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue` i usunęliśmy jego style.  
+[Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated)
 
 ```typescript
 import {Component} from '@angular/core';
@@ -324,14 +326,14 @@ Wynikowy kod HTML:
 ![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny.
+Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. W kodzie wynikowym widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny.
 
-Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0` do stylu oraz do elementu HTML. W ten sposób style dodane w sekcji `<head>` aplikują się tylko do odpowiednich elementów z tego samego komponentu. Oprócz tego dodany został atrybut `_nghost-pes-c0`. Z czego składają się nazwy atrybutów?
+Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0` do selektora CSS oraz elementu HTML. W ten sposób style dodane w sekcji `<head>` aplikują się tylko do odpowiednich elementów z tego samego komponentu. Oprócz tego, na komponencie dodany został atrybut `_nghost-pes-c0`. Z czego składają się te atrybuty?
 
 * `_ngcontent` - określa typ elementu, w tym przypadku zawartość komponentu
 * `_nghost` - określa element `root` komponentu
-* `-pes-` - jest to wygenerowany ciąg znaków
-* `c0` - numeruje kolejno elementy
+* `-pes` - jest to wygenerowany ciąg znaków
+* `-c0` - numeruje elementy zgodnie z zagnieżdżeniem
 
 ### ViewEncapsulation.ShadowDom
 
@@ -339,7 +341,8 @@ Kapsułkowanie oparte na Shadow DOM (wymaga wsparcia przeglądarki dla Shadow DO
 W tym trybie style nie są dodawane w sekcji `<head>`, a istnieją w **Shadow Root**.  
 **Uwaga!** W tym trybie style rodzica mają wpływ na elementy dziecka (ponieważ style nie posiadają dodatkowych atrybutów i aplikują się do wszystkich elementów z poddrzewa komponentu).
 
-W tym przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue`, usunęliśmy jego style i ustawiliśmy domyślny tryb kapsułkowania. [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.ShadowDom)
+W przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue`, usunęliśmy jego style i ustawiliśmy domyślny tryb kapsułkowania.  
+[Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.ShadowDom)
 
 ```typescript
 import {Component, ViewEncapsulation} from '@angular/core';
@@ -429,12 +432,14 @@ Wynikowy kod HTML:
 ![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_shadow_dom_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski.
+Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski. Gdyby komponent `app-green` również posiadał tryb `ViewEncapsulation.ShadowDom`, to style rodzica nie zostałyby zaaplikowane, ponieważ korzystałby ze stylów z własnego Shadow Root.
 
 ### ~~ViewEncapsulation.Native~~
 
-Do niedawna zamiast `ViewEncapsulation.ShadowDom` dostępny był tryb `ViewEncapsulation.Native`. Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu Shadow DOM.
+Do niedawna zamiast `ViewEncapsulation.ShadowDom` dostępny był tryb `ViewEncapsulation.Native`.  
+Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu Shadow DOM.
 
 ---
 
-Podsumowując, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty. Powinniśmy korzystać z domyślnego trybu kapsułkowania jaki oferuje nam Angular, lub z trybu wykorzystującego Shadow DOM jeśli mamy ku temu konkretne powody.
+Podsumowując, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty.  
+Zaleca się korzystanie z domyślnego trybu kapsułkowania jaki oferuje nam Angular, ponieważ nie jest uzależniony od wsparcia przeglądarki dla Shadow DOM. Tryb Shadow DOM powinniśmy wykorzystywać tylko jeśli mamy ku temu konkretne powody.
