@@ -2,7 +2,7 @@
 layout:    post
 title:     "View Encapsulation w Angularze - czyli o kapsułkowaniu słów kilka"
 published: true
-date:      2019-08-20 08:00:00 +0100
+date:      2019-08-22 08:00:00 +0100
 author:    mhoja
 tags:
     - angular
