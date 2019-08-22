@@ -332,8 +332,8 @@ Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0
 
 * `_ngcontent` - określa typ elementu, w tym przypadku zawartość komponentu
 * `_nghost` - określa element `root` komponentu
-* `-pes` - jest to wygenerowany ciąg znaków
-* `-c0` - numeruje elementy zgodnie z zagnieżdżeniem
+* `-pes` - oznacza ID aplikacji ([APP_ID](https://angular.io/api/core/APP_ID)), jeśli nie został ustawiony to zostanie przyjęty wygenerowany ciąg znaków - dzięki temu nie nakładają się style między różnymi aplikacjami wyświetlanymi w jednym oknie
+* `-c0` - numeruje kolejno elementy w komponencie
 
 ### ViewEncapsulation.ShadowDom
 
@@ -439,7 +439,7 @@ Tryb Shadow DOM również pozwolił nam odseparować style między poszczególny
 Do niedawna zamiast `ViewEncapsulation.ShadowDom` dostępny był tryb `ViewEncapsulation.Native`.  
 Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu Shadow DOM.
 
----
+## Podsumowanie
 
-Podsumowując, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty.  
+Ogólnie rzecz biorąc, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty.  
 Zaleca się korzystanie z domyślnego trybu kapsułkowania jaki oferuje nam Angular, ponieważ nie jest uzależniony od wsparcia przeglądarki dla Shadow DOM. Tryb Shadow DOM powinniśmy wykorzystywać tylko jeśli mamy ku temu konkretne powody.
