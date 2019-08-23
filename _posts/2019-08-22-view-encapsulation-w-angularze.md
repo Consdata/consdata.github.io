@@ -238,7 +238,7 @@ Domyślny tryb kapsułkowania w Angularze, w którym style są domknięte w komp
 W tym trybie style również znajdują się w sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je z elementami HTML pochodzącymi z tego samego komponentu.  
 Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.
 
-**Uwaga!** W tym trybie style nie mają wpływu na inne elementy na stronie (również na elementy komponentu dziecka - nawet jeśli komponent dziecka ma wyłączony tryb kapsułkowania), ponieważ są domknięte unikalnymi atrybutami. Globalne style strony (oraz style innych komponentów, które mają wyłączony tryb kapsułkowania) mogą jednak mieć wpływ na ten komponent.
+**Uwaga!** W tym trybie style nie mają wpływu na inne elementy na stronie (jednak mogą mieć wpływ na elementy komponentu dziecka - jeśli komponent dziecka posiada tryb kapsułkowania inny niż Shadow DOM), ponieważ są domknięte unikalnymi atrybutami. Globalne style strony (oraz style innych komponentów, które mają wyłączony tryb kapsułkowania) mogą jednak mieć wpływ na ten komponent.
 
 W przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue` i usunęliśmy jego style.  
 [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated)
@@ -327,7 +327,7 @@ Wynikowy kod HTML:
 ![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. W kodzie wynikowym widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny.
+Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. W kodzie wynikowym widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny. Stało się tak, ponieważ Angular dodał atrybut do stylu. Gdybyśmy dodali styl w runtime, to zostałby zaaplikowany również do komponentu dziecka.
 
 Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0` do selektora CSS oraz elementu HTML. W ten sposób style dodane w sekcji `<head>` aplikują się tylko do odpowiednich elementów z tego samego komponentu. Oprócz tego, na komponencie dodany został atrybut `_nghost-pes-c0`. Z czego składają się te atrybuty?
 
@@ -434,7 +434,7 @@ Wynikowy kod HTML:
 ![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_shadow_dom_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
-Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski. Gdyby komponent `app-green` również posiadał tryb `ViewEncapsulation.ShadowDom`, to style rodzica nie zostałyby zaaplikowane, ponieważ korzystałby ze stylów z własnego Shadow Root.
+Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski. Gdyby komponent `app-green` również posiadał tryb `ViewEncapsulation.ShadowDom`, to style rodzica nie zostałyby zaaplikowane, ponieważ korzystałby ze stylów z własnego Shadow Root. Tryb Shadow DOM zabezpiecza nasz komponent również przed stylami z komponentu rodzica, dodanymi w runtime.
 
 ### ~~ViewEncapsulation.Native~~
 
