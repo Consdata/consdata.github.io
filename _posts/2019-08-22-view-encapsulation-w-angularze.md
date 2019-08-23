@@ -235,9 +235,10 @@ Jak widzimy, style zostały dodane w sekcji `<head>`, co spowodowało nadpisanie
 ### ViewEncapsulation.Emulated (default)
 
 Domyślny tryb kapsułkowania w Angularze, w którym style są domknięte w komponencie.  
-W tym trybie style również znajdują się z sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je z elementami HTML pochodzącymi z tego samego komponentu.  
-Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.  
-**Uwaga!** W tym trybie style rodzica nie mają wpływu na elementy dziecka (ponieważ każdy element otrzymuje własny, unikalny atrybut).
+W tym trybie style również znajdują się w sekcji `<head>`, ale posiadają dodatkowe atrybuty które wiążą je z elementami HTML pochodzącymi z tego samego komponentu.  
+Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.
+
+**Uwaga!** W tym trybie style nie mają wpływu na inne elementy na stronie (również na elementy komponentu dziecka - nawet jeśli komponent dziecka ma wyłączony tryb kapsułkowania), ponieważ są domknięte unikalnymi atrybutami. Globalne style strony (oraz style innych komponentów, które mają wyłączony tryb kapsułkowania) mogą jednak mieć wpływ na ten komponent.
 
 W przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue` i usunęliśmy jego style.  
 [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated)
@@ -338,8 +339,9 @@ Na przykładzie komponentu `app-red` - Angular dodał atrybut `_ngcontent-pes-c0
 ### ViewEncapsulation.ShadowDom
 
 Kapsułkowanie oparte na Shadow DOM (wymaga wsparcia przeglądarki dla Shadow DOM).
-W tym trybie style nie są dodawane w sekcji `<head>`, a istnieją w **Shadow Root**.  
-**Uwaga!** W tym trybie style rodzica mają wpływ na elementy dziecka (ponieważ style nie posiadają dodatkowych atrybutów i aplikują się do wszystkich elementów z poddrzewa komponentu).
+W tym trybie style nie są dodawane w sekcji `<head>`, a istnieją w **Shadow Root**.
+
+**Uwaga!** W tym trybie style nie mają wpływu na inne elementy na stronie (jednak mogą mieć wpływ na elementy komponentu dziecka - jeśli komponent dziecka posiada tryb kapsułkowania inny niż Shadow DOM). Globalne style strony (oraz style innych komponentów) również nie mają wpływu na ten komponent.
 
 W przykładzie przenieśliśmy komponent `app-green` z komponentu `app-root` do komponentu `app-blue`, usunęliśmy jego style i ustawiliśmy domyślny tryb kapsułkowania.  
 [Link do repozytorium](https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.ShadowDom)
@@ -442,4 +444,8 @@ Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania pr
 ## Podsumowanie
 
 Ogólnie rzecz biorąc, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty.  
-Zaleca się korzystanie z domyślnego trybu kapsułkowania jaki oferuje nam Angular, ponieważ nie jest uzależniony od wsparcia przeglądarki dla Shadow DOM. Tryb Shadow DOM powinniśmy wykorzystywać tylko jeśli mamy ku temu konkretne powody.
+Tryb Shadow DOM zapewnia całkowite domknięcie stylów w komponencie, dzięki czemu style globalne oraz inne komponenty nie mają na niego wpływu, tak samo jak komponent w tym trybie nie ma wpływu na inne komponenty na stronie (za wyjątkiem komponentów dzieci które mają włączony tryb kapsułkowania inny niż Shadow DOM).
+
+Niestety nie wszystkie przeglądarki mogą wspierać ten tryb, dlatego Angular domyślnie udostępnił własny, emulowany tryb kapsułkowania. W trybie domyślnym na nasz komponent mają jednak wpływ style globalne, a także mogą mieć wpływ inne komponenty, ponieważ komponent w tym trybie nadal wykorzystuje style z sekcji `<head>`. W większości przypadków tryb domyślny jest wystarczający, więc jeśli zależy nam na jak najlepszym wsparciu przeglądarek i nie mamy problemów z nadpisywaniem stylów przez inne komponenty lub aplikacje, to możemy z powodzeniem z niego korzystać.
+
+Musimy jednak pamiętać, że mieszanie różnych trybów kapsułkowania między komponentami również może spowodować niezamierzone efekty.
