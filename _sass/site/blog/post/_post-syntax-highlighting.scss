@@ -10,7 +10,8 @@ div.highlight {
   pre {
     margin: 0;
     padding: 0;
-    overflow-x: auto;
+    overflow: auto;
+    max-height: 600px;
   }
 
 
