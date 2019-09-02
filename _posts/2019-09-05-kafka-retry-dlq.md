@@ -2,7 +2,7 @@
 layout: post
 title: Niezawodne dostarczanie zdarzeń w Apache Kafka oparte o ponawianie i DLQ
 published: false
-date:      2019-08-31 08:00:00 +0100
+date:      2019-09-05 08:00:00 +0100
 author:    jgrobelny
 tags:
   - programming
@@ -24,21 +24,21 @@ Oczywiście zawsze można rzec, że w ten sytuacji należy dobrać odpowiednie n
 ## Jak sobie radzić z błędami
  Wyobraźmy sobie sytuację, w której elementem procesu obsługi zdarzenia jest komunikacja z zewnętrznym systemem. Musimy podjąć decyzję jak ma zachować się konsument w momencie, gdy zewnętrzny system odpowiada w inny sposób, niż się spodziewaliśmy albo, co gorsza - w ogóle nie odpowiada. Jest wiele strategii obsługi takiej sytuacji. Ja na potrzeby tego artykułu wybrałem cztery, które doprowadzą nas do rozwiązania, którego implementacja zostanie zaprezentowana w kolejnych akapitach. 
 ### Brak obsługi
-![2019-08-31-Kafka-DLQ-Strategy01.png](/assets/img/posts/2019-08-31-kafka-retry-dlq/2019-08-31-Kafka-DLQ-Strategy01.png)
+![2019-09-05-Kafka-DLQ-Strategy01.png](/assets/img/posts/2019-09-05-kafka-retry-dlq/2019-09-05-Kafka-DLQ-Strategy01.png)
 Bardzo popularna i często stosowana strategia obsługi sytuacji wyjątkowych, to brak reakcji. Może to potwierdzić każdy programista. Na powyższym rysunku prostokąty oznaczają kolejne wiadomości w topiku. Gdy konsument napotka problem z przetwarzaniem komunikatu o offsecie 1486, ignoruje go i przechodzi do następnego. I mimo, że takie podejście wydaje się niezbyt rozsądnym rozwiązaniem, to istnieją sytuacje, gdy utrata części komunikatów nie niesie za sobą ryzyka. Za przykład można podać wszelkie rozwiązania przechowujące i analizujące zachowanie użytkowników w aplikacji. Ponieważ zadaniem takiego systemu jest zbieranie danych statystycznych, utrata pojedynczych zdarzeń nie wpłynie znacząco na wyniki. Ważne jest jednak, żeby dysponować skutecznym monitoringiem, który wychwyci sytuację, w której utrata komunikatów przekracza pewien arbitralnie ustalony poziom.
  
 ### Nieskończone ponawianie w miejscu
-![2019-08-31-Kafka-DLQ-Strategy02.png](/assets/img/posts/2019-08-31-kafka-retry-dlq/2019-08-31-Kafka-DLQ-Strategy02.png)
+![2019-09-05-Kafka-DLQ-Strategy02.png](/assets/img/posts/2019-09-05-kafka-retry-dlq/2019-09-05-Kafka-DLQ-Strategy02.png)
 Gdy nie możemy pozwolić sobie na utratę komunikatów, najprostszym podejściem jest ponawianie do skutku. Oczywistą konsekwencją jest tzw. zatrzymanie świata. Dopóki błąd nie zostanie poprawiony albo zewnętrzny system udrożniony - żaden kolejny komunikat nie zostanie przetworzony. Takie rozwiązanie jest konieczne w przypadku, gdy chcemy zachować kolejność przetwarzania zdarzeń systemie. W ten scenariusz tym bardziej wpisuje się potrzeba stałego monitoringu.
  
 ### Skończone ponawianie w miejscu z topikiem błędów
-![2019-08-31-Kafka-DLQ-Strategy03.png](/assets/img/posts/2019-08-31-kafka-retry-dlq/2019-08-31-Kafka-DLQ-Strategy03.png) 
+![2019-09-05-Kafka-DLQ-Strategy03.png](/assets/img/posts/2019-09-05-kafka-retry-dlq/2019-09-05-Kafka-DLQ-Strategy03.png) 
 Wyobraźmy sobie teraz co się stanie, jak nieco poluzujemy wymaganie bezwzględnego zachowania kolejności. Załóżmy, że próbujemy przez jakiś czas ponawiać, ponieważ statystyka i doświadczenie podpowiada nam, że 99% problemów z przetwarzaniem komunikatów jest chwilowych i samoczynnie ustępuje po pewnym czasie. Dodatkowo komunikaty, których nie udało się przetworzyć, **kopiujemy** na oddzielny topik traktowany jako DLQ. Dzięki temu mamy od razu wyłuskane problematyczne wiadomości i możemy uruchomić na nich osobną grupę konsumentów. 
 
 Krótkie wyjaśnienie, dlaczego komunikaty są **kopiowane** a nie przenoszone. Odpowiedź jest bardzo prosta - nie mogą być przenoszone. Wynika to z kolejnego fundamentu architektonicznego Kafki czyli niezmienności topików (ang. topics immutability). Niezależnie jaka była przyczyna błędu, komunikat na zawsze pozostanie utrwalony. Istnieją sposoby na radzenie sobie z tym tematem i wrócimy do tego później. 
  
 ### Skończone ponawianie na wydzielonym topiku
-![2019-08-31-Kafka-DLQ-Strategy04.png](/assets/img/posts/2019-08-31-kafka-retry-dlq/2019-08-31-Kafka-DLQ-Strategy04.png)
+![2019-09-05-Kafka-DLQ-Strategy04.png](/assets/img/posts/2019-09-05-kafka-retry-dlq/2019-09-05-Kafka-DLQ-Strategy04.png)
 Dochodzimy niniejszym do naszego ostatecznego rozwiązania. Skoro mamy osobny topik dla zepsutych wiadomości to może warto wprowadzić kolejny, na którym odbywa się ponawianie. W tym modelu jeszcze bardziej luzujemy konieczność zachowania kolejności ale dostajemy w zamian możliwość bezprzerwowego przetwarzania głównego topiku. Wiadomości kaskadowo kopiowane są najpierw na topik wiadomości ponawianych a w przypadku niepowodzenia - topik DLQ (technicznie powinniśmy nazwać go DLT, ale zostańmy przy akronimie DLQ, jako że jest on dobrze kojarzony z tego rodzaju technikami). 
 
 W systemie, na podstawie którego powstał ten wpis, występuje wszystkie cztery opisywane warianty postępowania w sytuacji awaryjnej. Wyzwanie polega na dopasowania odpowiedniej metody do natury danych przetwarzanych w topiku. Warto też zaznaczyć, że należy uczyć się od największych i dwa ostatnie modele są mocno inspirowane sposobem, w jaki Kafkę w swoich systemach używa Uber. 
@@ -117,7 +117,7 @@ W przypadku podglądowej aplikacji konsument DLQ wypisuje tylko wiadomość na e
 ## Uruchomienie przykładu
 Po uruchomieniu aplikacji możemy zacząć bombardować ją wiadomościami. Użyję w tym celu narzędzia Kafka Companion, które sami przygotowaliśmy w trakcie prac z Kafką. Aplikacja jest darmowa i dostępna na naszym [GitHubie](https://github.com/Consdata/kafka-companion). O tym jakie ma możliwości i dlaczego powstało, będziecie mogli przeczytać w moim kolejnym wpisie na blogu.
  
-![2019-08-31-Kafka-Companion.png](/assets/img/posts/2019-08-31-kafka-retry-dlq/2019-08-31-Kafka-Companion.png)
+![2019-09-05-Kafka-Companion.png](/assets/img/posts/2019-09-05-kafka-retry-dlq/2019-09-05-Kafka-Companion.png)
 ### Poprawnie przetworzona wiadomość
 
 ```
