@@ -16,17 +16,17 @@ HAProxy to pakiet wolnego oprogramowania, który najczęściej pełni rolę reve
 
 Klienci (np. przeglądarki) nie łączą się bezpośrednio z serwerami aplikacji, lecz właśnie z reverse-proxy, które stosując dodatkowe reguły przekazuje żądania do serwerów aplikacji i odpowiedzi z powrotem do klienta.
 
-Projekt jest aktywnie rozwijany od 2002 roku i coraz częściej wykorzystywany z powodu popularyzacji systemów rozproszonych, w szczególności architektur opartych o mikroseriwsy. 
+Projekt jest aktywnie rozwijany od 2002 roku i coraz częściej wykorzystywany z powodu popularyzacji systemów rozproszonych, w szczególności architektur opartych o mikroserwisy. 
 Używają go takie tuzy jak Digital Ocean, Github, Dropbox, Instagram, czy StackOverflow. Jest też komponentem platformy kontenerowej OpenShift.
 
-Pakiet jest dostępny dla wszystkich popularnych dystrybucji Linux'a, a także w postaci obrazu Docker'owego.
+Pakiet jest dostępny dla wszystkich popularnych dystrybucji Linuxa, a także w postaci obrazu Dockerowego.
 
 ## Standardowe zastosowania HAProxy.
    
 ### Zapewnienie Load Balancingu
-Jedno z podstawowych zastosować HAProxy to software'owy load-balancer. Mając kilka węzłów naszej aplikacji chcielibyśmy rozdzielać ruch pomiędzy nimi. 
-W konfiguracji HAProxy deklarujemy obiekt zwany backend'em, który reprezentuje klaster naszych serwerów aplikacji. 
-Następnie deklarujemy obiekt zwany frontend'em, na który będą kierowani klienci oraz reguły kierowania ruchu z frontend'u do backend'u:
+Jedno z podstawowych zastosowań HAProxy to software'owy load-balancer. Mając kilka węzłów naszej aplikacji chcielibyśmy rozdzielać ruch pomiędzy nimi. 
+W konfiguracji HAProxy deklarujemy obiekt zwany backendem, który reprezentuje klaster naszych serwerów aplikacji. 
+Następnie deklarujemy obiekt zwany frontendem, na który będą kierowani klienci oraz reguły kierowania ruchu z frontendu do backendu:
 
 ```
 frontend my-load-balancer
@@ -44,7 +44,7 @@ Powyższa konfiguracja powoduje że połączenia na endpoint 172.19.0.1:81 będ�
 
 ### Zapewnienie High Availability
 HAProxy potrafi monitorować stan serwerów zadeklarowanych w sekcji backend i zaprzestać kierowania ruchu na serwery, które przestały poprawnie funkcjonować.
-W konfiguracji serwera możemy określić m.in. jak często HAProxy ma sprawdzać status serwera, ile razy weryfikacja musi się nie udać, żeby serwer został uznany za dysfukncyjny oraz ile
+W konfiguracji serwera możemy określić m.in. jak często HAProxy ma sprawdzać status serwera, ile razy weryfikacja musi się nie udać, żeby serwer został uznany za dysfunkcyjny oraz ile
 razy po wykluczeniu serwera weryfikacja musi się powieść, żeby serwer znów został uznany za "zdrowy".
 Przykładowo:
 ```
@@ -63,10 +63,10 @@ Jeżeli chodzi o obsługę szyfrowanych połączeń TLS/SSL, HAProxy może dzia�
 * ponowne szyfrowanie ruchu
 
 #### Zwykłe proxy
-W tym trybie HAProxy zwyczajnie przekazuje strumień bajtów z frontend'u do backend'u, nie wnikając w to, że ruch jest szyfrowany.
+W tym trybie HAProxy zwyczajnie przekazuje strumień bajtów z frontendu do backendu, nie wnikając w to, że ruch jest szyfrowany.
 
 #### Terminacja szyfrowania
-W tym trybie HAProxy otrzymuje szyfrowany ruch z frontend'u, odszyfrowuje go (z użyciem klucza prywatnego) i przekazuje do backend'u w postaci niezaszyfrowanej. 
+W tym trybie HAProxy otrzymuje szyfrowany ruch z frontendu, odszyfrowuje go (z użyciem klucza prywatnego) i przekazuje do backendu w postaci niezaszyfrowanej. 
 Przykładowa konfiguracja:
 ```
 frontend my-terminating-load-balancer
@@ -80,7 +80,7 @@ backend my-application-servers
 ```
 
 #### Ponowne szyfrowanie ruchu
-W tym trybie HAProxy otrzymuje szyfrowany ruch z frontend'u, odszyfrowuje go (z użyciem klucza prywatnego), a następnie szyfruje ponownie i przekazuje do backend'u. 
+W tym trybie HAProxy otrzymuje szyfrowany ruch z frontendu, odszyfrowuje go (z użyciem klucza prywatnego), a następnie szyfruje ponownie i przekazuje do backendu. 
 Przykładowa konfiguracja:
 ```
 frontend my-terminating-load-balancer
@@ -135,7 +135,7 @@ Przedstawię poniżej kilka zastosowań z własnego doświadczenia.
 ### Routing, który łatwo zmienić
 Rozwijając aplikację, która wywołuje serwisy z innych aplikacji, chcemy niekiedy móc przełączać się między różnymi adresami tych zewnętrznych usług, 
 np. możemy chcieć sprawnie przełączać się między prawdziwymi aplikacjami oraz ich zmockowanymi wersjami. 
-Często restart naszej aplikacji jest długotrwały, a zmiana namiarów na zewnętrzne usługi wymaga edycji więcej niż jenego pliku.
+Często restart naszej aplikacji jest długotrwały, a zmiana namiarów na zewnętrzne usługi wymaga edycji więcej niż jednego pliku.
 W takim przypadku HAProxy może nam posłużyć jako wygodna "centralka", w której będziemy się sprawnie przełączać między różnymi wersjami zewnętrznych usług.
 Konfigurując HAProxy w ten sposób:
 ```
@@ -152,7 +152,7 @@ backend my-mocked-services
 i ustawiając w naszej aplikacji adres zewnętrznych usług na 172.19.0.1:81, 
 możemy bez restartu aplikacji zmieniać jej zewnętrzne zależności przez zmianę wartości "default_backend" i szybki "reload" HAProxy.
 
-### Podglądanie SSL'a
+### Podglądanie TLS/SSL
 Jeśli serwisy w naszym systemie przesyłają sobie dane przez szyfrowane połączenia TLS/SSL, może to stanowić przeszkodę w debugowaniu komunikacji przy pomocy analizatorów ruchu sieciowego, 
 takich jak tcpdump, czy Wireshark. 
 Możemy jednak pomiędzy serwisami ustawić pośrednika w postaci HAProxy, które będzie terminowało szyfrowane połączenie i umożliwiało nam podglądanie ruchu sieciowego.
@@ -218,12 +218,12 @@ backend my-setcookie-backend
     mode http
     http-request redirect location http://172.19.0.1:80/\r\nSet-Cookie:\ JSESSIONID=%[urlp(session_id)] code 302
 ```
-Przy takiej konfiguracji, nastawienie dowolnej przeglądarki na adres http://172.19.0.1:81/?session_id=123456 spowoduje przekierowanie na http://172.19.0.1:80 z ustawionym już ciasteczkiem sesyjnym 
+Przy takiej konfiguracji, wejście z dowolnej przeglądarki na adres http://172.19.0.1:81/?session_id=123456 spowoduje przekierowanie na http://172.19.0.1:80 z ustawionym już ciasteczkiem sesyjnym 
 (wykorzystujemy tu fakt że ciasteczka ustawione dla domeny nie uwzględniają portów).
 
 ## Podsumowanie
-Jak więc widać, HAProxy ma wiele klasycznych i mniej klasycznych zastosowań. 
+Jak widać, HAProxy ma wiele klasycznych i mniej klasycznych zastosowań. 
 
 Jego niewątpliwym atutem jest stosunkowo prosta konfiguracja i runtime'owa wydajność oraz "lekkość" (zaczytanie zmienionej konfiguracji odbywa się zwykle w ułamku sekundy).
 
-Jest to narzędzie, które polecam do toolbox'a każdego architekta systemów rozproszonych, a także do warsztatu deweloperskiego zwinnego programisty.
+Jest to narzędzie, które polecam do toolboxa każdego architekta systemów rozproszonych, a także do warsztatu deweloperskiego zwinnego programisty.
