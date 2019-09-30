@@ -30,7 +30,7 @@ Z uwagi
 na prostą konfigurację najczęściej polecaną przeglądarką jest Firefox. W menu przeglądarki odnajdujemy Preferencje > Sieć i wchodzimy w Ustawienia. Zaznaczamy "Ręczna konfiguracja serwerów
  proxy", domyślne wartości dla serwera to 127.0.01,  a dla portu 8080.
 
-img1
+![2019-09-30-zap-01.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-01.png)
 
 Od tego momentu ZAP działa jako proxy, wszystkie żądania, które wysyłamy do aplikacji oraz wszystkie odpowiedzi, które otrzymujemy, przechodzą od teraz przez ZAPa.
 
@@ -39,12 +39,12 @@ Od tego momentu ZAP działa jako proxy, wszystkie żądania, które wysyłamy do
 W poprzednim kroku skonfigurowaliśmy przeglądarkę, by móc podglądać ruch HTTP w sieci. Aby używać ZAPa na stronach wymagających HTTPS, musimy dodać certyfikat ZAPa do naszej
 przeglądarki. Certyfikat znajdziemy w Options → Dynamic SSL Certificates.
 
-img2
+![2019-09-30-zap-02.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-02.png)
 
 W przeglądarce importujemy certyfikat w Preferencje → Prywatność i bezpieczeństwo → Certyfikaty → Wyświetl certyfikaty... → Importuj. Certyfikat ten jest certefikatem CA - zaimportowanie
 go spowoduje dodanie OWASP Root CA do listy organów certyfikacji w naszej przeglądarce:
 
-img3
+![2019-09-30-zap-03.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-03.png)
 
 Teraz już możemy podglądać zarówno ruch nieszyfrowany jak i szyfrowany pomiędzy przeglądarką i serwerami z którymi się łączy . Musimy pamiętać, że od tej chwili nasza przeglądarka jest podatna na atak Man in the middle i nie powinniśmy
 z niej korzystać w innych celach, niż do testowania. Przejdźmy zatem do zabawy ZAPem.
@@ -55,19 +55,19 @@ Do prezentacji działania ZAPa wykorzystamy inne narzędzie: Webgoat, które jes
 bezpieczeństwa w aplikacjach korzystających z popularnych opensourcowych komponentów.  Korzystając z tych dwóch aplikacji musimy pamiętać, by jedną z nich uruchomić z innym portem
 niż domyślny 8080. Po stronie Zapa możemy zmienić port w ustawieniach Options → Local Proxies.
 
-img4
+![2019-09-30-zap-04.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-04.png)
 
 Po uruchomieniu aplikacji Webgoat możemy podglądać całą komunikację z serwerem. W zakładce History widzimy historię wszystkich zapytań.  Możemy wykluczyć wewnętrzne zapytania Webgoata
 z historii komunikacji, dzięki czemu stanie się ona bardziej przejrzysta. W tym celu klikamy prawym przyciskiem myszy na jeden z wpisów w historii i wybieramy  Exclude from → Proxy
 i dodajemy URLe, które będą ignorowane (możemy w tym celu użyć wyrażeń regularnych).
 
-img5
+![2019-09-30-zap-05.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-05.png)
 
 Z lewej strony programu umiejscowione jest menu. W zakładce Sites, podobnie jak w History, również znajdują się wszystkie zapytania do serwera, jednak tutaj mamy zachowana strukturę zasobów
 na serwerze aplikacji. W tym miejscu możemy zauważyć również zakładkę Contexts. Konteksty umożliwiają testowanie aplikacji na różnych poziomach dostępu w tym samym momencie - by to osiągnąć
 dodajemy kontekst dla poszczególnych użytkowników. Możemy też w tym miejscu w zakładce Structure skonfigurować parametry URL.
 
-img6
+![2019-09-30-zap-06.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-06.png)
 
 ## Debugowanie oraz modyfikacja zapytań
 
@@ -75,7 +75,7 @@ W zakladce Request oraz Response możemy podejrzeć żądanie oraz odpowiedź z 
 breakpointy za pomocą okrągłej zielonej ikonki umieszczonej w górnym pasku menu. Klikając na ikonkę ustawimy breakpointy na każdym zapytaniu oraz odpowiedzi. Szczegóły zapytania w trybie
 debugowania otwierają się w zakładce Break, a  poniżej okna z żadaniem znajduje się pole, w którym możemy modyfikować żądanie.
 
-img7
+![2019-09-30-zap-07.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-07.png)
 
 ## Funkcjonalności wspierające testy penetracyjne
 
