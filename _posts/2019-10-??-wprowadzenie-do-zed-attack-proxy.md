@@ -111,3 +111,10 @@ zdefiniowana różnego rodzaju danych wejściowych - mogą to być na przykład 
 ustawić odpowiednie kodowanie w zależnosci od formy w jakiej dane mają być dostarczone do aplikacji. Po ukończeniu fuzzowania należy przeanalizować odpowiedzi na wysyłane żądania -  nietypowe
 odpowiedzi, na przykład zawierające komunikaty o błędach, mogą zasugerować obecność podatności danego typu (na przykład błędy SQL sugerują, że możemy testować SQL injection).
 
+## Materiały źródłowe
+https://github.com/zaproxy/zaproxy/wiki/Downloads
+https://github.com/zaproxy/zaproxy/wiki
+https://owasp-academy.teachable.com/p/owasp-zap-tutorial
+https://github.com/zaproxy/zap-core-help/wiki/HelpIntro
+https://github.com/WebGoat/WebGoat
+https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt
