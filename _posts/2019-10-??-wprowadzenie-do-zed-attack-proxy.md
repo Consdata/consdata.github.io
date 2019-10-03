@@ -46,8 +46,8 @@ go spowoduje dodanie OWASP Root CA do listy organów certyfikacji w naszej przeg
 
 ![2019-09-30-zap-03.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-03.png)
 
-Teraz już możemy podglądać zarówno ruch nieszyfrowany jak i szyfrowany pomiędzy przeglądarką i serwerami z którymi się łączy . Musimy pamiętać, że od tej chwili nasza przeglądarka jest podatna na atak Man in the middle i nie powinniśmy
-z niej korzystać w innych celach, niż do testowania. Przejdźmy zatem do zabawy ZAPem.
+Teraz już możemy podglądać zarówno ruch nieszyfrowany jak i szyfrowany pomiędzy przeglądarką i serwerami z którymi się łączy . Musimy pamiętać, że od tej chwili nasza przeglądarka jest podatna
+na atak Man in the middle i nie powinniśmy z niej korzystać w innych celach, niż do testowania. Przejdźmy zatem do zabawy ZAPem.
 
 ## ZAP  - wprowadzenie
 
@@ -71,45 +71,108 @@ dodajemy kontekst dla poszczególnych użytkowników. Możemy też w tym miejscu
 
 ## Debugowanie oraz modyfikacja zapytań
 
-W zakladce Request oraz Response możemy podejrzeć żądanie oraz odpowiedź z serwera. ZAP umożliwia przechwytywanie zapytań oraz ich modyfikację. By skorzystać z tej funkcjonalności ustawiamy
-breakpointy za pomocą okrągłej zielonej ikonki umieszczonej w górnym pasku menu. Klikając na ikonkę ustawimy breakpointy na każdym zapytaniu oraz odpowiedzi. Szczegóły zapytania w trybie
-debugowania otwierają się w zakładce Break, a  poniżej okna z żadaniem znajduje się pole, w którym możemy modyfikować żądanie.
+W zakladce Request oraz Response możemy podejrzeć żądanie oraz odpowiedź z serwera. ZAP umożliwia przechwytywanie zapytań oraz ich modyfikację. By przetestować działanie tej funkcjonalności możemy
+ustawiamy breakpointy za pomocą okrągłej zielonej ikonki umieszczonej w górnym pasku menu.
+
+![2019-09-30-zap-08.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-08.png)
+
+Klikając na ikonkę ustawimy breakpointy na każdym zapytaniu oraz odpowiedzi - ikonka po kliknięciu zmienia kolor na czerwony. Następnie w aplikacji Webgoat wprowadzamy dane wejściowe w dowolnym polu
+do tego przeznaczonym, np. w sekcji General -> HTTP Basics. Na potrzeby naszego testu wprowadziłam tekst "Consdata".
+
+2019-09-30-webgoat-01
+
+Szczegóły zapytania w trybie debugowania otwierają się w zakładce Break, a poniżej okna z żadaniem znajduje się pole, w którym możemy modyfikować żądanie.
 
 ![2019-09-30-zap-07.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-07.png)
+
+Modyfikujemy żadanie wprowadzająć tekst "123" w miejsce "Consdata":
+
+![2019-09-30-zap-09.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-09.png)
+
+W rezultacie otrzymamy response z serwera zawierający zmodyfikowane przez nas dane "The server has reversed your name: 321", co możemy zaobserwować w ZAPie oraz Webgoacie.
+
+![2019-09-30-zap-10.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-10.png)
+
+2019-09-30-webgoat-02
 
 ## Funkcjonalności wspierające testy penetracyjne
 
 ZAP posiada szereg funkcji umożliwiających przeskanowanie aplikacji w poszukiwaniu różnych zasobów i podatności oraz wykonanie ataków. Jest to jednak narzędzie wspomagające pracę pentestera,
-bez manualnego przeklikania się przez aplikację nie jest możliwe znalezienie wszystkich podatności. Narzędzia umożliwiające wykonanie skanów oraz ataków znajdziemy klikając lewym przyciskiem
-myszy w  zakładce Sites na folderze, który chcemy przetestować lub w zakładce History na interesującym nas endpointcie (bądź kilku).
+bez manualnego przeklikania się przez aplikację nie jest możliwe znalezienie wszystkich podatności. Narzędzia umożliwiające wykonanie skanów oraz ataków znajdziemy klikając prawym przyciskiem
+myszy w  zakładce Sites na folderze, który chcemy przetestować lub w zakładce History na interesującym nas endpointcie (bądź kilku) w sekcji Attack albo w górnym pasku menu w zakładce Tool.
 
 ### Spider
-Spider jest narzędziem, które skanuje aplikację w poszukiwaniu ukrytych zasobów. W przypadku, gdy chcemy przeszukać zasoby pobierane asynchronicznie należy użyć skanera AjaxSpider. Narzędzie
-to nie zastąpi manualnego przeszukania aplikacji, ponieważ przechodzi jedynie przez HTMLowe linki na stronie. Nie sprawdzi się również w przypadku aplikacji, gdzie DOM jest generowany
-dynamicznie, nie obsłuży też eventów innych niż standardowe.
+Jedynym z początkowych etapów testów penetracyjnych jest manualne przeszukanie aplikacji w celu znalezienia zasobów znajdujących się na serwerze. Narzędziem, które może zautomatyzować część
+pracy jest Spider. Skanuje on aplikację w poszukiwaniu ukrytych zasobów. W przypadku, gdy chcemy przeszukać zasoby pobierane asynchronicznie powinniśmy użyć skanera AjaxSpider. Należy jednak
+zwrócić uwage na fakt, że narzędzie to nie zastąpi ręcznego przeszukania aplikacji, ponieważ przechodzi jedynie przez HTMLowe linki na stronie. Nie sprawdzi się również w przypadku aplikacji,
+gdzie DOM jest generowany dynamicznie, nie obsłuży też eventów innych niż standardowe. Po uruchomieniu narzędzia w aplikacji pojawia się sekcja Spider, w której możemy znależć wyniki skanu.
+
+![2019-09-30-zap-11.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-11.png)
 
 ### ActiveScan
 ActiveScan jest narzędziem aktywnie skanującym aplikację, wykonującym serię ataków, którego zadaniem jest znalezienie podatności. Wysyła żadania do kolejnych endpointów automatycznie modyfikując
 ich treść, analizuje odpowiedzi i określa na ich podstawie podatności. Jednak tak jak przy Spiderze, tak i tutaj nie obędzie się bez ręcznego przejścia aplikacji. ActiveScan nie potrafi bowiem
 samodzielnie wyszukać wszystkich endpointów, trzeba mu je wskazać. Dopiero gdy znajdą się one w historii komunikacji, mamy pewność, że skaner je przetestuje. Gdy skaner znajdzie podatność
 zobaczymy czerwoną flagę przy endpointcie, a w zakładce Alerts znajdą się informację na temat znalezionej podatności, jej opis, sugestie dotyczącej rozwiązania problemu oraz referencje.
+Działanie ActiveScan przetestujemy w miejscu, o którym wiemy, że zawiera błąd bezpieczeństwa. W Webgoacie otwieramy sekcję Injection Flaws -> SQL Injection (introduction) -> krok 11 i wprowadzamy
+dowolne dane w widocznych polach.
+
+ 2019-09-30-webgoat-03
+
+Po wprowadzeniu danych zobaczymy w ZAPie w sekcji History URL http://localhost:9000/WebGoat/SqlInjection/attack8 i będziemy mogli podejrzeć żądanie.
+
+![2019-09-30-zap-12.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-12.png)
+
+ActiveScan uruchomimy na tym endpoincie, by skrócic czas skanowania. Po uruchomieniu narzędzia w ZAPie pojawi się zakładka Active Scan, w której będziemy mogli zobaczyć wszystkie żądania wysyłane
+do serwera przez ActiveScan, np.:
+
+![2019-09-30-zap-13.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-13.png)
+
+Jeśli zostaną znalezione błędy, zobaczymy je w zakładce Alerts. Znajdują się tu informacje dotyczące URLa, w którym ActiveScan znalazł błąd, jakie dane wejściowe sprowokowały błąd, opis błędu,
+dodatkowe informacje, proponowane rozwiązanie oraz referencje.
+
+![2019-09-30-zap-14.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-14.png)
+
+W panelu Sites pojawi się również czerwona flaga w miejscu, w którym znaleziony zostal błąd.
 
 ### ForcedBrowse
-ForcedBrowse jest narzędziem, który szuka plików o znanych lub łatwych do przewidzenia nazwach na serwerze aplikacji korzystając z odpowiednich słowników.. W ten sposób możemy znaleźć zasoby,
+ForcedBrowse jest narzędziem, który szuka plików o znanych lub łatwych do przewidzenia nazwach na serwerze aplikacji korzystając z odpowiednich słowników. W ten sposób możemy znaleźć zasoby,
 które na serwerze nie powinny się znaleźć i stanowią zagrożenie. Może to na przykład być repozytorium, pliki konfiguracyjne, pliki z backupem, panel administracyjny, itp.  W ZAPie wbudowanych
 jest kilka podstawowych słowników, jednak bardziej rozbudowane można znaleźć na githubie, na przykład:
 
 https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt
 
-W rzeczywistości ForcedBrowse bazuje na narzędziu DirBuster, które zostało wbudowane w ZAPa. Czas trwania skanu jest uzależniony od wielu czynników - wydajnosci serwera, wielkosci słownika
-i zastosowanych na sererze mechanizmów zabezpieczających. Warto zaznaczyć, że skan może zająć nawet do kilkudziesięciu godzin.
+Słownik możemy dodać wybierając z górnego menu Tools -> Options -> ForcedBrowse -> Add custom Forced Browse file. Po uruchomieniu narzędzia w ZAPie pojawi się zakładaka Forced Browse, w której
+widzimy pasek postępu zadania, plik z jakiego pobierane są dane oraz wyniki skanu.
+
+![2019-09-30-zap-15.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-15.png)
+
+W rzeczywistości ForcedBrowse bazuje na narzędziu DirBuster, które zostało wbudowane w ZAPa. Czas trwania skanu
+jest uzależniony od wielu czynników - wydajnosci serwera, wielkosci słownikai zastosowanych na sererze mechanizmów zabezpieczających. Warto zaznaczyć, że skan może zająć nawet do kilkudziesięciu
+godzin.
 
 ### Fuzz
 Narzędzie Fuzz wykonuje atak za pomocą techniki fuzzingu, czyli wysyłaniu do aplikacji predefiniowyanych lub dynamicznie generowanych danych wejściowych w celu sprowokowania błędów.
-By przeprowadzić ten atak należy wywołać żądanie, zaznaczyć na nim element, który będziemy poddawać modyfikacji, wybrać Fuzz z bocznego menu oraz dodać dane wejściowe (Payloads). Mamy możliwość
-zdefiniowana różnego rodzaju danych wejściowych - mogą to być na przykład stringi, wyrażenia regularne, skrypty, pliki ze zdefiniowanymi wejściami.  Następnie w Fuzz → Payloads → Processors należy
-ustawić odpowiednie kodowanie w zależnosci od formy w jakiej dane mają być dostarczone do aplikacji. Po ukończeniu fuzzowania należy przeanalizować odpowiedzi na wysyłane żądania -  nietypowe
-odpowiedzi, na przykład zawierające komunikaty o błędach, mogą zasugerować obecność podatności danego typu (na przykład błędy SQL sugerują, że możemy testować SQL injection).
+By przeprowadzić ten atak należy wywołać żądanie, zaznaczyć na nim element, który będziemy poddawać modyfikacji, wybrać Fuzz z bocznego menu oraz dodać dane wejściowe (Payloads).
+
+![2019-09-30-zap-16.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-16.png)
+
+
+Mamy możliwość zdefiniowana różnego rodzaju danych wejściowych w Fuzz -> Payloads -> Add, mogą to być na przykład stringi, wyrażenia regularne, skrypty, pliki ze zdefiniowanymi wejściami.  Następnie
+należy ustawić odpowiednie kodowanie w zależnosci od formy w jakiej dane mają być dostarczone do aplikacji.
+
+![2019-09-30-zap-17.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-17.png)
+
+Po ukończeniu fuzzowania należy przeanalizować odpowiedzi na wysyłane żądania -  nietypowe odpowiedzi, na przykład zawierające komunikaty o błędach, mogą zasugerować obecność podatności danego typu
+(na przykład błędy SQL sugerują, że możemy testować SQL injection). Odpowiedzi znajdują się w zakładce Fuzzer, która otwiera się podczas przeprowadzania ataku.
+
+![2019-09-30-zap-18.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-18.png)
+
+W analizie odpowiedzi pomaga posegregowanie ich po wielkości. Większy rozmiar odpowiedzi sugeruje, że możemy znaleźć tam interesujący błąd. W przypadku naszego testu otrzymaliśmy w odpowiedzi dane
+z bazy danych oraz informację potwierdzającą nasz suckes: "You have succeeded! You successfully compromised the confidentiality of data by viewing internal information that you should not have
+access to. Well done!".
+
+![2019-09-30-zap-19.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-19.png)
 
 ## Materiały źródłowe
 https://github.com/zaproxy/zaproxy/wiki/Downloads
