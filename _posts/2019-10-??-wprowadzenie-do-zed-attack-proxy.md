@@ -79,7 +79,7 @@ ustawiamy breakpointy za pomocą okrągłej zielonej ikonki umieszczonej w górn
 Klikając na ikonkę ustawimy breakpointy na każdym zapytaniu oraz odpowiedzi - ikonka po kliknięciu zmienia kolor na czerwony. Następnie w aplikacji Webgoat wprowadzamy dane wejściowe w dowolnym polu
 do tego przeznaczonym, np. w sekcji General -> HTTP Basics. Na potrzeby naszego testu wprowadziłam tekst "Consdata".
 
-2019-09-30-webgoat-01
+![2019-09-30-webgoat-01.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-webgoat-01.png)
 
 Szczegóły zapytania w trybie debugowania otwierają się w zakładce Break, a poniżej okna z żadaniem znajduje się pole, w którym możemy modyfikować żądanie.
 
@@ -93,7 +93,7 @@ W rezultacie otrzymamy response z serwera zawierający zmodyfikowane przez nas d
 
 ![2019-09-30-zap-10.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-10.png)
 
-2019-09-30-webgoat-02
+![2019-09-30-webgoat-02.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-webgoat-02.png)
 
 ## Funkcjonalności wspierające testy penetracyjne
 
@@ -117,7 +117,7 @@ zobaczymy czerwoną flagę przy endpointcie, a w zakładce Alerts znajdą się i
 Działanie ActiveScan przetestujemy w miejscu, o którym wiemy, że zawiera błąd bezpieczeństwa. W Webgoacie otwieramy sekcję Injection Flaws -> SQL Injection (introduction) -> krok 11 i wprowadzamy
 dowolne dane w widocznych polach.
 
- 2019-09-30-webgoat-03
+![2019-09-30-webgoat-03.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-webgoat-03.png)
 
 Po wprowadzeniu danych zobaczymy w ZAPie w sekcji History URL http://localhost:9000/WebGoat/SqlInjection/attack8 i będziemy mogli podejrzeć żądanie.
 
