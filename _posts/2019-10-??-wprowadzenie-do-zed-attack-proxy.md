@@ -71,7 +71,7 @@ dodajemy kontekst dla poszczególnych użytkowników. Możemy też w tym miejscu
 
 ## Debugowanie oraz modyfikacja zapytań
 
-W zakladce Request oraz Response możemy podejrzeć żądanie oraz odpowiedź z serwera. ZAP umożliwia przechwytywanie zapytań oraz ich modyfikację. By przetestować działanie tej funkcjonalności możemy
+W zakladce Request oraz Response możemy podejrzeć żądanie oraz odpowiedź z serwera. ZAP umożliwia przechwytywanie zapytań oraz ich modyfikację. By przetestować działanie tej funkcjonalności
 ustawiamy breakpointy za pomocą okrągłej zielonej ikonki umieszczonej w górnym pasku menu.
 
 ![2019-09-30-zap-08.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-08.png)
