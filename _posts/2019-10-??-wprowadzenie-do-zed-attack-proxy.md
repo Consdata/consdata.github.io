@@ -149,7 +149,7 @@ W rzeczywistości ForcedBrowse bazuje na narzędziu DirBuster, które zostało w
 i zastosowanych na sererze mechanizmów zabezpieczających. Warto zaznaczyć, że skan może zająć nawet do kilkudziesięciu godzin.
 
 ### Fuzz
-Narzędzie Fuzz wykonuje atak za pomocą techniki fuzzingu, czyli wysyłaniu do aplikacji predefiniowyanych lub dynamicznie generowanych danych wejściowych w celu sprowokowania błędów.
+Narzędzie Fuzz wykonuje atak za pomocą techniki fuzzingu, czyli wysyłaniu do aplikacji predefiniowanych lub dynamicznie generowanych danych wejściowych w celu sprowokowania błędów.
 By przeprowadzić ten atak należy wywołać żądanie, zaznaczyć na nim element, który będziemy poddawać modyfikacji, wybrać Fuzz z bocznego menu oraz dodać dane wejściowe (Payloads).
 
 ![2019-09-30-zap-16.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-16.png)
