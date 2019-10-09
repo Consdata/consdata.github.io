@@ -20,12 +20,10 @@ certyfikatu do przeglądarki. Dostarcza automatyczne skanery, jak również narz
 
 ## Instalacja oraz konfiguracja
 
-Link do pobrania:
-
-https://github.com/zaproxy/zaproxy/wiki/Downloads
+[Link do pobrania ZAPa](https://github.com/zaproxy/zaproxy/wiki/Downloads)
 
 By móc korzystać ze wszystkich funkcjonalności jakie dostarcza nam ZAP powinniśmy zacząć pracę od konfiguracji przeglądarki, tak by łączyła się ona przez proxy (lokalnie odpalonego ZAPa).
-Z uwagi na prostą konfigurację najczęściej polecaną przeglądarką jest Firefox. W menu przeglądarki odnajdujemy Preferencje -> Sieć i wchodzimy w Ustawienia. Zaznaczamy "Ręczna konfiguracja
+Z uwagi na prostą konfigurację polecaną przeglądarką jest Firefox. W menu przeglądarki odnajdujemy Preferencje → Sieć i wchodzimy w Ustawienia. Zaznaczamy "Ręczna konfiguracja
 serwerów proxy". Domyślne wartości dla serwera to 127.0.01, a dla portu 8080.
 
 ![2019-09-30-zap-01.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-01.png)
@@ -49,8 +47,8 @@ na atak Man in the middle i nie powinniśmy z niej korzystać w innych celach, n
 
 ## ZAP - wprowadzenie
 
-Do prezentacji działania ZAPa wykorzystamy inne narzędzie: Webgoat, które jest celowo podatną aplikacją opensourcową napisaną w Javie umożliwiającą testowanie często spotykanych błędów
-bezpieczeństwa w aplikacjach korzystających z popularnych opensourcowych komponentów. Korzystając z tych dwóch aplikacji musimy pamiętać, by jedną z nich uruchomić z innym portem
+Do prezentacji działania ZAPa wykorzystamy inne narzędzie: [Webgoat](https://github.com/WebGoat/WebGoat), które jest celowo podatną aplikacją opensourcową napisaną w Javie umożliwiającą testowanie często spotykanych błędów
+bezpieczeństwa w aplikacjach korzystających z popularnych opensourcowych komponentów.Korzystając z tych dwóch aplikacji musimy pamiętać, by jedną z nich uruchomić z innym portem
 niż domyślny 8080. Po stronie ZAPa port możemy zmienić w ustawieniach Options → Local Proxies.
 
 ![2019-09-30-zap-04.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-zap-04.png)
@@ -112,7 +110,7 @@ ActiveScan jest narzędziem aktywnie skanującym aplikację, wykonującym serię
 ich treść, analizuje odpowiedzi i określa na ich podstawie podatności. Jednak tak jak przy Spiderze, tak i tutaj nie obędzie się bez ręcznego przejścia aplikacji. ActiveScan nie potrafi bowiem
 samodzielnie wyszukać wszystkich endpointów, trzeba mu je wskazać. Dopiero gdy znajdą się one w historii komunikacji mamy pewność, że skaner je przetestuje. Gdy skaner znajdzie podatność
 zobaczymy czerwoną flagę przy endpointcie, a w zakładce Alerts znajdą się informacje na temat znalezionej podatności.
-Działanie ActiveScan przetestujemy w miejscu, o którym wiemy, że zawiera błąd bezpieczeństwa. W Webgoacie otwieramy sekcję Injection Flaws -> SQL Injection (introduction) -> krok 11 i wprowadzamy
+Działanie ActiveScan przetestujemy w miejscu, o którym wiemy, że zawiera błąd bezpieczeństwa. W Webgoacie otwieramy sekcję Injection Flaws → SQL Injection (introduction) → krok 11 i wprowadzamy
 dowolne dane w widocznych polach.
 
 ![2019-09-30-webgoat-03.png](/assets/img/posts/2019-09-30-wprowadzenie-do-zap/2019-09-30-webgoat-03.png)
@@ -138,7 +136,7 @@ ForcedBrowse jest narzędziem, który szuka plików o znanych lub łatwych do pr
 które na serwerze nie powinny się znaleźć i stanowią zagrożenie. Może to na przykład być repozytorium, pliki konfiguracyjne, pliki z backupem, panel administracyjny, itp. W ZAPie wbudowanych
 jest kilka podstawowych słowników, jednak bardziej rozbudowane można znaleźć na githubie, na przykład:
 
-https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt
+[https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt)
 
 Słownik możemy dodać wybierając z górnego menu Tools -> Options -> ForcedBrowse -> Add custom Forced Browse file. Po uruchomieniu narzędzia w ZAPie pojawi się zakładaka Forced Browse, w której
 widzimy pasek postępu zadania, plik z jakiego pobierane są dane oraz wyniki skanu.
@@ -179,9 +177,9 @@ własnych żądań. Posiada również wiele dodatkowych funkcjonalności ułatwi
 analizy oraz interpretacji odpowiedzi serwera.
 
 ## Materiały źródłowe
-https://github.com/zaproxy/zaproxy/wiki/Downloads
-https://github.com/zaproxy/zaproxy/wiki
-https://owasp-academy.teachable.com/p/owasp-zap-tutorial
-https://github.com/zaproxy/zap-core-help/wiki/HelpIntro
-https://github.com/WebGoat/WebGoat
-https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt
+* [https://github.com/zaproxy/zaproxy/wiki/Downloads](https://github.com/zaproxy/zaproxy/wiki/Downloads)
+* [https://github.com/zaproxy/zaproxy/wiki](https://github.com/zaproxy/zaproxy/wiki)
+* [https://owasp-academy.teachable.com/p/owasp-zap-tutorial](https://owasp-academy.teachable.com/p/owasp-zap-tutorial)
+* [https://github.com/zaproxy/zap-core-help/wiki/HelpIntro](https://github.com/zaproxy/zap-core-help/wiki/HelpIntro)
+* [https://github.com/WebGoat/WebGoat](https://github.com/WebGoat/WebGoat)
+* [https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/SVNDigger/all.txt)
