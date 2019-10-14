@@ -105,7 +105,7 @@ Sam algorytm hi/lo jest opisany w wielu miejscach na internecie, a nawet w kodac
 W praktyce oznacza to, że mogą powstać „dziury” w numeracji, ponieważ jeżeli w danej transakcji wstawimy jedną encję to mimo wszystko potrzebujemy numeru sekwencji z bazy danych, a w konsekwencji podbijemy ją o N, ale zyskiem korzystania z tego mechanizmu jest rzadka potrzeba pytania bazy o kolejną wartość sekwencji.
 Sprawdźmy więc kolejny raz jak nasze optymalizacje wpłynęły na szybkość działania usługi.
 
-![Zipkin - przepływ na małej ilości encji po drugiej optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika2.png)
+![Zipkin - przepływ na małej ilości encji po drugiej optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika3.png)
 
 Dla dużej ilości encji statystyki prezentują się następująco:
 ```
