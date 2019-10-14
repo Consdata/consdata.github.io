@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Wprowadzenie do Zed Attack Proxy
-published: false
-date:      2019-09-30 03:00:00 +0100
+published: true
+date:      2019-10-14 03:00:00 +0100
 author:    amak
 tags:
   - programming
