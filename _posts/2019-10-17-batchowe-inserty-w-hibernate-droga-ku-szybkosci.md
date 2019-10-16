@@ -11,19 +11,18 @@ tags:
   - jpa
 ---
 
-W tym poście powiemy sobie o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.
+W tym poście powiemy sobie o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate'a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.
 Skupimy się na aspektach konfiguracyjnym i diagnostycznym systemu.
 
 Zapytany o to czy lepiej używać EntityManagera czy Hibernate’owego Session, Emmanuel Bernard  bez wahania opowiedział się za tym pierwszym [[1]](https://www.theserverside.com/news/2240186700/The-JPA-20-EntityManager-vs-the-Hibernate-Session-Which-one-to-use). Jest to wypowiedź w myśl zasady, którą jako programiści wszyscy dobrze znamy – bazowanie na specyfikacji, a nie implementacji danej technologii. Stosowanie się do tej reguły sprawia, że zmiany technologiczne są o wiele prostsze - jesteśmy związani tylko z interfejsem, a podmiana dostawcy jego implementacji jest przecież w założeniu tylko formalnością.
 
-Zdarza się jednak, że musimy zrobić coś co wychodzi poza ramy abstrakcyjnej specyfikacji i chcąc nie chcąc użyć mechanizmów konkretnej implementacji. Tak jest też w przypadku batchowych insertów czyli zapisywania większych grup rekordów w jednej transakcji. W tym poście przejdziemy przez typową drogę optymalizacji tejże operacji, przykłady wizualizując statystykami generowanymi przez Hibernate oraz przepływami zilustrowanymi za pomocą Zipkina [[2]](https://zipkin.io/). 
+Zdarza się jednak, że musimy zrobić coś co wychodzi poza ramy abstrakcyjnej specyfikacji i chcąc nie chcąc użyć mechanizmów konkretnej implementacji. Tak jest też w przypadku batchowych insertów czyli zapisywania większych grup rekordów w jednej transakcji. W tym poście przejdziemy przez typową drogę optymalizacji tejże operacji, przykłady wizualizując statystykami generowanymi przez Hibernate'a oraz przepływami zilustrowanymi za pomocą Zipkina [[2]](https://zipkin.io/). 
 
 Załóżmy dobrze znany scenariusz, podczas spokojnego dnia w pracy nagle otrzymujemy maila: 
-```
-Złe wieści!
-Wystawiona usługa co prawda działa, ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień.
-Okazuje sie, że oczekiwanie na odpowiedź trwa zbyt długo i dostajemy timeout!
-```
+
+> Złe wieści!<br>
+> Wystawiona usługa co prawda działa,ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień.<br>
+> Okazuje sie, że oczekiwanie na odpowiedź trwa zbyt długo i dostajemy timeout!
 
 Trzeba więc będzie podjąć się optymalizacji. Pierwsze kroki, który warto podjąć to ustawienie w celach diagnostycznych wpisu konfiguracyjnego
 ```properties
