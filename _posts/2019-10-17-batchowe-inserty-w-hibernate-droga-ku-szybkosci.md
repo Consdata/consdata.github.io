@@ -21,7 +21,8 @@ Zdarza się jednak, że musimy zrobić coś co wychodzi poza ramy abstrakcyjnej 
 Załóżmy dobrze znany scenariusz, podczas spokojnego dnia w pracy nagle otrzymujemy maila: 
 ```
 Złe wieści!
-Wystawiona usługa co prawda działa, ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień, oczekiwanie na odpowiedź trwa zbyt długo i dostajemy timeout!
+Wystawiona usługa co prawda działa, ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień.
+Okazuje sie, że oczekiwanie na odpowiedź trwa zbyt długo i dostajemy timeout!
 ```
 
 Trzeba więc będzie podjąć się optymalizacji. Pierwsze kroki, który warto podjąć to ustawienie w celach diagnostycznych wpisu konfiguracyjnego
