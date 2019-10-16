@@ -98,7 +98,7 @@ private Long transactionId;
 Co właściwie skonfigurowaliśmy w tym momencie?
 W adnotacji GeneratedValue informujemy Hibernate by użył strategii sekwencji generowania id dla encji i wskazujemy nazwę generatora. Niżej podajemy wcześniej wspomnianą nazwę generatora, klasę wskazującą na strategię generatora, podstawowe parametry i optymalizator. Jak działa ten ostatni, u nas przyjmujący wartość __„hilo”__?
  
-Sam algorytm hi/lo jest opisany w wielu miejscach na internecie, a nawet w kodach źródłowych Hibernate, dlatego skupimy się tylko na tym jak działa na poziomie koncepcyjnym: 
+Sam algorytm hi/lo jest opisany w wielu miejscach na internecie [[3]](https://vladmihalcea.com/the-hilo-algorithm/), dlatego skupimy się tylko na tym jak działa na poziomie koncepcyjnym: 
 
 *Skoro nie chcemy za każdym razem pytać bazę danych o nowy numer sekwencji, to możemy jako klient zapytać o niego raz na N encji (wartość N została przez nas ustawiona w parametrze increment_size), a pomiędzy tymi zapytaniami sami inkrementować licznik.*
  
@@ -133,7 +133,7 @@ pozwalające na zoptymalizowanie liczby zapytań przesyłanych w pakiecie siecio
  
 W przypadku optymalizacji takich jak pokazane w tym poście warto zajrzeć pod maskę - do dokumentacji, a nawet kodu źródłowego frameworku, a także zaopatrzyć się w dobre narzędzia wspomagające diagnostykę jak chociażby wyżej przytoczony Zipkin.
 
-Warto też strzec się błędów i niepoprawnych użyć mechanizmów frameworków, należy chociażby pamiętać o tym, że aby wykonać batch insert za pomocą klasy JpaRepository z frameworku Spring musimy skorzystać z metody *saveAll*, a nie *save*. Osobnej optymalizacji poprzez ustawienie *order_updates* w plikach konfiguracyjnych może wymagać również uaktualnianie rekordów. Kolejna pułapka o której należy pamiętać związana jest z cache poziomu L1. Cache to jest tożsame z PersistanceContext, działa na poziomie pojedynczej transakcji i jest zawsze włączone. Oznacza to, że zapisując dużą liczbę encji w jednej transakcji narażamy się na problemy pamięciowe.
+Warto też strzec się błędów i niepoprawnych użyć mechanizmów frameworków, należy chociażby pamiętać o tym, że aby wykonać batch insert za pomocą klasy JpaRepository z frameworku Spring musimy skorzystać z metody *saveAll*, a nie *save*. Osobnej optymalizacji poprzez ustawienie *order_updates* w plikach konfiguracyjnych może wymagać również uaktualnianie rekordów. Kolejna pułapka o której należy pamiętać związana jest z cache poziomu L1. Jak wiemy, działa ono na poziomie pojedynczej transakcji. Oznacza to, że zapisując dużą liczbę encji w jednej transakcji narażamy się na problemy pamięciowe.
 
 Podsumowując, wiemy że ceną za wysoki poziom abstrakcji frameworków jest to, że dużo rzeczy dzieje się poza naszym wzrokiem - a to ma swoje konsekwencje. Czasem musimy wyjść poza specyfikację interfejsu technologicznego i skorzystać z mechanizów konkretnej implementacji, takie podejście często bazowane jest na eksperymentowaniu by dowiedzieć jaki mechanizm rozwiąże nasz problem. Wymaga to nieraz diagnostycznego spojrzenia na problem oraz zagłębienia się w dokumentację używanej przez nas technologii.
 
