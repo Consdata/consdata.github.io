@@ -11,7 +11,7 @@ tags:
   - jpa
 ---
 
-W tym poście powiemy sobie o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate'a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.
+W tym poście powiemy o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate'a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.
 Skupimy się na aspektach konfiguracyjnym i diagnostycznym systemu.
 
 Zapytany o to czy lepiej używać EntityManagera czy Hibernate’owego Session, Emmanuel Bernard  bez wahania opowiedział się za tym pierwszym [[1]](https://www.theserverside.com/news/2240186700/The-JPA-20-EntityManager-vs-the-Hibernate-Session-Which-one-to-use). Jest to wypowiedź w myśl zasady, którą jako programiści wszyscy dobrze znamy – bazowanie na specyfikacji, a nie implementacji danej technologii. Stosowanie się do tej reguły sprawia, że zmiany technologiczne są o wiele prostsze - jesteśmy związani tylko z interfejsem, a podmiana dostawcy jego implementacji jest przecież w założeniu tylko formalnością.
