@@ -14,7 +14,7 @@ tags:
 W tym poście powiemy o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate'a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.
 Skupimy się na aspektach konfiguracyjnym i diagnostycznym systemu.
 
-Zapytany o to czy lepiej używać EntityManagera czy Hibernate’owego Session, Emmanuel Bernard  bez wahania opowiedział się za tym pierwszym [[1]](https://www.theserverside.com/news/2240186700/The-JPA-20-EntityManager-vs-the-Hibernate-Session-Which-one-to-use). Jest to wypowiedź w myśl zasady, którą jako programiści wszyscy dobrze znamy – bazowanie na specyfikacji, a nie implementacji danej technologii. Stosowanie się do tej reguły sprawia, że zmiany technologiczne są o wiele prostsze - jesteśmy związani tylko z interfejsem, a podmiana dostawcy jego implementacji jest przecież w założeniu tylko formalnością.
+Zapytany o to czy lepiej używać EntityManagera czy Hibernate’owego Session, Emmanuel Bernard  bez wahania opowiedział się za tym pierwszym [[1]](https://www.theserverside.com/news/2240186700/The-JPA-20-EntityManager-vs-the-Hibernate-Session-Which-one-to-use). Jest to wypowiedź zgodna z zasadą, którą jako programiści wszyscy dobrze znamy – bazowanie na specyfikacji, a nie implementacji danej technologii. Stosowanie się do tej reguły sprawia, że zmiany technologiczne są o wiele prostsze - jesteśmy związani tylko z interfejsem, a podmiana dostawcy jego implementacji jest przecież w założeniu tylko formalnością.
 
 Zdarza się jednak, że musimy zrobić coś co wychodzi poza ramy abstrakcyjnej specyfikacji i chcąc nie chcąc użyć mechanizmów konkretnej implementacji. Tak jest też w przypadku batchowych insertów czyli zapisywania większych grup rekordów w jednej transakcji. W tym poście przejdziemy przez typową drogę optymalizacji tejże operacji, przykłady wizualizując statystykami generowanymi przez Hibernate'a oraz przepływami zilustrowanymi za pomocą Zipkina [[2]](https://zipkin.io/). 
 
@@ -28,7 +28,7 @@ Trzeba więc będzie podjąć się optymalizacji. Pierwsze kroki, który warto p
 ```properties
 spring.jpa.properties.hibernate.generate_statistics=true
 ```
-w pliku *.properties* lub *.yml*, oraz odpowiednie skonfigurowanie Zipkina (tu tę konfigurację pominiemy bo jest ona obszernym materiałem, który mógłby wypełnić osobny post). Te kroki pomogą nam w prześledzeniu powodu wyjątkowo długiego czasu odpowiedzi usługi. Przykłady będziemy badać na realnej usłudze w dwóch wariantach – żądanie z małą liczbą encji zwizualizowane za pomocą Zipkina, oraz żądanie z dużą liczbą encji opisane za pomocą kluczowych statystyk i czasu wykonania.
+w pliku *.properties* lub *.yml*, oraz odpowiednie skonfigurowanie Zipkina (tu tę konfigurację pominiemy bo jest ona obszernym materiałem, który mógłby wypełnić osobny artykuł). Te kroki pomogą nam w prześledzeniu powodu wyjątkowo długiego czasu odpowiedzi usługi. Przykłady będziemy badać na realnej usłudze w dwóch wariantach – żądanie z małą liczbą encji zwizualizowane za pomocą Zipkina, oraz żądanie z dużą liczbą encji opisane za pomocą kluczowych statystyk i czasu wykonania.
 Przejdźmy więc do analizy. Na początek przyjrzyjmy się usłudze bez żadnych optymalizacji.
 
 ![Zipkin - przepływ na małej liczbie encji bez optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika1.png)
@@ -43,8 +43,8 @@ Kluczowe statystyki wygenerowane przez Hibernate:
 4163640487 nanoseconds spent executing 1 flushes (flushing a total of 2003 entities and 0 collections);
 5927 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
 ```
-Ze statystyk wynika, że nie wykonały się żadne paczki operacji, za to wykonało się ponad 4000 komend JDBC. 
-Wąskim gardłem jest więc sposób wstawiania rekordów do bazy danych. Jak więc temu zaradzić?
+Ze statystyk wynika, że nie wykonały się żadne paczki operacji, widać natomiast informację o zrealizowaniu ponad 4000 komend JDBC. 
+Wąskim gardłem jest więc sposób wstawiania rekordów do bazy danych. Jak temu zaradzić?
 
 Z pomocą przychodzi nam konfiguracja operacji batchowych. Skupimy się przede wszystkim na wstawianiu rekordów. Skonfigurujmy więc batchowe inserty poprzez dodanie do wcześniej wspomnianych plików konfiguracyjnych odpowiednich wpisów
 ```properties
@@ -135,5 +135,5 @@ W przypadku optymalizacji takich jak pokazane w tym poście warto zajrzeć pod m
 
 Warto też strzec się błędów i niepoprawnych użyć mechanizmów frameworków, należy chociażby pamiętać o tym, że aby wykonać batch insert za pomocą klasy JpaRepository z frameworku Spring musimy skorzystać z metody *saveAll*, a nie *save*. Osobnej optymalizacji poprzez ustawienie *order_updates* w plikach konfiguracyjnych może wymagać również uaktualnianie rekordów. Kolejna pułapka o której należy pamiętać związana jest z cache poziomu L1. Jak wiemy, działa ono na poziomie pojedynczej transakcji. Oznacza to, że zapisując dużą liczbę encji w jednej transakcji narażamy się na problemy pamięciowe.
 
-Podsumowując, wiemy że ceną za wysoki poziom abstrakcji frameworków jest to, że dużo rzeczy dzieje się poza naszym wzrokiem - a to ma swoje konsekwencje. Czasem musimy wyjść poza specyfikację interfejsu technologicznego i skorzystać z mechanizów konkretnej implementacji, takie podejście często bazowane jest na eksperymentowaniu by dowiedzieć jaki mechanizm rozwiąże nasz problem. Wymaga to nieraz diagnostycznego spojrzenia na problem oraz zagłębienia się w dokumentację używanej przez nas technologii.
+Podsumowując, wiemy że ceną za wysoki poziom abstrakcji frameworków jest to, że dużo rzeczy dzieje się poza naszym wzrokiem. Czasem musimy wyjść poza specyfikację interfejsu technologicznego i skorzystać z mechanizów konkretnej implementacji, takie podejście często bazowane jest na eksperymentowaniu by dowiedzieć jaki mechanizm rozwiąże nasz problem. Wymaga to nieraz diagnostycznego spojrzenia na problem oraz zagłębienia się w dokumentację używanej przez nas technologii.
 
