@@ -2,7 +2,7 @@
 layout: post
 title: Batchowe inserty w Hibernate - droga ku szybkości
 published: true
-date:      2019-10-17 08:00:00 +0100
+date:      2019-10-21 08:00:00 +0100
 author:    rrudko
 tags:
   - programming
@@ -31,7 +31,7 @@ spring.jpa.properties.hibernate.generate_statistics=true
 w pliku *.properties* lub *.yml* oraz odpowiednie skonfigurowanie Zipkina (tu tę konfigurację pominiemy bo jest ona obszernym materiałem, który mógłby wypełnić osobny artykuł). Te kroki pomogą nam w prześledzeniu powodu wyjątkowo długiego czasu odpowiedzi usługi. Przykłady będziemy badać na realnej usłudze w dwóch wariantach – żądanie z małą liczbą encji zwizualizowane za pomocą Zipkina oraz żądanie z dużą liczbą encji opisane za pomocą kluczowych statystyk i czasu wykonania.
 Przejdźmy do analizy. Na początek przyjrzyjmy się usłudze bez żadnych optymalizacji.
 
-![Zipkin - przepływ na małej liczbie encji bez optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika1.png)
+![Zipkin - przepływ na małej liczbie encji bez optymalizacji](/assets/img/posts/2019-10-21-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika1.png)
 
 Co powoduje, że widzimy tak dużo wykonanych operacji? Już na pierwszy rzut oka widać, że każde wstawianie rekordu jest realizowane osobno. Spójrzmy na wygenerowane statystyki dla normalnego wywołania usługi (przy dużej liczbie encji)
 ```
@@ -60,7 +60,7 @@ Jest to przydatne szczególnie w przypadku gdy występuje relacja encji rodzic-d
 
 Po wykonaniu pierwszego kroku optymalizacyjnego sprawdźmy jak zmieniły się wygenerowane statystyki.
 
-![Zipkin - przepływ na małej liczbie encji po pierwszej optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika2.png)
+![Zipkin - przepływ na małej liczbie encji po pierwszej optymalizacji](/assets/img/posts/2019-10-21-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika2.png)
 
 Dla dużej liczby encji statystyki prezentują się następująco:
 ```
@@ -105,7 +105,7 @@ Sam algorytm hi/lo jest opisany w wielu miejscach na internecie [[3]](https://vl
 W praktyce oznacza to, że mogą powstać „dziury” w numeracji, gdy w danej transakcji wstawimy jedną encję to mimo wszystko potrzebujemy numeru sekwencji z bazy danych, a w konsekwencji podbijemy ją o N. Zyskiem z korzystania z tego mechanizmu jest rzadka potrzeba pytania bazy o kolejną wartość sekwencji.
 Sprawdźmy kolejny raz jak nasze optymalizacje wpłynęły na szybkość działania usługi.
 
-![Zipkin - przepływ na małej liczbie encji po drugiej optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika3.png)
+![Zipkin - przepływ na małej liczbie encji po drugiej optymalizacji](/assets/img/posts/2019-10-21-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika3.png)
 
 Dla dużej liczby encji statystyki prezentują się następująco:
 ```
