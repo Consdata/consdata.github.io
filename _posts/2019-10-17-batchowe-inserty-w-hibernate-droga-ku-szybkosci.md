@@ -18,22 +18,22 @@ Zapytany o to czy lepiej używać EntityManagera czy Hibernate’owego Session, 
 
 Zdarza się jednak, że musimy zrobić coś co wychodzi poza ramy abstrakcyjnej specyfikacji i chcąc nie chcąc użyć mechanizmów konkretnej implementacji. Tak jest też w przypadku batchowych insertów czyli zapisywania większych grup rekordów w jednej transakcji. W tym poście przejdziemy przez typową drogę optymalizacji tejże operacji, przykłady wizualizując statystykami generowanymi przez Hibernate'a oraz przepływami zilustrowanymi za pomocą Zipkina [[2]](https://zipkin.io/). 
 
-Załóżmy dobrze znany scenariusz, podczas spokojnego dnia w pracy nagle otrzymujemy maila: 
+Załóżmy dobrze znany scenariusz - podczas spokojnego dnia w pracy nagle otrzymujemy maila: 
 
 > Złe wieści!<br>
-> Wystawiona usługa co prawda działa,ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień.<br>
+> Wystawiona usługa co prawda działa, ale nie możemy za jej pomocą w jednym żądaniu złożyć 2000 zamówień.<br>
 > Okazuje sie, że oczekiwanie na odpowiedź trwa zbyt długo i dostajemy timeout!
 
-Trzeba więc będzie podjąć się optymalizacji. Pierwsze kroki, który warto podjąć to ustawienie w celach diagnostycznych wpisu konfiguracyjnego
+Nie pozostaje nam nic innego jak przystąpić do optymalizacji. Pierwsze kroki, który warto podjąć to ustawienie w celach diagnostycznych wpisu konfiguracyjnego
 ```properties
 spring.jpa.properties.hibernate.generate_statistics=true
 ```
-w pliku *.properties* lub *.yml*, oraz odpowiednie skonfigurowanie Zipkina (tu tę konfigurację pominiemy bo jest ona obszernym materiałem, który mógłby wypełnić osobny artykuł). Te kroki pomogą nam w prześledzeniu powodu wyjątkowo długiego czasu odpowiedzi usługi. Przykłady będziemy badać na realnej usłudze w dwóch wariantach – żądanie z małą liczbą encji zwizualizowane za pomocą Zipkina, oraz żądanie z dużą liczbą encji opisane za pomocą kluczowych statystyk i czasu wykonania.
-Przejdźmy więc do analizy. Na początek przyjrzyjmy się usłudze bez żadnych optymalizacji.
+w pliku *.properties* lub *.yml* oraz odpowiednie skonfigurowanie Zipkina (tu tę konfigurację pominiemy bo jest ona obszernym materiałem, który mógłby wypełnić osobny artykuł). Te kroki pomogą nam w prześledzeniu powodu wyjątkowo długiego czasu odpowiedzi usługi. Przykłady będziemy badać na realnej usłudze w dwóch wariantach – żądanie z małą liczbą encji zwizualizowane za pomocą Zipkina oraz żądanie z dużą liczbą encji opisane za pomocą kluczowych statystyk i czasu wykonania.
+Przejdźmy do analizy. Na początek przyjrzyjmy się usłudze bez żadnych optymalizacji.
 
 ![Zipkin - przepływ na małej liczbie encji bez optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika1.png)
 
-Co powoduje, że widzimy tak dużo wykonanych operacji? Już na pierwszy rzut oka widać, że każde wstawianie rekordu jest wykonywane osobno. Spójrzmy więc na wygenerowane statystyki dla normalnego wywołania usługi (przy dużej liczbie encji)
+Co powoduje, że widzimy tak dużo wykonanych operacji? Już na pierwszy rzut oka widać, że każde wstawianie rekordu jest realizowane osobno. Spójrzmy na wygenerowane statystyki dla normalnego wywołania usługi (przy dużej liczbie encji)
 ```
 Łączny czas odpowiedzi usługi przy wywołaniu przez HTTP 9503ms (POSTMAN)
 Kluczowe statystyki wygenerowane przez Hibernate:
@@ -44,15 +44,15 @@ Kluczowe statystyki wygenerowane przez Hibernate:
 5927 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
 ```
 Ze statystyk wynika, że nie wykonały się żadne paczki operacji, widać natomiast informację o zrealizowaniu ponad 4000 komend JDBC. 
-Wąskim gardłem jest więc sposób wstawiania rekordów do bazy danych. Jak temu zaradzić?
+Wąskim gardłem jest sposób wstawiania rekordów do bazy danych. Jak temu zaradzić?
 
-Z pomocą przychodzi nam konfiguracja operacji batchowych. Skupimy się przede wszystkim na wstawianiu rekordów. Skonfigurujmy więc batchowe inserty poprzez dodanie do wcześniej wspomnianych plików konfiguracyjnych odpowiednich wpisów
+Z pomocą przychodzi nam konfiguracja operacji batchowych. Skupimy się przede wszystkim na wstawianiu rekordów. Skonfigurujmy batchowe inserty poprzez dodanie do wcześniej wspomnianych plików konfiguracyjnych odpowiednich wpisów
 ```properties
 spring.jpa.properties.hibernate.jdbc.batch_size=1000
 ```
 
 Dodając ten wpis ustawiliśmy wielkość paczek w operacjach paczkowanych.
-Warto również, choć nie jest to wymagane, ustawić również inny wpis konfiguracyjny.
+Warto również, choć nie jest to wymagane, ustawić inny wpis konfiguracyjny.
 ```properties
 spring.jpa.properties.hibernate.order_inserts=true
 ```
@@ -72,7 +72,7 @@ Kluczowe statystyki wygenerowane przez Hibernate:
 539223064 nanoseconds spent executing 1 flushes (flushing a total of 2003 entities and 0 collections);
 5446 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
 ```
-Zarówno z zwizualizowanego przepływu dla małej liczby encji, jak i wygenerowanych statystyk dla dużej ich liczby widzimy, że operacji jest mniej więcej o połowę mniej, a wygenerowane statystyki wprost mówią, że zostały wykonane „paczki” operacji. Nadal jednak wykonanych komend JDBC jest dużo ponieważ wciąż wykonywane są indywidualne zapytania po przydział numerów bazodanowej sekwencji, które służą jako identyfikatory wstawianych encji. Jak możemy więc temu zaradzić?
+Zarówno z zwizualizowanego przepływu dla małej liczby encji, jak i wygenerowanych statystyk dla dużej ich liczby widzimy, że operacji jest mniej więcej o połowę mniej, a wygenerowane statystyki wprost mówią, że zostały wykonane „paczki” operacji. Nadal jednak wywołań komend JDBC jest dużo ponieważ wciąż wykonywane są indywidualne zapytania po przydział numerów bazodanowej sekwencji, które służą jako identyfikatory wstawianych encji. Jak możemy temu zaradzić?
 Początkowa konfiguracja identyfikatora naszej encji wygląda tak:
 
 ```java
@@ -80,7 +80,7 @@ Początkowa konfiguracja identyfikatora naszej encji wygląda tak:
 @GeneratedValue
 private Long transactionId;
 ````
-W praktyce oznacza to zostawienie dostawcy implementacji dowolności w doborze strategii generowania id. Weźmy więc sprawy w swoje ręce i zmieńmy strategię generowania id dla naszej encji na odpowiadającą naszym potrzebom.
+W praktyce oznacza to zostawienie dostawcy implementacji dowolności w doborze strategii generowania id. Weźmy sprawy w swoje ręce i zmieńmy strategię generowania id dla naszej encji na odpowiadającą naszym potrzebom.
 ```java
 @Id
 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_sequence_generator")
@@ -103,7 +103,7 @@ Sam algorytm hi/lo jest opisany w wielu miejscach na internecie [[3]](https://vl
 *Skoro nie chcemy za każdym razem pytać bazę danych o nowy numer sekwencji, to możemy jako klient zapytać o niego raz na N encji (wartość N została przez nas ustawiona w parametrze increment_size), a pomiędzy tymi zapytaniami sami inkrementować licznik.*
  
 W praktyce oznacza to, że mogą powstać „dziury” w numeracji, gdy w danej transakcji wstawimy jedną encję to mimo wszystko potrzebujemy numeru sekwencji z bazy danych, a w konsekwencji podbijemy ją o N. Zyskiem z korzystania z tego mechanizmu jest rzadka potrzeba pytania bazy o kolejną wartość sekwencji.
-Sprawdźmy więc kolejny raz jak nasze optymalizacje wpłynęły na szybkość działania usługi.
+Sprawdźmy kolejny raz jak nasze optymalizacje wpłynęły na szybkość działania usługi.
 
 ![Zipkin - przepływ na małej liczbie encji po drugiej optymalizacji](/assets/img/posts/2019-10-17-batchowe-inserty-w-hibernate-droga-ku-szybkosci/grafika3.png)
 
