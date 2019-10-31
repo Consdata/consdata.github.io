@@ -14,7 +14,7 @@ Mój poprzedni wpis był o tym [**co** testować w projektach frontendowych](htt
 
 ### Node
 #### Instalacja za pomocą nvm
-Aby zainstalować lokalnie Node'a, można posłużyć się nvm, więcej w [artykule autorstwa Krzysztofa Czechowskiego na łamach naszego bloga](https://blog.consdata.tech/2019/05/09/node-version-menager.html).
+Aby zainstalować lokalnie Node'a można posłużyć się nvm, więcej w [artykule autorstwa Krzysztofa Czechowskiego na łamach naszego bloga](https://blog.consdata.tech/2019/05/09/node-version-menager.html).
 Do używania frameworka będzie potrzebny projekt Node'owy, w przypadku jego braku można w dowolnym katalogu taki stworzyć za pomocą polecenia
 ```bash
 npm init
@@ -39,7 +39,7 @@ yarn:
 yarn add jasmine --dev
 ```
 
-inicjować lokalnie zainstalowany framework, polecenie utworzy domyślną konfigurację w katalogu *spec*, domyślnie Jasmine będzie wykonywał testy w plikach w katalogu *spec*, kończące swoją nazwę na *spec.js* lub *Spec.js*.
+inicjować lokalnie zainstalowany framework, polecenie utworzy domyślną konfigurację w katalogu *spec*, domyślnie Jasmine będzie wykonywał testy w plikach w katalogu *spec* o nazwach kończących się na *spec.js* lub *Spec.js*.
 
 
 ```bash
@@ -77,7 +77,7 @@ yarn test
 ```
 
 ### Angular CLI
-W przypadku użycia frameworka Angular CLI mamy już dostępny framework Jasmine i nie wymaga on dalszej konfiguracji. Wymagana jest jedynie [inna konwencja nazewnicza plików z testami](https://angular.io/guide/testing#test-file-name-and-location).
+W przypadku użycia frameworka Angular CLI mamy już dostępny framework Jasmine i wymaga on jedynie [innej konwencji nazewniczej plików z testami](https://angular.io/guide/testing#test-file-name-and-location).
 
 ### Struktura testu
 
@@ -150,6 +150,6 @@ Randomized with seed 22493 (jasmine --random=true --seed=22493)
 
 Jeśli chcemy wyłączyć dany zestaw testów, lub pojedynczy przypadek testowy, możemy posłużyć się funkcjami **xdescribe** lub **xit**, **fdescribe** oraz **fit** służą po to, by wyłączyć resztę testów, a zostawić te oznaczone właśnie tą literką f (od *focus*). Jest to szczególnie przydatne gdy pracujemy nad nowymi funkcjonalnościami i nie chcemy marnować czasu na wykonywanie testów, które w tym momencie są nieistotne.
 
-Jak widać na powyższych przykładach podstawy frameworka Jasmine są proste, sama instalacja i konfiguracja nie jest specjalnie skomplikowana, a w przypadku Angulara CLI wszystko mamy już dostępne po instalacji. Ten wpis jest wprowadzeniem do testów jednostkowych we frontendzie, w następnej odsłonie pokażemy jak mockować lub stubować zależności w komponentach angularowych i serwisach. 
+Jak widać na powyższych przykładach podstawy frameworka Jasmine są proste, sama instalacja i konfiguracja nie jest specjalnie skomplikowana, a w przypadku Angular CLI wszystko mamy już dostępne po instalacji. Ten wpis jest wprowadzeniem do testów jednostkowych we frontendzie, w następnej odsłonie pokażemy jak mockować lub stubować zależności w komponentach angularowych i serwisach. 
 
 
