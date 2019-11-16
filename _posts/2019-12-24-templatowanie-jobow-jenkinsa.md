@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Jenkins jobs templates"
+title:     "Automat dodający joby do Jenkinsa"
 published: false
 date:      2019-12-24 08:00:00 +0100
 author:    dkubiak
@@ -8,8 +8,107 @@ tags:
     - jenkins job
     - jenkins template
     - devops
+    - jenkins-job-builder
+    - jenkins-jobs
 ---
+## Zastosowanie
 
-## Czym są szablony jobów
-## Przykładowy template job
-## Zasilanie jenkinsa jobami bazującymi na szablonach
+W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje sie ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy liczbie projektów 20+ przestaje to być trywialne. W tym artukule zajmniemy się pierwszym zagadnieniem budowaniem, ale opisany tutaj sposób bez problemu można zastosować do innych aspektów.
+
+Do budowania naszych projektów 20+ zazwyczaj staramy sie utrzymać jedno narzędzie i to oczywiście działa na plus. W tym artykule posługiwać będziemy się mavenem.
+
+Do zautomatyzowania naszego procesu posłuży nam jenkins.
+
+Przejdzy do sedna, czyli jak budować projekty 20+ z jak najmniejszym nakładem parcy i ilością kodu do utrzymania.
+
+## Startujemy
+
+Przy założeniu, że nasze projekty budujemy
+
+`mvn clean package`
+
+-/+ jakieś super ważne przełączniki typu` -DskipTes...` ;) jesteśy w stanie w bardzo prosty i schludy sposób, zbudować kod/konfigurację która zautomatyzuje nasz cały proces.
+
+Automatyzajcę rozpoczniemy od użycia narzędzia: [jenkins-job-builder](https://docs.openstack.org/infra/jenkins-job-builder/ "jenkins-job-builder")
+
+Instalacja: `pip install --user jenkins-job-builder`
+macOS `brew install jenkins-job-builder`
+
+Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_jobs/jenkins_jobs.ini`:
+
+    [jenkins]
+    query_plugins_info=False
+    user=jenkins #Użytkownik Jenkinsowy
+    password=93a1160c11dc014b7214d4e8769fe8c9
+    url=http://localhost:8080 #Url do jenkinsa
+
+- user - Użytkownik Jenkinsowy
+- password - API Token dla swojego użytkownika [link](https://support.cloudbees.com/hc/en-us/articles/115003090592-How-to-re-generate-my-Jenkins-user-token)
+- url - Adres URL do Jenkinsa
+
+Tak skonfigurowane narzędzie pozwoli nam utworzy dowolny job jenkinsowy.
+Utworz plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
+
+    - job:
+        name: project-1-build
+        project-type: freestyle
+        disabled: false
+        builders:
+            - shell: 'mvn clean package'
+
+Zasilenie jenkinsa nowo utworzonym jobem:
+`jenkins-jobs update jobs`
+
+W ten sposob dodałeś pierwszy z 20+ projektów do jenkinsa. Good Job!
+
+## Szablony
+
+Oczywiście! szablony, uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy i nie może zabraknąć tutaj słynnego "re-użucia". 
+Wiemy już, że nasze projekty budujemy w bardzo podobny sposób, mamy już pierwszy z 20+ projektów. 
+Napiszmy nasz pierwszy szablon.
+
+Utworzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
+
+    - job-template:
+        name: '{name}-{subname}-build'
+        project-type: freestyle
+        disabled: false
+        builders:
+            - shell: 'mvn clean package'
+            
+Szablon posiada dwie zmienne
+    
+    name : nazwa projektu
+    subname: numer oznaczajacy jeden z projektów 20+
+    
+Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern po którym będzie szukany szablono.
+    
+Aby użyć naszego szablonu tworzymy plik w katalogu `jobs` o nazwie `projects.yaml`
+
+    - project:
+        name: project
+        subname:
+          - 1
+          - 2
+          - 3
+        jobs:
+          - '{name}-{subname}-build'
+
+Całość kończymy aktualizacją jobow: `jenkins-jobs update jobs`
+
+W ten sposob jednym ruchem wygenerowaliśmy 3 joby:
+
+    project-1-build
+    project-2-build
+    project-3-build
+    
+Każdy z nich zawiera definicję joba opisanego w szablonie o nazwie `{name}-{subname}-build'` czyli wywołanie `mvn clean package`
+
+## Podsumowanie
+Cel został osiągniety! Raz napisana definicja builda zostałą re-użyta n razy (w naszym przykładzie tylko 3 ;) ). Zmiejszyliśmy ilość zdublowanych konfiguracji tym samym jesteśmy w stanie lepiej nimi zarządzać.
+
+Był to prosty przykład ukazyjący istnienie takiego narzędzia z możliwościa tworzenia szablonów. Jeśli chcesz dowiedzieć sie czegoś wiecej zostawiam kilka linków.
+
+[Dokumentacja](https://docs.openstack.org/infra/jenkins-job-builder/)
+
+[Repozytorium projektu](https://opendev.org/jjb/jenkins-job-builder)
