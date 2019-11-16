@@ -63,7 +63,7 @@ W ten sposob dodałeś pierwszy z 20+ projektów do jenkinsa. Good Job!
 
 ## Szablony
 
-Oczywiście! szablony, uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy i nie może zabraknąć tutaj słynnego "re-użucia". 
+Oczywiście! szablony, uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy i nie może zabraknąć tutaj słynnego "re-użycia". 
 Wiemy już, że nasze projekty budujemy w bardzo podobny sposób, mamy już pierwszy z 20+ projektów. 
 Napiszmy nasz pierwszy szablon.
 
