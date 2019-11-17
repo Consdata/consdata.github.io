@@ -95,3 +95,9 @@ rrudko:
   name: Robert Rudko
   image: rrudko.jpg
   bio: Wszechstronny developer z pragmatycznym podejściem do rozwiązywanych problemów. Pasjonat dobrego masła i black metalu.
+
+dkubiak:
+  name:   Dawid Kubiak
+  github: dkubiak
+  bio:    Fullstack  developer. Wielki entuzjasta automatyzacji, dlatego dobrze odnajduje się w przestrzeni DevOps.
+  image:  dkubiak.jpg
