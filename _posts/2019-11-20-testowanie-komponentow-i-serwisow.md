@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Testowanie frontendu - Cz. 2. Testowanie komponentów i serwisów
-published: true
+published: false
 date:      2019-11-20 08:00:00 +0100
 author:    kczechowski
 tags:
