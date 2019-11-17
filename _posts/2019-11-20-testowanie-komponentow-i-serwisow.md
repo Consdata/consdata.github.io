@@ -49,7 +49,7 @@ describe('AnimalsComponent', () => {
 });
 ```
 
-Te testy powinny przejść pozytywnie. *AnimalComponent* potrzebuje *AnimalService*, ale że z niego nie korzystamy, możemy do konstruktora przekazać null. Jednak jeżeli będziemy chcieli sprawdzić, czy na liście są jakieś zwierzęta np.:
+Te testy powinny przejść pozytywnie. *AnimalComponent* potrzebuje *AnimalService*, ale że z niego nie korzystamy, możemy do konstruktora przekazać null. Jednak jeżeli będziemy chcieli sprawdzić, czy na liście są jakieś zwierzęta, np.:
 
 ```javascript
 it('should have a animals list with 1 animal', () => {
@@ -61,6 +61,7 @@ it('should have a animals list with 1 animal', () => {
 ```
 
 Otrzymamy błąd; `TypeError: Cannot read property 'subscribe' of undefined`
+
 Subscribe, wywoływany jest na zmiennej animals$, która inicjowana jest dopiero w metodzie *ngOnInit()*, wywołajmy więc ją na początku naszego nowego testu:
 
 ```javascript
@@ -91,8 +92,7 @@ beforeEach(() => {
   });
 ```
 
-Taki *fakeAnimalService* możemy przekazać do konstruktora, *httpClient* jest pustym obiektem,
-ale to nam nie przeszkadza i tak nie chcemy z niego korzystać, wykorzystywala go funkcja *getAnimals()*, od razu zwróci nam wynik, nie korzystając z httpClient'a, po tych zmianach cała klasa testu wygląda tak jak poniżej:
+Taki *fakeAnimalService* możemy przekazać do konstruktora. Pusty obiekt *httpClient* nam nie przeszkadza - i tak nie chcemy z niego korzystać. Wykorzystująca go funkcja *getAnimals()* od razu zwróci nam wynik nie korzystając z httpClient'a. Po tych zmianach cała klasa testu wygląda jak poniżej:
 
 ```javascript
 import {AnimalsComponent} from './animals.component';
@@ -125,10 +125,10 @@ describe('AnimalsComponent', () => {
 });
 ```
 
-Takie testy jednak nie dają nam odpowiedzi na pytania, czy nasz serwis został wywołany i ile razy,
-a to też informacja cenna np. gdy nasz serwis robi jakieś kosztowne obliczenia.
+Takie testy nie dają nam jednak odpowiedzi na pytania czy nasz serwis został wywołany i ile razy. 
+Jest to też cenna informacja gdy nasz serwis robi np. jakieś kosztowne obliczenia.
 
-W takiej sytuacji pomoże nam funkcja *createSpyObj*, którą dostarcza nam Jasmine, do funkcji tej przekażemy 2 parametry: nazwę serwisu i tablicę nazw metod.
+W takiej sytuacji pomoże nam funkcja *createSpyObj*, którą dostarcza nam Jasmine. Do funkcji tej przekażemy dwa parametry: nazwę serwisu i tablicę nazw metod.
 
 `fakeAnimalService = jasmine.createSpyObj('animalService', ['getAnimals']);`
 
@@ -136,7 +136,7 @@ Teraz jeszcze w naszym przypadku testowym musimy ustalić co funkcja *getAnimals
 
 `const spy = fakeAnimalService.getAnimals.and.returnValue(of([fakeAnimal]));`
 
-Obiekt *spy* udzieli nam odpowiedzi, których szukaliśmy:
+Odpowiedzi których szukaliśmy udzieli nam obiekt *spy*:
 
 ```javascript
 it('should call getAnimals 1 time without parameters ', () => {
@@ -203,9 +203,9 @@ describe('AnimalsComponent', () => {
 ```
 ## Testy z wykorzystaniem TestBed
 
-Angular dostarcza interfejs *TestBed*, aby pomóc nam w testach.
+Aby pomóc nam w testach Angular dostarcza interfejs *TestBed*.
 
-Na początku, gdy wygenerowaliśmy komponent przy pomocy Angular CLI, zawierał on również testy, dla komponentu *AnimalsComponent* wyglądały one tak:
+Na początku, gdy wygenerowaliśmy komponent przy pomocy Angular CLI, zawierał on również testy. Dla komponentu *AnimalsComponent* wyglądały one tak:
 
 
 ```javascript
@@ -237,9 +237,9 @@ describe('AnimalsComponent', () => {
 
 Niestety od początku testy wskazywały błędy.
 
-W powyższym teście *TestBed* chce nam dostarczyć cały komponent *AnimalsComponent* wraz z html'em, jednak nie ma wszystkich składowych jak, chociażby *AnimalsListComponent*.
+W powyższym teście *TestBed* chce nam dostarczyć cały komponent *AnimalsComponent* wraz z html'em, jednak nie ma wszystkich składowych jak chociażby *AnimalsListComponent*.
 
-Musimy poprawić naszą konfigurację, tak aby zawierała wszystkie wymagane elementy:
+Musimy poprawić naszą konfigurację tak aby zawierała wszystkie wymagane elementy:
 
 ```javascript
 describe('AnimalsComponent', () => {
@@ -267,7 +267,7 @@ describe('AnimalsComponent', () => {
 });
 ```
 
-Ta konfiguracja pozwoli nam już otrzymać przygotowany przez *TestBed* komponentów:
+Ta konfiguracja pozwoli nam już otrzymać przygotowany przez *TestBed* komponent:
 
 ```javascript
 it('should have a component', () => {
@@ -275,7 +275,7 @@ it('should have a component', () => {
   });
 ```
 
-Jednak test sprawdzający prezentowane zwierzęta, ponownie wykaże błędy:
+Jednak test sprawdzający prezentowane zwierzęta ponownie wykaże błędy:
 
 ```javascript
   it(`should have a list of animals`, () => {
@@ -288,10 +288,13 @@ Jednak test sprawdzający prezentowane zwierzęta, ponownie wykaże błędy:
   });
 ```
 
-*AnimalService* wywoła *httpClient.get*,
-w sekcji providers dostarczamy pusty obiekt jako *httpClienta*: `{ provide: HttpClient, useValue: {} }`,
-i dobrze się stało, bo nie chcemy, żeby nasz test komunikował się z zewnętrznym serwisem,
-ponownie wykorzystamy *spyOn*, który zapewni, że *animalService* zwróci nam dane do testów:
+*AnimalService* wywoła *httpClient.get*.
+
+W sekcji providers dostarczamy pusty obiekt jako *httpClient*: `{ provide: HttpClient, useValue: {} }`
+
+Jest dobrze, bo nie chcemy żeby nasz test komunikował się z zewnętrznym serwisem.
+
+Ponownie wykorzystamy *spyOn* który zapewni, że *animalService* zwróci nam dane do testów:
 
 ```javascript
   it(`should have a list of animals`, () => {
@@ -316,16 +319,16 @@ it(`should have a button with text "fake"`, (() => {
   }));
 ```
 
-Poniższe 2 linie pozwalają nam pobrać buttony i sprawdzić, czy są odpowiednio podpisane.
+Poniższe dwie linie pozwalają nam pobrać buttony i sprawdzić, czy są odpowiednio podpisane.
 ```javascript
 const buttons = fixture.debugElement.queryAll(By.css('.animal-button'));
 expect(buttons[0].nativeElement.textContent).toEqual('fake');
 ```
 ## Testy z wykorzystaniem HttpClientTestingModule
 
-Tymczasem możemy jeszcze wrócić do serwisu i sprawdzimy jak przetestować go z wykorzystaniem *TestBed* i *HttpClientTestingModule*:
+Tymczasem możemy jeszcze wrócić do serwisu i sprawdzić jak przetestować go z wykorzystaniem *TestBed* i *HttpClientTestingModule*:
 
-Ponownie konfiguracja modułu:
+Ponownie konfigurujemy modułu:
 
 ```javascript
 describe('AnimalService', () => {
@@ -351,13 +354,13 @@ describe('AnimalService', () => {
 });
 ```
 
-Powyżej widzimy 2 testy "should have a service", sprawdzają one to samo, jednak zaprezentowane są 2 różne możliwości dostarczenia serwisu do testu:
+Powyżej widzimy dwa testy "should have a service". Sprawdzają one to samo, jednak zaprezentowane są dwie różne możliwości dostarczenia serwisu do testu:
 1. poprzez `const service = TestBed.get(AnimalService);`
-2. `inject([AnimalService], (service: AnimalService)`, funkcja inject przyjmuje 2 parametry:
-    - tablicę serwisów do wstrzyknięcia tu jest to *AnimalService*, gdybyśmy chcieli wstrzyknąć więcej serwisów byłyby one kolejnymi elementami tablicy np.: `[AnimalService, NextService]`
-    - 2 parametr to funkcja gdzie określamy referencję do serwisu i jego typ, dla 2 serwisów wyglądałoby to tak: `(service: AnimalService, nextService: NextService)`. Ważna jest ich kolejność, tak aby była zgodna z kolejnością w tablic, do pierwszej referencji będzie wstrzyknięty pierwszy element z tablicy.
+2. `inject([AnimalService], (service: AnimalService)` - funkcja inject przyjmuje dwa parametry:
+    - tablicę serwisów do wstrzyknięcia - tu jest to *AnimalService*. Gdybyśmy chcieli wstrzyknąć więcej serwisów byłyby one kolejnymi elementami tablicy, np.: `[AnimalService, NextService]`
+    - drugi parametr to funkcja, gdzie określamy referencję do serwisu i jego typ. Dla dwóch serwisów wyglądałoby to tak: `(service: AnimalService, nextService: NextService)`. Ważna jest ich kolejność tak aby była zgodna z kolejnością w tablicy, gdyż do pierwszej referencji będzie wstrzyknięty pierwszy element z tablicy.
 
-Gdy moduł jest gotowy możemy przygotować test, który sprawdzi, czy trafimy pod odpowiedni adres i tylko tam.
+Gdy moduł jest gotowy możemy przygotować test, który sprawdzi czy trafimy pod odpowiedni adres - i tylko tam.
 
 ```javascript
  describe('getAnimals', () => {
@@ -373,7 +376,7 @@ Gdy moduł jest gotowy możemy przygotować test, który sprawdzi, czy trafimy p
   });
 ```
 
-Przy konfiguracji testów z wykorzystaniem *TestBed* pojawiło się słówko: *async*, ma ono związek z asynchronicznościom, więcej o tym napisze Adrian, w jednym z następnych wpisów.
+Przy konfiguracji testów z wykorzystaniem *TestBed* pojawiło się słowo *async*. Ma ono związek z asynchronicznością, o której więcej napisze Adrian. Stay tuned!
 
 Więcej na temat testów Angulara i Jasmin znajdziesz:
 * [https://angular.io/guide/testing#service-tests](https://angular.io/guide/testing#service-tests)
