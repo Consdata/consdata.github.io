@@ -15,19 +15,19 @@ tags:
 
 W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy liczbie projektów 20+ przestaje to być trywialne. W tym artykule zajmniemy się pierwszym zagadnieniem, automatyzacją buildow, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
 
-Do budowania naszych projektów 20+ zazwyczaj staramy się utrzymać jedno narzędzie i to oczywiście działa na plus. W tym artykule posługiwać będziemy się mavenem.
+Do budowania projektów 20+ zazwyczaj staramy się utrzymać jedno narzędzie i to oczywiście działa na plus. W tym artykule posługiwać będziemy się mavenem.
 
-Do zautomatyzowania naszego procesu posłuży nam Jenkins.
+Do zautomatyzowania procesu posłuży nam Jenkins.
 
 Przejdźmy do sedna, czyli jak budować projekty 20+ z jak najmniejszym nakładem pracy i ilością kodu do utrzymania.
 
 ## Startujemy
 
-Przy założeniu, że nasze projekty budujemy
+Przy założeniu, że projekty budujemy
 
 `mvn clean package`
 
--/+ jakieś super ważne przełączniki typu` -DskipTes...` ;) jesteśmy w stanie w bardzo prosty i schludny sposób, zbudować kod/konfigurację która zautomatyzuje nasz cały proces.
+-/+ jakieś super ważne przełączniki typu` -DskipTes...` ;) jesteśmy w stanie w bardzo prosty i schludny sposób, zbudować kod/konfigurację która zautomatyzuje cały proces.
 
 Automatyzację rozpoczniemy od użycia narzędzia: [jenkins-job-builder](https://docs.openstack.org/infra/jenkins-job-builder/ "jenkins-job-builder")
 
@@ -64,9 +64,9 @@ Po wykonaniu polecenia, utworzony zostanie pierwszy z 20+ projektów jenkinsowyc
 ## Szablony
 
 Uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy, reużywać raz dobrze napisany kod. :) Dlatego ten wątek będzię esencją artykułu.
-Zbudujmy więc nasz pierwszy szablon.
+Zbudujmy więc pierwszy szablon.
 
-Wiemy już, że nasze projekty budujemy w bardzo podobny sposób, mamy już pierwszy z 20+ projektów. 
+Wiemy już, że projekty budujemy w bardzo podobny sposób, mamy już pierwszy z 20+ projektów. 
 
 Utwórzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
 
@@ -84,7 +84,7 @@ Szablon posiada dwie zmienne
     
 Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern po którym będzie szukany szablon.
     
-Aby użyć naszego szablonu tworzymy plik w katalogu `jobs` o nazwie `projects.yaml`
+Aby użyć szablonu tworzymy plik w katalogu `jobs` o nazwie `projects.yaml`
 
     - project:
         name: project
