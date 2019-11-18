@@ -13,13 +13,13 @@ tags:
 ---
 ## Zastosowanie
 
-W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy liczbie projektów 20+ przestaje to być trywialne. W tym artykule zajmniemy się pierwszym zagadnieniem, automatyzacją buildow, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
+W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem, automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
 
-Do budowania projektów 20+ zazwyczaj staramy się utrzymać jedno narzędzie i to oczywiście działa na plus. W tym artykule posługiwać będziemy się mavenem.
+Do budowania projektów starajmy się używać jednego narzędzia, ogromnie wpłynie to na proces unifikacji. W tym artykule posługiwać będziemy się mavenem.
 
 Do zautomatyzowania procesu posłuży nam Jenkins.
 
-Przejdźmy do sedna, czyli jak budować projekty 20+ z jak najmniejszym nakładem pracy i ilością kodu do utrzymania.
+Przejdźmy do sedna, czyli jak budować dużą liczbę projektów z jak najmniejszym nakładem pracy i ilością kodu do utrzymania.
 
 ## Startujemy
 
@@ -47,7 +47,7 @@ Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_job
 - url - Adres URL do Jenkinsa
 
 Tak skonfigurowane narzędzie pozwoli nam utworzyć dowolny job jenkinsowy.
-Utworz plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
+Utwórz plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
 
     - job:
         name: project-1-build
@@ -59,14 +59,12 @@ Utworz plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
 Zasilenie jenkinsa nowo utworzonym jobem:
 `jenkins-jobs update jobs`
 
-Po wykonaniu polecenia, utworzony zostanie pierwszy z 20+ projektów jenkinsowych. Good Job!
+Po wykonaniu polecenia, utworzony zostanie pierwszy z projektów jenkinsowych. Good Job!
 
 ## Szablony
 
 Uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy, reużywać raz dobrze napisany kod. :) Dlatego ten wątek będzię esencją artykułu.
-Zbudujmy więc pierwszy szablon.
-
-Wiemy już, że projekty budujemy w bardzo podobny sposób, mamy już pierwszy z 20+ projektów. 
+Wiemy już, że projekty budujemy w bardzo podobny sposób. Zbudujmy więc pierwszy szablon.
 
 Utwórzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
 
@@ -80,7 +78,7 @@ Utwórzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
 Szablon posiada dwie zmienne
     
     name : nazwa projektu
-    subname: numer oznaczajacy jeden z projektów 20+
+    subname: numer oznaczajacy jeden z koljenych projektów
     
 Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern po którym będzie szukany szablon.
     
