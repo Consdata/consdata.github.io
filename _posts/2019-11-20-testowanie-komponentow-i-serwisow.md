@@ -17,7 +17,7 @@ Dziś będzie o tym, jak rozpocząć testy komponentów i serwisu.
 [Projekt dostępny jest tutaj](https://github.com/krzysztof83/Angular-testing-services-and-component).
 Zaczniemy od *AnimalsComponent* - komponent prezentuje listę zwierząt:
 
-```javascript
+```typescript
 @Component({
   selector: 'app-animals',
   templateUrl: './animals.component.html',
@@ -36,7 +36,7 @@ export class AnimalsComponent implements OnInit {
 
 Na początek sprawdzmy czy komponent zostanie utworzony:
 
-```javascript
+```typescript
 describe('AnimalsComponent', () => {
   let component: AnimalsComponent;
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('AnimalsComponent', () => {
 
 Te testy powinny przejść pozytywnie. *AnimalComponent* potrzebuje *AnimalService*, ale że z niego nie korzystamy, możemy do konstruktora przekazać null. Jednak jeżeli będziemy chcieli sprawdzić, czy na liście są jakieś zwierzęta, np.:
 
-```javascript
+```typescript
 it('should have a animals list with 1 animal', () => {
     component.animals$.subscribe(animals => {
       expect(animals.length).toEqual(1);
@@ -60,11 +60,11 @@ it('should have a animals list with 1 animal', () => {
   });
 ```
 
-Otrzymamy błąd; `TypeError: Cannot read property 'subscribe' of undefined`
+Otrzymamy błąd: `TypeError: Cannot read property 'subscribe' of undefined`
 
 Subscribe, wywoływany jest na zmiennej animals$, która inicjowana jest dopiero w metodzie *ngOnInit()*, wywołajmy więc ją na początku naszego nowego testu:
 
-```javascript
+```typescript
 it('should have a animals list with 1 animal', () => {
     component.ngOnInit();
     component.animals$.subscribe(animals => {
@@ -79,7 +79,7 @@ Tym razem mamy błąd: `TypeError: Cannot read property 'getAnimals' of null`
 W *ngOnInit()*, które wywołaliśmy, jest metoda: *animalService.getAnimals()*, a do naszego komponentu przekazaliśmy null'a.
 Możemy temu zaradzić przekazując spreparowany serwis na początku naszego pliku z testami:
 
-```javascript
+```typescript
 const fakeAnimal = {id: 1, name: 'pies'};
 let fakeAnimalService;
 
@@ -94,7 +94,7 @@ beforeEach(() => {
 
 Taki *fakeAnimalService* możemy przekazać do konstruktora. Pusty obiekt *httpClient* nam nie przeszkadza - i tak nie chcemy z niego korzystać. Wykorzystująca go funkcja *getAnimals()* od razu zwróci nam wynik nie korzystając z httpClient'a. Po tych zmianach cała klasa testu wygląda jak poniżej:
 
-```javascript
+```typescript
 import {AnimalsComponent} from './animals.component';
 import {of} from 'rxjs';
 
@@ -138,7 +138,7 @@ Teraz jeszcze w naszym przypadku testowym musimy ustalić co funkcja *getAnimals
 
 Odpowiedzi których szukaliśmy udzieli nam obiekt *spy*:
 
-```javascript
+```typescript
 it('should call getAnimals 1 time without parameters ', () => {
     const spy = fakeAnimalService.getAnimals.and.returnValue(of([fakeAnimal]));
     component.ngOnInit();
@@ -162,7 +162,7 @@ zmienimy na `animalService = new AnimalService(null);`
 
 Cały plik z testami wygląda następująco:
 
-```javascript
+```typescript
 import {AnimalsComponent} from './animals.component';
 import {of} from 'rxjs';
 import {AnimalService} from '../animal.service';
@@ -208,7 +208,7 @@ Aby pomóc nam w testach Angular dostarcza interfejs *TestBed*.
 Na początku, gdy wygenerowaliśmy komponent przy pomocy Angular CLI, zawierał on również testy. Dla komponentu *AnimalsComponent* wyglądały one tak:
 
 
-```javascript
+```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnimalsComponent } from './animals.component';
 
@@ -241,7 +241,7 @@ W powyższym teście *TestBed* chce nam dostarczyć cały komponent *AnimalsComp
 
 Musimy poprawić naszą konfigurację tak aby zawierała wszystkie wymagane elementy:
 
-```javascript
+```typescript
 describe('AnimalsComponent', () => {
   let component: AnimalsComponent;
   let fixture: ComponentFixture<AnimalsComponent>;
@@ -269,7 +269,7 @@ describe('AnimalsComponent', () => {
 
 Ta konfiguracja pozwoli nam już otrzymać przygotowany przez *TestBed* komponent:
 
-```javascript
+```typescript
 it('should have a component', () => {
     expect(component).toBeTruthy();
   });
@@ -277,7 +277,7 @@ it('should have a component', () => {
 
 Jednak test sprawdzający prezentowane zwierzęta ponownie wykaże błędy:
 
-```javascript
+```typescript
   it(`should have a list of animals`, () => {
     
     component.ngOnInit();
@@ -296,7 +296,7 @@ Jest dobrze, bo nie chcemy żeby nasz test komunikował się z zewnętrznym serw
 
 Ponownie wykorzystamy *spyOn* który zapewni, że *animalService* zwróci nam dane do testów:
 
-```javascript
+```typescript
   it(`should have a list of animals`, () => {
     spyOn(animalService, 'getAnimals').and.returnValue(of([fakeAnimal]));
     component.ngOnInit();
@@ -309,7 +309,7 @@ Ponownie wykorzystamy *spyOn* który zapewni, że *animalService* zwróci nam da
 
 Dzięki testom z wykorzystaniem *TestBed* możemy przetestować nasz szablon html:
 
-```javascript
+```typescript
 it(`should have a button with text "fake"`, (() => {
     spyOn(animalService, 'getAnimals').and.returnValue(of([fakeAnimal]));
     component.ngOnInit();
@@ -320,7 +320,7 @@ it(`should have a button with text "fake"`, (() => {
 ```
 
 Poniższe dwie linie pozwalają nam pobrać buttony i sprawdzić, czy są odpowiednio podpisane.
-```javascript
+```typescript
 const buttons = fixture.debugElement.queryAll(By.css('.animal-button'));
 expect(buttons[0].nativeElement.textContent).toEqual('fake');
 ```
@@ -330,7 +330,7 @@ Tymczasem możemy jeszcze wrócić do serwisu i sprawdzić jak przetestować go 
 
 Ponownie konfigurujemy modułu:
 
-```javascript
+```typescript
 describe('AnimalService', () => {
 
   beforeEach(() => {
@@ -362,7 +362,7 @@ Powyżej widzimy dwa testy "should have a service". Sprawdzają one to samo, jed
 
 Gdy moduł jest gotowy możemy przygotować test, który sprawdzi czy trafimy pod odpowiedni adres - i tylko tam.
 
-```javascript
+```typescript
  describe('getAnimals', () => {
 
     it('should call get with correct url',
@@ -378,6 +378,6 @@ Gdy moduł jest gotowy możemy przygotować test, który sprawdzi czy trafimy po
 
 Przy konfiguracji testów z wykorzystaniem *TestBed* pojawiło się słowo *async*. Ma ono związek z asynchronicznością, o której więcej napisze Adrian. Stay tuned!
 
-Więcej na temat testów Angulara i Jasmin znajdziesz:
+Więcej na temat testów Angulara i Jasmine znajdziesz:
 * [https://angular.io/guide/testing#service-tests](https://angular.io/guide/testing#service-tests)
 * [https://jasmine.github.io/2.0/introduction.html](https://jasmine.github.io/2.0/introduction.html)
