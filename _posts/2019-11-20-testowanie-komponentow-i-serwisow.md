@@ -49,7 +49,7 @@ describe('AnimalsComponent', () => {
 });
 ```
 
-Te testy powinny przejść pozytywnie. *AnimalComponent* potrzebuje *AnimalService*, ale że z niego nie korzystamy, możemy do konstruktora przekazać null. Jednak jeżeli będziemy chcieli sprawdzić, czy na liście są jakieś zwierzęta, np.:
+Te testy powinny przejść pozytywnie. *AnimalComponent* potrzebuje *AnimalService*, ale ponieważ z niego nie korzystamy, możemy do konstruktora przekazać null. Jednak jeżeli będziemy chcieli sprawdzić, czy na liście są jakieś zwierzęta, np.:
 
 ```typescript
 it('should have a animals list with 1 animal', () => {
@@ -328,7 +328,7 @@ expect(buttons[0].nativeElement.textContent).toEqual('fake');
 
 Tymczasem możemy jeszcze wrócić do serwisu i sprawdzić jak przetestować go z wykorzystaniem *TestBed* i *HttpClientTestingModule*:
 
-Ponownie konfigurujemy modułu:
+Ponownie konfigurujemy moduł do testów:
 
 ```typescript
 describe('AnimalService', () => {
