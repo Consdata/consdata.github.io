@@ -1,8 +1,8 @@
 ---
 layout:    post
 title:     "Automat dodający joby do Jenkinsa"
-published: false
-date:      2019-12-24 08:00:00 +0100
+published: true
+date:      2019-11-26 08:00:00 +0100
 author:    dkubiak
 tags:
     - jenkins job
