@@ -31,7 +31,15 @@ Przy założeniu, że projekty budujemy
 
 Automatyzację rozpoczniemy od użycia narzędzia: [jenkins-job-builder](https://docs.openstack.org/infra/jenkins-job-builder/ "jenkins-job-builder")
 
-Instalacja: `pip install --user jenkins-job-builder` macOS `brew install jenkins-job-builder`
+Instalacja: 
+```bash
+pip install --user jenkins-job-builder
+```
+
+macOS: 
+```bash
+brew install jenkins-job-builder
+```
 
 Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_jobs/jenkins_jobs.ini`:
 
@@ -47,7 +55,7 @@ Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_job
 
 Tak skonfigurowane narzędzie pozwoli nam utworzyć dowolny job jenkinsowy.
 Utwórzmy plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
-```YAML
+```yaml
 - job:
     name: project-1-build
     project-type: freestyle
@@ -66,7 +74,7 @@ Uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy, reużywać raz
 Wiemy już, że projekty budujemy w bardzo podobny sposób. Zbudujmy więc pierwszy szablon.
 
 Utwórzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
-```YAML
+```yaml
 - job-template:
     name: '{name}-{subname}-build'
     project-type: freestyle
@@ -82,7 +90,7 @@ Szablon posiada dwie zmienne
 Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern, po którym będzie szukany szablon.
     
 Aby użyć szablonu tworzymy plik w katalogu `jobs` o nazwie `projects.yaml`
-```YAML
+```yaml
 - project:
     name: project
     subname:
