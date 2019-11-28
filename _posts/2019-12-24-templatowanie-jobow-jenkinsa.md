@@ -13,9 +13,9 @@ tags:
 ---
 ## Zastosowanie
 
-W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem, automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
+W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem - automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
 
-Do budowania projektów starajmy się używać jednego narzędzia, ogromnie wpłynie to na proces unifikacji. W tym artykule posługiwać będziemy się mavenem.
+Do budowania projektów starajmy się używać jednego narzędzia, ogromnie wpłynie to na proces unifikacji. W tym artykule będziemy posługiwać się mavenem.
 
 Do zautomatyzowania procesu posłuży nam Jenkins.
 
@@ -27,12 +27,11 @@ Przy założeniu, że projekty budujemy
 
 `mvn clean package`
 
--/+ jakieś super ważne przełączniki typu` -DskipTes...` ;) jesteśmy w stanie w bardzo prosty i schludny sposób, zbudować kod/konfigurację która zautomatyzuje cały proces.
+-/+ jakieś super ważne przełączniki typu` -DskipTes...` ;) jesteśmy w stanie w bardzo prosty i schludny sposób zbudować kod/konfigurację, która zautomatyzuje cały proces.
 
 Automatyzację rozpoczniemy od użycia narzędzia: [jenkins-job-builder](https://docs.openstack.org/infra/jenkins-job-builder/ "jenkins-job-builder")
 
-Instalacja: `pip install --user jenkins-job-builder`
-macOS `brew install jenkins-job-builder`
+Instalacja: `pip install --user jenkins-job-builder` macOS `brew install jenkins-job-builder`
 
 Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_jobs/jenkins_jobs.ini`:
 
@@ -47,15 +46,15 @@ Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji `/etc/jenkins_job
 - url - Adres URL do Jenkinsa
 
 Tak skonfigurowane narzędzie pozwoli nam utworzyć dowolny job jenkinsowy.
-Utwórz plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
-
-    - job:
-        name: project-1-build
-        project-type: freestyle
-        disabled: false
-        builders:
-            - shell: 'mvn clean package'
-
+Utwórzmy plik o nazwie `project1-build.yaml` w katalogu `jobs` z zawartością
+```YAML
+- job:
+    name: project-1-build
+    project-type: freestyle
+    disabled: false
+    builders:
+        - shell: 'mvn clean package'
+```
 Zasilenie jenkinsa nowo utworzonym jobem:
 `jenkins-jobs update jobs`
 
@@ -67,32 +66,32 @@ Uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy, reużywać raz
 Wiemy już, że projekty budujemy w bardzo podobny sposób. Zbudujmy więc pierwszy szablon.
 
 Utwórzmy szablon o nazwie `project-build-template.yaml` w katalogu `jobs`
-
-    - job-template:
-        name: '{name}-{subname}-build'
-        project-type: freestyle
-        disabled: false
-        builders:
-            - shell: 'mvn clean package'
-            
+```YAML
+- job-template:
+    name: '{name}-{subname}-build'
+    project-type: freestyle
+    disabled: false
+    builders:
+        - shell: 'mvn clean package'
+```
 Szablon posiada dwie zmienne
     
     name : nazwa projektu
     subname: numer oznaczajacy jeden z koljenych projektów
     
-Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern po którym będzie szukany szablon.
+Zwróć uwagę na wartość w polu name `{name}-{subname}-build` jest to pattern, po którym będzie szukany szablon.
     
 Aby użyć szablonu tworzymy plik w katalogu `jobs` o nazwie `projects.yaml`
-
-    - project:
-        name: project
-        subname:
-          - 1
-          - 2
-          - 3
-        jobs:
-          - '{name}-{subname}-build'
-
+```YAML
+- project:
+    name: project
+    subname:
+        - 1
+        - 2
+        - 3
+    jobs:
+        - '{name}-{subname}-build'
+```
 Całość kończymy aktualizacją jobów: `jenkins-jobs update jobs`
 
 W ten sposób jednym ruchem wygenerowaliśmy 3 joby:
@@ -104,9 +103,9 @@ W ten sposób jednym ruchem wygenerowaliśmy 3 joby:
 Każdy z nich zawiera definicję joba opisanego w szablonie o nazwie `{name}-{subname}-build'` czyli wywołanie `mvn clean package`
 
 ## Podsumowanie
-Cel został osiągnięty! Raz napisana definicja builda została reużyta wiele razy (w naszym przykładzie tylko 3 ;) ). Zmniejszyliśmy liczbę zdublowanych konfiguracji tym samym jesteśmy w stanie lepiej nimi zarządzać.
+Cel został osiągnięty! Raz napisana definicja builda została użyta wiele razy (w naszym przykładzie tylko 3 ;) ). Zmniejszyliśmy liczbę zdublowanych konfiguracji, dzięki czemu jesteśmy w stanie lepiej nimi zarządzać.
 
-Był to prosty przykład ukazujący istnienie takiego narzędzia z możliwością tworzenia szablonów. Jeśli chcesz dowiedzieć się czegoś więcej - zostawiam kilka linków.
+Był to prosty przykład ukazujący istnienie takiego narzędzia. Jeśli chcesz dowiedzieć się czegoś więcej - zostawiam kilka linków.
 
 [Dokumentacja](https://docs.openstack.org/infra/jenkins-job-builder/)
 
