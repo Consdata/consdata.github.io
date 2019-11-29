@@ -8,4 +8,14 @@ article {
   @import "post-youtube";
   @import "post-links";
   @import "post-lists";
+
+  .post-container {
+    @include flex-container;
+  }
+  .post-content {
+    max-width: 100%;
+    @include desktop {
+      max-width: $desktop-content-width - $sidebar-width;
+    }
+  }
 }

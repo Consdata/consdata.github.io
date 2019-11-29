@@ -9,36 +9,44 @@ layout: default
 
     {{ content }}
     <div class="blog">
-        {%- if site.posts.size > 0 -%}
-        <div class="post-list">
-            <ul>
-                {%- for post in paginator.posts -%}
-                {% assign author = site.data.authors[post.author] %}
+        <div class="list-wrapper">
+            {%- if site.posts.size > 0 -%}
+            <div class="post-list">
+                <ul>
+                    {%- for post in paginator.posts -%}
+                    {% assign author = site.data.authors[post.author] %}
 
-                <li class="post">
-                    <h3>
-                        <a class="post-link" href="{{ post.url | relative_url }}">
-                            {{ post.title | escape }}
-                        </a>
-                    </h3>
-                    {% include post_metadata.html %}
-                    <div class="post-entry">
-                        {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
-                        <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Czytaj&nbsp;dalej]</a>
-                    </div>
-                </li>
-                {%- endfor -%}
-            </ul>
+                    <li class="post">
+                        <h3>
+                            <a class="post-link" href="{{ post.url | relative_url }}">
+                                {{ post.title | escape }}
+                            </a>
+                        </h3>
+                        {% include post_metadata.html %}
+                        <div class="post-entry">
+                            {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
+                            <a href="{{ post.url | prepend: site.baseurl }}"
+                               class="post-read-more">[Czytaj&nbsp;dalej]</a>
+                        </div>
+                    </li>
+                    {%- endfor -%}
+                </ul>
+            </div>
+            <div class="sidebar">
+            {% include popular_categories.html %}
+            </div>
         </div>
         <div class="pagination">
             {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" class="previous pagination-button" title="Poprzednia strona">Nowsze posty</a>
+            <a href="{{ paginator.previous_page_path }}" class="previous pagination-button" title="Poprzednia strona">Nowsze
+                posty</a>
             {% else %}
             <span class="placeholder previous">Nowsze posty</span>
             {% endif %}
 
             {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" class="next pagination-button" title="Następna strona">Starsze posty</a>
+            <a href="{{ paginator.next_page_path }}" class="next pagination-button" title="Następna strona">Starsze
+                posty</a>
             {% else %}
             <span class="placeholder next">Starsze posty</span>
             {% endif %}

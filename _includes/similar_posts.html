@@ -1,0 +1,28 @@
+{% capture similar_posts %}
+    {% for site_post in site.posts %}
+        {% if site_post != post %}
+            {% assign similarity = 0 %}
+            {% for post_tag in post.tags %}
+                {% for site_post_tag in site_post.tags %}
+                    {% if site_post_tag == post_tag %}
+                        {% assign similarity = similarity | plus: 1 %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            {% if similarity > 0 %}
+                <li data-sort="{{ similarity | prepend: '0000' | slice: -4, 4 }}">
+                    <a href="{{ site_post.url | prepend: site.baseurl }}">{{ site_post.title | escape }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endcapture %}
+{% assign similar_posts_size = similar_posts | split:'</li>' | size | minus: 1 %}
+{% if similar_posts_size > 0 %}
+    <div class="similar-posts sidebar-item">
+        <div class="title">Podobne posty:</div>
+        <ul>
+            {{ similar_posts | split:'</li>' | sort | slice: 0,6 | join:'</li>' }}
+        </ul>
+    </div>
+{% endif %}
