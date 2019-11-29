@@ -1,4 +1,5 @@
 .blog,
+.author,
 .tag {
   @import "post-list";
   @import "post-metadata";
@@ -7,4 +8,6 @@
   @import "sidebar";
   @import "most-popular-categories";
   @import "similar-posts";
+  @import "post-author-bio";
+  @import "post-author-bio-mobile";
 }

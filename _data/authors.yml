@@ -1,102 +1,120 @@
 mmergo:
+  id:     mmergo
   name:   Marcin Mergo
   github: mmergo
   bio:    Absolwent Politechniki Poznańskiej, od lat związany z tworzeniem oprogramowania dla sektora finansowego. W trakcie swojej kariery tworzył systemy dla największych banków w Polsce, zarówno z obszaru korporacyjnego, jak i detalicznego. Posiada doświadczenie w dostarczaniu rozwiązań dla branży energetycznej oraz sektora public. Wieloletni pracownik, Tech Lead, Architekt, oraz członek zespołu bezpieczeństwa firmy Consdata. Współorganizator oraz prelegent spotkań OWASPowych. Entuzjasta zdrowego rozsądku, aspirujący game developer.
   image:  mmergo.jpg
 
 sucuncu:
+  id:     sucuncu
   name:   Sylwia Üçüncü
   github: sszadi
   bio:    Java Developer w Consdacie i weekendowo studentka Informatyki na Politechnice Poznańskiej. Chętnie zgłębia kolejne technologie i poszerza swoją wiedzę zarówno z backendu, jak i frontendu. W wolnym czasie ćwiczy, biega i czyta o Kosmosie.
   image:  sucuncu.jpg
 
 glipecki:
+  id:     glipecki
   name:   Grzegorz Lipecki
   github: glipecki
   bio:    Pasjonat nowych technologii, zafascynowany wszystkim od backendu po frontend. Na co dzień full stack developer i wyznawca software craftsmanship. W przerwach chętnie angażuje się w techniczne dyskusje i dzieli się swoją wiedzą. Autor wielu artykułów i prezentacji technicznych. W wolnych chwilach eksperymentuje z nowymi technologiami, gra w gry wideo i pielęgnuje swój ogród.
   image:  glipecki.jpg
 
 bradlinski:
+  id:     bradlinski
   name:   Bartosz Radliński
   github: m87
   image:  bradlinski.png
 
 amak:
+  id:     amak
   name:   Aleksandra Mak
   github: amak3
   image:  amak.jpg
 
 jwilczewski:
+  id:     jwilczewski
   name:   Jakub Wilczewski
   github: jwilczewski
   bio:    Developer ostatnio głównie backendu. Pasjonat działających systemów i zwolennik metodyki devops. Zdeklarowany przeciwnik ciężkich serwerów aplikacji. W czasie wolnym od pracy i obowiązków domowych biega po płaskim i łazi po górach.
   image:  jwilczewski.jpg
 
 aswarcewicz:
+  id:     aswarcewicz
   name:   Adrian Swarcewicz
   github: aswarcewicz
   bio:    Deweloper, pasjonat dobrego kodu, mikroserwisów oraz rozwiązań pozwalających na dobre skalowanie względem rosnącego obciążenia.
   image:  aswarcewicz.jpg
 
 bbaron:
+  id:     bbaron
   name:   Błażej Baron
   github: 2bbar
   bio:    Deweloper systemów finansowych. Od wielu lat zajmujący się rozwijaniem i utrzymaniem złożonych aplikacji.
   image:  bbaron.jpg
 
 mpogorzelski:
+  id:     mpogorzelski
   name:   Mateusz Pogorzelski
   github: pogoma
   bio:    Wychowany wśród patch paneli nerd uzależniony od kodu. Absolwent Politechniki Poznańskiej. Na co dzień full stack developer w zespole Eximee. Pasjonat inżynierii wstecznej i przetwarzania języka naturalnego.
   image:  mpogorzelski.jpg
 
 tlewandowski:
+  id:     tlewandowski
   name:   Tomasz Lewandowski
   bio:    Projektant oraz full stack deweloper z wieloletnim doświadczeniem w tworzeniu i utrzymywaniu złożonych systemów informatycznych.
   image:  tlewandowski.jpg
 
 jgrobelny:
+  id:     jgrobelny
   name:   Jacek Grobelny
   github: ynleborg
   bio:    Jacek najlepiej czuje się w czeluściach backendu sytemów informatycznych. Lubi rozwiązywać problemy szczególnie w momencie, gdy zaczynają powstawać o nich memy. Tata dwóch urwisów. W wolnym czasie chłonie, choć nie bezkrytycznie, wszelkie przejawy popkultury ze szczególną słabością do dwunastej muzy.
   image:  jgrobelny.jpg
 
 kczechowski:
+  id:     kczechowski
   name:   Krzysztof Czechowski
   github: krzysztof83
   bio:    Kriss nie wiedział co o sobie napisać, więc zrobię to za niego ja, jego współlokator. Nadzwyczaj skromny mimo wielu zasług w postaci produkcji przyszłych Juniorów z byłych humanistów. Zawsze pomocny, niezastąpiony przewodnik, który nie pozwala zejść na pokuszenie - Hej Kriss! Idziesz z nami naimprezę? - A zrobiłeś już dziś commita? (No i siadasz i coś tam męczysz zamiast tańczyć z dziewczynami na mieście). Koneser pizzy (podobno najlepiej smakuje po 2 w nocy), mistrz mrożonek, smakosz napojów energetycznych. Mógłby częściej zmywać naczynia. Spoko gość.
   image:  kczechowski.jpg
 
 pswierzko:
+  id:     pswierzko
   name:   Piotr Świerzko
   github: swierzy89
   bio:    Zainspirowany przyszłością. Uzależniony od informacji - swój dzień zaczyna i kończy od przejrzenia newsów o samochodach elektrycznych i rakietach kosmicznych. Założyciel serwisu zapierwszymrazem.pl. Na co dzień full stack developer w Consdacie. Szczególny nacisk kładzie na jakość tworzonych aplikacji zarówno pod względem czystości kodu, jak i designu.
   image:  pswierzko.jpg
 
 mmendlik:
+  id:     mmendlik
   name:   Marcin Mendlik
   github: martini449
   bio:    Najswobodniej czuje się w tematach frontedowych, chociaż nie boi się zajrzeć od czasu do czasu pod maskę. Miał okazję przyglądać się i uczestniczyć w niecodziennej wymianie warstwy prezentacji w dwóch różnych, niezależnych systemach dla jednych z największych banków w Polsce. W wolnym czasie gra na konsolach, instrumentach strunowych szarpanych lub nerwach.
   image:  mmendlik.jpg
 
 kgabara:
+  id:     kgabara
   name:   Konrad Gabara
   github: arg3s
   bio:    Fullstack developer wannabe. Ceni sobie rozwój, zarówno w obszarze backendu jak i frontendu.
   image:  kgabara.jpg
 
 mhoja:
+  id:     mhoja
   name:   Michał Hoja
   github: Michuu93
   bio:    Fullstack Java Developer któremu nie straszny backend, frontend jak i devops. Ciągle głodny wiedzy i rozwijający swoje zainteresowania z dziedziny IT. Na co dzień wielbiciel Maine Coonów, gitar elektrycznych, tatuaży i motocykli.
   image:  mhoja.jpg
 
 rrudko:
-  name: Robert Rudko
-  image: rrudko.jpg
-  bio: Wszechstronny developer z pragmatycznym podejściem do rozwiązywanych problemów. Pasjonat dobrego masła i black metalu.
+  id:     rrudko
+  name:   Robert Rudko
+  image:  rrudko.jpg
+  bio:    Wszechstronny developer z pragmatycznym podejściem do rozwiązywanych problemów. Pasjonat dobrego masła i black metalu.
 
 dkubiak:
+  id:     dkubiak
   name:   Dawid Kubiak
   github: dkubiak
   bio:    Fullstack  developer. Wielki entuzjasta automatyzacji, dlatego dobrze odnajduje się w przestrzeni DevOps.
