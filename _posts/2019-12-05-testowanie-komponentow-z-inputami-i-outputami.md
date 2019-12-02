@@ -11,7 +11,7 @@ tags:
     - komponent
 ---
 ## Wprowadzenie
-Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url 2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %})) pora na skupienie się na samych komponentach angularowych i testowania ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się kilku drobnych elementów wzajemnie się ze sobą komunikujących.
+Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url 2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %})) pora skupić się na samych komponentach angularowych i testowania ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się kilku drobnych elementów wzajemnie się ze sobą komunikujących.
 
 Schemat naszej przykładowej aplikacji wygląda następująco:
 
@@ -21,7 +21,7 @@ Jest to prosty program mający na celu dodawanie i zapisywanie wyników. Został
 
 Aplikacja zawiera dwa komponenty przekazujące wpisaną liczbę (`CalculatorInputFieldComponent`), liczby wysyłane są do komponentu, który zliczy nam wynik (`CalculatorResultComponent`) i zaprezentuje go w czytelnej formie (`CalucatorResultPresentationComponent`). Z poziomu komponentu prezentującego wyniki możemy je również zapisać (`CalculatorSavedListComponent`). Strzałki na diagramie oznaczają wejścia i wyjścia komponentów. 
 
-## Pisanie testów wprawdzających działanie @Input
+## Pisanie testów dotyczących @Input
 
 Na początek weźmy na warsztat komponent pozwalający wyświetlić listę wyników, które chcielibyśmy zapisać.
 
@@ -79,11 +79,11 @@ describe('CalculatorSavedListComponent', () => {
 });
 ```
 
-Zaczęliśmy tutaj, podobnie jak w poprzednim artykule, od stworzenia `TestBed` i dodatkowo wyciągniemy sobie za pomocą zapytania element html prezentujący tekst umieszczony z poziomu komponentu. Możemy do niego odwołać się na wiele sposób, na przykład za pomocą klasy czy id.
+Zaczęliśmy tutaj, podobnie jak w poprzednim artykule, od stworzenia `TestBed` i dodatkowo wyciągnęliśmy za pomocą zapytania element html prezentujący tekst umieszczony z poziomu komponentu. Możemy do niego odwołać się na wiele sposobów, na przykład za pomocą klasy czy id.
 
-Mamy tutaj dwa testy, których struktura jest dokładnie taka sama. Przekazujemy wartości w inpucie i sprawdzamy, czy element umieszczony w html został poprawnie zmieniony. Jeżeli inputów w komponencie mamy więcej, możemy je przetestować w dokładnie ten sam sposób.
+Mamy tutaj dwa testy, których struktura jest taka sama. Przekazujemy wartości w inpucie i sprawdzamy, czy element umieszczony w html został poprawnie zmieniony. Jeżeli inputów w komponencie mamy więcej, możemy je przetestować w dokładnie ten sam sposób.
 
-## Pisanie testów wprawdzających działanie @Output
+## Pisanie testów dotyczących @Output
 
 Następnie napiszmy test do komponentu pozwalającego wpisać liczbę, którą przekazuje do komponentu nadrzędnego.
 
@@ -191,7 +191,7 @@ describe('CalculatorResultComponent', () => {
 });
 ```
 
-Powyższy test przekazuje wartości do inputów, oraz naciska przycisk. Jeżeli wszystko działa poprawnie, po jego naciśnięciu powinniśmy zostać powiadomieni o wyniku działaniu, który został wyemitowany na output
+Powyższy test przekazuje wartości do inputów, oraz naciska przycisk. Jeżeli wszystko działa poprawnie, po jego naciśnięciu powinniśmy zostać powiadomieni o wyniku działaniu, który został wyemitowany na output.
 
 ## Podsumowanie
 
