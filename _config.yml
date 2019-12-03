@@ -3,7 +3,7 @@ title: Consdata - blog techniczny
 baseurl: ""
 url: "https://blog.consdata.tech"
 
-google_analytics: UA-135929610-1
+google_analytics: UA-28387432-4
 
 paginate: 5
 paginate_path: "/blog/page:num/"
