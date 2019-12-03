@@ -131,7 +131,7 @@ describe('CalculatorInputFieldComponent', () => {
 
 Czyli standardowo, zaczynamy od przygotowania naszego modułu testowego i uchwycenia elementu, który chcemy przetestować. Warto tutaj zaznaczyć, że istnieją inne sposoby na zainicjowanie komponentu niż `TestBed`, wszystko zależy od  tego co, i w jaki sposób, będziemy testować.
 
-Test zaczynamy od nasłuchiwania na naszą zmienną `fieldValue` po której spodziewamy się, że przekaże nam wartość wpisaną w pole. Następnie uzupełniamy wartość i wywołujemy event, pozwalający na wywołanie metody nasłuchującej na zmiany w naszym polu. Test zakończy się, kiedy zostanie wywołana metoda `expect` sprawdzająca, czy wpisana przez nas wartość zgadza się z testem. Test może się również zakończyć niepowodzeniem, kiedy po upływie danego czasu (domyślna konfiguracja wskazuje na 5s) żaden `expect` nie zostanie wywołany.
+Test zaczynamy od nasłuchiwania na naszą zmienną `fieldValue` po której spodziewamy się, że przekaże nam wartość wpisaną w pole. Następnie uzupełniamy wartość i wywołujemy event, pozwalający na wywołanie metody nasłuchującej na zmiany w naszym polu. Test zakończy się, kiedy zostanie wywołana metoda `expect` sprawdzająca, czy wpisana przez nas wartość zgadza się z oczekiwaniami. Test może się również zakończyć niepowodzeniem, kiedy po upływie danego czasu (domyślna konfiguracja wskazuje na 5s) żaden `expect` nie zostanie wywołany.
 
 Na koniec możemy zebrać naszą wiedzę, i przetestować komponent zawierający wejścia, jak i wyjścia. Poniższy kod przedstawia komponent, który dodaje wskazane liczby oraz opcjonalnie potrafi wysłać dane o wyniku do komponentu 'wyżej'.
 
