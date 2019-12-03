@@ -11,7 +11,7 @@ tags:
     - komponent
 ---
 ## Wprowadzenie
-Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url 2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %})) pora skupić się na samych komponentach angularowych i testowania ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się kilku drobnych elementów wzajemnie się ze sobą komunikujących.
+Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url 2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %})) pora skupić się na testowaniu komponentów angularowych, a w szczególności ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się kilku drobnych elementów wzajemnie się ze sobą komunikujących.
 
 Schemat naszej przykładowej aplikacji wygląda następująco:
 
@@ -45,7 +45,7 @@ export class CalculatorSavedListComponent {
 }
 ```
 
-Ciężko sobie wyobrazić prostszy komponent. Mamy tutaj jeden input, który przekazuje listę wyników, jaką chcemy wyświetlić.
+Trudno sobie wyobrazić prostszy komponent. Mamy tutaj jeden input, który przekazuje listę wyników, jaką chcemy wyświetlić.
 
 Pora na napisanie testu sprawdzającego, czy komponent poprawnie interpretuje przekazane mu wyniki
 
@@ -79,9 +79,9 @@ describe('CalculatorSavedListComponent', () => {
 });
 ```
 
-Zaczęliśmy tutaj, podobnie jak w poprzednim artykule, od stworzenia `TestBed` i dodatkowo wyciągnęliśmy za pomocą zapytania element html prezentujący tekst umieszczony z poziomu komponentu. Możemy do niego odwołać się na wiele sposobów, na przykład za pomocą klasy czy id.
+Zaczęliśmy tutaj, podobnie jak w poprzednim artykule, od stworzenia `TestBed` i dodatkowo wyciągnęliśmy za pomocą zapytania element html prezentujący tekst umieszczony z poziomu komponentu. Możemy się do niego odwołać na wiele sposobów, na przykład za pomocą klasy czy id.
 
-Mamy tutaj dwa testy, których struktura jest taka sama. Przekazujemy wartości w inpucie i sprawdzamy, czy element umieszczony w html został poprawnie zmieniony. Jeżeli inputów w komponencie mamy więcej, możemy je przetestować w dokładnie ten sam sposób.
+Dysponujemy tutaj dwoma testami o identycznej strukturze. Przekazujemy wartości w inpucie i sprawdzamy, czy element umieszczony w html został poprawnie zmieniony. Jeżeli inputów w komponencie mamy więcej, możemy je przetestować dokładnie w ten sam sposób.
 
 ## Pisanie testów dotyczących @Output
 
@@ -129,9 +129,9 @@ describe('CalculatorInputFieldComponent', () => {
 });
 ```
 
-Czyli standardowo, zaczynamy od przygotowania naszego modułu testowego i uchwycenia elementu, który chcemy przetestować. Warto tutaj zaznaczyć, że istnieją inne sposoby na zainicjowanie komponentu niż `TestBed`, wszystko zależy od  tego co, i w jaki sposób, będziemy testować. Na przykład kiedy nie potrzebujemy testować elementów z DOM możemy zostać przy zwykłym inicjalizowaniu komponentów. Więcej szczegółów można znaleźć w [dokumentacji od Angulara](https://angular.io/guide/testing#component-test-basics).
+Czyli standardowo, zaczynamy od przygotowania naszego modułu testowego i uchwycenia elementu, który chcemy przetestować. Warto tutaj zaznaczyć, że istnieją inne sposoby na zainicjowanie komponentu niż `TestBed`, wszystko zależy od tego co, i w jaki sposób, będziemy testować. Na przykład kiedy nie potrzebujemy testować elementów z DOM możemy zostać przy zwykłym inicjalizowaniu komponentów. Więcej szczegółów można znaleźć w [dokumentacji od Angulara](https://angular.io/guide/testing#component-test-basics).
 
-Test zaczynamy od nasłuchiwania na naszą zmienną `fieldValue` po której spodziewamy się, że przekaże nam wartość wpisaną w pole. Następnie uzupełniamy wartość i wywołujemy event, pozwalający na wywołanie metody nasłuchującej na zmiany w naszym polu. Test zakończy się, kiedy zostanie wywołana metoda `expect` sprawdzająca, czy wpisana przez nas wartość zgadza się z oczekiwaniami. Test może się również zakończyć niepowodzeniem, kiedy po upływie danego czasu (domyślna konfiguracja wskazuje na 5s) żaden `expect` nie zostanie wywołany.
+Test zaczynamy od nasłuchiwania na naszą zmienną `fieldValue` po której spodziewamy się, że przekaże nam wartość wpisaną w pole. Następnie uzupełniamy wartość i wywołujemy event, pozwalający wywołać metodę nasłuchującą na zmiany w naszym polu. Test zakończy się, kiedy zostanie wywołana metoda `expect` sprawdzająca, czy wpisana przez nas wartość zgadza się z oczekiwaniami. Test może się również zakończyć niepowodzeniem, kiedy po upływie danego czasu (domyślna konfiguracja wskazuje na 5s) żaden `expect` nie zostanie wywołany.
 
 Na koniec możemy zebrać naszą wiedzę, i przetestować komponent zawierający wejścia, jak i wyjścia. Poniższy kod przedstawia komponent, który dodaje wskazane liczby oraz opcjonalnie potrafi wysłać dane o wyniku do komponentu 'wyżej'.
 
@@ -193,6 +193,6 @@ describe('CalculatorResultComponent', () => {
 
 Powyższy test przekazuje wartości do inputów, oraz naciska przycisk. Jeżeli wszystko działa poprawnie, po jego naciśnięciu powinniśmy zostać powiadomieni o wyniku działaniu, który został wyemitowany na output.
 
-## Podsumowanie
+## Testowanie komponentów angularowych - podsumowanie.
 
-Powyższe przykłady przedstawiają najprostsze scenariusze testowe. Jest to jednak dobry punkt wejścia do napisania własnych testów, przy których powyższe przykłady mogą być użyteczne.
+Powyższe przykłady przedstawiają najprostsze scenariusze testowe. Jest to jednak dobry punkt wejścia do napisania własnych testów komponentów angularowych, przy których powyższe przykłady mogą być użyteczne.
