@@ -2,7 +2,7 @@
 layout:    post
 title:     Testowanie frontendu - Cz. 3. Testowanie komponentów angularowych z inputami i outputami
 published: true
-date:      2019-12-05 08:00:00 +0100
+date:      2019-12-04 08:00:00 +0100
 author:    pgrobelny
 tags:
     - Jasmine
