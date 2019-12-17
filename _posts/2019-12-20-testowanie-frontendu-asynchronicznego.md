@@ -34,7 +34,8 @@ export class CompanyComponent {
 }
 ```
 Posiada on dwie metody: jedną, która zwraca Promise z nazwą firmy oraz drugą, która wykonuje zmianę widoczności flagi po dwóch sekundach. Na podstawie tej flagi wyświetlana jest wiadomość w templacie HTML.
-Klasa testowa do której będą dodawane test-case'y. W tym wypadku jest ona w 100% standardowa:
+
+Klasa testowa do której będą dodawane test-case'y. W tym przypadku jest ona w 100% standardowa:
 ```typescript
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -53,7 +54,7 @@ describe('AppComponent', () => {
 
 Nie poruszę w tym wpisie jednak testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do wpisu Krzyśka o [testowaniu serwisów](https://blog.consdata.tech/2019/11/20/testowanie-komponentow-i-serwisow.html).
 ## Testowanie metod zwracających Promisy
-   Jeśli jest to metoda, której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:
+   Jeśli chcemy przetestować metodę, która zwraca wartość opakowaną w Promise oraz której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:
 ```typescript
 it('resolves company using async/await', async function () {
     const company = fixture.componentInstance.getCompany();
@@ -65,12 +66,15 @@ Jeśli z jakiegoś powodu nie możesz wykorzystać async/await, tradycyjne rozwi
 it('resolves company promise manually', function () {
     fixture.componentInstance.getCompany().then(company => {
         expect(company).toEqual("company");
-    })
+    });
 });
 ```
 
 ## Oczekiwanie na wykonanie metody przy użyciu fakeAsync
-   Jeśli chcemy przetestować metodę showMessage() z naszego komponentu, wprowadzanie realnego czasu oczekiwania nie jest efektywnym rozwiązaniem. Dzięki Angularowemu `fakeAsync` możemy testować kod asynchroniczny, w synchroniczny sposób.
+Metoda `showMessage()` z naszego komponentu ma narzucony czas oczekiwania dwóch sekund przed jej wykonaniem.
+W teście możemy powtórzyć ten zabieg i po wywołaniu metody uruchomić asercje wewnątrz `setTimeout()`. Jednak wprowadzanie realnego czasu oczekiwania nie jest efektywnym rozwiązaniem i bardzo spowolni nasze testy. Dzięki Angularowemu `fakeAsync` możemy testować kod asynchroniczny, w synchroniczny sposób.
+
+Zobaczmy:
 ```typescript
 it("tests the message is visible", fakeAsync(() => {
   fixture.componentInstance.showMessage();
@@ -84,9 +88,9 @@ it("tests the message is visible", fakeAsync(() => {
 }));
 ````
    Idąc od góry:
-   - najpierw opakowujemy nasz test-case w blok fakeAsync(), który pozwala nam oszukać asynchroniczny przepływ,
+   - najpierw opakowujemy nasz test jednostkowych w blok fakeAsync(), który pozwala nam oszukać asynchroniczny przepływ,
    - wywołujemy asynchroniczną metodę,
-   - symulujemy upływ czasu - w rzeczywistości nie trwa to 2 sekund, jednak aplikacja myśli, że tyle upłynęło,
+   - symulujemy upływ czasu - w rzeczywistości nie trwa to 2 sekund, jednak aplikacja "myśli", że tyle upłynęło,
    - wykrywamy zmiany, a kiedy detekcja zmian się zakończy, robimy tradycyjne asercje.
    
    A co jeśli nie znamy czasu, który powinien upłynąć zanim wykonamy asercje? W miejscu `tick(2000)`, możemy wykorzystać `flush()` i efekt będzie dokładnie taki sam. Czym się charakteryzuje `flush()`? Podobnie jak tick, symuluje on upływ czasu, jednak robi do momentu opustoszenia kolejki macrotasków (czyli m.in. setTimeout, setInterval).
