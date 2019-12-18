@@ -13,7 +13,14 @@ tags:
 ---
 ## Wprowadzenie
 Kończąc serię dotyczącą testowania komponentów Angularowych przy pomocy Jasmine, chciałbym poruszyć temat testów kodu wykonywanego asynchronicznie. 
-Weźmy na warsztat przykładowy komponent:
+
+Testy jednostkowe asynchronicznego kodu wydaje się często być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.
+
+Nie poruszę w tym wpisie jednak testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do wpisu Krzyśka o [testowaniu serwisów](https://blog.consdata.tech/2019/11/20/testowanie-komponentow-i-serwisow.html).
+
+## Kod poddany testom
+
+W celu sprawdzenia możliwośći testowania asynchronicznych wywołań, weźmy na warsztat przykładowy komponent:
 ```typescript
 @Component({
   selector: 'app-company',
@@ -46,18 +53,17 @@ describe('AppComponent', () => {
         AppComponent
       ],
     }).compileComponents();
-          fixture = TestBed.createComponent(AppComponent);
+      fixture = TestBed.createComponent(AppComponent);
       debugElement = fixture.debugElement;
   }));
  });
 ```
 
-Nie poruszę w tym wpisie jednak testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do wpisu Krzyśka o [testowaniu serwisów](https://blog.consdata.tech/2019/11/20/testowanie-komponentow-i-serwisow.html).
 ## Testowanie metod zwracających Promisy
    Jeśli chcemy przetestować metodę, która zwraca wartość opakowaną w Promise oraz której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:
 ```typescript
 it('resolves company using async/await', async function () {
-    const company = fixture.componentInstance.getCompany();
+    const company = await fixture.componentInstance.getCompany();
     expect(company).toEqual("company");
 });
 ```
@@ -76,14 +82,14 @@ W teście możemy powtórzyć ten zabieg i po wywołaniu metody uruchomić aser
 
 Zobaczmy:
 ```typescript
-it("tests the message is visible", fakeAsync(() => {
+it("tests the message visibility", fakeAsync(() => {
   fixture.componentInstance.showMessage();
   tick(2000);
   fixture.detectChanges();
   fixture.whenStable().then(() => {
     const helloMessage = fixture.debugElement.query(By.css("#welcomeMessage"));
-    expect(helloMessage).toBeTruthy()
-    expect(helloMessage.nativeElement.innerHTML).toBe('Hello!')
+    expect(helloMessage).toBeTruthy();
+    expect(helloMessage.nativeElement.innerHTML).toBe('Hello!');
   })
 }));
 ````
