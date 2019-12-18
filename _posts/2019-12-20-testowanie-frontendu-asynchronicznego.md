@@ -14,13 +14,13 @@ tags:
 ## Wprowadzenie
 Kończąc serię dotyczącą testowania komponentów Angularowych przy pomocy Jasmine, chciałbym poruszyć temat testów kodu wykonywanego asynchronicznie. 
 
-Testy jednostkowe asynchronicznego kodu wydaje się często być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.
+Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.
 
-Nie poruszę w tym wpisie jednak testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do wpisu Krzyśka o [testowaniu serwisów](https://blog.consdata.tech/2019/11/20/testowanie-komponentow-i-serwisow.html).
+W tym wpisie jednak nie poruszę kwestii testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do artykułu Krzysztofa Czechowskiego o [testowaniu serwisów]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %}).
 
 ## Kod poddany testom
 
-W celu sprawdzenia możliwośći testowania asynchronicznych wywołań, weźmy na warsztat przykładowy komponent:
+W celu sprawdzenia możliwości testowania asynchronicznych wywołań weźmy na warsztat przykładowy komponent:
 ```typescript
 @Component({
   selector: 'app-company',
@@ -42,7 +42,7 @@ export class CompanyComponent {
 ```
 Posiada on dwie metody: jedną, która zwraca Promise z nazwą firmy oraz drugą, która wykonuje zmianę widoczności flagi po dwóch sekundach. Na podstawie tej flagi wyświetlana jest wiadomość w templacie HTML.
 
-Klasa testowa do której będą dodawane test-case'y. W tym przypadku jest ona w 100% standardowa:
+Klasa testowa, do której będą dodawane test-case'y. W tym przypadku jest ona w 100% standardowa:
 ```typescript
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -60,14 +60,14 @@ describe('AppComponent', () => {
 ```
 
 ## Testowanie metod zwracających Promisy
-   Jeśli chcemy przetestować metodę, która zwraca wartość opakowaną w Promise oraz której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:
+   Jeśli chcemy przetestować metodę, która zwraca wartość opakowaną w Promise, oraz której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:
 ```typescript
 it('resolves company using async/await', async function () {
     const company = await fixture.componentInstance.getCompany();
     expect(company).toEqual("company");
 });
 ```
-Jeśli z jakiegoś powodu nie możesz wykorzystać async/await, tradycyjne rozwiązywanie Promisów również działa:
+Jeśli z jakiegoś powodu nie możesz wykorzystać async/await, to wówczas zastosowanie znajdzie tradycyjne rozwiązywanie Promisów:
 ```typescript
 it('resolves company promise manually', function () {
     fixture.componentInstance.getCompany().then(company => {
@@ -77,7 +77,7 @@ it('resolves company promise manually', function () {
 ```
 
 ## Oczekiwanie na wykonanie metody przy użyciu fakeAsync
-Metoda `showMessage()` z naszego komponentu ma narzucony czas oczekiwania dwóch sekund przed jej wykonaniem.
+Metoda `showMessage()` z naszego komponentu ma narzucony czas dwóch sekund oczekiwania przed jej wykonaniem.
 W teście możemy powtórzyć ten zabieg i po wywołaniu metody uruchomić asercje wewnątrz `setTimeout()`. Jednak wprowadzanie realnego czasu oczekiwania nie jest efektywnym rozwiązaniem i bardzo spowolni nasze testy. Dzięki Angularowemu `fakeAsync` możemy testować kod asynchroniczny, w synchroniczny sposób.
 
 Zobaczmy:
@@ -93,10 +93,10 @@ it("tests the message visibility", fakeAsync(() => {
   })
 }));
 ````
-   Idąc od góry:
-   - najpierw opakowujemy nasz test jednostkowych w blok fakeAsync(), który pozwala nam oszukać asynchroniczny przepływ,
+   Spoglądając od góry:
+   - najpierw opakowujemy nasz test jednostkowy w blok fakeAsync(), który pozwala nam oszukać asynchroniczny przepływ,
    - wywołujemy asynchroniczną metodę,
-   - symulujemy upływ czasu - w rzeczywistości nie trwa to 2 sekund, jednak aplikacja "myśli", że tyle upłynęło,
+   - symulujemy upływ czasu - w rzeczywistości nie trwa to dwóch sekund, jednak aplikacja "myśli", że tyle upłynęło,
    - wykrywamy zmiany, a kiedy detekcja zmian się zakończy, robimy tradycyjne asercje.
    
    A co jeśli nie znamy czasu, który powinien upłynąć zanim wykonamy asercje? W miejscu `tick(2000)`, możemy wykorzystać `flush()` i efekt będzie dokładnie taki sam. Czym się charakteryzuje `flush()`? Podobnie jak tick, symuluje on upływ czasu, jednak robi do momentu opustoszenia kolejki macrotasków (czyli m.in. setTimeout, setInterval).
