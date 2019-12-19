@@ -1,8 +1,8 @@
 ---
 layout:    post
-title:     Testowanie frontendu - Cz. 4: Testy jednostkowe kodu działającego asynchronicznie
-published: true
-date:      2019-12-20 08:00:00 +0100
+title:     Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie
+published: false
+date:      2019-12-19 08:00:00 +0100
 author:    amarszalek
 tags:
     - Jasmine
