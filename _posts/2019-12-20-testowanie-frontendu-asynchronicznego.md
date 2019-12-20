@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie
-published: false
+published: true
 date:      2019-12-19 08:00:00 +0100
 author:    amarszalek
 tags:
