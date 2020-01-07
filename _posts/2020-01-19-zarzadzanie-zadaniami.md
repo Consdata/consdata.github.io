@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Moje własne zadania i jak się w nich odnaleźć"
-date:       2019-07-05
+date:       2020-01-19
 published:  false
 author:     mstolarski
 tags:
