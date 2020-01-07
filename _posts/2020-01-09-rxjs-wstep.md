@@ -13,7 +13,7 @@ tags:
     - rxjs operators
 ---
 ## Wprowadzenie
-Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest Observable, dlaczego do danego Observable musisz się 'zasubskrybować', aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?
+Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest ten typ obiektu, dlaczego musisz się 'zasubskrybować', aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?
 
 Jeżeli tak, to ten artykuł jest dla Ciebie!
 
@@ -21,9 +21,9 @@ Jeżeli tak, to ten artykuł jest dla Ciebie!
 _Reactive Extensions for JavaScript (RxJS)_ jest biblioteką ułatwiającą programowanie reaktywne w języku JavaScript. Dzięki tej bibliotece i komponentom, jakie udostępnia tworzenie asynchronicznych programów jest intuicyjne i proste - zaraz przekonasz się jak bardzo!
 
 ## Strumień danych
-Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, strumień jest sekwencją danych dostępnych przez dany okres czasu. Strumień ten możemy obserwować oraz pobrać z niego potrzebne nam dane. Dane natomiast mogą pojawić się w każdym momencie życia strumienia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną w tym przypadku przez bibliotekę RxJS). Istnieją dwa typy strumieni - zimny i ciepły.
+Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, strumień jest sekwencją danych dostępnych przez dany okres czasu. Strumień ten możemy obserwować oraz pobrać z niego potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie życia strumienia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.
 ### Strumień zimny
-Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie obserwować dany strumień. Taki strumień wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości w strumieniu nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.
+Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie obserwować dany strumień. Taki strumień wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.
 ```typescript
 this.httpClient.get<ServerResponse>('someUrl')
 ```
@@ -37,7 +37,7 @@ fromEvent(document, 'click')
 
 ## Observable, wzorzec Obserwator
 Mając już wiedzę czym jest strumień i z jakimi rodzajami strumieni możemy się spotkać możemy przejść do opisania podstawowego konceptu RxJS: Observable.
-Observable jest obiektem reprezentującym strumień danych. Observable implementuje wzorzec projektowy Obserwator, który zakłada istnienie bytu przechowującego listę obiektów - obserwatorów, nasłuchujących na jakiekolwiek zmiany stanu danego bytu, powiadamiającego każdego z nich (obserwatorów) o zmianie poprzez wywołanie funkcji przez nich przekazanych (callback).
+Observable jest obiektem reprezentującym strumień danych. Implementuje wzorzec projektowy _Obserwator_, który zakłada istnienie bytu przechowującego listę obiektów - obserwatorów, nasłuchujących na jakiekolwiek zmiany stanu danego bytu, powiadamiającego każdego z nich o zmianie poprzez wywołanie funkcji przez nich przekazanych (callback).
 
 Najprostszego Observable możemy stworzyć za pomocą funkcji statycznej _of_.
 ```typescript
@@ -45,9 +45,9 @@ Najprostszego Observable możemy stworzyć za pomocą funkcji statycznej _of_.
 const numbers$ = of(1,2,3,4,5): Observable<number>;
 
 ```
-Obiekt numbers$ jest definicją strumienia danych typu _number_. Jest to tylko i wyłącznie definicja strumienia. W tym przypadku stworzyliśmy strumień zimny. Znamy zbiór danych (1,2,3,4,5) tego strumienia, jednak dane zaczną być emitowane dopiero w momencie rozpoczęcia nasłuchiwania na dany strumień przez obserwatora. Pod strumień 'podłączamy' się za pomocą funkcji subscribe().
+Obiekt numbers$ jest definicją strumienia danych typu _number_. Jest to tylko i wyłącznie szablon strumienia. W tym przypadku stworzyliśmy strumień zimny. Znamy zbiór danych (1,2,3,4,5), jednak dane zaczną być emitowane dopiero w momencie rozpoczęcia nasłuchiwania na dany strumień przez obserwatora. Pod strumień 'podłączamy' się za pomocą funkcji subscribe().
 ### subscribe() i unsubscribe()
-Funkcja subscribe jako parametr oczekuje obiektu, który definiuje trzy funkcje: next, error oraz complete.
+Funkcja subscribe jako parametr oczekuje obiektu, który definiuje trzy funkcje: _next_, _error_ oraz _complete_.
 ```typescript
 const subscription = numbers$.subscribe({
     next(value) {},
@@ -55,7 +55,7 @@ const subscription = numbers$.subscribe({
     complete() {}
 });
 ```
-Każda z tych funkcji jest callbackiem, który jest wywoływany w poszczególnych momentach przepływu danych przez strumień. Funkcja next(value) wywoływana jest za każdym razem, gdy strumień emituje pojedyńczą wartość - czyli w naszym przypadku funkcja _next()_ zostanie wywołana 5 razy, raz dla każdej z cyfr z zakresu 1-5. Callback _error(err)_ zostanie wywołany w momencie, gdy strumień zostanie nienaturalnie zamknięty lub przerwany. _Complete_ jest ostatnim callbackiem, który wywołoywany jest po zamknięciu strumienia.
+Każda z tych funkcji jest _callbackiem_, który jest wywoływany w poszczególnych momentach przepływu danych przez strumień. Funkcja _next(value)_ wywoływana jest za każdym razem, gdy strumień emituje pojedyńczą wartość - czyli w naszym przypadku funkcja _next()_ zostanie wywołana 5 razy, raz dla każdej z cyfr z zakresu 1-5. Callback _error(err)_ zostanie wywołany w momencie, gdy strumień zostanie nienaturalnie zamknięty lub przerwany. _Complete_ jest ostatnim callbackiem, który wywołoywany jest po zamknięciu strumienia.
 
 Wywołanie funkcji _subscribe()_ dopisuje nas do listy obserwatorów danego strumienia.
 
@@ -85,9 +85,9 @@ ReplaySubject jest strumieniem, który dla każdego nowego obserwatora odtwarza 
 ```typescript
 const replaySubject$ = new ReplaySubject<number>(5);
 ``` 
-Przy subskrypcji, jeżeli wcześniej emitowane były wartości przez ten strumień zostaną one odtworzone danemu obserwatorowi.
+Przy subskrypcji, jeżeli wcześniej emitowane były wartości przez ten strumień zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich.
 ### BehaviorSubject
-BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartość, gdyż jest ona wymagana przy tworzeniu danego obiektu typu BehaviorSubject. Ponadto, strumień ten zawsze przechowuje ostatnio emitowaną wartość i podobnie jak w przypadku ReplaySubject, odtwarza ją każdemu nowemu obserwatorowi.
+BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartość, gdyż jest ona wymagana przy tworzeniu danego obiektu. Ponadto, strumień ten zawsze przechowuje ostatnio emitowaną wartość i podobnie jak w przypadku ReplaySubject, odtwarza ją każdemu nowemu obserwatorowi.
 Tworzymy go w równie prosty sposób: 
 ```typescript
 const behaviorSubject = new BehaviorSubject<boolean>(true);
@@ -106,7 +106,7 @@ const observable$ = strumien$.asObservable();
 Strumień domyślnie emituje wartość liczbową '15000'.
 Na danych produkowanych przez nasz strumień możemy operować przekazując potrzebne nam operatory jako argumenty funkcji _pipe()_ wywołanej na observable$.
 ### map
-Map jest z pewnością znanym Ci operatorem, chociażby z API Arrays.map, którym RxJS się sugerował. Map transformuje dane zwracając nam nowy wynik dla każdej emitowanej danej. Przykładowo:
+Map jest z pewnością znanym Ci operatorem, chociażby z API JS Arrays.map, którym RxJS się sugerował. Map transformuje dane zwracając nam nowy wynik dla każdej emitowanej danej. Przykładowo:
 ```typescript
 observable$.pipe(map(numerek => numerek*2))
     .subscribe(value => console.log('zmapowana wartosc: ', value))
