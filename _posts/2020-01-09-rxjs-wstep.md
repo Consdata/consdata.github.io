@@ -42,7 +42,7 @@ Observable jest obiektem reprezentującym strumień danych. Implementuje wzorzec
 Najprostszego Observable możemy stworzyć za pomocą funkcji statycznej _of_.
 ```typescript
 // obiekt Observable, emitujący wartości liczbowe od 1 do 5
-const numbers$ = of(1,2,3,4,5): Observable<number>;
+const numbers$: Observable<number> = of(1,2,3,4,5);
 
 ```
 Obiekt numbers$ jest definicją strumienia danych typu _number_. Jest to tylko i wyłącznie szablon strumienia. W tym przypadku stworzyliśmy strumień zimny. Znamy zbiór danych (1,2,3,4,5), jednak dane zaczną być emitowane dopiero w momencie rozpoczęcia nasłuchiwania na dany strumień przez obserwatora. Pod strumień 'podłączamy' się za pomocą funkcji subscribe().
