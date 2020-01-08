@@ -21,7 +21,7 @@ Jeżeli tak, to ten artykuł jest dla Ciebie!
 _Reactive Extensions for JavaScript (RxJS)_ jest biblioteką ułatwiającą programowanie reaktywne w języku JavaScript. Dzięki tej bibliotece i komponentom, jakie udostępnia tworzenie asynchronicznych programów jest intuicyjne i proste - zaraz przekonasz się jak bardzo!
 
 ## Strumień danych
-Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, jest on sekwencją danych dostępnych przez dany okres czasu. Taką sekwencję możemy obserwować oraz pobrać z niej potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie jego życia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.
+Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, jest on sekwencją danych dostępnych w danym okresie. Taką sekwencję możemy obserwować oraz pobrać z niej potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie jego życia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.
 ### Strumień zimny
 Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie go obserwować. Wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.
 ```typescript
@@ -36,7 +36,7 @@ fromEvent(document, 'click')
 ```
 
 ## Observable, wzorzec Obserwator
-Mając już wiedzę czym jest strumień i z jakimi rodzajami strumieni możemy się spotkać możemy przejść do opisania podstawowego konceptu RxJS: Observable.
+Mając już wiedzę czym jest strumień i z jakimi rodzajami strumieni możemy się spotkać, warto przejść do opisania podstawowego konceptu RxJS: Observable.
 Observable jest obiektem reprezentującym strumień danych. Implementuje wzorzec projektowy _Obserwator_, który zakłada istnienie bytu przechowującego listę obiektów - obserwatorów, nasłuchujących na jakiekolwiek zmiany stanu danego bytu, powiadamiającego każdego z nich o zmianie poprzez wywołanie funkcji przez nich przekazanych (callback).
 
 Najprostszego Observable możemy stworzyć za pomocą funkcji statycznej _of_.
@@ -55,7 +55,7 @@ const subscription = numbers$.subscribe({
     complete() {}
 });
 ```
-Każda z tych funkcji jest _callbackiem_, który jest wywoływany w poszczególnych momentach przepływu danych przez strumień. Funkcja _next(value)_ wywoływana jest za każdym razem, gdy strumień emituje pojedyńczą wartość - czyli w naszym przypadku funkcja _next()_ zostanie wywołana 5 razy, raz dla każdej z cyfr z zakresu 1-5. Callback _error(err)_ zostanie wywołany w momencie, gdy strumień zostanie nienaturalnie zamknięty lub przerwany. _Complete_ jest ostatnim callbackiem, który wywołoywany jest po zamknięciu strumienia.
+Każda z tych funkcji jest _callbackiem_, który jest wywoływany w poszczególnych momentach przepływu danych przez strumień. Funkcja _next(value)_ wywoływana jest za każdym razem, gdy strumień emituje pojedynczą wartość - czyli w naszym przypadku funkcja _next()_ zostanie wywołana 5-krotnie, po razie dla każdej z cyfr z zakresu 1-5. Callback _error(err)_ zostanie wywołany w momencie, gdy strumień zostanie nienaturalnie zamknięty lub przerwany. _Complete_ jest ostatnim callbackiem, który wywoływany jest po zamknięciu strumienia.
 
 Wywołanie funkcji _subscribe()_ dopisuje nas do listy obserwatorów danego strumienia.
 
@@ -63,7 +63,7 @@ W momencie podpięcia się jako obserwator do danego Observable zostaje przekaza
 
 Odsubskrybowanie się jest bardzo ważne w przypadku strumieni gorących, które w większości przypadków są nieskończone - emitują wartość przez potencjalnie nieskończoną ilość czasu. Jeżeli zapomnimy o usunięciu nas z listy obserwatorów danego strumienia, referencja do stworzonego przez nas obserwatora będzie istnieć przez cały cykl życia aplikacji - tworząc nieskończoną dziurę w pamięci, która w sytuacji ekstremalnej może doprowadzić do zabicia karty, w której działa nasza aplikacja.
 ## Subject - tworzenie własnych strumieni
-RxJS oferuje nam również możliwość tworzenia własnych strumieni. Możemy to zrobić za pomocą obiektów typu Subject. Subject, tłumacząc na język polski, oznacza dosłownie: _temat_. Strumień taki jest więc tematem, potencjalnie nieskończonym, który emituje nowe wartości w kluczowych dla nas miejscach aplikacji. 
+RxJS oferuje nam również możliwość tworzenia własnych strumieni. Możemy to zrobić za pomocą obiektów typu Subject. Subject, tłumacząc na język polski, oznacza dosłownie: _temat_. Taki strumień jest więc tematem, potencjalnie nieskończonym, który emituje nowe wartości w kluczowych dla nas miejscach aplikacji. 
 Subject możemy stworzyć bardzo prosto - jak każdy inny obiekt:
 ```typescript
 const subject$ = new Subject<number>();
@@ -85,17 +85,17 @@ ReplaySubject jest strumieniem, który dla każdego nowego obserwatora odtwarza 
 ```typescript
 const replaySubject$ = new ReplaySubject<number>(5);
 ``` 
-Przy subskrypcji, jeżeli wcześniej emitowane były wartości przez ten strumień zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich.
+Jeżeli wcześniej przez ten strumień emitowane były wartości, to przy subskrypcji, zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich.
 ### BehaviorSubject
 BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartość, gdyż jest ona wymagana przy tworzeniu danego obiektu. Ponadto, strumień ten zawsze przechowuje ostatnio emitowaną wartość i podobnie jak w przypadku ReplaySubject, odtwarza ją każdemu nowemu obserwatorowi.
 Tworzymy go w równie prosty sposób: 
 ```typescript
 const behaviorSubject = new BehaviorSubject<boolean>(true);
 ```
-Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną wartość przez dany strumień - logiczną wartość 'true'.
+Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną przez dany strumień wartość - logiczną wartość 'true'.
 ### AsyncSubject
 AsyncSubject jest specyficznym strumieniem, ponieważ wyemituję on ostatnią wartość przekazaną w funkcji next() dopiero po zamknięciu tego strumienia, czyli po wywołaniu na nim funkcji complete(). Po zamknięciu przechowuje on wyemitowaną wartość i wyemituję ją każdemu nowemu obserwatorowi, który spóźnił się z subskrypcją przed zamknięciem strumienia.
-## Operatory - operacje na strumieniu
+## RxJS operatory - operacje na strumieniu
 Poznaliśmy różne sposoby tworzenia strumieni, co jeśli emitowane dane za każdym razem chcielibyśmy obrobić, przeprocesować, zmienić pod nasz konkretny przypadek biznesowy? Z pomocą oczywiście przychodzi nam RxJS z szerokim wachlarzem operatorów, czyli funkcji operujących na naszym strumieniu. Poniżej przedstawię Ci parę z nich, które uważam za bardzo przydatne w codziennej pracy.
 
 Załóżmy, że operujemy na następującym strumieniu:
@@ -104,7 +104,7 @@ const strumien$ = new BehaviorSubject<number>(15_000);
 const observable$ = strumien$.asObservable();
 ```
 Strumień domyślnie emituje wartość liczbową '15000'.
-Na danych produkowanych przez nasz strumień możemy operować przekazując potrzebne nam operatory jako argumenty funkcji _pipe()_ wywołanej na observable$.
+Możemy operować na danych produkowanych przez nasz strumień, przekazując potrzebne nam operatory jako argumenty funkcji _pipe()_ wywołanej na observable$.
 ### map
 Map jest z pewnością znanym Ci operatorem, chociażby z API JS Arrays.map, którym RxJS się sugerował. Map transformuje dane zwracając nam nowy wynik dla każdej emitowanej danej. Przykładowo:
 ```typescript
@@ -157,7 +157,7 @@ export class SomeComponent implements OnDestroy, OnInit {
 ``` 
 Powyższy fragment przedstawia nam SomeComponent, który nasłuchuje na wartości ze strumienia _someValues$_ aż do momentu, gdy zostanie wyemitowana wartość z drugiego strumienia: _destroySubject$_. W taki oto sposób nie musimy pamiętać o ręcznym odsubskrybowaniu się z pierwszego strumienia, gdyż zostanie on automatycznie zamknięty w momencie zniszczenia komponentu przez Angulara. :)
 ### switchMap
-Kolejnym przydatnym operatorem może być _switchMap()_, którego zastosowanie pozwala nam zachować czystość i powstrzyma nas przed tworzeniem tzw. _callback hell_, czyli zagnieżdżania wywołań _subscribe()_ tworzących łańcuch wywołań trudny w czytaniu i utrzymywaniu. Dlatego też zamiast pisać tak:
+Kolejnym przydatnym operatorem może być _switchMap()_, którego zastosowanie pozwala nam zachować czystość i powstrzyma nas przed tworzeniem tzw. _callback hell_, czyli zagnieżdżania wywołań _subscribe()_ tworzących łańcuch wywołań trudny w czytaniu i utrzymywaniu. Dlatego też zamiast pisać:
 ```typescript
 observable$.subscribe(
     value => someService.processValue(value)
@@ -165,16 +165,16 @@ observable$.subscribe(
             someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)
                 .subscribe(...)))
 ```
-lepiej zrób tak:
+lepiej zrób:
 ```typescript
 observable$.pipe(
     switchMap(value => someService.processValue(value)),
     switchMap(someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)))
         .subscribe(...)
 ```
-Oczywiście zagnieżdżanie strumieni i tak wprowadza narzut przeszkadzający w szybkim zrozumieniu co dany kod produkuje, lecz jest to bardziej eleganckie podejście.
+Oczywiście zagnieżdżanie strumieni i tak wprowadza narzut przeszkadzający w szybkim zrozumieniu, co dany kod produkuje, lecz jest to bardziej eleganckie podejście.
 ### Więcej operatorów 
 Aby poznać więcej operatorów polecam stronę [learnrxjs](https://www.learnrxjs.io/operators), która świetnie opisuje interesujące operatory udostępnione w bibliotece RxJS.
 
 ## Podsumowanie
-RxJS jest potężnym narzędziem dającym wiele możliwości napisania kodu, który będzie reaktywny, asynchroniczny i intuicyjny dla czytającego go kolegi z zespołu. Mam nadzieję, że będziesz kontynuował swoją przygodę z programowaniem reaktywnym i będziesz mógł przekuć zebraną przy czytaniu tego artykułu wiedzę w kod asynchroniczny, z którego będziesz dumny!
+RxJS jest potężnym narzędziem dającym wiele możliwości napisania kodu, który będzie reaktywny, asynchroniczny i intuicyjny dla czytającego go kolegi lub koleżanki z zespołu. Mam nadzieję, że będziesz kontynuować swoją przygodę z programowaniem reaktywnym i będziesz móc przekuć zebraną przy czytaniu tego artykułu wiedzę w kod asynchroniczny, napawający Cię dumą!
