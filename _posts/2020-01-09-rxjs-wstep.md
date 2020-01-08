@@ -13,7 +13,7 @@ tags:
     - rxjs operators
 ---
 ## Wprowadzenie
-Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest ten typ obiektu, dlaczego musisz się 'zasubskrybować', aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?
+Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest ten typ obiektu, dlaczego musisz go zasubskrybować, aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?
 
 Jeżeli tak, to ten artykuł jest dla Ciebie!
 
@@ -21,14 +21,14 @@ Jeżeli tak, to ten artykuł jest dla Ciebie!
 _Reactive Extensions for JavaScript (RxJS)_ jest biblioteką ułatwiającą programowanie reaktywne w języku JavaScript. Dzięki tej bibliotece i komponentom, jakie udostępnia tworzenie asynchronicznych programów jest intuicyjne i proste - zaraz przekonasz się jak bardzo!
 
 ## Strumień danych
-Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, strumień jest sekwencją danych dostępnych przez dany okres czasu. Strumień ten możemy obserwować oraz pobrać z niego potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie życia strumienia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.
+Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, jest on sekwencją danych dostępnych przez dany okres czasu. Taką sekwencję możemy obserwować oraz pobrać z niej potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie jego życia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.
 ### Strumień zimny
-Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie obserwować dany strumień. Taki strumień wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.
+Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie go obserwować. Wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.
 ```typescript
 this.httpClient.get<ServerResponse>('someUrl')
 ```
 ### Strumień ciepły
-Strumień ciepły, w przeciwieństwie do zimnego, emituje dane niezależnie od tego, czy ktoś na ten strumień nasłuchuje. Każdy obserwator operuje na współdzielonym zasobie danych - dwóch obserwatorów otrzyma tą samą wartość w momencie wyemitowania danej przez strumień. Przykładowo: strumień wydarzeń 'click'
+Strumień ciepły, w przeciwieństwie do zimnego, emituje dane niezależnie od tego, czy ktoś na niego nasłuchuje. Każdy obserwator operuje na współdzielonym zasobie danych - dwóch obserwatorów otrzyma tą samą wartość w momencie wyemitowania danej przez strumień. Przykładowo: wydarzenia 'click'
 ```typescript
 import {fromEvent} from 'rxjs';
  
@@ -59,7 +59,7 @@ Każda z tych funkcji jest _callbackiem_, który jest wywoływany w poszczególn
 
 Wywołanie funkcji _subscribe()_ dopisuje nas do listy obserwatorów danego strumienia.
 
-W momencie podpięcia się jako obserwator do danego Observable zostaje przekazany nam obiekt typu Subscription, na którym możemy wywołać metodę unsubscribe(), która usunie nas z listy obserwatorów. 
+W momencie podpięcia się jako obserwator do danego Observable zostaje przekazany nam obiekt typu Subscription, na którym możemy wywołać metodę _unsubscribe()_, która usunie nas z listy obserwatorów. 
 
 Odsubskrybowanie się jest bardzo ważne w przypadku strumieni gorących, które w większości przypadków są nieskończone - emitują wartość przez potencjalnie nieskończoną ilość czasu. Jeżeli zapomnimy o usunięciu nas z listy obserwatorów danego strumienia, referencja do stworzonego przez nas obserwatora będzie istnieć przez cały cykl życia aplikacji - tworząc nieskończoną dziurę w pamięci, która w sytuacji ekstremalnej może doprowadzić do zabicia karty, w której działa nasza aplikacja.
 ## Subject - tworzenie własnych strumieni
