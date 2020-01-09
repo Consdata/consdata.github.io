@@ -107,10 +107,24 @@ BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartoś
 Tworzymy go w równie prosty sposób: 
 ```typescript
 const behaviorSubject = new BehaviorSubject<boolean>(true);
+behaviorSubject.asObservable().subscribe(value => console.log(value))
+// true
+behaviorSubject.next(false);
+// false
 ```
 Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną przez dany strumień wartość - logiczną wartość 'true'.
 ### AsyncSubject
 AsyncSubject jest specyficznym strumieniem, ponieważ wyemituję on ostatnią wartość przekazaną w funkcji next() dopiero po zamknięciu tego strumienia, czyli po wywołaniu na nim funkcji complete(). Po zamknięciu przechowuje on wyemitowaną wartość i wyemituję ją każdemu nowemu obserwatorowi, który spóźnił się z subskrypcją przed zamknięciem strumienia.
+```typescript
+const asyncSubject = new AsyncSubject<number>();
+asyncSubject.asObservable().subscribe(value => console.log("wartosc z async subject: ", value))
+asyncSubject.next(1);
+asyncSubject.next(2);
+asyncSubject.complete();
+// wartosc z async subject: 2
+asyncSubject.asObservable().subscribe(value => console.log("wartosc z async subject po zamknieciu strumienia: ", value))
+// wartosc z async subject po zamknieciu strumienia: 2
+```
 ## RxJS operatory - operacje na strumieniu
 Poznaliśmy różne sposoby tworzenia strumieni, co jeśli emitowane dane za każdym razem chcielibyśmy zmodyfikować pod nasz konkretny przypadek biznesowy? Z pomocą oczywiście przychodzi nam RxJS z szerokim wachlarzem operatorów, czyli funkcji operujących na naszym strumieniu. Poniżej przedstawię Ci parę z nich, które uważam za bardzo przydatne w codziennej pracy.
 
