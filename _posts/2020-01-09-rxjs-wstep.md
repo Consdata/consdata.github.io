@@ -110,7 +110,9 @@ const behaviorSubject = new BehaviorSubject<boolean>(true);
 behaviorSubject.asObservable().subscribe(value => console.log(value))
 // true
 behaviorSubject.next(false);
+behaviorSubject.asObservable().subscribe(value => console.log("drugi obserwator: ", value))
 // false
+// drugi obserwator: false
 ```
 Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną przez dany strumień wartość - logiczną wartość 'true'.
 ### AsyncSubject
@@ -193,17 +195,19 @@ Kolejnym przydatnym operatorem może być _switchMap()_, którego zastosowanie p
 ```typescript
 observable$.subscribe(
     value => someService.processValue(value)
-        .subscribe(
-            someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)
-                .subscribe(...)))
+        .subscribe(someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)
+                .subscribe(yetAnotherResponse => veryImportantService.processVeryImportantValue(yetAnotherResponse)
+                    .subscribe(veryImportantResponse => ...))))
 ```
-lepiej zrób:
+Każdy z serwisów zwraca Observable do strumienia, z którego potrzebujemy wartości do wywołania kolejnego serwisu. Możemy zamiast tego napisać:
 ```typescript
 observable$.pipe(
     switchMap(value => someService.processValue(value)),
-    switchMap(someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)))
-        .subscribe(...)
+    switchMap(someServiceResponse => andYetAnotherService.processAnotherValue(someServiceResponse)),
+    switchMap(yetAnotherResponse => veryImportantService.processVeryImportantValue(yetAnotherResponse)))
+        .subscribe(veryImportantResponse => ...)
 ```
+SwitchMap automatycznie subskrybuje nas do kolejnego strumienia, przez co kod staje się czytelniejszy.
 Oczywiście zagnieżdżanie strumieni i tak wprowadza narzut przeszkadzający w szybkim zrozumieniu, co dany kod produkuje, lecz jest to bardziej eleganckie podejście.
 ### Więcej operatorów 
 Aby poznać więcej operatorów polecam stronę [learnrxjs](https://www.learnrxjs.io/operators), która świetnie opisuje interesujące operatory udostępnione w bibliotece RxJS.
