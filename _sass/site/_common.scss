@@ -14,7 +14,7 @@ main {
 
   @include tablet-and-desktop {
     margin-top: $navbar-height-desktop;
-    min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $desktop-footer-height});
+    min-height: calc(100vh - #{$navbar-height-desktop + $content-padding*2 + $desktop-footer-height});
   }
   @include content-container;
 }
@@ -26,4 +26,10 @@ main {
   fill: currentColor;
   padding: 5px 3px 2px 5px;
   vertical-align: text-bottom;
+}
+
+.no-breaking-word {
+  &, & * {
+    word-break: keep-all;
+  }
 }
