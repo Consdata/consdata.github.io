@@ -16,11 +16,11 @@ Dokładniejszy opis znajdziesz pod tym adresem: <span class='no-breaking-word'>[
 
 ## Skoro atrybut SameSite istnieje tak długo dlaczego nagle stał się dla mnie ważny?
 
-W maju 2019 twórcy przegladarki Chrome zapowiedzieli, że od wersji 80 (planowana wersja wydania to **4 lutego 2020**) dla wszystkich ciasteczek, które nie mają zdefiniowanego atrybutu *SameSite* domyślne zostanie przyjęta wartość *Lax*. Mozilla i Microsoft również wyraziły chęć wprowadzenia tej zmiany we własnych przeglądarkach, więc możemy się spodziewać, że w nieodległej przyszłości takie zachowanie zostanie również zaimplementowane w Firefoxie i Edge'u.
+W maju 2019 twórcy przegladarki Chrome zapowiedzieli, że od wersji 80 (planowana wersja wydania to **4 lutego 2020**) dla wszystkich ciasteczek, które nie mają zdefiniowanego atrybutu *SameSite* domyślnie zostanie przyjęta wartość *Lax*. Mozilla i Microsoft również wyraziły chęć wprowadzenia tej zmiany we własnych przeglądarkach, więc możemy się spodziewać, że w nieodległej przyszłości takie zachowanie zostanie również zaimplementowane w Firefoxie i Edge'u.
 W praktyce oznacza to, że ciasteczka które nie będą miały jawnie zdefiniowanego atrybutu *SameSite* nie będą wysyłane przy próbach żądań typu cross-site. Wyjątkiem od tej zasady będzie przypadek gdy użyjemy bezpiecznej metody HTTP (*GET*, *HEAD*, *OPTIONS*, *TRACE*) a wykonanie żądania będzie skutkowało tzw. *top-level navigation* (zmiana adresu w pasku przeglądarki). 
 
-## Jak sprawdzić czy ta zmiana mnie dotyczy?
-Jednym z najprostszych sposobów jest zajrzenie do narzędzi developerskich przeglądarki. Od wersji 77 przeglądarka Chrome w przypadku problematycznych żądań wyświetla w konsoli ostrzeżenie o następującej treści (jeżeli zauważyłeś takie ostrzeżenie w swoim systemie będziesz musiał podjąć jakąś akcję):
+## Jak sprawdzić czy ta zmiana dotyczy mnie?
+Jednym z najprostszych sposobów jest zajrzenie do narzędzi developerskich przeglądarki. Od wersji 77 przeglądarka Chrome, w przypadku problematycznych żądań, wyświetla w konsoli ostrzeżenie o następującej treści (jeżeli zauważyłeś takie ostrzeżenie w swoim systemie, będziesz musiał podjąć jakąś akcję):
 
 `A cookie associated with a cross-site resource at (cookie domain) was set without the SameSite attribute. A future release of Chrome will only deliver cookies with cross-site requests if they are set with SameSite=None and Secure. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5088147346030592 and https://www.chromestatus.com/feature/5633521622188032`
 
@@ -31,7 +31,7 @@ W Firefoxie włączymy funkcjonalność wchodząc na adres *about:config* i usta
 Weryfikując swoje systemy warto zwrócić uwagę na następujące elementy:
 - treści umieszczone w tagu *<iframe>* (w taki sposób czesto zapewniana jest integracja z systemami zapewniajacymi mapy, video, kontrolki do płatności, kalendarze itp),
 - zewnętrzne zasoby używane w naszym systemie (np: obrazki, zewnętrzne skrypty czy arkusze styli),
-- wszelkie wejścia do twojego systemu (np: przekierowania z innych stron, publiczne usługi, formularze, które mogą być wysyłane z innych systemów)
+- wszelkie wejścia do twojego systemu (np: przekierowania z innych stron, publiczne usługi, formularze, które mogą być wysyłane z innych systemów),
 - skoki do innych systemów (np: formularze płatności),
 - wszelkie elementy wykorzystujące *SSO* (*single sign-on*).
 
