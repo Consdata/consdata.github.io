@@ -78,14 +78,30 @@ Zmienna _subject$_ oferuje nam teraz metodę _next(value: number)_, dzięki któ
 subject$.next(5);
 // value from subject$: 5
 ``` 
-Strumień, jaki teraz stworzyliśmy jest strumieniem nieskończonym, więc musimy pamiętać o odsubskrybowaniu się po zakończeniu nasłuchiwania!
+Strumień, jaki teraz stworzyliśmy jest strumieniem nieskończonym, więc musimy pamiętać o odsubskrybowaniu się po zakończeniu nasłuchiwania! Możemy również zamknąć strumień wywołując metodę _complete()_.
+
 Wyemitowaliśmy w powyższym przykładzie wartość numeryczną '5', którą otrzymał pojedynczy obserwator. Jeżeli w momencie emisji nowej wartości nie istniałby żaden obserwator, to wartość ta przepadła by na wieki. Jest to dosyć smutne. Co w przypadku, gdy ta wartość jest dla nas ważna i nie chcemy jej stracić? Na szczęście z pomocą przychodzą nam specyficzne obiekty rozszerzające typ Subject.
 ### ReplaySubject
 ReplaySubject jest strumieniem, który dla każdego nowego obserwatora odtwarza N ostatnio emitowanych danych. Wartość N możemy przekazać w konstruktorze tego obiektu, o tak:
 ```typescript
 const replaySubject$ = new ReplaySubject<number>(5);
 ``` 
-Jeżeli wcześniej przez ten strumień emitowane były wartości, to przy subskrypcji, zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich.
+Jeżeli wcześniej przez ten strumień emitowane były wartości, to przy subskrypcji, zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich. Przykładowo:
+```typescript
+replaySubject$.next(1);
+replaySubject$.next(2);
+replaySubject$.next(3);
+replaySubject$.next(4);
+replaySubject$.next(5);
+replaySubject$.next(6);
+replaySubject$.asObservable()
+    .subscribe(replayedValue => console.log(replayedValue));
+// 2
+// 3
+// 4
+// 5
+// 6
+```
 ### BehaviorSubject
 BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartość, gdyż jest ona wymagana przy tworzeniu danego obiektu. Ponadto, strumień ten zawsze przechowuje ostatnio emitowaną wartość i podobnie jak w przypadku ReplaySubject, odtwarza ją każdemu nowemu obserwatorowi.
 Tworzymy go w równie prosty sposób: 
@@ -96,7 +112,7 @@ Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną przez dany strumie�
 ### AsyncSubject
 AsyncSubject jest specyficznym strumieniem, ponieważ wyemituję on ostatnią wartość przekazaną w funkcji next() dopiero po zamknięciu tego strumienia, czyli po wywołaniu na nim funkcji complete(). Po zamknięciu przechowuje on wyemitowaną wartość i wyemituję ją każdemu nowemu obserwatorowi, który spóźnił się z subskrypcją przed zamknięciem strumienia.
 ## RxJS operatory - operacje na strumieniu
-Poznaliśmy różne sposoby tworzenia strumieni, co jeśli emitowane dane za każdym razem chcielibyśmy obrobić, przeprocesować, zmienić pod nasz konkretny przypadek biznesowy? Z pomocą oczywiście przychodzi nam RxJS z szerokim wachlarzem operatorów, czyli funkcji operujących na naszym strumieniu. Poniżej przedstawię Ci parę z nich, które uważam za bardzo przydatne w codziennej pracy.
+Poznaliśmy różne sposoby tworzenia strumieni, co jeśli emitowane dane za każdym razem chcielibyśmy zmodyfikować pod nasz konkretny przypadek biznesowy? Z pomocą oczywiście przychodzi nam RxJS z szerokim wachlarzem operatorów, czyli funkcji operujących na naszym strumieniu. Poniżej przedstawię Ci parę z nich, które uważam za bardzo przydatne w codziennej pracy.
 
 Załóżmy, że operujemy na następującym strumieniu:
 ```typescript
@@ -120,6 +136,8 @@ Przykład:
 observable$.pipe(first())
     .subscribe(value => console.log('pierwsza otrzymana wartosc: ', value))
 // pierwsza otrzymana wartosc: 15000
+strumien$.next(25000);
+// nic sie nie stalo, observable$ odpisal sie z listy obserwatorow
 ```
 ### withLatestFrom
 Następnym operatorem wartym uwagi jest _withLatestFrom_, który umożliwia nam 'skrzyżowanie strumieni', czyli dołączenie do jednego strumienia ostatnio emitowanej wartości przez drugi strumień. Przykładowo:
@@ -130,7 +148,7 @@ observable$.pipe(withLatestFrom(otherStream$))
 // otrzymana wartosc z pierwszego strumienia: 15000, z drugiego: true
 ```
 ### takeUntil
-Operator takeUntil jest wygodnym operatorem, jeżeli chcemy w efekciarski i prosty sposób wypisać się z listy obserwujących dany strumień.
+Operator takeUntil jest wygodnym operatorem, jeżeli chcemy w przejrzysty i prosty sposób wypisać się z listy obserwujących dany strumień.
 Rzućmy okiem na kod:
 ```typescript
 @Component({
