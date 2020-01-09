@@ -26,6 +26,7 @@ Aplikacja zawiera dwa komponenty przekazujące wpisaną liczbę (`CalculatorInpu
 Na początek weźmy na warsztat komponent pozwalający wyświetlić listę wyników, które chcielibyśmy zapisać.
 
 ```typescript
+{% raw %}
 @Component({
   selector: 'calculator-saved-list',
   template: `
@@ -43,6 +44,7 @@ export class CalculatorSavedListComponent {
     }
   }
 }
+{% endraw %}
 ```
 
 Trudno sobie wyobrazić prostszy komponent. Mamy tutaj jeden input, przekazujący listę wyników, którą chcemy wyświetlić.
