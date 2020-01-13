@@ -151,7 +151,7 @@ które będzie wymagać od użytkownika roli `${keycloakRequiredUserRole}` (czyl
 
 Ponieważ zabezpieczamy osobno aplikację backendową jak i frontendową, a konfiguracja Keycloak jest taka sama, to możemy sobie wystawić konfigurację z `application.yml` przez api. Dzięki temu unikniemy duplikowania konfiguracji w aplikacji frontendowej.
 
-Konfigurację wystawimy sobie na `api/keycloak/config`:
+Konfigurację wystawimy w `KeycloakController` pod adresem `api/keycloak/config`. Będzie ona miała postać:  
 
 ```json
 {
