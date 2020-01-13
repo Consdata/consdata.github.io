@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Keycloak - sposób na uwierzytelnianie i autoryzację w aplikacji Angular/Spring Boot"
+title:     "Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"
 published: true
 date:      2020-02-05 08:00:00 +0100
 author:    mhoja
