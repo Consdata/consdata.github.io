@@ -1,8 +1,8 @@
 ---
 layout:    post
-title:     "Keycloak z Angularem i Spring Bootem"
+title:     "Keycloak - sposób na uwierzytelnianie i autoryzację w aplikacji Angular/Spring Boot"
 published: true
-date:      2020-01-05 08:00:00 +0100
+date:      2020-02-05 08:00:00 +0100
 author:    mhoja
 tags:
     - angular
@@ -87,7 +87,7 @@ Aplikacja frontendowa składa się z trzech komponentów:
 
 ## Uwierzytelnianie na backendzie
 
-### Dodanie zależności
+### Zależności
 
 Na backendzie wykorzystamy zależności:
 
@@ -129,8 +129,8 @@ keycloak:
   realm-key: "<PUBLIC_KEY>"
 ```
 
-`keycloakRequiredUserRole` - dla ułatwienia, ponieważ wykorzystamy tylko jedną rolę, będzie nam łatwiej udostępnić ją przez api (jeśli chcemy wykorzystać więcej ról, to musimy je wyciągąć z listy `authRoles`  
-`keycloak.security-constraints` - tutaj definiujemy ograniczenia endpointów
+- `keycloakRequiredUserRole` - dla ułatwienia, ponieważ wykorzystamy tylko jedną rolę, będzie nam łatwiej udostępnić ją przez api (jeśli chcemy wykorzystać więcej ról, to musimy je wyciągąć z listy `authRoles`  
+- `keycloak.security-constraints` - tutaj definiujemy ograniczenia endpointów
 
 Możemy zdefiniować ścieżki dostępne publicznie:  
 np. `/api/keycloak/config`  
@@ -138,13 +138,14 @@ oraz ścieżki które będą wymagały uprawnień
 np. `/api/*`  
 które będzie wymagać od użytkownika roli `${keycloakRequiredUserRole}` (czyli `user_role`).
 
-**Konfiguracja serwera Keycloak:**  
-`keycloak.enabled` - umożliwi nam łatwe wyłączenie uwierzytelniania  
-`keycloak.auth-server-url` - adres naszego serwera Keycloak  
-`keycloak.realm` - nazwa naszego realmu  
-`keycloak.resource` - nazwa naszego klienta skonfigurowanego dla podanego realmu  
-`keycloak.credentials.secret` - secret wygenerowany w `SpringBootAngularClient`, możemy go znaleźć w konsoli administracyjnej (`Clients > SpringBootAngularClient > Credentials > Secret`)  
-`keycloak.realm-key` - klucz publiczny realmu, możemy go znaleźć w konsoli administracyjnej (`Realm Settings > Keys > Active > RSA > Public Key`)
+**Konfiguracja Keycloak:**
+
+- `keycloak.enabled` - umożliwi nam łatwe wyłączenie uwierzytelniania  
+- `keycloak.auth-server-url` - adres naszego serwera Keycloak  
+- `keycloak.realm` - nazwa naszego realmu  
+- `keycloak.resource` - nazwa naszego klienta skonfigurowanego dla podanego realmu  
+- `keycloak.credentials.secret` - secret wygenerowany w `SpringBootAngularClient`, możemy go znaleźć w konsoli administracyjnej (`Clients > SpringBootAngularClient > Credentials > Secret`)  
+- `keycloak.realm-key` - klucz publiczny realmu, możemy go znaleźć w konsoli administracyjnej (`Realm Settings > Keys > Active > RSA > Public Key`)
 
 ### Wystawienie konfiguracji dla frontendu
 
@@ -167,11 +168,11 @@ Konfigurację wystawimy sobie na `api/keycloak/config`:
 
 ## Uwierzytelnianie na frontendzie
 
-### Dodanie zależności
+### Zależności
 
 Po stronie aplikacji frontendowej wykorzystamy bibliotekę `keycloak-angular` [(link)](https://github.com/mauriciovigolo/keycloak-angular#readme).
 
-W sekcji `dependencies` naszego `package.json` dodajemy:
+W sekcji `dependencies` naszego `package.json` dodamy:
 
 ```json
 "keycloak-angular": "^7.0.1",
@@ -180,7 +181,7 @@ W sekcji `dependencies` naszego `package.json` dodajemy:
 
 ### Pobranie konfiguracji z backendu
 
-Konfigurację pobierzemy uderzając na api backendu.  
+Konfigurację pobierzemy uderzając na endpoint backendu.  
 Przy pierwszym pobraniu konfiguracji z `KeycloakConfigService` zostanie wykonany request a wynik zostanie zapisany. Kolejne pobrania konfiguracji będą już zwracać zapisaną konfigurację.
 
 ```typescript
@@ -216,7 +217,7 @@ Pobraną konfigurację wykorzystamy w injection tokenie, definiując w naszym `a
 }
 ```
 
-Jako `initializer` utworzymy funkcję wykorzystującą nasz `KeycloakConfigService` oraz inicjalizującą `KeycloakService` z biblioteki `keycloak-angular`.
+Jako `initializer` utworzymy funkcję wykorzystującą nasz `KeycloakConfigService` oraz inicjalizującą `KeycloakService` z biblioteki `keycloak-angular`:
 
 ```typescript
 export function initializer(keycloakService: KeycloakService, keycloakConfigService: KeycloakConfigService): () => Promise<boolean> {
@@ -247,7 +248,7 @@ export function initializer(keycloakService: KeycloakService, keycloakConfigServ
 Aby zabezpieczyć routy, wykorzystamy [`Angular Route Guard`](https://angular.io/guide/router#guards).  
 Stworzymy `AppAuthGuard` rozszerzając `KeycloakAuthGuard` oraz implementując [canActivate](https://angular.io/api/router/CanActivate).
 
-W konstruktorze pobieramy konfigurację z `KeycloakConfigService`, aby zweryfikować czy użytkownik posiada wymaganą rolę, oraz czy cała funkcjonalność jest włączona (parametr `keycloak.enabled` w `application.yml`).
+W konstruktorze pobierzemy konfigurację z `KeycloakConfigService`, aby zweryfikować czy uwierzytelnianie jest włączone (parametr `keycloak.enabled` w `application.yml`), oraz czy użytkownik posiada wymaganą rolę:
 
 ```typescript
 @Injectable({
@@ -284,7 +285,7 @@ export class AppAuthGuard extends KeycloakAuthGuard {
 }
 ```
 
-a następnie wykorzystamy naszego guarda w `app-routing.module.ts` do zabezpieczenia route `protected`:
+a następnie wykorzystamy naszego guarda w `app-routing.module.ts` do zabezpieczenia routa `protected`:
 
 ```typescript
 const routes: Routes = [
@@ -398,7 +399,7 @@ fun logout(request: HttpServletRequest, response: HttpServletResponse) {
 Na koniec sprawdźmy jeszcze użytkownika bez roli `user_role` (`user2:password2`).
 
 Po zalogowaniu, w aplikacji powinniśmy zobaczyć te same przyciski w menu, co na użytkowniku posiadającym wymaganą rolę.  
-Jest tak, ponieważ ukrywanie przycisków uzależniliśmy tylko od tego, czy użytkownik jest zalogowany, a nie czy ma uprawnienia do route:
+Jest tak, ponieważ ukrywanie przycisków uzależniliśmy tylko od tego, czy użytkownik jest zalogowany, a nie czy ma uprawnienia do routa:
 
 ```typescript
 ngOnInit(): void {
