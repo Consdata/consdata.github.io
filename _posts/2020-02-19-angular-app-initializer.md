@@ -12,10 +12,11 @@ tags:
 
 ## Wprowadzenie
 
-##
+## InjectionToken
+.... do czego to jest?
 
-##
+## jak używać? usevalue vs usefactory
 
-##
+## przykład? multi false
 
-##
+## rozbudoway przykład multi true atmosphera?
