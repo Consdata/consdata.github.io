@@ -5,7 +5,11 @@ date:       2020-01-19
 published:  true
 author:     mstolarski
 tags:
-  - tasks
+  - Personal Tasks
+  - Time Management
+  - Productivity
+  - To-Do Lists
+  - Planning Your Day
 ---
 
 ## Czy warto świadomie zarządzać zadaniami?
