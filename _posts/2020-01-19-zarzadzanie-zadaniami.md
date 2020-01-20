@@ -2,10 +2,10 @@
 layout:     post
 title:      "Moje własne zadania i jak się w nich odnaleźć"
 date:       2020-01-19
-published:  false
+published:  true
 author:     mstolarski
 tags:
-  - todo
+  - tasks
 ---
 
 ## Czy warto świadomie zarządzać zadaniami?
