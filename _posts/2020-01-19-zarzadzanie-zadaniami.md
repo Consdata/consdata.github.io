@@ -171,7 +171,7 @@ Powyższa lista żadną miarą nie jest kompletna. Jestem przekonany, że istnie
 
 ## Moje narzędzie
 
-Ja do zarządzania zadaniami wykorzystuję aplikację [Todoist](httpw://todoist.com). Mój wybór ułatwiły następujące właściwości aplikacji:
+Ja do zarządzania zadaniami wykorzystuję aplikację [Todoist](https://todoist.com). Mój wybór ułatwiły następujące właściwości aplikacji:
 1. łatwość dostępu
   * WWW
   * dedykowana aplikacja mobilna
