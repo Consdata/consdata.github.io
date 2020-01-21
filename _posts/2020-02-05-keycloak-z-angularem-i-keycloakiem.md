@@ -19,7 +19,7 @@ Omówimy to na przykładzie gotowego projektu, który umożliwia użytkownikowi 
 
 ## Czym jest Keycloak?
 
-Keycloak to serwer uwierzytelniania i autoryzacji na licencji open-source. Może zostać podłączony do LDAP/AD lub uwierzytelniać użytkowników przy użyciu Google, facebook itd.
+Keycloak to serwer uwierzytelniania i autoryzacji na licencji open-source. Może zostać podłączony do LDAP/AD lub uwierzytelniać użytkowników przy użyciu Google, Facebooka itd.
 Posiada również konsolę administracyjną, w której możemy łatwo skonfigurować chociażby uprawnienia użytkowników.
 
 Więcej informacji na stronie [www.keycloak.org](https://www.keycloak.org/).
