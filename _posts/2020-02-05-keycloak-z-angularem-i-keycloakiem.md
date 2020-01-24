@@ -2,7 +2,7 @@
 layout:    post
 title:     "Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"
 published: true
-date:      2020-02-05 08:00:00 +0100
+date:      2020-01-05 08:00:00 +0100
 author:    mhoja
 tags:
     - angular
@@ -14,7 +14,7 @@ tags:
     - uwierzytelnianie użytkownika
 ---
 
-Jak wykorzystać serwer Keycloak do logowania w naszej aplikacji?  
+Jak wykorzystać serwer Keycloak do logowania w aplikacji?  
 Omówimy to na przykładzie gotowego projektu, który umożliwia użytkownikowi zalogowanie się do aplikacji z poziomu przeglądarki internetowej.
 
 ## Czym jest Keycloak?
@@ -63,7 +63,7 @@ Eksport konfiguracji serwera został umieszczony w repozytorium projektu demo (`
     - dostępnę są jeszcze opcje `bearer-only` oraz `public` - więcej na ten temat w dokumentacji [(link)](https://www.keycloak.org/docs/latest/server_admin/#oidc-clients)
   - Valid Redirect URIs: `*` - dla ułatwienia bez ograniczeń
   - Web Origins: `*` - dla ułatwienia bez ograniczeń
-- rola `user_role` - tylko użytkownik z tą rolą będzie mógł się autoryzować w naszych aplikacjach
+- rola `user_role` - tylko użytkownik z tą rolą będzie mógł się autoryzować w aplikacjach
 - użytkownik `user` z rolą `user_role` (`user:password`)
 - użytkownik `user2` bez roli `user_role` (`user2:password2`)
 
@@ -83,7 +83,7 @@ Aplikacja frontendowa składa się z trzech komponentów:
 
 - `PublicComponent` - dostępny dla wszystkich bez logowania
 - `ProtectedComponent` - zabezpieczony przed nieautoryzowanym użytkownikiem
-- `ToolbarComponent` - menu z przyciskami dla naszej wygody
+- `ToolbarComponent` - menu z przyciskami dla wygody
 
 ## Uwierzytelnianie na backendzie
 
@@ -104,7 +104,7 @@ jednak w najnowszej dostępnej wersji `4.0.0.Final` wykorzystuje ona stare wersj
 ### Konfiguracja
 
 Oprócz konfiguracji portu aplikacji oraz poziomu logowania adapterów (dzięki czemu zobaczymy w logach co się dokładnie dzieje), musimy skonfigurować `keycloak-adapter-core`.  
-Dzięki wykorzystaniu `keycloak-spring-boot-2-adapter` możemy wszystko skonfigurować w `application.yml`:
+Dzięki `keycloak-spring-boot-2-adapter` możemy wszystko skonfigurować w `application.yml`:
 
 ```yaml
 keycloakRequiredUserRole: user_role
@@ -141,15 +141,15 @@ które będzie wymagać od użytkownika roli `${keycloakRequiredUserRole}` (czyl
 **Konfiguracja Keycloak:**
 
 - `keycloak.enabled` - umożliwi nam łatwe wyłączenie uwierzytelniania;  
-- `keycloak.auth-server-url` - adres naszego serwera Keycloak;  
-- `keycloak.realm` - nazwa naszego realmu;  
-- `keycloak.resource` - nazwa naszego klienta skonfigurowanego dla podanego realmu;  
+- `keycloak.auth-server-url` - adres serwera Keycloak;  
+- `keycloak.realm` - nazwa realmu;  
+- `keycloak.resource` - nazwa klienta skonfigurowanego dla podanego realmu;  
 - `keycloak.credentials.secret` - secret wygenerowany w `SpringBootAngularClient`, możemy go znaleźć w konsoli administracyjnej (`Clients > SpringBootAngularClient > Credentials > Secret`);  
 - `keycloak.realm-key` - klucz publiczny realmu, możemy go znaleźć w konsoli administracyjnej (`Realm Settings > Keys > Active > RSA > Public Key`).
 
 ### Wystawienie konfiguracji dla frontendu
 
-Ponieważ zabezpieczamy osobno aplikację backendową jak i frontendową, a konfiguracja Keycloak jest taka sama, to możemy sobie wystawić konfigurację z `application.yml` przez api. Dzięki temu unikniemy duplikowania konfiguracji w aplikacji frontendowej.
+Ponieważ zabezpieczamy osobno aplikację backendową jak i frontendową, a konfiguracja Keycloak jest taka sama, to możemy wystawić konfigurację z `application.yml` przez api. Dzięki temu unikniemy duplikowania konfiguracji w aplikacji frontendowej.
 
 Konfigurację wystawimy w `KeycloakController` pod adresem `api/keycloak/config`. Będzie ona miała postać:  
 
@@ -172,7 +172,7 @@ Konfigurację wystawimy w `KeycloakController` pod adresem `api/keycloak/config`
 
 Po stronie aplikacji frontendowej wykorzystamy bibliotekę `keycloak-angular` [(link)](https://github.com/mauriciovigolo/keycloak-angular#readme).
 
-W sekcji `dependencies` naszego `package.json` dodamy:
+W `package.json` dodamy zależności:
 
 ```json
 "keycloak-angular": "^7.0.1",
@@ -206,7 +206,7 @@ export class KeycloakConfigService {
 
 ### Konfiguracja
 
-Pobraną konfigurację wykorzystamy w injection tokenie, definiując w naszym `app.module.ts` provider dla tokenu [`APP_INITIALIZER`](https://angular.io/api/core/APP_INITIALIZER):
+Pobraną konfigurację wykorzystamy w injection tokenie, definiując w `app.module.ts` provider dla tokenu [`APP_INITIALIZER`](https://angular.io/api/core/APP_INITIALIZER):
 
 ```typescript
 {
@@ -305,7 +305,7 @@ const routes: Routes = [
 
 ### Uruchomienie
 
-Jeśli mamy już uruchomiony serwer Keycloak, możemy zbudować nasze aplikacje i obraz dockerowy, a następnie uruchomić kontener.
+Jeśli mamy już uruchomiony serwer Keycloak, możemy zbudować aplikacje i obraz dockerowy, a następnie uruchomić kontener.
 
 W tym celu w głównym folderze repozytorium najpierw budujemy aplikacje:
 
@@ -325,15 +325,15 @@ a na koniec uruchamiamy kontener:
 docker run --rm --name spring-angular-keycloak-demo --network host michuu93/spring-angular-keycloak-demo
 ```
 
-Ponieważ zarówno nasze aplikacje z wnętrza kontenera, jak i my z przeglądarki internetowej musimy mieć dostęp do serwera Keycloak pod tym samym adresem, nie wnikając w zasadę działania sieci w dockerze uruchomiliśmy kontener z opcją `--network host`.
+Ponieważ zarówno aplikacje z wnętrza kontenera, jak i my z przeglądarki internetowej musimy mieć dostęp do serwera Keycloak pod tym samym adresem, nie wnikając w zasadę działania sieci w dockerze uruchomiliśmy kontener z opcją `--network host`.
 
 Dzięki temu nie musimy wystawiać dodatkowo żadnego proxy ani podmieniać hostów w naszym systemie. Jest to jednak ułatwienie na potrzeby demo i nie powinniśmy go wykorzystywać na produkcji.
 
 ### Weryfikacja działania uwierzytelniania
 
-Po uruchomieniu możemy sprawdzić nasze aplikacje w działaniu!
+Po uruchomieniu możemy sprawdzić aplikacje w działaniu!
 
-Przechodzimy na stronę [localhost:9082](http://localhost:9082/) i powinniśmy zobaczyć aplikację frontendową, a dokładniej nasz `ToolbarComponent` oraz `PublicComponent`:
+Przechodzimy na stronę [localhost:9082](http://localhost:9082/) i powinniśmy zobaczyć aplikację frontendową, a dokładniej `ToolbarComponent` oraz `PublicComponent`:
 
 ![Public component](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/public_component_not_logged.png)
 
@@ -349,7 +349,7 @@ Do dyspozycji mamy menu, z którego możemy przejść do:
 Sprawdźmy więc czy mamy dostęp do `Keycloak Configuration` bez zalogowania:
 ![Keycloak Configuration](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/keycloak_config.png)
 
-Wygląda na to, że nasz publicznie dostępny route i endpoint api, działają poprawnie.
+Wygląda na to, że publicznie dostępny route i endpoint api, działają poprawnie.
 
 Jeśli teraz przejdziemy do `Protected`, zostaniemy przekierowani na stronę logowania Keycloak:
 
@@ -379,7 +379,7 @@ Dlaczego?
 
 O tym jak działa Keycloak i tokeny którymi się posługujemy (a dokładniej standard OpenID Connect) nie jest tematem tego wpisu. Co do kwestii wylogowywania, to temat (ze względu na złożoność implementacji) nadaje się na osobny wpis, szczególnie gdy mówimy o rozproszonych systemach z wieloma instancjami aplikacji, stojącymi za loadbalancerem.
 
-Nasz projekt demo posiada bardzo prosty mechanizm wylogowywania.
+Projekt demo posiada bardzo prosty mechanizm wylogowywania.
 
 Wylogowanie z frontendu wywoła metodę `logout` na serwisie biblioteki `keycloak-angular`:
 
@@ -412,16 +412,15 @@ Uderzenie na `Backend Hello` również nie zadziała.
 Uwierzytelnianie możemy bardzo szybko wyłączyć w obu aplikacjach, ustawiając `keycloak.enabled` w `application.yml` na `false`.  
 Może być to przydatne np. na środowiskach testowych.
 
-## Podsumowanie
+## Na zakończenie
 
-Podsumowując, chciałbym zaznaczyć że nie jest to jedyny sposób na zaimplementowanie uwierzytelniania za pomocą serwera Keycloak w Spring Boot.
+Mam nadzieję, że udało mi się w przystępny sposób przedstawić integrację aplikacji z serwerem Keycloak.
 
-Jeśli nasza aplikacja ma być bardziej elastyczna, możemy wykorzystać implementację standardu OAuth2 przy użyciu `Spring Security`.  
-Dzięki temu nie uzależnimy się od serwera Keycloak i w przyszłości będziemy mogli łatwiej zamienić go na inny serwer uwierzytelniania.
+Nie jest to jedyny sposób implementacji, jeśli nasza aplikacja ma być bardziej elastyczna, możemy wykorzystać implementację standardu OAuth2 przy użyciu `Spring Security`. Dzięki temu nie uzależnimy się od serwera Keycloak i w przyszłości będziemy mogli łatwiej zamienić go na inny serwer uwierzytelniania/autoryzacji.
 
 Keycloak wystawia endpointy pod którymi udostępnia konfigurację [(link)](https://www.keycloak.org/docs/4.8/server_admin/#keycloak-server-oidc-uri-endpoints).  
 Znajdziemy je w `Realm Settings > General > Endpoints`, np. dla standardu OpenID Connect będzie to w naszym przypadku:  
 [http://127.0.0.1:8180/auth/realms/SpringBootAngular/.well-known/openid-configuration](http://127.0.0.1:8180/auth/realms/SpringBootAngular/.well-known/openid-configuration)  
-Mogą być one przydatne, jeśli nasza aplikacja nie wykorzystuje adapterów Keycloak do połączenia z serwerem.
+Mogą być one przydatne, jeśli aplikacja nie wykorzystuje adapterów Keycloak do połączenia z serwerem.
 
 Nie musimy też wykorzystywać logowania do aplikacji przez przeglądarkę - możemy wykorzystać Keycloaka do uwierzytelniania aplikacji między sobą, np. kiedy integrujemy ze sobą różne moduły. Wtedy przydatna będzie opcja `bearer-only` w konfiguracji clienta.
