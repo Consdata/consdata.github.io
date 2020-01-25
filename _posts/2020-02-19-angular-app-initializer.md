@@ -131,5 +131,25 @@ runInitializers() {
   }
 ```
 
+Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. To sam Angular tego używa!
+* routing (RouterModule) [as|https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510]
+  * First, we start the navigation in a `APP_INITIALIZER` to block the bootstrap if
+* a resolver or a guard executes asynchronously.
+
+
+* Web Worker (WorkerAppModule)
+* ServiceWorkerModule
+* ng Probe (BrowserTestingModule)(z aktualizacja Angular9 zostanie wyrzucone.)
+/**
+ * In Ivy, we don't support NgProbe because we have our own set of testing utilities
+ * with more robust functionality.
+ *
+ * We shouldn't bring in NgProbe because it prevents DebugNode and friends from
+ * tree-shaking properly.
+ */
+
+SERVER_TRANSITION_PROVIDERS
+
+*
 ## Zastosowania
 Do czego można jeszcze zastosować `APP_INITIALIZER`? Keycloak, inicjalizacja atmopshere.js, pobranie konfiguracji, która jest wymagana do poprawnego działania aplikacji.
