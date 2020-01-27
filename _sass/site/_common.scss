@@ -27,3 +27,9 @@ main {
   padding: 5px 3px 2px 5px;
   vertical-align: text-bottom;
 }
+
+.no-breaking-word {
+  &, & * {
+    word-break: keep-all;
+  }
+}
