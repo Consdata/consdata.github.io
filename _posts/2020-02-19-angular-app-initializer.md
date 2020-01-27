@@ -152,4 +152,9 @@ SERVER_TRANSITION_PROVIDERS
 
 *
 ## Zastosowania
-Do czego można jeszcze zastosować `APP_INITIALIZER`? Keycloak, inicjalizacja atmopshere.js, pobranie konfiguracji, która jest wymagana do poprawnego działania aplikacji.
+Do czego można jeszcze zastosować `APP_INITIALIZER`? Keycloak, inicjalizacja atmopshere.js, pobranie konfiguracji, która jest wymagana do poprawnego działania aplikacji
+* Keycloak
+* obsługa powiadomień z serwera (comety)
+* pobranie konfiguracji np. CSRF token
+* monitorowanie aktywności użytkownika
+* keep alive
