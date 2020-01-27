@@ -1,0 +1,16 @@
+.sidebar {
+  display: none;
+  @include desktop {
+    @include flex-container;
+    flex-direction: column;
+    min-width: $sidebar-width;
+    padding-left: $content-padding;
+    padding-top: $content-padding;
+    padding-bottom: $content-padding;
+  }
+
+  .sidebar-item {
+    padding-top: $content-padding;
+    padding-bottom: $content-padding;
+  }
+}

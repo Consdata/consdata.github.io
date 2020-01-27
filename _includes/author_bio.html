@@ -1,4 +1,4 @@
-{% if post.author %}
+{% if post.author or author %}
 <div class="author-bio">
     {% if author.image %}
     <div class="author-image">
@@ -8,12 +8,12 @@
     <div class="card">
         <div class="header">
             {% if author.name %}
-            <div class="author-name">{{author.name}}</div>
+            <div class="author-name"><a href="/author/{{author.id}}">{{author.name}}</a></div>
             {% endif %}
             <div class="social-buttons">
                 {% if author.github %}
                 <div class="author-github">
-                    <a href="https://github.com/{{ author.github | cgi_escape | escape }}" title="{{ author.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> {{ author.github }}</a>
+                    <a href="https://github.com/{{ author.github | cgi_escape | escape }}" title="{{ author.github | escape }}" target="_blank"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> {{ author.github }}</a>
                 </div>
                 {% endif %}
             </div>
@@ -39,7 +39,7 @@
             <div class="social-buttons">
                 {% if author.github %}
                 <div class="author-github">
-                    <a href="https://github.com/{{ author.github | cgi_escape | escape }}" title="{{ author.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> {{ author.github }}</a>
+                    <a href="https://github.com/{{ author.github | cgi_escape | escape }}" title="{{ author.github | escape }}" target="_blank"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> {{ author.github }}</a>
                 </div>
                 {% endif %}
             </div>

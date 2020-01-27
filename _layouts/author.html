@@ -1,0 +1,32 @@
+---
+layout: default
+---
+{% assign author = site.data.authors[page.author] %}
+
+<div class="author">
+    {% include author_bio.html %}
+    <h1>Posty, których autorem jest {{ author.name }}</h1>
+    <div class="post-list">
+        <ul>
+            {% for post in site.posts %}
+            {% if post.author == page.author %}
+
+
+            <li class="post">
+                <h3>
+                    <a class="post-link" href="{{ post.url | relative_url }}">
+                        {{ post.title | escape }}
+                    </a>
+                </h3>
+                {% include post_metadata.html %}
+                <div class="post-entry">
+                    {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
+                    <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Czytaj&nbsp;dalej]</a>
+                </div>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+

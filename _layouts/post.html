@@ -11,9 +11,10 @@ layout: default
             <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
             {% include post_metadata.html %}
         </header>
-
-        <div class="post-content e-content" itemprop="articleBody">
-            {{ content }}
+        <div class="post-container">
+            <div class="post-content e-content" itemprop="articleBody">
+                {{ content }}
+            </div>
         </div>
 
         {% include author_bio.html %}
