@@ -4,7 +4,7 @@
     <div class="article-author" itemscope itemtype="http://schema.org/Person">
         <div class="author-separator">•</div>
         {% if author.name %}
-        <div class="author-name" itemprop="name"><a href="/author/{{author.id}}">{{author.name}}</a></div>
+        <div class="author-name" itemprop="name">{{author.name}}</div>
         {% endif %}
     </div>
     {% endif %}

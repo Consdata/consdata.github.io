@@ -1,21 +1,13 @@
-.author-bio-mobile {
-  display: block;
+.author-bio {
+  display: none;
   @include tablet-and-desktop {
-    display: none;
-  }
-  padding-top: $content-padding;
-  padding-bottom: $content-padding;
-
-  $author-image-size: 70px;
-
-  .header {
     @include flex-container;
-    align-items: center;
   }
+  margin-top: 25px;
+  padding: $content-padding;
 
-  .name-wrapper {
-    padding-left: $content-padding;
-  }
+
+  $author-image-size: 90px;
 
   .author-image {
     min-width: $author-image-size;
@@ -33,16 +25,25 @@
     }
   }
 
-  .bio {
-    margin-top: $content-padding;
-    font-size: $small-font-size;
+  .card {
+    @include flex-container;
+    margin-left: $content-padding;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header {
+    @include flex-container;
+    align-items: center;
   }
 
   .author-name {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: $font-weight-semibold;
   }
   .social-buttons {
+    margin-left: $content-padding;
     svg {
       padding: 0;
     }
