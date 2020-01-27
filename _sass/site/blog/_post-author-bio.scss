@@ -4,7 +4,8 @@
     @include flex-container;
   }
   margin-top: 25px;
-  padding: $content-padding;
+  padding-top: $content-padding;
+  padding-bottom: $content-padding;
 
 
   $author-image-size: 90px;

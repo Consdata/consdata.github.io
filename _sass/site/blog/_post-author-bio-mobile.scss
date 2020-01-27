@@ -3,7 +3,8 @@
   @include tablet-and-desktop {
     display: none;
   }
-  padding: $content-padding;
+  padding-top: $content-padding;
+  padding-bottom: $content-padding;
 
   $author-image-size: 70px;
 
