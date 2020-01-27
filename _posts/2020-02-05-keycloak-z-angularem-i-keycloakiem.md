@@ -51,7 +51,7 @@ Zalogujemy się do niej przy użyciu loginu i hasła zdefiniowanego w `KEYCLOAK_
 
 #### Konfiguracja serwera
 
-Sama konfiguracja serwera Keycloak, to temat na osobny wpis, dlatego wkorzystamy przygotowaną wcześniej konfigurację.
+Sama konfiguracja serwera Keycloak, to temat na osobny wpis, dlatego wykorzystamy przygotowaną wcześniej konfigurację.
 
 Eksport konfiguracji serwera został umieszczony w repozytorium projektu demo (`realm/realm-export.json`) i zostanie załadowany podczas uruchomienia serwera.
 
@@ -99,7 +99,7 @@ Moglibyśmy wykorzystać jedną zależność, zawierającą powyższe adaptery:
 
 - `org.keycloak:keycloak-spring-boot-2-starter`
 
-jednak w najnowszej dostępnej wersji `4.0.0.Final` wykorzystuje ona stare wersje adapterów. Jedną ze zmian w nowszych wersjach adapterów, które wykorzystamy, jest poprawiona walidacja tokenów. Jeśli w przyszłości pojawi się nowa wersja tej zależności, z nowymi wersjami adapterów, to nic nie stoi na przeszkodzie żeby ją wykorzystać.
+jednak w najnowszej dostępnej wersji `4.0.0.Final` używa starszych wersji adapterów. Jedną ze zmian w nowszych wersjach adapterów, jest poprawiona walidacja tokenów. Jeśli w przyszłości pojawi się nowa wersja zależności, z poprawionymi adapterami, to nic nie będzie stało na przeszkodzie żeby z niej skorzystać.
 
 ### Konfiguracja
 
@@ -377,7 +377,7 @@ Jednak jeśli będąc zalogowanym użytkownikiem, wylogujemy się z backendu a n
 
 Dlaczego?
 
-O tym jak działa Keycloak i tokeny którymi się posługujemy (a dokładniej standard OpenID Connect) nie jest tematem tego wpisu. Co do kwestii wylogowywania, to temat (ze względu na złożoność implementacji) nadaje się na osobny wpis, szczególnie gdy mówimy o rozproszonych systemach z wieloma instancjami aplikacji, stojącymi za loadbalancerem.
+O tym jak działa Keycloak i tokeny, którymi się posługujemy (a dokładniej standard OpenID Connect) nie jest tematem tego wpisu. Co do kwestii wylogowywania, to temat (ze względu na złożoność implementacji) nadaje się na osobny wpis, szczególnie gdy mówimy o rozproszonych systemach z wieloma instancjami aplikacji, stojącymi za loadbalancerem.
 
 Projekt demo posiada bardzo prosty mechanizm wylogowywania.
 
