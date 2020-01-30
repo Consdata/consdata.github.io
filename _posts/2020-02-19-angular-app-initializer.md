@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Wprowadzenie
-`APP_INITIALIZER` to wbudowany `InjectionToken` w Angulara. Dzięki niemu, możliwe, jest wykonanie funkcji lub zestawu funkcji, które zostaną wykonane przed uruchomieniem applikacji.
+`APP_INITIALIZER` to wbudowany `InjectionToken` w Angulara. Dzięki niemu możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem applikacji.
 
 ## Przykłady
 Prosty przykład:
@@ -23,6 +23,8 @@ export function appInit1() {
 export function appInit2() {
   return () => console.log('Hello from APP_INITIALIZER 2!');
 }
+
+@NgModule({
 // (...)
 providers: [{
   provide: APP_INITIALIZER,
@@ -35,14 +37,14 @@ providers: [{
   multi: true
 }],
 // (...)
+})
 ```
-Rezultat:
+Rezultat z konsoli przeglądarki:
 ```
 // Hello from APP_INITIALIZER 1!
 // Hello from APP_INITIALIZER 2!
 ```
-
-Ok, mało praktyczny przykład. Co jeszcze można zrobić? Do `APP_INITIALIZER` można także przekazać funkcje, która zwróci Promise! Angular poczeka, aż wszystkie funkcje zostaną resolve.
+Co jeszcze można zrobić? Do `APP_INITIALIZER` można także przekazać funkcje, która zwróci Promise! Angular poczeka, aż wszystkie funkcje zostaną resolve.
 ```js
 export function appInit() {
   return () => new Promise((resolve, reject) => {
@@ -52,6 +54,7 @@ export function appInit() {
     }, 2000);
   })
 }
+@NgModule({
 // (...)
 providers: [{
   provide: APP_INITIALIZER,
@@ -59,10 +62,14 @@ providers: [{
   multi: true
 }],
 // (...)
+})
 ```
 Rezultatem będzie wyświetlenie na konsoli wiadomości po 2 sekundach.
 Ponadto, możliwe jest także, przekazanie serwisów do naszej funkcjonalności.
-Serwis `AppInitService` wywoła get na `/api/conf.json`. Na backend wystawiłem sobie plik conf.json, serwowany przez static [link].
+Na backendzie wystawiony jest plik conf.json, serwowany przez http node-static [link].
+Interface Configuration jest modelem danych z pliku conf.json.
+Serwis `AppInitService` wywoła get na `/api/conf.json`. 
+
 ```js
 export interface Configuration {
   name;
@@ -75,7 +82,7 @@ export class AppInitService {
   }
 
   init(): Promise<Configuration> {
-    return this.httpClient.get<Configuration>( 'api/conf.json')
+    return this.httpClient.get<Configuration>('api/conf.json')
            .toPromise();
   }
 }
@@ -95,29 +102,31 @@ providers: [
     multi: true
   }],
 ```
-Powyższy kod wyświetli na konsoli konfigurację dla powyższej aplikacji.
+Powyższy kod wyświetli na konsoli konfigurację z pliku conf.json.
 ```
 {name: "Test App name"}
 ```
 
 ## Kody w Angularze
 No dobrze, a jak to działa "pod maską"?
-`APP_INITIALIZER` to po prostu `InjectionToken`.
+`APP_INITIALIZER` to po prostu `InjectionToken`[link].
 ##### *`application_init.ts`*
 ```js
 export const APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
 ```
-
+Początek bootstrapowania aplikacji w Angular, wygląda następująco:
 ##### *`platformRef#bootstrapModuleFactory()`*
 ``` js
 return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
        const initStatus: ApplicationInitStatus = moduleRef.injector.get(ApplicationInitStatus);
-       initStatus.runInitializers(); // w tym momencie, serwis ApplicationInitStatus, wykonuje wszystkie funkcje, które dostarczyliśmy przez APP_INITIALIZER
+       initStatus.runInitializers(); // (1)
        return initStatus.donePromise.then(() => {
-         this._moduleDoBootstrap(moduleRef); // a teraz bootstrap
+         this._moduleDoBootstrap(moduleRef); // (2)
          return moduleRef;
        });
 ```
+(1) - w tym momencie, serwis ApplicationInitStatus, wykonuje wszystkie funkcje, które dostarczyliśmy przez APP_INITIALIZER
+(2) - bootstrap
 
 ##### *`ApplicationInitStatus#runInitializers()`*
 ```js
@@ -132,6 +141,7 @@ runInitializers() {
 ```
 
 Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. To sam Angular tego używa!
+Pryzkłady użycia w Angularze:
 * routing (RouterModule) [as|https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510]
   * First, we start the navigation in a `APP_INITIALIZER` to block the bootstrap if
 * a resolver or a guard executes asynchronously.
@@ -150,11 +160,10 @@ Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. To sam Angular
 
 SERVER_TRANSITION_PROVIDERS
 
-*
 ## Zastosowania
-Do czego można jeszcze zastosować `APP_INITIALIZER`? Keycloak, inicjalizacja atmopshere.js, pobranie konfiguracji, która jest wymagana do poprawnego działania aplikacji
+Do czego jeszcze można zastosować `APP_INITIALIZER`?
 * Keycloak
-* obsługa powiadomień z serwera (comety)
-* pobranie konfiguracji np. CSRF token
-* monitorowanie aktywności użytkownika
-* keep alive
+* Obsługa powiadomień push z serwera (comety)
+* Pobranie konfiguracji np. CSRF token
+* Monitorowanie aktywności użytkownika
+* Keep alive
