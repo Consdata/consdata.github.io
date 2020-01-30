@@ -2,19 +2,18 @@
 layout:    post
 title:     Angular APP_INITIALIZER
 published: true
-date:      2020-02-19 08:00:00 +0100
+date:      2020-XX-XX 08:00:00 +0100
 author:    dmejer
 tags:
     - Angular
     - APP_INITIALIZER
-    - Angular init
 ---
 
-## Wprowadzenie
-`APP_INITIALIZER` to wbudowany `InjectionToken` w Angulara. Dzięki niemu możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem applikacji.
+`APP_INITIALIZER` to wbudowany w Angulara `InjectionToken`.
+Dzięki `APP_INITIALIZER` możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).
 
-## Przykłady
-Prosty przykład:
+## Przykład
+Prosty przykład wywołania dwóch funkcji przed startem aplikacji:
 ``` js
 export function appInit1() {
   return () => console.log('Hello from APP_INITIALIZER 1!');
@@ -38,13 +37,16 @@ providers: [{
 }],
 // (...)
 })
+export class AppModule { }
 ```
-Rezultat z konsoli przeglądarki:
+Na kosoli przeglądarki pojawią się poniższe komunikaty:
 ```
-// Hello from APP_INITIALIZER 1!
-// Hello from APP_INITIALIZER 2!
+Hello from APP_INITIALIZER 1!
+Hello from APP_INITIALIZER 2!
 ```
-Co jeszcze można zrobić? Do `APP_INITIALIZER` można także przekazać funkcje, która zwróci Promise! Angular poczeka, aż wszystkie funkcje zostaną resolve.
+
+## Przykład z Promise
+Do `APP_INITIALIZER` można także przekazać funkcje, która zwróci Promise! Angular poczeka, aż wszystkie zwrócone Promise'y zostaną resolve.
 ```js
 export function appInit() {
   return () => new Promise((resolve, reject) => {
@@ -54,21 +56,26 @@ export function appInit() {
     }, 2000);
   })
 }
+
 @NgModule({
 // (...)
 providers: [{
   provide: APP_INITIALIZER,
-  useFactory: appInit1,
+  useFactory: appInit,
   multi: true
 }],
 // (...)
 })
+export class AppModule { }
 ```
-Rezultatem będzie wyświetlenie na konsoli wiadomości po 2 sekundach.
-Ponadto, możliwe jest także, przekazanie serwisów do naszej funkcjonalności.
-Na backendzie wystawiony jest plik conf.json, serwowany przez http node-static [link].
-Interface Configuration jest modelem danych z pliku conf.json.
-Serwis `AppInitService` wywoła get na `/api/conf.json`. 
+W rezultacie, po 2 sekundach, na konsoli zostanie wyświetlona wiadomość: `Hello from APP_INITIALIZER`.
+
+## Zaawansowany przykład
+Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest przekazanie serwisu. 
+W poniższym przykładzie, aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
+Na backendzie wystawiony jest plik conf.json, serwowany przez http-server.
+Interface Configuration jest modelem danych z pliku conf.json, zawiera tylko pole name.
+Serwis `AppInitService` wywołuje GET na `/api/conf.json`. 
 
 ```js
 export interface Configuration {
@@ -87,12 +94,13 @@ export class AppInitService {
   }
 }
 ```
-
 ```js
 export function appInit(appInitService: AppInitService) {
   return () => appInitService.init().then(configuration => console.log(configuration));
 }
 
+@NgModule({
+// (...)
 providers: [
   AppInitService,
   {
@@ -100,17 +108,19 @@ providers: [
     useFactory: appInit,
     deps: [AppInitService],
     multi: true
-  }],
+  }]
+// (...)
+})
+export class AppModule { }
 ```
 Powyższy kod wyświetli na konsoli konfigurację z pliku conf.json.
 ```
 {name: "Test App name"}
 ```
 
-## Kody w Angularze
-No dobrze, a jak to działa "pod maską"?
-`APP_INITIALIZER` to po prostu `InjectionToken`[link].
-##### *`application_init.ts`*
+## Implementacja w Angularze
+Przyjrzyjmy się, jak `APP_INITIALIZER` został zaimplementowany w samym Angularze.
+W pliku `application_init.ts` znajduje się definicja `InjectionToken`.
 ```js
 export const APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
 ```
@@ -125,28 +135,41 @@ return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
          return moduleRef;
        });
 ```
-(1) - w tym momencie, serwis ApplicationInitStatus, wykonuje wszystkie funkcje, które dostarczyliśmy przez APP_INITIALIZER
-(2) - bootstrap
-
+W punkcie (1) zostaje wywołana funkcja runInitializers na serwisie ApplicationInitStatus. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
+Sama metoda runInitializers, sprawdza czy jakieś wywołanie zwróciło Promise, jeżeli tak to czeka, aż wszystkie funkcje zostaną wykonane.
 ##### *`ApplicationInitStatus#runInitializers()`*
 ```js
-runInitializers() {
+  runInitializers() {
     // (...)
     const asyncInitPromises: Promise<any>[] = [];
+
+    if (this.appInits) {
+      for (let i = 0; i < this.appInits.length; i++) {
+        const initResult = this.appInits[i]();
+        if (isPromise(initResult)) {
+          asyncInitPromises.push(initResult);
+        }
+      }
+    }
 
     Promise.all(asyncInitPromises).then(() => { complete(); }).catch(e => { this.reject(e); });
 
     // (...)
   }
 ```
+## Zastosowania
+Do czego jeszcze można zastosować `APP_INITIALIZER`?
+* Keycloak [link]
+* Obsługa powiadomień push z serwera (comety)
+* Pobranie konfiguracji np. CSRF token
+* Monitorowanie aktywności użytkownika
+* Keep alive
 
-Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. To sam Angular tego używa!
+Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. Angular sam używa do poprawnego działania `APP_INITIALIZER`.
 Pryzkłady użycia w Angularze:
 * routing (RouterModule) [as|https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510]
   * First, we start the navigation in a `APP_INITIALIZER` to block the bootstrap if
 * a resolver or a guard executes asynchronously.
-
-
 * Web Worker (WorkerAppModule)
 * ServiceWorkerModule
 * ng Probe (BrowserTestingModule)(z aktualizacja Angular9 zostanie wyrzucone.)
@@ -160,10 +183,4 @@ Pryzkłady użycia w Angularze:
 
 SERVER_TRANSITION_PROVIDERS
 
-## Zastosowania
-Do czego jeszcze można zastosować `APP_INITIALIZER`?
-* Keycloak
-* Obsługa powiadomień push z serwera (comety)
-* Pobranie konfiguracji np. CSRF token
-* Monitorowanie aktywności użytkownika
-* Keep alive
+
