@@ -2,7 +2,7 @@
 layout:    post
 title:     Angular APP_INITIALIZER
 published: true
-date:      2020-XX-XX 08:00:00 +0100
+date:      2020-02-19 08:00:00 +0100
 author:    dmejer
 tags:
     - Angular
@@ -135,8 +135,8 @@ return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
          return moduleRef;
        });
 ```
-W punkcie (1) zostaje wywołana funkcja runInitializers na serwisie ApplicationInitStatus. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
-Sama metoda runInitializers, sprawdza czy jakieś wywołanie zwróciło Promise, jeżeli tak to czeka, aż wszystkie funkcje zostaną wykonane.
+W punkcie (1) na serwisie ApplicationInitStatus wywołana jest funkcja runInitializers. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
+Metoda runInitializers, sprawdza które wywołania zwróciły Promise i czeka aż wszystkie funkcje zostaną zakończone (resolve).
 ##### *`ApplicationInitStatus#runInitializers()`*
 ```js
   runInitializers() {
@@ -165,7 +165,7 @@ Do czego jeszcze można zastosować `APP_INITIALIZER`?
 * Monitorowanie aktywności użytkownika
 * Keep alive
 
-Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`. Angular sam używa do poprawnego działania `APP_INITIALIZER`.
+Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`, sam Angular wykorzystuje go do poprawnego działania.
 Pryzkłady użycia w Angularze:
 * routing (RouterModule) [as|https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510]
   * First, we start the navigation in a `APP_INITIALIZER` to block the bootstrap if
