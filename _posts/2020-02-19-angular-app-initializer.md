@@ -135,7 +135,7 @@ return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
          return moduleRef;
        });
 ```
-W punkcie (1) na serwisie ApplicationInitStatus wywołana jest funkcja runInitializers. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
+W punkcie (1) w serwisie ApplicationInitStatus wywołana jest funkcja runInitializers. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
 Metoda runInitializers, sprawdza które wywołania zwróciły Promise i czeka aż wszystkie funkcje zostaną zakończone (resolve).
 ##### *`ApplicationInitStatus#runInitializers()`*
 ```js
@@ -157,30 +157,18 @@ Metoda runInitializers, sprawdza które wywołania zwróciły Promise i czeka a�
     // (...)
   }
 ```
+
 ## Zastosowania
 Do czego jeszcze można zastosować `APP_INITIALIZER`?
-* Keycloak [link]
 * Obsługa powiadomień push z serwera (comety)
 * Pobranie konfiguracji np. CSRF token
 * Monitorowanie aktywności użytkownika
 * Keep alive
+* Keycloak - polecam świety wpis Michała na ten temat [link](https://blog.consdata.tech/2020/02/05/keycloak-z-angularem-i-keycloakiem.html)
 
 Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`, sam Angular wykorzystuje go do poprawnego działania.
 Pryzkłady użycia w Angularze:
-* routing (RouterModule) [as|https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510]
-  * First, we start the navigation in a `APP_INITIALIZER` to block the bootstrap if
-* a resolver or a guard executes asynchronously.
+* routing (RouterModule), używany jest do poprawnej pracy Guard'ów.  [źródło](https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510)
 * Web Worker (WorkerAppModule)
 * ServiceWorkerModule
-* ng Probe (BrowserTestingModule)(z aktualizacja Angular9 zostanie wyrzucone.)
-/**
- * In Ivy, we don't support NgProbe because we have our own set of testing utilities
- * with more robust functionality.
- *
- * We shouldn't bring in NgProbe because it prevents DebugNode and friends from
- * tree-shaking properly.
- */
-
-SERVER_TRANSITION_PROVIDERS
-
-
+* NgProbe (BrowserTestingModule). Angular 9 wprowadza [Ivy](https://angular.io/guide/ivy) i mechanizm NgProbe przestanie działać. [źródło](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41)
