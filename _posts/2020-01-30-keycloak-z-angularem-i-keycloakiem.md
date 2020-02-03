@@ -2,7 +2,7 @@
 layout:    post
 title:     "Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"
 published: true
-date:      2020-02-05 08:00:00 +0100
+date:      2020-01-30 08:00:00 +0100
 author:    mhoja
 tags:
     - angular
@@ -335,7 +335,7 @@ Po uruchomieniu możemy sprawdzić aplikacje w działaniu!
 
 Przechodzimy na stronę [localhost:9082](http://localhost:9082/) i powinniśmy zobaczyć aplikację frontendową, a dokładniej `ToolbarComponent` oraz `PublicComponent`:
 
-![Public component](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/public_component_not_logged.png)
+![Public component](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/public_component_not_logged.png)
 
 Do dyspozycji mamy menu, z którego możemy przejść do:
 
@@ -347,7 +347,7 @@ Do dyspozycji mamy menu, z którego możemy przejść do:
 - `Logout (frontend)` - przycisk widoczny tylko po zalogowaniu na frontendzie, który wylogowuje nas z frontendu.
 
 Sprawdźmy więc czy mamy dostęp do `Keycloak Configuration` bez zalogowania:
-![Keycloak Configuration](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/keycloak_config.png)
+![Keycloak Configuration](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/keycloak_config.png)
 
 Wygląda na to, że publicznie dostępny route i endpoint api, działają poprawnie.
 
@@ -355,21 +355,21 @@ Jeśli teraz przejdziemy do `Protected`, zostaniemy przekierowani na stronę log
 
 http://localhost:8180/auth/realms/**SpringBootAngular**/protocol/**openid-connect**/auth?client_id=**SpringBootAngularClient**&redirect_uri=**http%3A%2F%2Flocalhost%3A9082%2F%23%2F**&state=3e007783-4772-48dd-8b31-4bfe3cc9c42c&response_mode=fragment&response_type=code&scope=openid&nonce=023ab545-32dc-4bdc-9cbf-12cad1d0c944
 
-![Keycloak login](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/keycloak_login.png)
+![Keycloak login](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/keycloak_login.png)
 
 Jak widzimy, adres zawiera informacje, takie jak nazwa protokołu, realm, client czy adres, na który mamy zostać przekierowani po zalogowaniu.
 
 Jeśli zalogujemy się użytkownikiem posiadającym rolę `user_role` (`user:password`), to zostaniemy przekierowani z powrotem do naszej aplikacji:
 
-![Public component](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/public_component_logged.png)
+![Public component](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/public_component_logged.png)
 
 Dodatkowo mamy jeszcze tylko przycisk `Logout (frontend)`. Jesteśmy teraz zalogowani, więc możemy przejść do `Protected`:
 
-![Protected component](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/protected_component.png)
+![Protected component](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/protected_component.png)
 
 Zadziała również `Backend Hello`:
 
-![Backend Hello](/assets/img/posts/2020-02-05-keycloak-z-angularem-i-keycloakiem/backend_hello.png)
+![Backend Hello](/assets/img/posts/2020-01-30-keycloak-z-angularem-i-keycloakiem/backend_hello.png)
 
 Jeśli wylogujemy się teraz z frontendu - `Logout (frontend)`, to zniknie przycisk `Logout (frontend)` i nie będziemy mieli już dostępu do `Protected`.  
 Cały czas jednak będziemy mieli dostęp do `Backend Hello`. Dopiero kiedy wylogujemy się z backendu - `Logout (backend)`, to stracimy dostęp do `Backend Hello`.  
