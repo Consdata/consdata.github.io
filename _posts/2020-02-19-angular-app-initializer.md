@@ -43,7 +43,7 @@ export class MyService {
 
 }
 ```
-Natomiast, dzięki tokenowny `APP_INITIALIZER`, możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).
+Natomiast, dzięki tokenowi `APP_INITIALIZER`, możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).
 
 ## Przykład
 Prosty przykład wywołania dwóch funkcji przed startem aplikacji:
