@@ -2,7 +2,7 @@
 layout:    post
 title:     Angular APP_INITIALIZER
 published: true
-date:      2020-02-19 08:00:00 +0100
+date:      2020-02-10 08:00:00 +0100
 author:    dmejer
 tags:
     - Angular
@@ -10,7 +10,35 @@ tags:
 ---
 
 `APP_INITIALIZER` to jeden z wielu wbudowanych w Angulara `InjectionToken`.
-Dzięki `APP_INITIALIZER` możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).
+`InjectionToken` to token, pod który można zarejestrować wartość, funkcję albo serwis. Taką wartość, można wstrzyknąć do komponentu lub serwisu.
+Przykład zdefiniowania `MY_TOKEN`:
+```js
+export const MY_TOKEN = new InjectionToken<string>('MY_TOKEN');
+```
+Zarejestrowanie wartości `Hello from MY_TOKEN` pod `MY_TOKEN`:
+```js
+@NgModule({
+// (...)
+providers: [{
+  provide: MY_TOKEN,
+  useValue: 'Hello from MY_TOKEN',
+}]
+// (...)
+})
+export class AppModule { }
+```
+Wstrzyknięcie wartości `MY_TOKEN` do serwisu:
+```js
+@Injectable()
+export class MyService {
+
+  constructor(@Inject(MY_TOKEN) public value: string) { 
+    console.log(value);
+  }
+
+}
+```
+Natomiast, dzięki tokenowny `APP_INITIALIZER`, możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).
 
 ## Przykład
 Prosty przykład wywołania dwóch funkcji przed startem aplikacji:
