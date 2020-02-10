@@ -2,7 +2,7 @@
 layout:    post
 title:     Angular APP_INITIALIZER
 published: true
-date:      2020-02-10 08:00:00 +0100
+date:      2020-02-19 08:00:00 +0100
 author:    dmejer
 tags:
     - Angular
@@ -20,13 +20,13 @@ Przykład zdefiniowania `MY_TOKEN`:
 ```js
 export const MY_TOKEN = new InjectionToken<string>('MY_TOKEN');
 ```
-Zarejestrowanie wartości `Hello from MY_TOKEN` pod `MY_TOKEN`:
+Zarejestrowanie wartości `Hello` pod `MY_TOKEN`:
 ```js
 @NgModule({
 // (...)
 providers: [{
   provide: MY_TOKEN,
-  useValue: 'Hello from MY_TOKEN',
+  useValue: 'Hello',
 }]
 // (...)
 })
@@ -56,7 +56,7 @@ export function appInit2() {
   return () => console.log('Hello from appInit2!');
 }
 ```
-Parametr multi, pozwala na rejestrację dwóch lub więcej funkcji pod `APP_INITIALIZER`:
+Parametr `multi` pozwala na rejestrację dwóch lub więcej funkcji pod `APP_INITIALIZER`:
 ```js
 @NgModule({
 // (...)
@@ -107,7 +107,7 @@ W rezultacie, po 2 sekundach, w konsoli zostanie wyświetlona wiadomość: `Hell
 
 ## Zaawansowany przykład
 Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest wstrzyknięcie serwisu.
-W poniższym przykładzie, aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
+W poniższym przykładzie aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
 Na backendzie wystawiony jest plik conf.json, serwowany przez http-server.
 Interface Configuration jest modelem danych z pliku conf.json, zawiera tylko pole name.
 Serwis `AppInitService` wywołuje żądanie typu GET na `/api/conf.json`.
@@ -159,7 +159,7 @@ W pliku `application_init.ts` znajduje się definicja `InjectionToken`.
 ```js
 export const APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
 ```
-Początek bootstrapowania aplikacji w Angular, wygląda następująco:
+Początek bootstrapowania aplikacji w Angular wygląda następująco:
 ##### *`platformRef#bootstrapModuleFactory()`*
 ``` js
 return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
@@ -191,7 +191,7 @@ W punkcie (1) w serwisie ApplicationInitStatus wywołana jest funkcja runInitial
     // (...)
   }
 ```
-Metoda runInitializers sprawdza, które wywołania zwróciły Promise i czeka aż wszystkie funkcje zostaną zakończone (resolve).
+Metoda `runInitializers` sprawdza które wywołania zwróciły Promise i czeka, aż wszystkie funkcje zostaną zakończone (resolve).
 
 ## Zastosowania
 Do czego można zastosować `APP_INITIALIZER`?
@@ -206,4 +206,4 @@ Przykłady użycia w Angularze:
 * [RouterModule](https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510), używany jest do poprawnej pracy Guardów;
 * [WorkerAppModule](https://github.com/angular/angular/blob/8.2.x/packages/docs/web_workers/web_workers.md);
 * [ServiceWorkerModule](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/service-worker/src/module.ts#L161);
-* [NgProbe](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41). Angular 9 wprowadza [Ivy](https://angular.io/guide/ivy) i mechanizm NgProbe przestanie działać.
+* [NgProbe](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41). Angular 9 wprowadza nowy renderer [Ivy](https://angular.io/guide/ivy) tym samym mechanizm NgProbe przestanie działać.
