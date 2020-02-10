@@ -7,7 +7,11 @@ author:    dmejer
 tags:
     - Angular
     - APP_INITIALIZER
+    - Application Initializer
     - InjectionToken
+    - DI
+    - Dependency Injection
+    - ApplicationInitStatus
 ---
 
 `APP_INITIALIZER` to jeden z wielu wbudowanych w Angulara `InjectionToken`.
