@@ -191,7 +191,7 @@ W punkcie (1) w serwisie ApplicationInitStatus wywołana jest funkcja runInitial
     // (...)
   }
 ```
-Metoda `runInitializers` sprawdza które wywołania zwróciły Promise i czeka, aż wszystkie funkcje zostaną zakończone (resolve).
+Metoda `runInitializers` sprawdza wywołania, które zwróciły Promise i czeka, aż wszystkie funkcje zostaną zakończone (resolve).
 
 ## Zastosowania
 Do czego można zastosować `APP_INITIALIZER`?
