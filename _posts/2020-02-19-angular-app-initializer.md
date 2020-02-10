@@ -75,7 +75,7 @@ Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest przekazanie s
 W poniższym przykładzie, aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
 Na backendzie wystawiony jest plik conf.json, serwowany przez http-server.
 Interface Configuration jest modelem danych z pliku conf.json, zawiera tylko pole name.
-Serwis `AppInitService` wywołuje GET na `/api/conf.json`.
+Serwis `AppInitService` wywołuje żądanie typu GET na `/api/conf.json`.
 
 ```js
 export interface Configuration {
