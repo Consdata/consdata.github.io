@@ -119,7 +119,7 @@ Powyższy kod wyświetli w konsoli konfigurację z pliku conf.json.
 ```
 
 ## Implementacja w Angularze
-Przyjrzyjmy się, jak `APP_INITIALIZER` został zaimplementowany w samym Angularze.
+Przyjrzyjmy się teraz, w jaki sposób `APP_INITIALIZER` został zaimplementowany w samym Angularze.
 W pliku `application_init.ts` znajduje się definicja `InjectionToken`.
 ```js
 export const APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
