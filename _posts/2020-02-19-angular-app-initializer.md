@@ -164,7 +164,7 @@ Do czego można zastosować `APP_INITIALIZER`?
 * Pobranie konfiguracji np. CSRF token
 * Monitorowanie aktywności użytkownika
 * Keep alive
-* Keycloak - polecam świety wpis Michała na ten temat [źródło](https://blog.consdata.tech/2020/02/05/keycloak-z-angularem-i-keycloakiem.html)
+* Keycloak - polecam świetny wpis Michała Hoji na ten temat [źródło](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html)
 
 Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`, sam Angular wykorzystuje go do poprawnego działania.
 Pryzkłady użycia w Angularze:
