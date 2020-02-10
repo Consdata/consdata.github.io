@@ -15,7 +15,7 @@ tags:
 ---
 
 `APP_INITIALIZER` to wbudowany w Angulara `InjectionToken`.
-`InjectionToken` to token, pod który można zarejestrować wartość, funkcję albo serwis. Taką wartość, można wstrzyknąć do komponentu lub serwisu.
+Pod `InjectionToken` można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu.
 Przykład zdefiniowania `MY_TOKEN`:
 ```js
 export const MY_TOKEN = new InjectionToken<string>('MY_TOKEN');
