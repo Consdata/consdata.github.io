@@ -39,7 +39,7 @@ providers: [{
 })
 export class AppModule { }
 ```
-Na kosoli przeglądarki pojawią się poniższe komunikaty:
+W konsoli przeglądarki pojawią się poniższe komunikaty:
 ```
 Hello from appInit1!
 Hello from appInit2!
@@ -68,7 +68,7 @@ providers: [{
 })
 export class AppModule { }
 ```
-W rezultacie, po 2 sekundach, na konsoli zostanie wyświetlona wiadomość: `Hello from appInit`.
+W rezultacie, po 2 sekundach, w konsoli zostanie wyświetlona wiadomość: `Hello from appInit`.
 
 ## Zaawansowany przykład
 Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest przekazanie serwisu.
@@ -113,7 +113,7 @@ providers: [
 })
 export class AppModule { }
 ```
-Powyższy kod wyświetli na konsoli konfigurację z pliku conf.json.
+Powyższy kod wyświetli w konsoli konfigurację z pliku conf.json.
 ```
 {name: "Test App name"}
 ```
@@ -167,7 +167,7 @@ Do czego można zastosować `APP_INITIALIZER`?
 * Keycloak - polecam świetny wpis Michała Hoji na ten temat [źródło](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html)
 
 Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`, sam Angular wykorzystuje go do poprawnego działania.
-Pryzkłady użycia w Angularze:
+Przykłady użycia w Angularze:
 * Routing (RouterModule), używany jest do poprawnej pracy Guard'ów.  [źródło](https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510)
 * Web Worker (WorkerAppModule) [źródło](https://github.com/angular/angular/blob/8.2.x/packages/docs/web_workers/web_workers.md)
 * ServiceWorkerModule [źródło](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/service-worker/src/module.ts#L161)
