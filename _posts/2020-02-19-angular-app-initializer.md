@@ -56,7 +56,7 @@ export function appInit2() {
   return () => console.log('Hello from appInit2!');
 }
 ```
-Zarejestrowanie funkcji `appInit1` oraz `appInit2` pod `APP_INITIALIZER`. Parametr multi, pozwala na rejestrację dwóch lub więcej funkcji pod `APP_INITIALIZER`:
+Parametr multi, pozwala na rejestrację dwóch lub więcej funkcji pod `APP_INITIALIZER`:
 ```js
 @NgModule({
 // (...)
