@@ -46,7 +46,7 @@ Hello from appInit2!
 ```
 
 ## Przykład z Promise
-Do `APP_INITIALIZER` można także przekazać funkcje, która zwróci Promise! Angular poczeka, aż wszystkie zwrócone Promise'y zostaną resolve.
+Do `APP_INITIALIZER` można także przekazać funkcję, która zwróci Promise! Angular poczeka, aż wszystkie zwrócone Promise'y zostaną rozwiązane (resolved).
 ```js
 export function appInit() {
   return () => new Promise((resolve, reject) => {
