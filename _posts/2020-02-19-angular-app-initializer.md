@@ -136,7 +136,6 @@ return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
        });
 ```
 W punkcie (1) w serwisie ApplicationInitStatus wywołana jest funkcja runInitializers. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.
-Metoda runInitializers, sprawdza które wywołania zwróciły Promise i czeka aż wszystkie funkcje zostaną zakończone (resolve).
 ##### *`ApplicationInitStatus#runInitializers()`*
 ```js
   runInitializers() {
@@ -157,6 +156,7 @@ Metoda runInitializers, sprawdza które wywołania zwróciły Promise i czeka a�
     // (...)
   }
 ```
+Metoda runInitializers sprawdza, które wywołania zwróciły Promise i czeka aż wszystkie funkcje zostaną zakończone (resolve).
 
 ## Zastosowania
 Do czego można zastosować `APP_INITIALIZER`?
