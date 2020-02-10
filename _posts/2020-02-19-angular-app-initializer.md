@@ -195,15 +195,15 @@ Metoda runInitializers sprawdza, które wywołania zwróciły Promise i czeka a�
 
 ## Zastosowania
 Do czego można zastosować `APP_INITIALIZER`?
-* Obsługa powiadomień push z serwera (comety)
-* Pobranie konfiguracji np. CSRF token
-* Monitorowanie aktywności użytkownika
-* Keep alive
-* Keycloak - polecam świetny wpis Michała Hoji na ten temat [źródło](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html)
+* obsługa powiadomień push z serwera (comety),
+* pobranie konfiguracji np. CSRF token,
+* monitorowanie aktywności użytkownika,
+* keep alive,
+* keycloak - polecam świetny wpis Michała Hoji na ten temat [źródło](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html).
 
 Nawet, jeżeli w swojej aplikacji nie używamy `APP_INITIALIZER`, sam Angular wykorzystuje go do poprawnego działania.
 Przykłady użycia w Angularze:
-* Routing (RouterModule), używany jest do poprawnej pracy Guardów. [źródło](https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510)
-* Web Worker (WorkerAppModule) [źródło](https://github.com/angular/angular/blob/8.2.x/packages/docs/web_workers/web_workers.md)
-* ServiceWorkerModule [źródło](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/service-worker/src/module.ts#L161)
-* NgProbe. Angular 9 wprowadza [Ivy](https://angular.io/guide/ivy) i mechanizm NgProbe przestanie działać. [źródło](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41)
+* [RouterModule](https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510), używany jest do poprawnej pracy Guardów;
+* [WorkerAppModule](https://github.com/angular/angular/blob/8.2.x/packages/docs/web_workers/web_workers.md);
+* [ServiceWorkerModule](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/service-worker/src/module.ts#L161);
+* [NgProbe](https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41). Angular 9 wprowadza [Ivy](https://angular.io/guide/ivy) i mechanizm NgProbe przestanie działać.
