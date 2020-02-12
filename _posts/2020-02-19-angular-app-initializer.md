@@ -32,12 +32,12 @@ providers: [{
 })
 export class AppModule { }
 ```
-Wstrzyknięcie wartości `MY_TOKEN` do serwisu:
+Wstrzyknięcie wartości `MY_TOKEN` do serwisu oraz wyświetlenie w konsoli przeglądarki `Hello`:
 ```js
 @Injectable()
 export class MyService {
 
-  constructor(@Inject(MY_TOKEN) public value: string) { 
+  constructor(@Inject(MY_TOKEN) public value: string) {
     console.log(value);
   }
 
@@ -103,7 +103,7 @@ providers: [{
 })
 export class AppModule { }
 ```
-W rezultacie, po 2 sekundach, w konsoli zostanie wyświetlona wiadomość: `Hello from appInit`.
+W rezultacie, po 2 sekundach od wywołania funkcji `appInit`, w konsoli zostanie wyświetlona wiadomość: `Hello from appInit`.
 
 ## Zaawansowany przykład
 Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest wstrzyknięcie serwisu.
