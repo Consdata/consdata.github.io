@@ -106,7 +106,7 @@ export class AppModule { }
 W rezultacie, po 2 sekundach od wywołania funkcji `appInit`, w konsoli zostanie wyświetlona wiadomość: `Hello from appInit`.
 
 ## Zaawansowany przykład
-Do funkcji uruchamianej przed bootstrapem aplikacji, możliwe jest wstrzyknięcie serwisu.
+Do funkcji uruchamianej przed bootstrapem aplikacji możliwe jest wstrzyknięcie serwisu.
 W poniższym przykładzie aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
 Na backendzie wystawiony jest plik conf.json, serwowany przez http-server.
 Interface Configuration jest modelem danych z pliku conf.json, zawiera tylko pole name.
