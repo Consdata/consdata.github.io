@@ -1,18 +1,18 @@
 blockquote {
   z-index: -1;
-  font-size: 1.1em;
+  font-size: 1.4em;
   width: 60%;
   margin-left: 0px;
   margin-right: auto;
   color: $color-dark-gray;
-  padding: $content-padding $content-padding $content-padding 40px;
+  padding: $content-padding $content-padding $content-padding 75px;
   border-left: 4px solid $color-logo-red;
   position: relative;
   background: $color-code-background;
 
   @include tablet-and-desktop {
-    font-size: 1.4em;
-    padding: $content-padding $content-padding $content-padding 75px;
+    font-size: 1.1em;
+    padding: $content-padding $content-padding $content-padding 40px;
   }
 
   &:before {
