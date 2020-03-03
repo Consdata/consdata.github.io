@@ -30,12 +30,12 @@ Dlaczego więc do integracji naszej aplikacji z serwerem uwierzytelniania Keyclo
 
 ## Uwierzytelnianie a autoryzacja
 
-Jeśli mówimy o zabezpieczeniu zasobów i dostępem do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
+Poruszając temat zabezpieczania zasobów i dostępnie do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
 
 - `uwierzytelnianie` to proces polegający na potwierdzeniu tożsamości, czyli w skrócie - *kim jestem?*;
 - `autoryzacja` to proces nadawania uprawnień (dostępu do zasobu), czyli w skrócie - *co mogę zrobić?*.
 
-OAuth 2.0 według oficjalnej dokumentacji nie powinien służyć do uwierzytelniania, a jedynie do autoryzacji ([źródło](https://oauth.net/articles/authentication/)):
+OAuth 2.0, według oficjalnej dokumentacji, nie powinien służyć do uwierzytelniania, a jedynie do autoryzacji ([źródło](https://oauth.net/articles/authentication/)):
 > OAuth 2.0 is not an authentication protocol.
 
 Jeśli potrzebujemy mechanizmu pozwalającego na poprawne zaimplementowanie uwierzytelniania, z pomocą przychodzi OpenID Connect.
@@ -43,7 +43,7 @@ Jeśli potrzebujemy mechanizmu pozwalającego na poprawne zaimplementowanie uwie
 ## OpenID Connect
 
 OpenID Connect jest prostą warstwą tożsamości opartą na OAuth 2.0.  
-Umożliwia klientom weryfikację tożsamości użytkownika końcowego na podstawie uwierzytelnienia przeprowadzonego przez serwer autoryzacji, a także uzyskanie podstawowych informacji o profilu użytkownika. Rozszerza OAuth 2.0, umożliwiając **uwierzytelnianie stowarzyszone** (ang. federated authentication):
+Umożliwia klientom weryfikację tożsamości użytkownika końcowego na podstawie uwierzytelnienia przeprowadzonego przez serwer autoryzacji, a także uzyskanie podstawowych informacji o jego profilu. Rozszerza OAuth 2.0, umożliwiając **uwierzytelnianie stowarzyszone** (ang. federated authentication):
 
 - **Federated Authentication** - użytkownik loguje się do serwisu Spotify przy użyciu konta na portalu Facebook (`OpenID Connect`);
 - **Delegated Authorization** - Spotify próbuje uzyskać dostęp do listy znajomych na Facebooku, aby zaimportować ją do swojej bazy danych (`OAuth 2.0`).
@@ -52,7 +52,7 @@ Przepływ procesu jest podobny do OAuth 2.0, ale dodatkowo w procesie bierze udz
 
 ## ID Token
 
-ID Token przypomina koncepcję dowodu osobistego w formacie JWT, podpisanym przez dostawcę OpenID (OP). Spełnia założenia standardu JWT, więc składa się z nagłówka, zawartości oraz
+ID Token przypomina koncepcję dowodu osobistego w formacie JWT, podpisanego przez dostawcę OpenID (OP). Spełnia założenia standardu JWT, więc składa się z nagłówka, zawartości oraz
 sygnatury. Jego zawartość może więc wyglądać następująco:
 
 ```json
@@ -75,7 +75,7 @@ sygnatury. Jego zawartość może więc wyglądać następująco:
 }
 ```
 
-**Jego główne funkcje to m.in.:**
+**W skrócie, ID Token przede wszystkim:**
 
 - potwierdza tożsamość użytkownika, zwanego podmiotem w OpenID (`sub`);
 - określa organ wydający (`iss`);
@@ -94,7 +94,7 @@ Więcej informacji na ten temat znajdziemy w oficjalnej dokumentacji ([link](htt
 Dzięki wykorzystaniu `ID Token`, OpenID Connect nadaje się do uwierzytelniania użytkownika, w przeciwieństwie do OAuth 2.0, który najlepiej sprawdzi się podczas autoryzacji dwóch aplikacji komunikujących się między sobą przez API.
 
 Wiemy już, że Federated Authentication ma zastosowanie, kiedy użytkownik loguje się do serwisu przy użyciu wspólnego konta.  
-Tak więc OpenID Connect wydaje się być naturalnym kandydatem do uwierzytelniania użytkowników w różnego rodzaju serwisach społecznościowych czy aplikacjach internetowych ([jak w przykładzie logowania do aplikacji za pośrednictwem Keycloaka](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html)).
+OpenID Connect wydaje się więc być naturalnym kandydatem do uwierzytelniania użytkowników w różnego rodzaju serwisach społecznościowych czy aplikacjach internetowych ([jak w przykładzie logowania do aplikacji za pośrednictwem Keycloaka](https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html)).
 
 Delegated Authorization natomiast ma zastosowanie, kiedy klient (aplikacja) próbuje uzyskać dostęp do zasobów innej aplikacji. Użytkownik musi jedynie zaakceptować uprawnienia przyznawane aplikacji klienckiej, czyli np. odczyt listy znajomych na Facebooku, o który ubiega się Spotify.  
 Tutaj do autoryzacji Spotify w Facebooku najlepiej spisze się OAuth 2.0.
