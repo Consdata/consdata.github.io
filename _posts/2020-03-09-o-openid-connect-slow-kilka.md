@@ -30,7 +30,7 @@ Dlaczego więc do integracji naszej aplikacji z serwerem uwierzytelniania Keyclo
 
 ## Uwierzytelnianie a autoryzacja
 
-Poruszając temat zabezpieczania zasobów i dostępnie do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
+Poruszając temat zabezpieczania zasobów i dostępie do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
 
 - `uwierzytelnianie` to proces polegający na potwierdzeniu tożsamości, czyli w skrócie - *kim jestem?*;
 - `autoryzacja` to proces nadawania uprawnień (dostępu do zasobu), czyli w skrócie - *co mogę zrobić?*.
@@ -75,7 +75,7 @@ sygnatury. Jego zawartość może więc wyglądać następująco:
 }
 ```
 
-**W skrócie, ID Token przede wszystkim:**
+**W skrócie, ID Token m.in.:**
 
 - potwierdza tożsamość użytkownika, zwanego podmiotem w OpenID (`sub`);
 - określa organ wydający (`iss`);
