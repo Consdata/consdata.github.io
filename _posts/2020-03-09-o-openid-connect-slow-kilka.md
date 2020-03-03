@@ -30,7 +30,7 @@ Dlaczego więc do integracji naszej aplikacji z serwerem uwierzytelniania Keyclo
 
 ## Uwierzytelnianie a autoryzacja
 
-Poruszając temat zabezpieczania zasobów i dostępie do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
+Poruszając temat zabezpieczania zasobów i dostępu do nich, mówimy o takich pojęciach jak **uwierzytelnianie** (ang. authentication) oraz **autoryzacja** (ang. authorization).
 
 - `uwierzytelnianie` to proces polegający na potwierdzeniu tożsamości, czyli w skrócie - *kim jestem?*;
 - `autoryzacja` to proces nadawania uprawnień (dostępu do zasobu), czyli w skrócie - *co mogę zrobić?*.
