@@ -12,7 +12,7 @@ tags:
 ---
 
 W nawiązaniu do mojego poprzedniego wpisu pt.:  
-[**"Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"** (link]({% post_url 2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular %})),  
+[**"Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"** 🔗]({% post_url 2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular %})  
 chciałbym krótko opisać standard [OpenID Connect](https://openid.net/connect/), który został wykorzystany podczas logowania do aplikacji przy użyciu serwera uwierzytelniania [Keycloak](https://www.keycloak.org/).
 
 ## Wstęp
@@ -21,7 +21,7 @@ Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji
 O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać [OAuth 2.0](https://oauth.net/2/) oraz [JWT](https://jwt.io/).
 
 W celu zapoznania się ze standardem OAuth 2.0 odeślę do artykułu pt.:  
-[**"OAuth 2.0 – jak działa / jak testować / problemy bezpieczeństwa"** (link](https://sekurak.pl/oauth-2-0-jak-dziala-jak-testowac-problemy-bezpieczenstwa/))  
+[**"OAuth 2.0 – jak działa / jak testować / problemy bezpieczeństwa"** 🔗](https://sekurak.pl/oauth-2-0-jak-dziala-jak-testowac-problemy-bezpieczenstwa/)  
 autorstwa Marcina Pioska z portalu [Sekurak](https://sekurak.pl/), w którym została opisana terminologia, sposoby pozyskiwania tokenu oraz zasada działania standardu.
 
 O JWT natomiast możemy przeczytać w dokumencie [RFC7519](https://tools.ietf.org/html/rfc7519).
@@ -35,7 +35,7 @@ Poruszając temat zabezpieczania zasobów i dostępu do nich, mówimy o takich p
 - `uwierzytelnianie` to proces polegający na potwierdzeniu tożsamości, czyli w skrócie - *kim jestem?*;
 - `autoryzacja` to proces nadawania uprawnień (dostępu do zasobu), czyli w skrócie - *co mogę zrobić?*.
 
-OAuth 2.0, według oficjalnej dokumentacji, nie powinien służyć do uwierzytelniania, a jedynie do autoryzacji ([źródło](https://oauth.net/articles/authentication/)):
+OAuth 2.0, według oficjalnej dokumentacji, nie powinien służyć do uwierzytelniania, a jedynie do autoryzacji ([źródło 🔗](https://oauth.net/articles/authentication/)):
 > OAuth 2.0 is not an authentication protocol.
 
 Jeśli potrzebujemy mechanizmu pozwalającego na poprawne zaimplementowanie uwierzytelniania, z pomocą przychodzi OpenID Connect.
@@ -87,7 +87,7 @@ sygnatury. Jego zawartość może więc wyglądać następująco:
 - jest podpisany cyfrowo, dzięki czemu może zostać zweryfikowany;
 - opcjonalnie może zostać zaszyfrowany w celu zapewnienia poufności danych.
 
-Więcej informacji na ten temat znajdziemy w oficjalnej dokumentacji ([link](https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken)).
+Więcej informacji na ten temat znajdziemy w [oficjalnej dokumentacji 🔗](https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken).
 
 ## Podsumowanie
 
