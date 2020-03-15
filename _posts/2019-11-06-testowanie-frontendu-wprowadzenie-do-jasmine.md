@@ -10,7 +10,7 @@ tags:
   - jasmine
 ---
 
-Mój poprzedni wpis był o tym [**co** testować w projektach frontendowych]({% post_url 2019-07-26-testy-frontendu-okiem-full-stacka %}), teraz przyszedł czas aby wybrać odpowiednie narzędzia, zakasać rękawy i przejść do praktyki. Pokażę jak zainstalować i używać frameworka Jasmine w projekcie Node'owym.
+Mój poprzedni wpis był o tym [**co** testować w projektach frontendowych]({% post_url 2019-07-25-testy-frontendu-okiem-full-stacka %}), teraz przyszedł czas aby wybrać odpowiednie narzędzia, zakasać rękawy i przejść do praktyki. Pokażę jak zainstalować i używać frameworka Jasmine w projekcie Node'owym.
 
 ### Node
 #### Instalacja za pomocą nvm

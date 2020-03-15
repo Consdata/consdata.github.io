@@ -82,7 +82,7 @@ mmendlik:
 kgabara:
   name:   Konrad Gabara
   github: arg3s
-  bio:    Fullstack developer wannabe. Ceni sobie rozwój, zarówno w obszarze backendu jak i frontendu.
+  bio:    Fullstack developer wannabe. Ceni sobie rozwój, czy przy komputerze, czy przy książce, czy to w kuchni. Marzyciel z niepoprawnym poczuciem humoru. Ze swoich żartów najcześciej śmieje się tylko on, ewentualnie wymusza śmiech litości. Do kodu podchodzi poważniej niż do życia, a to już coś! Miłośnik muzyki, tej poważnej i niepoważnej też :).
   image:  kgabara.jpg
 
 mhoja:
@@ -107,3 +107,21 @@ pgrobelny:
   github: porkite
   bio:    Fullstack Developer, starający się odnajdywać balans pomiędzy tym co piękne a tym co działa. Uwielbia poznawać i używać nowe narzędzia, które dobrze rozwiązują konkretne problemy, a nie tworzą nowe. Wielki fan gier video i horrorów.
   image:  pgrobelny.jpg
+
+amarszalek:
+  name:   Adrian Marszałek
+  github: adikm
+  bio:    Java Developer poddany częściowej konwersji na frontend. Uwielbia rozwiązania ułatwiające codzienną pracę. Prywatnie właściciel domowej dżungli oraz poszukiwacz nowych doznań muzycznych.
+  image:  amarszalek.jpg
+
+dmejer:
+  name:   Dorian Mejer
+  github: dmejer
+  bio:    Full stack developer. Zawsze głodny wiedzy, początkujący weganin. W Consdacie kodujący głównie w Angularze. W przerwach od kodzenia, pomaga innym w kodzeniu! Miłośnik książki, muzyki i filmów, człowiek renesansu. Skromny.
+  image:  dmejer.jpg
+
+mstolarski:
+  name:   Michał Stolarski
+  github: mstolarski
+  bio:    Product Owner kształtujący platformę eximee w Consdata. Chociaż rodowód ma programistyczny, dzisiaj najczęściej jest spotykany ze smartfonem przy uchu, podczas dopercyzowania z klientami wymagań biznesowych. Kiedyś codzienną dawkę endorfin generował na basenie, teraz nie wyobraża sobie poranka bez szybkiej jazdy na rowerze.
+  image:  mstolarski.jpg
