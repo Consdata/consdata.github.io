@@ -17,7 +17,7 @@ Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisany
 
 W jednym z systemów, które współtworzyłem wystąpił problem podczas działania produkcyjnego. Problem objawiał się brakiem możliwości połączenia z endpointem wystawionym na Tomcacie. Monitoring i analiza logów jednoznacznie pokazały, że wyczerpała się pula wątków obsługujących żądania http. Dalsza analiza ujawniła, że praprzyczyną problemu był w tym przypadku system autoryzacji, z którym łączył się nasz system. W systemie autoryzacji znacząco wzrosły czasy odpowiedzi co powodowało, że wątki Tomcata była bardzo długo zajęte. Tomcat powoływał nowe wątki, ale ostatecznie osiągnął limit 1000 wątków (taki mieliśmy ustawiony na connectorze) i przestał obsługiwać nowe połączenia - również takie, które nie wymagały wywołania systemu autoryzacji.
 
-Co więcej zauważyliśmy i potwierdziliśmy to później w testach, że po całkowitym wysyceniu puli wątków Tomcat nie jest w stanie bez restartu powrócić do prawidłowego działania nawet wtedy kiedy problem z długimi czasami odpowiedzi zostanie wyeliminowany.
+Co więcej zauważyliśmy i potwierdziliśmy to później w testach, że po całkowitym wysyceniu puli wątków Tomcat nie jest w stanie bez restartu powrócić do prawidłowego działania nawet wtedy, kiedy problem z długimi czasami odpowiedzi zostanie wyeliminowany.
 
 Opisana sytuacja skłoniła nas do sprawdzenia czy jesteśmy w stanie zapobiec takiemu zachowaniu Tomcata poprzez modyfikację konfiguracji connectorów. Pojawił się między innymi pomysł zmiany implementacji connectora blokującego (bio) na nieblokujący (nio). W systemie, którego dotyczył problem używany był tomcat 7.x, w którym domyślnie używana jest implementacja blokująca.
 
@@ -41,6 +41,7 @@ Aktualna liczba wątków przetwarzających żądania jest obok rozmiaru sterty j
 
 Do monitoringu można użyć narzędzia [jolokia](https://jolokia.org/), które udostępnia JMX za pomocą protokołu http. W takiej konfiguracji wystarczy regularnie odpytywać o stan puli wątków poprzez wywołanie http GET:
 `http://HOST:PORT/jolokia/read/Catalina:name="http-bio-8080",type=ThreadPool/currentThreadsBusy`
+
 W odpowiedzi dostajemy jsona, który w polu value zawiera aktualny rozmiar puli wątków 
 ```json
 {
@@ -60,7 +61,7 @@ Warto skonfigurować alerting, który będzie ostrzegał o wysycaniu się puli 
 
 ### Różnica w działaniu
 
-W Tomcacie 7.x domyślną implementacją connectora jest implementacja blokująca. W Tomcacie 8 i wyższych domyślny jest connector nieblokujący. Podstawowa różnica w działaniu polega na tym, że **w connectorze blokującym wątek przypisywany jest do połączenia, a w connectorze nieblokującym do pojedynczego żądania**. Może to mieć duże znaczenie przy zastosowaniu połączeń keep-alive kiedy to jedno połączenie jest wykorzystywane to przesłania wielu żądań i odpowiedzi. W takim modelu wątek na serwerze jest zajęty na cały czas trwania pojedynczego połączenia mimo, że faktyczne przetwarzanie na serwerze zachodzi tylko w obrębie pojedynczego żądania.
+W Tomcacie 7.x domyślną implementacją connectora jest implementacja blokująca. W Tomcacie 8 i wyższych domyślny jest connector nieblokujący. Podstawowa różnica w działaniu polega na tym, że **w connectorze blokującym wątek przypisywany jest do połączenia, a w connectorze nieblokującym do pojedynczego żądania**. Może to mieć duże znaczenie przy zastosowaniu połączeń keep-alive kiedy to jedno połączenie jest wykorzystywane do przesłania wielu żądań i odpowiedzi. W takim modelu wątek na serwerze jest zajęty na cały czas trwania pojedynczego połączenia mimo, że faktyczne przetwarzanie na serwerze zachodzi tylko w obrębie pojedynczego żądania.
 
 ### Test
 
@@ -86,10 +87,10 @@ Test pokazuje, że przy takim modelu przetwarzania żądań za pomocą connecto
 
 ### Użycie mod_proxy zmienia sytuację
 
-Warto zwrócić uwagę na to, że takie wyniki osiągamy w przypadku bezpośredniego połączenia pomiędzy klientem a serwerem Tomcat. Zdarza się jednak, że pomiędzy serwerem Tomcat a klientem mamy jeszcze warstwę pośrednią np.: w postaci serwera Apache httpd i modułu mod_proxy. Domyślnie mod_proxy nie ma włączonej opcji keep-alive więc wszystkie połączenia do backendu są zamykane po obsłużeniu pojedynczego żądania. 
+Warto zwrócić uwagę na to, że takie wyniki osiągamy w przypadku bezpośredniego połączenia pomiędzy klientem a serwerem Tomcat. Zdarza się jednak, że pomiędzy serwerem Tomcat a klientem mamy jeszcze warstwę pośrednią np. w postaci serwera Apache httpd i modułu mod_proxy. Domyślnie mod_proxy nie ma włączonej opcji keep-alive więc wszystkie połączenia do backendu są zamykane po obsłużeniu pojedynczego żądania. 
 
 Test został przeprowadzony za pomocą narzędzia [Gatling](https://gatling.io/). Więcej o samym narzędziu można przeczytać w osobnym [artykule na naszym blogu](https://blog.consdata.tech/2017/08/01/gatling.html).
 
 ## Próba rozwiązania problemu
 
-Podsumowując: Wstępem do rozważań nad konfiguracją connectorów był problem z długimi czasami jakie wątki Tomcata spędzały na komunikacji z systemem autoryzacji. Czy zmiana connectora na nieblokujący pomogła by w tej sytuacji? Niestety nie. Connector nieblokujący nie wiąże wątku z połączeniem, ale nadal wiąże go z pojedynczym żądaniem. W tym przypadku nadal wątki będą blokowane na długim wywołaniu systemu autoryzacji. Choć zastosowanie connectora nio z pewnością zaoszczędziło by część zasobów maszyny to w tym przypadku należałoby raczej rozważyć użycie jakiejś implementacji circuit breaker'a lub też zmienić model obsługi żądań na bardziej reaktywny (np. [webflux](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html)).
+Podsumowując: Wstępem do rozważań nad konfiguracją connectorów był problem z długimi czasami jakie wątki Tomcata spędzały na komunikacji z systemem autoryzacji. Czy zmiana connectora na nieblokujący pomogłaby w tej sytuacji? Niestety nie. Connector nieblokujący nie wiąże wątku z połączeniem, ale nadal wiąże go z pojedynczym żądaniem. W tym przypadku nadal wątki będą blokowane na długim wywołaniu systemu autoryzacji. Choć zastosowanie connectora nio z pewnością zaoszczędziłoby część zasobów maszyny to w tym przypadku należałoby raczej rozważyć użycie jakiejś implementacji circuit breaker'a lub też zmienić model obsługi żądań na bardziej reaktywny (np. [webflux](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html)).
