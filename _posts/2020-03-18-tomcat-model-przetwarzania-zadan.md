@@ -1,8 +1,8 @@
 ---
 layout:    post
 title:     "Tomcat - model przetwarzania żądań"
-date:      2020-03-19 10:00:00 +0100
-published: false
+date:      2020-03-18 14:00:00 +0100
+published: true
 author:    jwilczewski
 tags:
     - java
@@ -69,19 +69,19 @@ Dla porównania można wykonać prosty test na dwóch rodzajach connectorów. W 
 
 Tak wygląda wykres czasów odpowiedzi dla connectora blokującego:
 
-![wykres czasów odpowiedzi dla connectora blokującego](/assets/img/posts/2020-03-02-tomcat-thread-model/gatling-bio.png)
+![wykres czasów odpowiedzi dla connectora blokującego](/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/gatling-bio.png)
 
 a tak dla connectora nieblokującego:
 
-![wykres czasów odpowiedzi dla connectora nieblokującego](/assets/img/posts/2020-03-02-tomcat-thread-model/gatling-nio.png) 
+![wykres czasów odpowiedzi dla connectora nieblokującego](/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/gatling-nio.png) 
 
 Nie widać tutaj jakiejś specjalnej różnicy między działaniem connectora bio i nio. Zupełnie inaczej wyglądają natomiast wykresy liczby zajętych wątków w puli. Dla connectora blokującego liczba zajętych wątków podczas trwania testu przekracza 20. Czyli jest zgodna z liczbą klientów wysyłających żądania do serwera. Połączenia keep-alive mają timeout równy 5 sekund więc klient utrzymuje cały czas jedno połączenie do wszystkich żądań:
 
-![wykres liczby zajętych wątków dla connectora blokującego](/assets/img/posts/2020-03-02-tomcat-thread-model/threads-bio.png)
+![wykres liczby zajętych wątków dla connectora blokującego](/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/threads-bio.png)
 
 Dla connectora nieblokującego żądania są obsługiwane w większości przez jeden wątek:
 
-![wykres liczby zajętych wątków dla connectora nieblokującego](/assets/img/posts/2020-03-02-tomcat-thread-model/threads-nio.png)
+![wykres liczby zajętych wątków dla connectora nieblokującego](/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/threads-nio.png)
 
 Test pokazuje, że przy takim modelu przetwarzania żądań za pomocą connectora nieblokującego możemy uzyskać sporą oszczędność zasobów i lepiej zutylizować serwer.
 
