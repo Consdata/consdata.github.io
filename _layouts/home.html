@@ -9,41 +9,63 @@ layout: default
 
     {{ content }}
     <div class="blog">
-        {%- if site.posts.size > 0 -%}
-        <div class="post-list">
-            <ul>
-                {%- for post in paginator.posts -%}
-                {% assign author = site.data.authors[post.author] %}
-
-                <li class="post">
-                    <h3>
-                        <a class="post-link" href="{{ post.url | relative_url }}">
-                            {{ post.title | escape }}
-                        </a>
-                    </h3>
-                    {% include post_metadata.html %}
-                    <div class="post-entry">
-                        {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
-                        <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Czytaj&nbsp;dalej]</a>
+        <div class="row first-row">
+            <div class="col-5"></div>
+            <div class="col-15 post-animation">
+                <div class="col-2-3">
+                    <img class="first-post-image" src="/assets/img/highlight/zarzadzanie_zadaniami.png"
+                         alt="postimage"/>
+                </div>
+                <div class="col-1-3 first-post-content">
+                    {% assign author = site.data.authors[site.posts.first.author] %}
+                    <a href="{{ site.posts.first.url }}">
+                        <p class="post-title">
+                            {{ site.posts.first.title }}
+                        </p>
+                        <p class="post-description">
+                            {{site.posts.first.content | strip_html | truncatewords: 50}}
+                        </p>
+                    </a>
+                    <div class="tile-author">
+                        <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        <div class="post-info">
+                            <span class="author-name">{{author.name}}</span>
+                            <span>{{site.posts.first.date | date: "%d-%m-%Y"}}</span>
+                        </div>
                     </div>
-                </li>
-                {%- endfor -%}
-            </ul>
+                </div>
+            </div>
+            <div class="col-5"></div>
         </div>
-        <div class="pagination">
-            {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" class="previous pagination-button" title="Poprzednia strona">Nowsze posty</a>
-            {% else %}
-            <span class="placeholder previous">Nowsze posty</span>
-            {% endif %}
-
-            {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" class="next pagination-button" title="Następna strona">Starsze posty</a>
-            {% else %}
-            <span class="placeholder next">Starsze posty</span>
-            {% endif %}
-
+        {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
+        {% for i in (1..rows) %}
+        <div class="row">
+            <div class="col-5"></div>
+            {% assign offset = forloop.index0 | times: 3 %}
+            {% for post in site.posts limit:3 offset:offset %}
+            {% assign author = site.data.authors[post.author] %}
+            <div class="col-5 post-tile">
+                <a href="{{ post.url }}">
+                    <img class="highlight-image" src="/assets/img/highlight/{{ post.image }}" alt="postimage"/>
+                </a>
+                <div class="post-tile-content">
+                    <a href="{{ post.url }}">
+                        <p class="post-title"> {{ post.title }} </p>
+                        <p class="post-description"> {{post.content | strip_html | truncatewords: 20}}</p>
+                    </a>
+                    <div class="tile-author">
+                        <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        <div class="post-info">
+                            <span class="author-name">{{author.name}}</span>
+                            <span> {{post.date | date: "%d-%m-%Y"}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-5"></div>
         </div>
-        {%- endif -%}
+        {% endfor %}
     </div>
+</div>
 </div>

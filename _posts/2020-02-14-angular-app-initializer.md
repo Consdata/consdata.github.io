@@ -4,6 +4,7 @@ title:     Angular APP_INITIALIZER
 published: true
 date:      2020-02-14 08:00:00 +0100
 author:    dmejer
+image:     app_initializer.png
 tags:
     - Angular
     - APP_INITIALIZER

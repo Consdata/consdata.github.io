@@ -10,6 +10,11 @@
     align-items: center;
   }
 
+  .author-name-metadata {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
   .author-separator {
     margin-left: $field-margin;
   }
@@ -25,10 +30,6 @@
       max-width: 24px;
       max-height: 24px;
     }
-  }
-
-  .author-name {
-    margin-left: $field-margin;
   }
 
 }

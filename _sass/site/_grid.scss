@@ -1,0 +1,39 @@
+.row {
+  @include flex-container;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.first-row {
+  margin-bottom: 40px; // TODO wydzielić
+}
+
+.col-5 {
+  flex: 1 0 calc(20% - 25px);
+  @include mobile {
+    flex-basis: 100%;
+  }
+  @include tablet {
+    flex-basis: 50%;
+  }
+}
+
+.col-10 {
+  @include flex-container;
+  flex: 1 0 calc(40% - 25px); //TODO wydzielić 25px
+}
+
+.col-15 {
+  @include flex-container;
+  flex: 1 0 calc(60% - 25px);
+}
+
+.col-1-3 {
+  @include flex-container;
+  flex: 1 0 calc(33.33% - 25px);
+}
+
+.col-2-3 {
+  @include flex-container;
+  flex: 1 0 calc(66.66% - 25px);
+}

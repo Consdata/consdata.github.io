@@ -38,14 +38,17 @@
     align-items: center;
   }
 
-  .author-name {
-    font-size: 24px;
-    font-weight: $font-weight-semibold;
-  }
   .social-buttons {
     margin-left: $content-padding;
     svg {
       padding: 0;
     }
   }
+}
+
+.big-author-image {
+  width: 75px;
+  height: auto;
+  border-radius: 50%;
+  margin-right: 20px;
 }

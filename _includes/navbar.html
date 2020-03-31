@@ -1,0 +1,33 @@
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-15">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    <a>Java</a>
+                    <a>Frontend</a>
+                    <a>DevOps</a>
+                    <a>Security</a>
+                </div>
+                <form action="/search.html" method="get">
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Szukaj..." id="search-box" name="query" class="search-input" autocomplete="off">
+                        <i class="fa fa-search search-icon" onclick="toggleClass()"></i>
+                    </div>
+                </form>
+            </div>
+            <div class="col-1-3">
+                <button class="newsletter-button">Zapisz się na newsletter techniczny</button>
+            </div>
+        </div>
+        <div class="col-5"></div>
+    </div>
+</div>
+
+
+<script>
+    const input = document.getElementById("search-box");
+    const toggleClass = () => {
+        input.classList.toggle("expanded");
+    };
+</script>

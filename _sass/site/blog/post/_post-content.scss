@@ -1,0 +1,41 @@
+.post-big-title {
+  font-size: 4em; //TODO wydzielić
+  font-weight: bold;
+}
+
+.social-media-sharing {
+  @include flex-container;
+  font-weight: bold;
+  font-size: 1.2em;
+  justify-content: flex-end;
+  border-bottom: 3px solid $color-logo-red;
+}
+
+.post-content-container {
+  @include flex-container;
+  flex-direction: column;
+}
+
+.post-content {
+  width: 100%;
+  display: block;
+  font-size: 1.2em; //TODO wydzielić
+  letter-spacing: 1px; //TODO wydzielić
+
+  p:first-child {
+    margin-top: $content-padding;
+  }
+
+  h2:first-child {
+    margin-top: $content-padding;
+  }
+}
+
+.first-row {
+  margin-top: 30px; //TODO wydzielić
+}
+
+.post-highlight-image {
+  width: 100%;
+  height: auto;
+}

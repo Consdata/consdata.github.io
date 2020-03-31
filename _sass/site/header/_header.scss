@@ -1,0 +1,36 @@
+nav {
+  @import "header-toggle";
+  @import "header-links";
+  @import "header-brand";
+  @import "header-feed-subscribe";
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: $color-russian-black;
+  height: $navbar-height-mobile;
+
+  @include tablet-and-desktop {
+    height: $navbar-height-desktop;
+    background-color: $color-transparent-black;
+    .navbar {
+      @include flex-container;
+      width: 100%;
+      align-items: center;
+      height: $navbar-height-desktop;
+      @include desktop {
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .container {
+    @include content-container;
+    @include flex-container;
+    flex-direction: column;
+    @include tablet-and-desktop {
+      flex-direction: row;
+    }
+  }
+
+}

@@ -1,36 +1,77 @@
-nav {
-  @import "navbar-toggle";
-  @import "navbar-links";
-  @import "navbar-brand";
-  @import "navbar-feed-subscribe";
+.navigation-bar {
+  margin-top: $navbar-height-desktop + 10px;
+  padding: 0 $content-padding;
+}
 
-  position: fixed;
-  top: 0;
+.newsletter-button {
+  background-color: $color-logo-red;
+  color: $color-white;
+  font-weight: bold;
+  border: none;
+  padding: 5px;
   width: 100%;
-  background-color: $color-russian-black;
-  height: $navbar-height-mobile;
+  cursor: pointer;
+  &:hover {
+    background-color: $color-logo-red-dark;
+  }
+}
 
-  @include tablet-and-desktop {
-    height: $navbar-height-desktop;
-    background-color: $color-transparent-black;
-    .navbar {
-      @include flex-container;
-      width: 100%;
-      align-items: center;
-      height: $navbar-height-desktop;
-      @include desktop {
-        justify-content: space-between;
-      }
+.navigation-tags {
+  @include flex-container;
+  flex-basis: 50%;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    color: $color-logo-red;
+    cursor: pointer;
+    font-size: 1.1em;
+    &:hover {
+      color: $color-dark-gray;
     }
   }
+}
 
-  .container {
-    @include content-container;
-    @include flex-container;
-    flex-direction: column;
-    @include tablet-and-desktop {
-      flex-direction: row;
-    }
+.navbar-links {
+  @include flex-container;
+  justify-content: space-between;
+}
+
+.search-input-container {
+  @include flex-container;
+  margin-right: 10px;
+  height: 100%;
+  align-items: center;
+  position: relative;
+}
+
+.search-input {
+  width: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  animation: ease-in-out;
+  position: absolute;
+  right: $search-icon-width;
+  margin-right: 5px;
+  background-color: $color-white;
+  border: none;
+  z-index: 999;
+  border-bottom: 2px solid $color-dark-gray;
+  &:focus {
+    outline: none;
+    border-color: $color-logo-red;
   }
+}
 
+.expanded {
+  width: 135px;
+  visibility: visible;
+}
+
+.search-icon {
+  position: relative;
+  cursor: pointer;
+  width: $search-icon-width;
+  height: auto;
+  font-size: 1.3em;
+  color: $color-logo-red;
 }
