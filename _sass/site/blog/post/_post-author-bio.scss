@@ -3,11 +3,10 @@
   @include tablet-and-desktop {
     @include flex-container;
   }
-  margin-top: 25px;
   padding: $content-padding;
 
 
-  $author-image-size: 90px;
+  $author-image-size: 120px;
 
   .author-image {
     min-width: $author-image-size;
@@ -30,7 +29,7 @@
     margin-left: $content-padding;
     width: 100%;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .header {
@@ -43,6 +42,15 @@
     svg {
       padding: 0;
     }
+  }
+
+  .author-name {
+    font-size: 1.3em;
+  }
+
+  .bio {
+    margin-top: $content-padding;
+    font-size: 1.1em;
   }
 }
 
