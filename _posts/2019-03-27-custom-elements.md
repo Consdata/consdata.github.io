@@ -4,7 +4,7 @@ title:     "Krótkie wprowadzenie do Custom Elements"
 date:      2019-03-27 11:00:00 +0100
 published: true
 author:    mpogorzelski
-image:     webcomponents.png
+image:     custom-elements.png
 tags:
     - frontend
     - custom elements

@@ -1,3 +1,8 @@
+@-webkit-keyframes image-blur {
+  0% {filter: blur(30px);}
+  100% {filter: blur(0)}
+}
+
 .post-big-title {
   font-size: 4em; //TODO wydzielić
   font-weight: bold;
@@ -36,6 +41,7 @@
 }
 
 .post-highlight-image {
+  animation: image-blur 2s;
   width: 100%;
   height: auto;
 }

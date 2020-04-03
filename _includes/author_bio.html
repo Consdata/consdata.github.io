@@ -3,14 +3,16 @@
 <div class="author-bio">
     {% if author.image %}
     <div class="author-image">
-        <img src="/assets/img/authors/{{author.image}}">
+        <a href="/author.html?name={{author.name}}" class="author-name">
+            <img src="/assets/img/authors/{{author.image}}">
+        </a>
     </div>
     {% endif %}
     <div class="card">
         <div class="header">
             {% if author.name %}
             <a href="/author.html?name={{author.name}}" class="author-name">
-               {{author.name}}
+                {{author.name}}
             </a>
             {% endif %}
             <div class="social-buttons">

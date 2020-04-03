@@ -9,6 +9,7 @@ nav {
   width: 100%;
   background-color: $color-russian-black;
   height: $navbar-height-mobile;
+  z-index: 9999;
 
   @include tablet-and-desktop {
     height: $navbar-height-desktop;

@@ -27,9 +27,11 @@ layout: default
                         </p>
                     </a>
                     <div class="tile-author">
-                        <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        <a href="/author.html?name={{author.name}}" class="author-name">
+                            <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        </a>
                         <div class="post-info">
-                            <span class="author-name">{{author.name}}</span>
+                            <a href="/author.html?name={{author.name}}" class="author-name">{{author.name}}</a>
                             <span>{{site.posts.first.date | date: "%d-%m-%Y"}}</span>
                         </div>
                     </div>
@@ -42,7 +44,8 @@ layout: default
         <div class="row">
             <div class="col-5"></div>
             {% assign offset = forloop.index0 | times: 3 %}
-            {% for post in site.posts limit:3 offset:offset %}
+            {% assign postsWithoutFirst = site.posts | shift %}
+            {% for post in postsWithoutFirst limit:3 offset:offset %}
             {% assign author = site.data.authors[post.author] %}
             <div class="col-5 post-tile">
                 <a href="{{ post.url }}">
@@ -54,15 +57,22 @@ layout: default
                         <p class="post-description"> {{post.content | strip_html | truncatewords: 20}}</p>
                     </a>
                     <div class="tile-author">
-                        <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        <a href="/author.html?name={{author.name}}" class="author-name">
+                            <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                        </a>
                         <div class="post-info">
-                            <span class="author-name">{{author.name}}</span>
+                            <a href="/author.html?name={{author.name}}" class="author-name">{{author.name}}</a>
                             <span> {{post.date | date: "%d-%m-%Y"}}</span>
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
+            {% assign moduloValue = postsWithoutFirst.size | modulo: 3 %}
+            {% if forloop.last == true and moduloValue > 0 %}
+            {% assign missingPosts = 3 | minus: moduloValue %}
+            <div class="col-5"></div>
+            {% endif %}
             <div class="col-5"></div>
         </div>
         {% endfor %}

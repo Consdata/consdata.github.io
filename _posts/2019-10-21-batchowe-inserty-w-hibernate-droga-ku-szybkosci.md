@@ -4,6 +4,7 @@ title: Batchowe inserty w Hibernate - droga ku szybkości
 published: true
 date:      2019-10-21 08:00:00 +0100
 author:    rrudko
+image:     inserty-w-hibernate.png
 tags:
   - programming
   - hibernate
