@@ -4,9 +4,6 @@ function createTile(item, container) {
     const col13 = document.createElement('div');
     const col23 = document.createElement('div');
     const image = document.createElement('img');
-    const col5Left = document.createElement('div');
-    col5Left.classList.add('col-5');
-    const col5Right = col5Left.cloneNode(true);
     const postTitle = document.createElement('p');
     const postDescription = document.createElement('p');
     const title = document.createTextNode(item.title);
@@ -50,6 +47,6 @@ function createTile(item, container) {
     col23.appendChild(imageAnchor);
     col13.append(textAnchor, authorInfo);
     col15.append(col23, col13);
-    row.append(col5Left, col15, col5Right);
+    row.append(col15);
     container.appendChild(row);
 }

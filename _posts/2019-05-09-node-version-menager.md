@@ -4,6 +4,7 @@ title:     "Korzyści wynikające użycia z Node Version Manager"
 date:      2019-05-09 17:00:00 +0100
 published: true
 author:    kczechowski
+image:     Node Version Manager.png
 tags:
     - nvm
     - node

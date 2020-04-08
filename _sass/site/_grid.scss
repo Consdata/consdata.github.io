@@ -2,25 +2,21 @@
   @include flex-container;
   flex-flow: row wrap;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 
 .first-row {
+  margin-left: 10px;
   margin-bottom: 40px; // TODO wydzielić
 }
 
 .col-5 {
-  flex: 1 0 calc(20% - 25px);
-  @include mobile {
-    flex-basis: 100%;
-  }
-  @include tablet {
-    flex-basis: 50%;
-  }
+  flex: 31%;
 }
 
 .col-10 {
   @include flex-container;
-  flex: 1 0 calc(40% - 25px); //TODO wydzielić 25px
+  flex: 66%;
 }
 
 .col-15 {
@@ -36,4 +32,10 @@
 .col-2-3 {
   @include flex-container;
   flex: 1 0 calc(66.66% - 25px);
+}
+
+.padding-column {
+  @include mobile {
+    display: none;
+  }
 }

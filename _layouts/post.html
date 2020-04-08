@@ -2,21 +2,18 @@
 layout: default
 ---
 {% assign post = page %}
-{% assign author = site.data.authors[post.author] %}
+{% assign author = site.authors | where: "short_name", post.author | first %}
 
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
         <header>
             <div class="row">
-                <div class="col-5"></div>
                 <div class="col-15">
                     <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
                 </div>
-                <div class="col-5"></div>
             </div>
             <div class="row">
-                <div class="col-5"></div>
                 <div class="col-15">
                     {% include post_metadata.html %}
                 </div>
@@ -25,17 +22,14 @@ layout: default
         </header>
         <div itemprop="articleBody">
             <div class="row first-row">
-                <div class="col-5"></div>
                 <div class="col-10">
                     <img class="post-highlight-image" src="/assets/img/highlight/{{post.image}}" alt="postimage"/>
                 </div>
                 <div class="col-5">
                     {% include latest_posts.html %}
                 </div>
-                <div class="col-5"></div>
             </div>
             <div class="row">
-                <div class="col-5"></div>
                 <div class="col-10">
                     <div class="post-content-container">
                         <div class="social-media-sharing">
@@ -49,18 +43,14 @@ layout: default
                 <div class="col-5">
                     {% include recommended_posts.html %}
                 </div>
-                <div class="col-5"></div>
             </div>
 
         </div>
         <div class="row">
-            <div class="col-5"></div>
             <div class="col-15 post-ending-line">
             </div>
-            <div class="col-5"></div>
         </div>
         <div class="row">
-            <div class="col-5"></div>
             <div class="col-15">
                 {% include author_bio.html %}
                 {%- if site.disqus.shortname -%}
@@ -68,7 +58,6 @@ layout: default
                 {%- endif -%}
                 <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
             </div>
-            <div class="col-5"></div>
         </div>
     </article>
 </div>
