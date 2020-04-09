@@ -4,6 +4,7 @@ title:     "10 praw użytecznego designu"
 published: true
 date:      2019-07-12 10:00:00 +0100
 author:    pswierzko
+image:     design-w-it.png
 tags:
     - ux
     - ui

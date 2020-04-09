@@ -4,6 +4,7 @@ title:     Testowanie frontendu - Cz. 3. Testowanie komponentów angularowych z 
 published: true
 date:      2019-12-04 08:00:00 +0100
 author:    pgrobelny
+image:     frontend-test.png
 tags:
     - Jasmine
     - Angular

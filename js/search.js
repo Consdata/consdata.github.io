@@ -15,7 +15,7 @@ fetch("/json/posts.json")
                                 author="${item.author}"
                                 author-image="${'/assets/img/authors/' + item.image}"
                                 image="${'/assets/img/posts/' + item.path + '/' + item.highlight}"
-                                date="${item.date}"
+                                date="${getFormattedDate(item.date)}"
                                 content="${item.content.split(' ').slice(0, 20).join(' ') + '...'}"
                             ></custom-tile>
                         `
@@ -28,6 +28,25 @@ fetch("/json/posts.json")
             function getQueryVariable(variable) {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(variable);
+            }
+
+            function getFormattedDate(date) {
+                const dateAsArray = date.split('-');
+                const months = {
+                    '01': 'stycznia',
+                    '02': 'lutego',
+                    '03': 'marca',
+                    '04': 'kwietnia',
+                    '05': 'maja',
+                    '06': 'czerwca',
+                    '07': 'lipca',
+                    '08': 'sierpnia',
+                    '09': 'września',
+                    '10': 'października',
+                    '11': 'listopada',
+                    '12': 'grudnia'
+                };
+                return dateAsArray[0] + " " + months[dateAsArray[1]] + " " + dateAsArray[2];
             }
 
             const searchTerm = getQueryVariable('query');

@@ -24,6 +24,7 @@
                             const anchor = document.createElement('a');
                             const postTitle = document.createTextNode(item.title);
                             listElement.classList.add('sidebar-post');
+                            listElement.classList.add('no-breaking-word');
                             anchor.setAttribute('href', item.url);
                             anchor.appendChild(postTitle);
                             listElement.appendChild(anchor);
