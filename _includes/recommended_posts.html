@@ -10,39 +10,41 @@
 </div>
 <script type="text/javascript" src="/json/posts.json"></script>
 <script>
-    const store = JSON.parse(posts);
-    function displayResults(results, store) {
-            const container = document.getElementById("recommended-posts");
-            if (results.length) {
-                results
-                    .slice(1, 6)
-                    .forEach(result => {
-                        const item = store[result.ref];
-                        const listElement = document.createElement('li');
-                        const anchor = document.createElement('a');
-                        const postTitle = document.createTextNode(item.title);
-                        listElement.classList.add('sidebar-post');
-                        anchor.setAttribute('href', item.url);
-                        anchor.appendChild(postTitle);
-                        listElement.appendChild(anchor);
-                        container.appendChild(listElement);
-                });
+    fetch("/json/posts.json")
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results, store) {
+                const container = document.getElementById("recommended-posts");
+                if (results.length) {
+                    results
+                        .slice(1, 6)
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            const listElement = document.createElement('li');
+                            const anchor = document.createElement('a');
+                            const postTitle = document.createTextNode(item.title);
+                            listElement.classList.add('sidebar-post');
+                            anchor.setAttribute('href', item.url);
+                            anchor.appendChild(postTitle);
+                            listElement.appendChild(anchor);
+                            container.appendChild(listElement);
+                        });
+                }
             }
-        }
 
-        const tags = "{{ post.tags | join: ' ' }}";
-        const idx = lunr(function () {
-            this.field('tags');
+            const tags = "{{ post.tags | join: ' ' }}";
+            const idx = lunr(function () {
+                this.field('tags');
 
-            for (let key in store) {
-                this.add({
-                    'id': key,
-                    'title': store[key].title,
-                    'tags': store[key].tags,
-                });
-            }
-        });
-        const results = idx.search(tags);
-        displayResults(results, store)
-
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags);
+            displayResults(results, store);
+        })
 </script>

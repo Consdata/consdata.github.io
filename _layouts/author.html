@@ -1,11 +1,18 @@
 ---
 layout: search
 ---
-<h1> {{page.name}} </h1>
-<h2>Posts</h2>
-<ul>
+
+<article>
+    {% assign author = site.authors | where: 'short_name', page.short_name | first %}
+    <div class="row">
+        <div class="col-15 with-bottom-separator">
+            {% include author_bio.html %}
+        </div>
+    </div>
     {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
-    {% for post in filtered_posts %}
-    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% for forPost in filtered_posts %}
+    <div class="row">
+        {% include big-post-tile.html post=forPost %}
+    </div>
     {% endfor %}
-</ul>
+</article>

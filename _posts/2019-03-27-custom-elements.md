@@ -22,7 +22,7 @@ W tym artykule skupimy się jedynie na **Custom Elements** (oraz w mniejszym sto
 
 ## Wsparcie przez główne przeglądarki
 <div class="img-with-legend">
-<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-28-custom-elements/browser_support.png" />
+<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-27-custom-elements/browser_support.png" />
 <span class="img-legend">Wsparcie custom components przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-03-16</span>
 </div>
 

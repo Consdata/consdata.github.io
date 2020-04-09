@@ -4,10 +4,14 @@ body {
   padding: 0;
   margin: 0;
   min-width: $app-min-width;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
   margin: 50px auto 0;
+  flex: 1;
 }
 
 .svg-icon {
@@ -23,4 +27,9 @@ main {
   &, & * {
     word-break: keep-all;
   }
+}
+
+.with-bottom-separator {
+  padding-bottom: $content-padding;
+  border-bottom: 3px solid $color-logo-red;
 }

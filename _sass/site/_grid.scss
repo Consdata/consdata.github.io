@@ -22,6 +22,9 @@
 .col-15 {
   @include flex-container;
   flex: 1 0 calc(60% - 25px);
+  @include mobile {
+    flex-direction: column;
+  }
 }
 
 .col-1-3 {

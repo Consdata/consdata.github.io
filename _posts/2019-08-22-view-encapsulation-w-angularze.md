@@ -25,7 +25,7 @@ Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod
 ```
 
 Po włączeniu opcji wyświetlania Shadow Root w przeglądarce (na przykładzie Google Chrome):  
-![Devtools Configuration](/assets/img/posts/2019-08-22-view-encapsulation/devtools_config_shadow_dom.jpg)
+![Devtools Configuration](/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/devtools_config_shadow_dom.jpg)
 <span class="img-legend">DevTools > Settings > Preferences > Elements</span>
 
 możemy zobaczyć z czego tak naprawdę składa się element `<video>`:  
@@ -114,7 +114,7 @@ możemy zobaczyć z czego tak naprawdę składa się element `<video>`:
 Shadow DOM ukrywa całą implementację pod prostym tagiem.  
 Dzięki temu style zaaplikowane do naszego elementu nie wpływają na inne elementy DOM-u.
 
-![Shadow DOM browser support](/assets/img/posts/2019-08-22-view-encapsulation/shadow-dom-browser-support.png)
+![Shadow DOM browser support](/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/shadow-dom-browser-support.png)
 <span class="img-legend">Wsparcie Shadow DOM przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-08-20</span>
 
 ## View Encapsulation w Angularze
@@ -227,7 +227,7 @@ Wynikowy kod HTML:
 </body>
 ```
 
-![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_none_result.jpg)
+![ViewEncapsulation.None](/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_none_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
 Jak widzimy, style zostały dodane w sekcji `<head>`, co spowodowało nadpisanie pierwszego stylu paragrafu drugim - `color: blue`. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu `app-green`, który nie posiada żadnego stylu i powinien mieć kolor domyślny.
@@ -324,7 +324,7 @@ Wynikowy kod HTML:
 </body>
 ```
 
-![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_emulated_result.jpg)
+![ViewEncapsulation.Emulated](/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_emulated_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
 Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. W kodzie wynikowym widzimy, że style z komponentu rodzica `app-blue` nie zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor domyślny. Stało się tak, ponieważ Angular dodał atrybut do stylu. Gdybyśmy dodali styl w runtime, to zostałby zaaplikowany również do komponentu dziecka.
@@ -431,7 +431,7 @@ Wynikowy kod HTML:
 </body>
 ```
 
-![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation/view_encapsulation_shadow_dom_result.jpg)
+![ViewEncapsulation.ShadowDom](/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_shadow_dom_result.jpg)
 <span class="img-legend">Wynik widoczny w przeglądarce</span>
 
 Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji `<head>` nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica `app-blue` zostały zaaplikowane do komponentu dziecka `app-green`, w efekcie czego paragraf ma kolor niebieski. Gdyby komponent `app-green` również posiadał tryb `ViewEncapsulation.ShadowDom`, to style rodzica nie zostałyby zaaplikowane, ponieważ korzystałby ze stylów z własnego Shadow Root. Tryb Shadow DOM zabezpiecza nasz komponent również przed stylami z komponentu rodzica, dodanymi w runtime.
