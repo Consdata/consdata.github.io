@@ -1,11 +1,11 @@
 {% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
 {% assign author = site.authors | where: "short_name", include.post.author | first %}
 <div class="col-5 post-tile">
-    <a href="{{ post.url }}">
+    <a href="{{ include.post.url }}">
         <img class="highlight-image" src="/assets/img/posts/{{assets}}/{{ include.post.image }}" alt="post-image"/>
     </a>
     <div class="post-tile-content">
-        <a href="{{ post.url }}">
+        <a href="{{ include.post.url }}">
             <p class="post-title no-breaking-word"> {{ include.post.title }} </p>
             <p class="post-description no-breaking-word"> {{ include.post.content | strip_html | truncatewords: 20}}</p>
         </a>

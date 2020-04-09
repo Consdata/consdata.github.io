@@ -11,8 +11,7 @@ fetch("/json/posts.json")
                         createTile(item, searchResults);
                     });
                 } else {
-                    //TODO komunikat o braku wyników
-                    searchResults.innerHTML = '<li>Brak wyników wyszukiwania</li>';
+                    searchResults.innerHTML = '<h1>Brak wyników wyszukiwania :(</h1>';
                 }
             }
 
