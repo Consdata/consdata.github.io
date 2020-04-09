@@ -11,6 +11,12 @@
 }
 
 .col-5 {
+  @include mobile {
+    flex: 100%;
+  }
+  @include tablet {
+    flex: 50%;
+  }
   flex: 31%;
 }
 
@@ -24,6 +30,7 @@
   flex: 1 0 calc(60% - 25px);
   @include mobile {
     flex-direction: column;
+    height: fit-content;
   }
 }
 

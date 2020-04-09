@@ -10,14 +10,12 @@ layout: default
     {{ content }}
     <div class="blog">
         <div class="row first-row">
-            {% include big-post-tile.html post=site.posts.first %}}
+            {% include big-post-tile.html post=site.posts.first %}
         </div>
         {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
-        {% for i in (1..rows) %}
         <div class="row">
-            {% assign offset = forloop.index0 | times: 3 %}
             {% assign postsWithoutFirst = site.posts | shift %}
-            {% for forPost in postsWithoutFirst limit:3 offset:offset %}
+            {% for forPost in postsWithoutFirst%}
             {% include small-post-tile.html post=forPost %}
             {% endfor %}
             {% assign moduloValue = postsWithoutFirst.size | modulo: 3 %}
@@ -26,6 +24,5 @@ layout: default
             <div class="col-5 padding-column"></div>
             {% endif %}
         </div>
-        {% endfor %}
     </div>
 </div>
