@@ -8,7 +8,17 @@ fetch("/json/posts.json")
                 if (results.length) {
                     results.forEach(result => {
                         const item = store[result.ref];
-                        createTile(item, searchResults);
+                        searchResults.innerHTML += `
+                            <custom-tile 
+                                title="${item.title}" 
+                                url="${item.url}"
+                                author="${item.author}"
+                                author-image="${'/assets/img/authors/' + item.image}"
+                                image="${'/assets/img/posts/' + item.path + '/' + item.highlight}"
+                                date="${item.date}"
+                                content="${item.content.split(' ').slice(0, 20).join(' ') + '...'}"
+                            ></custom-tile>
+                        `
                     });
                 } else {
                     searchResults.innerHTML = '<h1>Brak wyników wyszukiwania :(</h1>';
@@ -36,7 +46,8 @@ fetch("/json/posts.json")
                             'id': key,
                             'title': store[key].title,
                             'tags': store[key].tags,
-                            'content': store[key].content
+                            'content': store[key].content,
+                            'path': store[key].path
                         });
                     }
                 });

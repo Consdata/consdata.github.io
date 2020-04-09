@@ -40,9 +40,10 @@
   //letter-spacing: 1px;
 }
 
-.first-post-content {
+.big-post-tile-content {
   @include flex-container;
   flex-direction: column;
+  justify-content: space-around;
   padding: 0 $content-padding $content-padding;
 }
 
@@ -65,6 +66,6 @@
 
 .highlight-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 }
