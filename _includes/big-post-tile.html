@@ -22,7 +22,7 @@
             </a>
             <div class="post-info">
                 <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
-                <span>{{include.post.date | date: "%d-%m-%Y"}}</span>
+                <span>{% include post-date.html date=include.post.date %}</span>
             </div>
         </div>
     </div>
