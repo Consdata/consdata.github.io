@@ -1,5 +1,8 @@
 .navigation-bar {
-  margin: $navbar-height-desktop + 10px 20% 0;
+  margin: $navbar-height-desktop + $content-padding 20% 0;
+  @include mobile {
+    margin: $navbar-height-mobile + $content-padding $content-padding 0;
+  }
 }
 
 .newsletter-button {

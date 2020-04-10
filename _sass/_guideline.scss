@@ -6,7 +6,9 @@ $mobile-content-width: 100%;
 $tablet-content-width: 100%;
 $desktop-content-width: 1170px;
 
+$small-padding: 10px;
 $content-padding: 15px;
+$double-content-padding: 30px;
 
 $base-line-height: 1.45;
 $font-weight-light: 300;
@@ -25,3 +27,10 @@ $mobile-footer-height: $mobile-footer-item-height * 3;
 $desktop-footer-height: 96px;
 
 $search-icon-width: 14px;
+
+$first-post-bottom-margin: 40px;
+
+$small-author-image-size: 50px;
+$big-author-image-size: 75px;
+
+$header-z-index: 9999;

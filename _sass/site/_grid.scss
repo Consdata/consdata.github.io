@@ -2,12 +2,17 @@
   @include flex-container;
   flex-flow: row wrap;
   justify-content: flex-start;
-  margin-bottom: 30px;
+  margin-bottom: $double-content-padding;
 }
 
 .first-row {
-  margin-left: 10px;
-  margin-bottom: 40px; // TODO wydzielić
+  margin-left: $small-padding;
+  @include desktop {
+    margin-bottom: $first-post-bottom-margin;
+  }
+  @include mobile {
+    margin-right: $small-padding;
+  }
 }
 
 .col-5 {
@@ -36,12 +41,12 @@
 
 .col-1-3 {
   @include flex-container;
-  flex: 1 0 calc(33.33% - 25px);
+  flex: 33.33%;
 }
 
 .col-2-3 {
   @include flex-container;
-  flex: 1 0 calc(66.66% - 25px);
+  flex: 66.66%;
 }
 
 .padding-column {

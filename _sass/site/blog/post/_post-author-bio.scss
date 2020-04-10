@@ -55,8 +55,8 @@
 }
 
 .big-author-image {
-  width: 75px;
+  width: $big-author-image-size;
   height: auto;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: $small-padding;
 }

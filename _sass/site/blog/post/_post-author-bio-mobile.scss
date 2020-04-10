@@ -5,8 +5,6 @@
   }
   padding: $content-padding;
 
-  $author-image-size: 70px;
-
   .header {
     @include flex-container;
     align-items: center;
@@ -17,18 +15,18 @@
   }
 
   .author-image {
-    min-width: $author-image-size;
-    max-width: $author-image-size;
-    min-height: $author-image-size;
-    max-height: $author-image-size;
+    min-width: $big-author-image-size;
+    max-width: $big-author-image-size;
+    min-height: $big-author-image-size;
+    max-height: $big-author-image-size;
     border-radius: 50%;
     overflow: hidden;
 
     img {
-      min-width: $author-image-size;
-      max-width: $author-image-size;
-      min-height: $author-image-size;
-      max-height: $author-image-size;
+      min-width: $big-author-image-size;
+      max-width: $big-author-image-size;
+      min-height: $big-author-image-size;
+      max-height: $big-author-image-size;
     }
   }
 
