@@ -3,10 +3,11 @@
         <div class="col-15">
             <div class="col-2-3 navbar-links">
                 <div class="navigation-tags">
-                    <a>Java</a>
-                    <a>Frontend</a>
-                    <a>DevOps</a>
-                    <a>Security</a>
+                    {% assign posts = site.posts %}
+                    {% assign grouptag =  posts | map: 'tags' | join: ','  | downcase | split: ','  | group_by: tag | sort: 'size' | reverse %}
+                    {% for tag in grouptag | limit: 5 %}
+                        <a href="/search.html?query={{tag.name}}">{{tag.name | capitalize}}</a>
+                    {% endfor %}
                 </div>
                 <form action="/search.html" method="get">
                     <div class="search-input-container">

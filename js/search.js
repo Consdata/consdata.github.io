@@ -16,12 +16,15 @@ fetch("/json/posts.json")
                                 author-image="${'/assets/img/authors/' + item.image}"
                                 image="${'/assets/img/posts/' + item.path + '/' + item.highlight}"
                                 date="${getFormattedDate(item.date)}"
-                                content="${item.content.split(' ').slice(0, 20).join(' ') + '...'}"
+                                content="${item.content.split(' ').slice(0, 30).join(' ') + '...'}"
                             ></custom-tile>
                         `
                     });
                 } else {
-                    searchResults.innerHTML = '<h1>Brak wyników wyszukiwania :(</h1>';
+                    searchResults.innerHTML = `
+                        <h1>
+                            Brak wyników wyszukiwania :(
+                        </h1>`;
                 }
             }
 
