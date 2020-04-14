@@ -2,7 +2,8 @@ class CustomTile extends HTMLElement {
     constructor() {
         super();
         const title = this.getAttribute('title');
-        const author = this.getAttribute('author');
+        const authorName = this.getAttribute('author-name');
+        const authorUrl = this.getAttribute('author-url');
         const date = this.getAttribute('date');
         const url = this.getAttribute('url');
         const image = this.getAttribute('image');
@@ -10,8 +11,7 @@ class CustomTile extends HTMLElement {
         const content = this.getAttribute('content');
 
         this.innerHTML = `
-            <div class="row">
-                <div class="col-15 post-animation">
+                <div class="col-15 post-animation search-result-tile">
                     <div class="col-2-3">
                         <a href="${url}">
                             <img class="highlight-image" src="${image}" alt="postimage"/>
@@ -27,17 +27,16 @@ class CustomTile extends HTMLElement {
                             </p>
                         </a>
                         <div class="tile-author">
-                            <a href="${url}" class="author-name">
+                            <a href="${authorUrl}" class="author-name">
                                 <img class="small-author-image" src="${authorImage}" alt="author">
                             </a>
                             <div class="post-info">
-                                <a href="{{ author.url }}" class="author-name">${author}</a>
+                                <a href="${authorUrl}" class="author-name">${authorName}</a>
                                 <span>${date}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         `
     }
 }

@@ -1,0 +1,19 @@
+<form action="/search.html" method="get">
+    <div class="search-input-container">
+        <input type="text" placeholder="Szukaj..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="toggleClass()"></i>
+    </div>
+</form>
+
+<script>
+    const input = document.getElementById("search-box");
+    const logo = document.getElementById("header-logo");
+    const toggleClass = () => {
+        input.classList.toggle("expanded");
+        if (logo) {
+            logo.classList.toggle("logo-invisible");
+            logo.classList.toggle("navbar-logo");
+        }
+    };
+
+</script>

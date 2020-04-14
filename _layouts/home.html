@@ -18,10 +18,13 @@ layout: default
             {% for forPost in postsWithoutFirst%}
             {% include small-post-tile.html post=forPost %}
             {% endfor %}
+
             {% assign moduloValue = postsWithoutFirst.size | modulo: 3 %}
-            {% if forloop.last == true and moduloValue > 0 %}
+            {% if moduloValue > 0 %}
             {% assign missingPosts = 3 | minus: moduloValue %}
+            {% for i in (1..missingPosts) %}
             <div class="col-5 padding-column"></div>
+            {% endfor %}
             {% endif %}
         </div>
     </div>

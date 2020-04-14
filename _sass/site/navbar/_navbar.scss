@@ -1,8 +1,75 @@
 .navigation-bar {
   margin: $navbar-height-desktop + $content-padding 20% 0;
+  @include tablet {
+    margin: $navbar-height-desktop + $content-padding 5% 0;
+  }
   @include mobile {
     margin: $navbar-height-mobile + $content-padding $content-padding 0;
   }
+}
+
+.desktop-navbar {
+  @include mobile {
+    display: none;
+  }
+  @include tablet {
+    display: none;
+  }
+
+  .navbar-links {
+    @include flex-container;
+    justify-content: space-between;
+  }
+}
+
+.mobile-navbar {
+  @include desktop {
+    display: none;
+  }
+  flex-direction: row;
+  justify-content: space-between;
+
+  .newsletter-link {
+    width: 50%;
+  }
+
+  .navigation-tags {
+    display: block;
+    overflow: auto;
+    white-space: nowrap;
+    margin: auto $small-padding auto 0;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.navigation-tags {
+  @include flex-container;
+  align-items: center;
+  flex-basis: 70%;
+  font-size: 1.1em;
+
+  a {
+    color: $color-logo-red;
+    cursor: pointer;
+    font-size: 1.1em;
+    padding-right: $content-padding;
+
+    &:hover {
+      color: $color-dark-gray;
+    }
+  }
+}
+
+.search-input-container {
+  @include flex-container;
+  margin-right: 10px;
+  height: 100%;
+  align-items: center;
+  position: relative;
 }
 
 .newsletter-button {
@@ -13,37 +80,15 @@
   padding: 5px;
   width: 100%;
   cursor: pointer;
+
   &:hover {
     background-color: $color-logo-red-dark;
   }
 }
 
-.navigation-tags {
-  @include flex-container;
-  flex-basis: 50%;
-  align-items: center;
-  justify-content: space-between;
-  a {
-    color: $color-logo-red;
-    cursor: pointer;
-    font-size: 1.1em;
-    &:hover {
-      color: $color-dark-gray;
-    }
-  }
-}
-
-.navbar-links {
-  @include flex-container;
-  justify-content: space-between;
-}
-
-.search-input-container {
-  @include flex-container;
-  margin-right: 10px;
-  height: 100%;
-  align-items: center;
-  position: relative;
+.newsletter-link {
+  width: 100%;
+  text-align: center;
 }
 
 .search-input {
@@ -58,15 +103,25 @@
   border: none;
   z-index: 999;
   border-bottom: 2px solid $color-dark-gray;
+
   &:focus {
     outline: none;
     border-color: $color-logo-red;
+  }
+
+  @include mobile {
+    background-color: $color-russian-black;
   }
 }
 
 .expanded {
   width: 135px;
   visibility: visible;
+
+  @include mobile {
+    width: 200px;
+    color: $color-white;
+  }
 }
 
 .search-icon {
@@ -76,4 +131,9 @@
   height: auto;
   font-size: 1.3em;
   color: $color-logo-red;
+
+  @include mobile {
+    font-size: 1.6em;
+    color: $color-white;
+  }
 }

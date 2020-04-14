@@ -14,13 +14,13 @@ nav {
   @include tablet-and-desktop {
     height: $navbar-height-desktop;
     background-color: $color-transparent-black;
-    .navbar {
+    .header {
       @include flex-container;
-      width: 100%;
       align-items: center;
       height: $navbar-height-desktop;
       @include desktop {
         justify-content: space-between;
+        width: 100%;
       }
     }
   }
@@ -31,6 +31,24 @@ nav {
     flex-direction: column;
     @include tablet-and-desktop {
       flex-direction: row;
+    }
+  }
+
+  .header-logo {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+  }
+
+  .logo-invisible {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms;
+  }
+
+  .mobile-search {
+    @include tablet-and-desktop {
+      display: none;
     }
   }
 

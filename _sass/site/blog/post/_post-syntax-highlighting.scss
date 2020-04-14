@@ -19,6 +19,7 @@ div.highlight {
   span,
   div,
   code {
+    word-wrap: break-spaces;
     font-family: 'Ubuntu Mono', monospace;
   }
 

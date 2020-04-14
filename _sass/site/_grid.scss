@@ -6,12 +6,11 @@
 }
 
 .first-row {
-  margin-left: $small-padding;
   @include desktop {
     margin-bottom: $first-post-bottom-margin;
   }
   @include mobile {
-    margin-right: $small-padding;
+    margin: 0 $small-padding;
   }
 }
 
@@ -20,7 +19,7 @@
     flex: 100%;
   }
   @include tablet {
-    flex: 50%;
+    flex: 45%;
   }
   flex: 31%;
 }

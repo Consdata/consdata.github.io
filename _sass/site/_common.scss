@@ -12,6 +12,11 @@ body {
 main {
   margin: 30px auto 0;
   flex: 1;
+  width: 100%;
+  @include mobile {
+    box-sizing: border-box;
+    padding: 0 $small-padding;
+  }
 }
 
 .svg-icon {

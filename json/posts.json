@@ -9,6 +9,7 @@
 "content": {{ post.content | strip_html | strip_newlines | jsonify }},
 "url": "{{ post.url | xml_escape }}",
 "author": "{{ author.name }}",
+"authorUrl": "{{ author.url }}",
 "image": "{{ author.image }}",
 "highlight": "{{ post.image }}",
 "date": "{{ post.date | date: '%d-%m-%Y' }}",

@@ -6,7 +6,6 @@ layout: default
 {% assign assets = post.path | remove: "_posts/" | remove: ".md" %}
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
         <header>
             <div class="row">
                 <div class="col-15">
@@ -21,7 +20,7 @@ layout: default
             </div>
         </header>
         <div itemprop="articleBody">
-            <div class="row first-row">
+            <div class="row">
                 <div class="col-10">
                     <img class="post-highlight-image" src="/assets/img/posts/{{assets}}/{{post.image}}" alt="postimage"/>
                 </div>

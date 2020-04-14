@@ -1,9 +1,18 @@
 <nav class="site-header">
     <div class="container">
-        <div class="navbar navbar-default" role="navigation">
+        <div class="header navbar-default" role="navigation">
             <div class="header-brand">
-                <button class="header-toggle" onclick="document.getElementById('header-links').classList.toggle('show');"><i class="fa fa-bars"></i></button>
-                <a class="navbar-logo" href="https://consdata.tech/"><img src="/assets/img/logo.png" alt="logo"></a>
+                <div>
+                    <button class="header-toggle"
+                            onclick="document.getElementById('header-links').classList.toggle('show');"><i
+                            class="fa fa-bars"></i></button>
+                </div>
+                <a class="header-logo" href="https://consdata.tech/" id="header-logo">
+                    <img src="/assets/img/logo.png" alt="logo">
+                </a>
+                <div class="mobile-search">
+                    {% include search-component.html %}
+                </div>
             </div>
             <div id="header-links" class="mobile-nav">
                 <div class="nav navbar-nav">
@@ -16,7 +25,11 @@
                     <div class="nav-link"><a href="https://www.consdata.com/pl/" target="_blank">Consdata</a></div>
                 </div>
                 <div class="feed-subscribe">
-                    <a href="{{ "/feed.xml" | relative_url }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg></a>
+                    <a href="{{ "/feed.xml" | relative_url }}">
+                    <svg class="svg-icon">
+                        <use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use>
+                    </svg>
+                    </a>
                 </div>
             </div>
 

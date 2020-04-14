@@ -4,8 +4,12 @@
 }
 
 .post-big-title {
-  font-size: 4em; //TODO wydzielić
+  font-size: 4em;
   font-weight: bold;
+  @include mobile {
+    font-size: 2em;
+    margin-bottom: 0;
+  }
 }
 
 .social-media-sharing {
