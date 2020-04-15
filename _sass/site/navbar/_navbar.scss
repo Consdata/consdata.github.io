@@ -5,7 +5,7 @@
 @import "navbar-tags";
 
 .navigation-bar {
-  margin: $navbar-height-desktop + $content-padding 20% 0;
+  margin: $navbar-height-desktop + $content-padding $blog-side-margins-desktop 0;
   @include tablet {
     margin: $navbar-height-desktop + $content-padding 5% 0;
   }

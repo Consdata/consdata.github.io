@@ -4,7 +4,7 @@
 
   &:hover {
     transform: translate3d(0, -1px, 0);
-    box-shadow: rgba(0, 0, 0, 0.22) 0 19px 30px;
+    box-shadow: $post-tile-hover-shadow;
   }
 }
 
@@ -12,9 +12,9 @@
   @include flex-container;
   flex-direction: column;
   justify-content: space-between;
-  margin: 20px $small-padding;
+  margin: $post-tile-margin $small-padding;
   @include mobile {
-    margin: 20px 0;
+    margin: $post-tile-margin 0;
   }
   @extend .post-animation;
 }
@@ -59,10 +59,10 @@
 }
 
 .small-author-image {
-  width: $small-author-image-size;
+  width: $medium-author-image-size;
   height: auto;
   border-radius: 50%;
-  margin-right: 5px;
+  margin-right: $very-small-padding;
 }
 
 .tile-author {

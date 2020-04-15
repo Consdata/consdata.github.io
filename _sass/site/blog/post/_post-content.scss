@@ -4,7 +4,7 @@
 }
 
 .post-big-title {
-  font-size: 4em;
+  font-size: $post-title-font-size-desktop;
   font-weight: bold;
   @include mobile {
     font-size: 2em;

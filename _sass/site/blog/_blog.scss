@@ -4,6 +4,6 @@
   @import "post/post";
 
   @include desktop {
-    margin: 0 20%;
+    margin: 0 $blog-side-margins-desktop;
   }
 }

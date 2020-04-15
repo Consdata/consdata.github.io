@@ -1,6 +1,6 @@
 .search-input-container {
   @include flex-container;
-  margin-right: 10px;
+  margin-right: $small-padding;
   height: 100%;
   align-items: center;
   position: relative;
@@ -13,11 +13,11 @@
   animation: ease-in-out;
   position: absolute;
   right: $search-icon-width;
-  margin-right: 5px;
+  margin-right: $very-small-padding;
   background-color: $color-white;
   border: none;
   z-index: 999;
-  border-bottom: 2px solid $color-dark-gray;
+  border-bottom: $inactive-input-bottom-border;
 
   &:focus {
     outline: none;
@@ -30,11 +30,11 @@
 }
 
 .expanded {
-  width: 135px;
+  width: $expanded-input-width-desktop;
   visibility: visible;
 
   @include mobile {
-    width: 200px;
+    width: $expanded-input-width-mobile;
     color: $color-white;
   }
 }

@@ -4,14 +4,14 @@
   align-items: center;
   height: $navbar-height-mobile;
   @include tablet-and-desktop {
-    height: 27px;
+    height: $header-image-height-desktop;
   }
   img {
-    width: 168px;
-    height: 19px;
+    width: $header-image-width-mobile;
+    height: $header-image-height-mobile;
     @include tablet-and-desktop {
-      width: 240px;
-      height: 27px;
+      width: $header-image-width-desktop;
+      height: $header-image-height-desktop;
     }
   }
 

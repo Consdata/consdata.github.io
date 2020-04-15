@@ -10,7 +10,7 @@ body {
 }
 
 main {
-  margin: 30px auto 0;
+  margin: $double-content-padding auto 0;
   flex: 1;
   width: 100%;
   @include mobile {
@@ -20,8 +20,8 @@ main {
 }
 
 .svg-icon {
-  width: 16px;
-  height: 16px;
+  width: $svg-icon-size;
+  height: $svg-icon-size;
   display: inline-block;
   fill: currentColor;
   padding: 5px 3px 2px 5px;
