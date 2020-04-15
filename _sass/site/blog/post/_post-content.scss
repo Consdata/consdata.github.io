@@ -1,5 +1,5 @@
 @-webkit-keyframes image-blur {
-  0% {filter: blur(30px);}
+  0% {filter: blur(10px);}
   100% {filter: blur(0)}
 }
 
@@ -23,6 +23,7 @@
 .post-content-container {
   @include flex-container;
   flex-direction: column;
+  width: 100%;
 }
 
 .post-content {
@@ -45,7 +46,7 @@
 }
 
 .post-highlight-image {
-  animation: image-blur 2s;
+  animation: image-blur 3s;
   width: 100%;
   height: auto;
 }

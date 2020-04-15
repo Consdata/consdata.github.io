@@ -4,6 +4,7 @@ title:     "Absolutne importowanie zależności w Angular CLI"
 date:      2017-02-17 08:00:00 +0100
 published: true
 author:    glipecki
+image:     angular-cli.png
 tags:
     - angular
 ---
