@@ -36,5 +36,5 @@ main {
 
 .with-bottom-separator {
   padding-bottom: $content-padding;
-  border-bottom: 3px solid $color-logo-red;
+  border-bottom: $separator-border;
 }

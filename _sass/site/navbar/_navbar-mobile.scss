@@ -1,0 +1,23 @@
+.mobile-navbar {
+  @include desktop {
+    display: none;
+  }
+  flex-direction: row;
+  justify-content: space-between;
+
+  .newsletter-link {
+    width: 50%;
+  }
+
+  .navigation-tags {
+    display: block;
+    overflow: auto;
+    white-space: nowrap;
+    margin: auto $small-padding auto 0;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

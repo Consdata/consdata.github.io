@@ -1,31 +1,30 @@
 .sidebar-container {
   @include flex-container;
   flex-direction: column;
-  padding-left: $content-padding;
-  @include mobile {
-    display: none;
-  }
-}
-
-.sidebar-container-mobile {
-  @include flex-container;
-  flex-direction: column;
-  @include tablet-and-desktop {
-    display: none;
+  @include desktop {
+    padding-left: $content-padding;
   }
 }
 
 .sidebar-title {
   font-weight: bold;
   font-size: 1.2em;
-  border-bottom: 3px solid $color-logo-red;
-}
-
-.sidebar-posts {
-
+  border-bottom: $separator-border;
 }
 
 .sidebar-post {
   font-size: 1.1em;
   margin-bottom: $content-padding;
+}
+
+.latest-posts-desktop, .recommended-posts-desktop {
+  @include mobile {
+    display: none;
+  }
+}
+
+.latest-posts-mobile, .recommended-posts-mobile {
+  @include tablet-and-desktop {
+    display: none;
+  }
 }

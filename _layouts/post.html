@@ -24,7 +24,7 @@ layout: default
                 <div class="col-10">
                     <img class="post-highlight-image" src="/assets/img/posts/{{assets}}/{{post.image}}" alt="postimage"/>
                 </div>
-                <div class="col-5">
+                <div class="col-5 latest-posts-desktop">
                     {% include latest_posts.html %}
                 </div>
             </div>
@@ -39,11 +39,21 @@ layout: default
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
-                    {% include recommended_posts.html %}
+                <div class="col-5 recommended-posts-desktop">
+                    {% include recommended-posts-desktop.html %}
                 </div>
             </div>
 
+        </div>
+        <div class="row">
+            <div class="col-5 latest-posts-mobile">
+                {% include latest_posts.html %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5 recommended-posts-mobile">
+                {% include recommended-posts-mobile.html %}
+            </div>
         </div>
         <div class="row">
             <div class="col-15 post-ending-line">
@@ -60,3 +70,46 @@ layout: default
         </div>
     </article>
 </div>
+<script>
+    fetch("/json/posts.json")
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                const container = document.getElementById("recommended-posts-desktop");
+                const containerMobile = document.getElementById("recommended-posts-mobile");
+                if (results.length) {
+                    results
+                        .slice(1, 6)
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            const listElement = document.createElement('li');
+                            const anchor = document.createElement('a');
+                            const postTitle = document.createTextNode(item.title);
+                            listElement.classList.add('sidebar-post');
+                            listElement.classList.add('no-breaking-word');
+                            anchor.setAttribute('href', item.url);
+                            anchor.appendChild(postTitle);
+                            listElement.appendChild(anchor);
+                            container.appendChild(listElement);
+                            containerMobile.appendChild(listElement.cloneNode(true));
+                        });
+                }
+            }
+
+            const tags = "{{ post.tags | join: ' ' }}";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags);
+            displayResults(results);
+        })
+
+</script>

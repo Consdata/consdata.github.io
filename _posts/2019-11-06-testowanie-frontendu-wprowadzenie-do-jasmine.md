@@ -4,6 +4,7 @@ title: Testowanie frontendu - Cz. 1. Wprowadzenie do Jasmine - konfiguracja i pr
 published: true
 date:      2019-11-06 08:00:00 +0100
 author:    mmendlik
+image:     frontend-testing.png
 tags:
   - javascript
   - test

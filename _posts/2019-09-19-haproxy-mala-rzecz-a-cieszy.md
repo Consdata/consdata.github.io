@@ -4,6 +4,7 @@ title: Haproxy - mała rzecz, a cieszy
 published: true
 date:      2019-09-16 08:00:00 +0100
 author:    tlewandowski
+image:     haproxy.png
 tags:
   - programming
   - load-balancing

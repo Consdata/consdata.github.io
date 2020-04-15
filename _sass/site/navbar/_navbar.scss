@@ -1,3 +1,9 @@
+@import "navbar-desktop";
+@import "navbar-mobile";
+@import "navbar-newsletter";
+@import "navbar-search";
+@import "navbar-tags";
+
 .navigation-bar {
   margin: $navbar-height-desktop + $content-padding 20% 0;
   @include tablet {
@@ -8,132 +14,7 @@
   }
 }
 
-.desktop-navbar {
-  @include mobile {
-    display: none;
-  }
-  @include tablet {
-    display: none;
-  }
 
-  .navbar-links {
-    @include flex-container;
-    justify-content: space-between;
-  }
-}
 
-.mobile-navbar {
-  @include desktop {
-    display: none;
-  }
-  flex-direction: row;
-  justify-content: space-between;
 
-  .newsletter-link {
-    width: 50%;
-  }
 
-  .navigation-tags {
-    display: block;
-    overflow: auto;
-    white-space: nowrap;
-    margin: auto $small-padding auto 0;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-}
-
-.navigation-tags {
-  @include flex-container;
-  align-items: center;
-  flex-basis: 70%;
-  font-size: 1.1em;
-
-  a {
-    color: $color-logo-red;
-    cursor: pointer;
-    font-size: 1.1em;
-    padding-right: $content-padding;
-
-    &:hover {
-      color: $color-dark-gray;
-    }
-  }
-}
-
-.search-input-container {
-  @include flex-container;
-  margin-right: 10px;
-  height: 100%;
-  align-items: center;
-  position: relative;
-}
-
-.newsletter-button {
-  background-color: $color-logo-red;
-  color: $color-white;
-  font-weight: bold;
-  border: none;
-  padding: 5px;
-  width: 100%;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $color-logo-red-dark;
-  }
-}
-
-.newsletter-link {
-  width: 100%;
-  text-align: center;
-}
-
-.search-input {
-  width: 0;
-  visibility: hidden;
-  transition: 0.3s;
-  animation: ease-in-out;
-  position: absolute;
-  right: $search-icon-width;
-  margin-right: 5px;
-  background-color: $color-white;
-  border: none;
-  z-index: 999;
-  border-bottom: 2px solid $color-dark-gray;
-
-  &:focus {
-    outline: none;
-    border-color: $color-logo-red;
-  }
-
-  @include mobile {
-    background-color: $color-russian-black;
-  }
-}
-
-.expanded {
-  width: 135px;
-  visibility: visible;
-
-  @include mobile {
-    width: 200px;
-    color: $color-white;
-  }
-}
-
-.search-icon {
-  position: relative;
-  cursor: pointer;
-  width: $search-icon-width;
-  height: auto;
-  font-size: 1.3em;
-  color: $color-logo-red;
-
-  @include mobile {
-    font-size: 1.6em;
-    color: $color-white;
-  }
-}

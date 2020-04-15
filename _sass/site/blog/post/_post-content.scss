@@ -17,7 +17,7 @@
   font-weight: bold;
   font-size: 1.2em;
   justify-content: flex-end;
-  border-bottom: 3px solid $color-logo-red;
+  border-bottom: $separator-border;
 }
 
 .post-content-container {
@@ -28,8 +28,8 @@
 .post-content {
   width: 100%;
   display: block;
-  font-size: 1.2em; //TODO wydzielić
-  letter-spacing: 1px; //TODO wydzielić
+  font-size: $post-font-size;
+  letter-spacing: $post-letter-spacing;
 
   p:first-child {
     margin-top: $content-padding;
@@ -41,7 +41,7 @@
 }
 
 .first-row {
-  margin-top: 30px; //TODO wydzielić
+  margin-top: $double-content-padding;
 }
 
 .post-highlight-image {
@@ -51,6 +51,6 @@
 }
 
 .post-ending-line {
-  border-bottom: 3px solid $color-logo-red;
-  margin-top: 25px;
+  border-bottom: $separator-border;
+  margin-top: $post-end-bottom-margin;
 }
