@@ -1,6 +1,9 @@
 class CustomTile extends HTMLElement {
     constructor() {
         super();
+    }
+
+    connectedCallback() {
         const title = this.getAttribute('title');
         const authorName = this.getAttribute('author-name');
         const authorUrl = this.getAttribute('author-url');

@@ -1,5 +1,5 @@
 .mobile-navbar {
-  @include desktop {
+  @include tablet-and-desktop {
     display: none;
   }
   flex-direction: row;
@@ -7,17 +7,5 @@
 
   .newsletter-link {
     width: 50%;
-  }
-
-  .navigation-tags {
-    display: block;
-    overflow: auto;
-    white-space: nowrap;
-    margin: auto $small-padding auto 0;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 }

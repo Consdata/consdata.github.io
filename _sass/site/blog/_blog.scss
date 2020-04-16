@@ -6,4 +6,8 @@
   @include desktop {
     margin: 0 $blog-side-margins-desktop;
   }
+
+  @include tablet {
+    margin: 0 $blog-side-margins-tablet;
+  }
 }

@@ -45,6 +45,11 @@
   margin-top: $double-content-padding;
 }
 
+.post-image-column {
+  // This is a fix for Safari - without flex-start the image is stretched vertically
+  align-items: flex-start;
+}
+
 .post-highlight-image {
   animation: image-blur 3s;
   width: 100%;

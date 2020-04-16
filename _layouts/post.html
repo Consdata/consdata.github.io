@@ -21,8 +21,9 @@ layout: default
         </header>
         <div itemprop="articleBody">
             <div class="row">
-                <div class="col-10">
-                    <img class="post-highlight-image" src="/assets/img/posts/{{assets}}/{{post.image}}" alt="postimage"/>
+                <div class="col-10 post-image-column">
+                    <img class="post-highlight-image" src="/assets/img/posts/{{assets}}/{{post.image}}"
+                         alt="postimage"/>
                 </div>
                 <div class="col-5 latest-posts-desktop">
                     {% include latest_posts.html %}
@@ -70,4 +71,45 @@ layout: default
         </div>
     </article>
 </div>
-<script src="/js/recommended-posts.js" type="text/javascript"></script>
+<script>
+    fetch("/json/posts.json")
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                const container = document.getElementById("recommended-posts-desktop");
+                const containerMobile = document.getElementById("recommended-posts-mobile");
+                if (results.length) {
+                    results
+                        .slice(1, 6)
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            const listElement = document.createElement('li');
+                            const anchor = document.createElement('a');
+                            const postTitle = document.createTextNode(item.title);
+                            listElement.classList.add('sidebar-post');
+                            listElement.classList.add('no-breaking-word');
+                            anchor.setAttribute('href', item.url);
+                            anchor.appendChild(postTitle);
+                            listElement.appendChild(anchor);
+                            container.appendChild(listElement);
+                            containerMobile.appendChild(listElement.cloneNode(true));
+                        });
+                }
+            }
+
+            const tags = "{{ post.tags | join: ' ' }}";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags);
+            displayResults(results);
+        })
+</script>
