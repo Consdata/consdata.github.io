@@ -22,6 +22,7 @@
 .post-title {
   font-weight: bold;
   font-size: 1.5em;
+  letter-spacing: $general-letter-spacing;
   margin-top: 0;
 }
 
@@ -43,18 +44,21 @@
 }
 
 .post-description {
-  font-size: 1.1em;
+  font-size: 1.2em;
+  letter-spacing: $general-letter-spacing;
 }
 
 .big-post-tile-content {
   @include flex-container;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
+  padding: $small-padding;
   @include tablet-and-desktop {
-    padding: 0 $content-padding $content-padding;
+    padding: $content-padding;
   }
-  @include mobile {
-    padding: $small-padding;
+
+  .post-title {
+    font-size: 1.6em;
   }
 }
 

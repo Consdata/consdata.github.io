@@ -13,7 +13,6 @@ tags:
     - reactive extensions
     - rxjs operators
 ---
-## Wprowadzenie
 Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest ten typ obiektu, dlaczego musisz go zasubskrybować, aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?
 
 Jeżeli tak, to ten artykuł jest dla Ciebie!

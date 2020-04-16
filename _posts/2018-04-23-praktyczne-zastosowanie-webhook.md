@@ -4,6 +4,7 @@ title:     "Praktyczne zastosowanie webhook"
 date:      2018-04-23 08:00:00 +0100
 published: true
 author:    bradlinski
+image:     webhook.png
 tags:
     - sonarqube
     - webhook

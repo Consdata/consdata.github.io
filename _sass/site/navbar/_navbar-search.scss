@@ -15,8 +15,8 @@
   right: $search-icon-width;
   margin-right: $very-small-padding;
   background-color: $color-white;
-  border: none;
   z-index: 999;
+  border: none;
   border-bottom: $inactive-input-bottom-border;
 
   &:focus {

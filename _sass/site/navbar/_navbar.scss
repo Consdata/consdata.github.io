@@ -11,6 +11,7 @@
   }
   @include mobile {
     margin: $navbar-height-mobile + $content-padding $content-padding 0;
+    height: 60px;
   }
 
   .navigation-tags {

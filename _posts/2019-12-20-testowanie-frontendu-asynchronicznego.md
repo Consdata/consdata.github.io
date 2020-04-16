@@ -12,7 +12,6 @@ tags:
     - unit test
     - komponent
 ---
-## Wprowadzenie
 Kończąc serię dotyczącą testowania komponentów Angularowych przy pomocy Jasmine, chciałbym poruszyć temat testów kodu wykonywanego asynchronicznie. 
 
 Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.

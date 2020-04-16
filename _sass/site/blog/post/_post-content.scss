@@ -6,8 +6,13 @@
 .post-big-title {
   font-size: $post-title-font-size-desktop;
   font-weight: bold;
+  letter-spacing: $general-letter-spacing;
+  @include desktop {
+    margin-bottom: 0;
+  }
+
   @include mobile {
-    font-size: 2em;
+    font-size: $post-title-font-size-mobile;
     margin-bottom: 0;
   }
 }
@@ -30,7 +35,8 @@
   width: 100%;
   display: block;
   font-size: $post-font-size;
-  letter-spacing: $post-letter-spacing;
+  letter-spacing: $general-letter-spacing;
+  line-height: $post-content-line-height;
 
   p:first-child {
     margin-top: $content-padding;
@@ -58,5 +64,5 @@
 
 .post-ending-line {
   border-bottom: $separator-border;
-  margin-top: $post-end-bottom-margin;
+  margin: 0;
 }

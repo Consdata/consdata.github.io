@@ -1,7 +1,9 @@
 .author-bio {
   display: none;
+  letter-spacing: $general-letter-spacing;
   @include tablet-and-desktop {
     @include flex-container;
+    align-items: center;
   }
   padding: $content-padding;
 
@@ -45,7 +47,7 @@
   }
 
   .author-name {
-    font-size: 1.3em;
+    font-size: 1.4em;
   }
 
   .bio {

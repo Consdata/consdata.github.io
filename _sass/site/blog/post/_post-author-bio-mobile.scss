@@ -1,5 +1,7 @@
 .author-bio-mobile {
   display: block;
+  letter-spacing: $general-letter-spacing;
+  font-size: 1.2em;
   @include tablet-and-desktop {
     display: none;
   }
@@ -32,7 +34,11 @@
 
   .bio {
     margin-top: $content-padding;
-    font-size: $default-font-size;
+    font-size: 1.1em;
+  }
+
+  .author-name {
+    font-size: 1.2em;
   }
 
   .social-buttons {

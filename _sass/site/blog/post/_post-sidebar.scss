@@ -8,23 +8,31 @@
 
 .sidebar-title {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.4em;
   border-bottom: $separator-border;
+  letter-spacing: $general-letter-spacing;
 }
 
 .sidebar-post {
-  font-size: 1.1em;
+  font-size: 1.2em;
+  letter-spacing: $general-letter-spacing;
   margin-bottom: $content-padding;
 }
 
-.latest-posts-desktop, .recommended-posts-desktop {
+.latest-posts-desktop,
+.recommended-posts-desktop {
   @include mobile {
+    display: none;
+  }
+  @include tablet {
     display: none;
   }
 }
 
-.latest-posts-mobile, .recommended-posts-mobile {
-  @include tablet-and-desktop {
+.latest-posts-mobile,
+.recommended-posts-mobile {
+  margin-bottom: $content-padding;
+  @include desktop {
     display: none;
   }
 }
