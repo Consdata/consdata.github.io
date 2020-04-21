@@ -5,9 +5,9 @@
 @import "navbar-tags";
 
 .navigation-bar {
-  margin: $navbar-height-desktop + $content-padding $blog-side-margins-desktop 0;
+  margin: $navbar-height-desktop + $content-padding $blog-side-margins-desktop $double-content-padding;
   @include tablet {
-    margin: $navbar-height-desktop + $content-padding $blog-side-margins-tablet 0;
+    margin: $navbar-height-desktop + $content-padding $blog-side-margins-tablet $content-padding;
   }
   @include mobile {
     margin: $navbar-height-mobile + $content-padding $content-padding $content-padding;
