@@ -6,7 +6,7 @@
 "{{ post.url | slugify }}": {
 "title": "{{ post.title | xml_escape }}",
 "tags": "{{ post.tags | join: ' '}}",
-"content": {{ post.content | strip_html | strip_newlines | jsonify }},
+"content": {{ post.content | strip_html | strip_newlines | escape | jsonify }},
 "url": "{{ post.url | xml_escape }}",
 "author": "{{ author.name }}",
 "authorUrl": "{{ author.url }}",
