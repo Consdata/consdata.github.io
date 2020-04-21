@@ -10,8 +10,7 @@
     margin: $navbar-height-desktop + $content-padding $blog-side-margins-tablet 0;
   }
   @include mobile {
-    margin: $navbar-height-mobile + $content-padding $content-padding 0;
-    height: 60px;
+    margin: $navbar-height-mobile + $content-padding $content-padding $content-padding;
   }
 
   .navigation-tags {
@@ -24,6 +23,10 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  .row {
+    margin-bottom: unset;
   }
 }
 
