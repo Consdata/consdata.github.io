@@ -25,14 +25,14 @@ Aby cała operacja odbyła się bez problemów, powinniśmy wykonać ją w nast�
 
 # Tworzenie indeksu w MongoDB w sposób _rolling_
 
-Tworzenie indeksu w sposób _rolling_ dotyczy tylko i wyłącznie bazy z redundacją danych w klastrze. Ta metoda pozwala na tworzenie unikalnych indeksów. Przeprowadzana jest dla każdego węzła w klastrze:
+Tworzenie indeksu w sposób _rolling_ dotyczy tylko i wyłącznie bazy z redundacją danych w klastrze. Ta metoda pozwala na tworzenie nieunikalnych indeksów. Przeprowadzana jest dla każdego węzła w klastrze:
 - węzeł jest odłączany od klastra i uruchamiany w trybie standalone;
 - tworzony jest indeks na tym węźle;
 - węzeł jest dołączany do klastra.
 
-W czasie tworzenia indeksu pozostałe węzły klastra cały czas działają produkcyjnie, i co z tym idzie dane się zmieniają. Węzeł, który był uruchomiony w trybie standalone, i na którym tworzony był indeks, po włączeniu do klastra będzie musiał się zsynchronizować i pobrać wszytkie zmiany, które zaszły w czasie, kiedy był odłączony. Aby cała procedura odbyła się bez problemu, należy zapewnić, aby oplog miał odpowiedni rozmiar. Oplog przechowuje ostatnie zmiany danych, które zaszły w węźle primary i jeżeli nie będzie odpowiednio duży, to węzeł który jest dołączany do klastra, nie będzie w stanie się zsynchronizować. Więcej informacji o tym, jak dobrać rozmiar oplog jest w [dokumentacji MongoDB](https://docs.mongodb.com/manual/core/replica-set-oplog/#replica-set-oplog-sizing).
+W czasie tworzenia indeksu pozostałe węzły klastra cały czas działają produkcyjnie i co za tym idzie dane się zmieniają. Węzeł, który był uruchomiony w trybie standalone, i na którym tworzony był indeks, po włączeniu do klastra będzie musiał się zsynchronizować i pobrać wszytkie zmiany, które zaszły w czasie, kiedy był odłączony. Aby cała procedura odbyła się bez problemu, należy zapewnić, aby oplog miał odpowiedni rozmiar. Oplog przechowuje ostatnie zmiany danych, które zaszły w węźle primary i jeżeli nie będzie odpowiednio duży, to węzeł który jest dołączany do klastra, nie będzie w stanie się zsynchronizować. Więcej informacji o tym, jak dobrać rozmiar oplog jest w [dokumentacji MongoDB](https://docs.mongodb.com/manual/core/replica-set-oplog/#replica-set-oplog-sizing).
 
-Procedurę zaczynamy od węzłów secondary, a na końcu przeprowadzamy ją dla węzła primary.
+Procedurę zaczynamy od węzłów secondary, a na końcu przeprowadzamy ją dla węzła primary. Należy zwrócić uwagę na _write concern_. Przykładowo jeżeli mamy klaster złożony z 3 węzłów i write concern równe 3, to z pukntu widzenia aplikacji baza będzie niedostępna po odłączeniu węzła. Wszystkie zapisy będą się kończyć błędem.
 
 ## Odłączenie węzła od klastra
 
@@ -72,7 +72,15 @@ Informacje o klastrze są zwracane przez polecenia:
 
 # Usuwanie indeksu
 
-Usuwanie indeksu jest łatwiejszą operacją. Wystarczy usunąć indeks na węźle primary. Całą resztą, czyli usunięciem indeksu z węzłów secondary, zajmie się MongoDB. Musimy jednak się upewnić, że żadne zapytanie nie korzysta z danego indeksu. Inaczej zapytanie zakończy się błędem.
+Procedura usunięcia indeksu zależy od wersji MongoDB. Od wersji 4.2 wystarczy usunąć indeks na węźle primary. Całą resztą, czyli usunięciem indeksu z węzłów secondary, zajmie się baza. Jeżeli pracujemy z wcześniejszą wersją, to indeks należy usunąć podobnie jak tworzymy indeks w sposób rolling. Jedyną różnicą jest to, że indeks usuwamy, a nie tworzymy.
+
+W jednym i drugim przypadku musimy jednak się upewnić, że żadne zapytanie nie korzysta z danego indeksu. Inaczej zapytanie zakończy się błędem.
+
+# Zarządzanie indeksami a automatyzacja
+
+Zazwyczaj chcemy ułatwić sobie życie i wiele rzeczy automatyzujemy. Można również się pokusić o automatyczne usuwanie i tworzenie indeksów podczas wdrażania kolejnej wersji systemu. Doświadczenie pokazuje, że można pochopnie umieścić w skryptach dwa polecenia usunięcia i stworzenia indeksu na węźle primary. Najprawdopodobniej skończy się to poważnym błędem i jeżeli operację przeprowadzamy na produkcji, to produkcja będzie niedostępna do czasu naprawy. Czas przestoju będzie znaczący, jeżeli kolekcja będzie znaczących rozmiarów.
+
+Zmiany w indeksach powinniśmy przeprowadzać manualnie z planem działania w ręku.
 
 # Podsumowanie
 
