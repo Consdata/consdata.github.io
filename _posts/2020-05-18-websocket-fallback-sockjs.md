@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "WebSocket fallbacks - SockJS"
-date:      2020-05-18 08:00:00 +0100
+date:      2020-05-03 08:00:00 +0100
 published: true
 author:    jgoszczurny
 image:     websocket_fallback_main_post_image.png
@@ -31,7 +31,7 @@ Wstępne zapoznanie z biblioteką pokazało że może ona zrobić WebSocket fall
 
 # Biblioteki
 Podczas przeglądu literatury udało się również znaleźć bibliotekę SockJS,
-która wyglądała na mniejszą bibliotekę i uprościła zintegraowanie z istniejącym projektem.
+która wygląda na mniejszą i prostszą bibliotekę do zintegrowania z istniejącym projektem.
 
 
 ## Atmosphere
@@ -52,18 +52,18 @@ Biblioteka dekorująca WebSocket, dzięki czemu umożliwia fallback w przypadku 
 
 Wygodna w użyciu, ponieważ w JS działa ona tak samo jak zwykły WebSocket, 
 czyli jeśli w istniejącym projekcie, jest używany `new WebSocket()`, 
-to wystarczy zastąpić go `new SockJS()` i już można używać jego funkjonalności bez zmian w kodzie.
+to wystarczy zastąpić go `new SockJS()` i już można używać jego funkcjonalności bez zmian w kodzie.
 
 Tak samo prosto używa się go w Springu, chociaż same endpointy nie są już wtedy kompatybilne ze sobą, 
 więc po integracji serwera z SockJS na tym samym endpoint, konieczne jest użycie SockJS w frontend.
 
-Endpointy nie sa kompatybilne ze sobą, ponieważ:
+Endpointy nie są kompatybilne ze sobą, ponieważ:
 * WebSocket-owy wystawia końcówkę (np. `/endpoint`) dla połączenia WebSocket
 * a SockJs wystawia końcówkę (HTTP, np. `/endpoint`) w celu negocjacji parametrów połączenia,<br />
-  chociaż klient również ma mozliwośc połączenia się za pomocą WebSocket bez instalowania SockJS wykorzystując do tego `/endpoint/websocket`
+  chociaż klient również ma możliwość połączenia się za pomocą WebSocket bez instalowania SockJS wykorzystując do tego `/endpoint/websocket`
 
 ## Praktyka
-Ostatecznie został wybrany SockJS z powodu prostoty wykorzystania go w istniejącym springowym projecie.
+Ostatecznie został wybrany SockJS z powodu prostoty wykorzystania go w istniejącym springowym projekcie.
 
 ### Wersja przed poprawkami z użyciem czystego WebSocket
 #### Backend
@@ -163,7 +163,7 @@ I teoretycznie to wystarczy do działania, chociaż w celu zostawienia kompatybi
 oraz rozwiązania problemów kiedy wykorzystujemy SockJS w bibliotece wybudowanej za pomocą RollUp,
 konieczne było zmodyfikowanie kodu. 
 
-W przypadku komaptybilności wstecz, został dodany dodatkowy endpoint wykorzystujący wersjonowanie.
+W przypadku kompatybilności wstecz, został dodany dodatkowy endpoint wykorzystujący wersjonowanie.
 Problemy z RollUp zostały rozwiązane poprzez załadowanie biblioteki SockJS już po stronie klienta.
 
 
@@ -292,7 +292,7 @@ Rozwiązanie zostało przetestowane na dwa sposoby:
 1. Ustawiając max-connection na 0 w firefox <br />
     https://stackoverflow.com/a/47027433 <br />
     `about:config` → `network.websocket.max-connections`
-2. Symulując problem z proxu, w którym nie wszystkie nagłówki są przesyłane (wykorzystując do tego proxy na nginx).
+2. Symulując problem z proxy, w którym nie wszystkie nagłówki są przesyłane (wykorzystując do tego proxy na nginx).
 
 W obu przypadkach test przebiegł pozytywnie i przy negatywnej próbie połączenia do WebSocket, SockJS przełączył się na Long-pooling.
 
