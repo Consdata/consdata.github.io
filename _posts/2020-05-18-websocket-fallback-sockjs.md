@@ -4,6 +4,7 @@ title:     "WebSocket fallbacks - SockJS"
 date:      2020-05-18 08:00:00 +0100
 published: true
 author:    jgoszczurny
+image:     websocket_fallback_main_post_image.png
 tags:
     - java
     - spring
