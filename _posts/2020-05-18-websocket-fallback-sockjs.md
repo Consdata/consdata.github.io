@@ -50,7 +50,7 @@ Można uruchomić tą bibliotekę na serwerze, który wspiera servlety.
 ## SockJS
 Biblioteka dekorująca WebSocket, dzięki czemu umożliwia fallback w przypadku gdy WebSocket nie jest dostępny.
 
-Wygodna w użyciu ponieważ w JS działa ona tak samo jak zwykły WebSocket, 
+Wygodna w użyciu, ponieważ w JS działa ona tak samo jak zwykły WebSocket, 
 czyli jeśli w istniejącym projekcie, jest używany `new WebSocket()`, 
 to wystarczy zastąpić go `new SockJS()` i już można używać jego funkjonalności bez zmian w kodzie.
 
