@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Tworzenie i usuwanie indeksów w bazie MongoDB na produkcji"
-date:      2020-04-22 07:00:00 +0100
+date:      2020-05-05 07:00:00 +0100
 published: true
 author:    mgucki
 tags:
