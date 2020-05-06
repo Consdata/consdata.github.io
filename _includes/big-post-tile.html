@@ -1,4 +1,5 @@
 {% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
+{% assign debugAuthor = site.authors | where: "short_name", "jwilczewski" %}
 <div class="col-15 post-animation">
     <div class="col-2-3">
         <a href="{{ include.post.url }}">
