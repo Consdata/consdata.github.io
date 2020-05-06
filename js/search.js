@@ -15,7 +15,7 @@ fetch("/json/posts.json")
                                 author-name="${item.author}"
                                 author-image="${'/assets/img/authors/' + item.image}"
                                 author-url="${item.authorUrl}"
-                                image="${'/assets/img/posts/' + item.path + '/' + item.highlight}"
+                                image="${item.highlight}"
                                 date="${getFormattedDate(item.date)}"
                                 content="${item.content.split(' ').slice(0, 30).join(' ') + '...'}"
                             ></custom-tile>
