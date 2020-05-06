@@ -1,5 +1,6 @@
 ---
 name:   Adrian Marszałek
+title:   Adrian Marszałek
 short_name: amarszalek
 github: adikm
 image:  amarszalek.jpg
