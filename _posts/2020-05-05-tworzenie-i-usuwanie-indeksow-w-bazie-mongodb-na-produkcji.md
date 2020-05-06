@@ -4,7 +4,7 @@ title:     "Tworzenie i usuwanie indeksów w bazie MongoDB na produkcji"
 date:      2020-05-05 07:00:00 +0100
 published: true
 author:    mgucki
-image:     indeksy_mongo.png
+image:     /assets/img/posts/2020-05-05-tworzenie-i-usuwanie-indeksow-w-bazie-mongodb-na-produkcji/indeksy_mongo.png
 tags:
     - tech
     - mongodb

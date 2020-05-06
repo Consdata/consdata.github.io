@@ -18,7 +18,8 @@ $blog-side-margins-tablet: 15%;
 // Paddings, margins
 $double-content-padding: 30px;
 $post-end-bottom-margin: 25px;
-$post-tile-margin: 20px;
+$post-tile-margin-bottom: 40px;
+$post-tile-margin-top: 20px;
 $content-padding: 15px;
 $small-padding: 10px;
 $very-small-padding: 5px;
@@ -36,6 +37,7 @@ $post-font-size: 1.2em;
 $general-letter-spacing: 1px;
 $default-font-size: 14px;
 $small-font-size: 12px;
+$post-title-desktop-line-height: 80px;
 
 // Specific
 $search-icon-width: 14px;

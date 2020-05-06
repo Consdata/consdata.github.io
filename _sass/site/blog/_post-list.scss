@@ -12,9 +12,9 @@
   @include flex-container;
   flex-direction: column;
   justify-content: space-between;
-  margin: $post-tile-margin $small-padding;
+  margin: $post-tile-margin-top $small-padding $post-tile-margin-bottom;
   @include mobile {
-    margin: $post-tile-margin 0;
+    margin: $post-tile-margin-top 0;
   }
   @extend .post-animation;
 }
