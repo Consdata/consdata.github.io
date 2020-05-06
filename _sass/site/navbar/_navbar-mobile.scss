@@ -1,0 +1,11 @@
+.mobile-navbar {
+  @include tablet-and-desktop {
+    display: none;
+  }
+  flex-direction: row;
+  justify-content: space-between;
+
+  .newsletter-link {
+    width: 50%;
+  }
+}

@@ -4,13 +4,13 @@ title:     Testowanie frontendu - Cz. 3. Testowanie komponentów angularowych z 
 published: true
 date:      2019-12-04 08:00:00 +0100
 author:    pgrobelny
+image:     frontend-test.png
 tags:
     - Jasmine
     - Angular
     - unit test
     - komponent
 ---
-## Wprowadzenie
 Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url 2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url 2019-11-20-testowanie-komponentow-i-serwisow %})) pora skupić się na testowaniu komponentów angularowych, a w szczególności ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się z kilku drobnych wzajemnie się ze sobą komunikujących elementów.
 
 Schemat przykładowej aplikacji wygląda następująco:

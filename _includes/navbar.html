@@ -1,0 +1,33 @@
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    {% assign posts = site.posts %}
+                    {% assign grouptag =  posts | map: 'tags' | join: ','  | downcase | split: ','  | group_by: tag | sort: 'size' | reverse %}
+                    {% for tag in grouptag | limit: 5 %}
+                        <a href="/search.html?query={{tag.name}}">{{tag.name | capitalize}}</a>
+                    {% endfor %}
+                </div>
+                {% include search-component-desktop.html %}
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/api/popup/e7yrrpjmxbm7bahc/Zapisz_sie_na_newsletter.htm" class="newsletter-link">
+                    <div class="newsletter-button">Zapisz się na newsletter techniczny</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                {% assign posts = site.posts %}
+                {% assign grouptag =  posts | map: 'tags' | join: ','  | downcase | split: ','  | group_by: tag | sort: 'size' | reverse %}
+                {% for tag in grouptag | limit: 5 %}
+                <a href="/search.html?query={{tag.name}}">{{tag.name | capitalize}}</a>
+                {% endfor %}
+            </div>
+            <a href="https://app2.salesmanago.pl/api/popup/e7yrrpjmxbm7bahc/Zapisz_sie_na_newsletter.htm" class="newsletter-link">
+                <div class="newsletter-button">Zapisz się na newsletter techniczny</div>
+            </a>
+        </div>
+    </div>
+</div>

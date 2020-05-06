@@ -4,6 +4,7 @@ title: SameSite=Lax by default coraz bliżej - czy jesteś gotowy?
 published: true
 date:      2020-01-09 08:00:00 +0100
 author:    mpogorzelski
+image:     samesite.png
 tags:
   - cookies
   - security

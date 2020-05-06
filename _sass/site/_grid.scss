@@ -1,0 +1,55 @@
+.row {
+  @include flex-container;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  margin-bottom: $double-content-padding;
+}
+
+.first-row {
+  @include desktop {
+    margin-bottom: $first-post-bottom-margin;
+  }
+  @include mobile {
+    margin: 0 $small-padding;
+  }
+}
+
+.col-5 {
+  @include mobile {
+    flex: 100%;
+  }
+  @include tablet {
+    flex: 45%;
+  }
+  flex: 31%;
+}
+
+.col-10 {
+  @include flex-container;
+  flex: 66%;
+}
+
+.col-15 {
+  @include flex-container;
+  flex: 1 0 calc(60% - 25px);
+  @include mobile {
+    flex-direction: column;
+    height: fit-content;
+  }
+}
+
+.col-1-3 {
+  @include flex-container;
+  flex: 33.33%;
+}
+
+.col-2-3 {
+  @include flex-container;
+  flex: 66.66%;
+}
+
+.padding-column {
+  @include mobile {
+    display: none;
+  }
+}

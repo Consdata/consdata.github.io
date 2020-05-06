@@ -4,6 +4,7 @@ title:     "Algorytmy rekomendacyjne - przykład implementacji w Pythonie"
 date:      2018-08-07 08:00:00 +0100
 published: true
 author:    sucuncu
+image:     algorytmy-rekomendacyjne.png
 tags:
     - algorytmy rekomendacyjne
     - python

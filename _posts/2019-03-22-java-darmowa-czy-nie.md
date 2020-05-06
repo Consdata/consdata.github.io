@@ -4,6 +4,7 @@ title:     "Java darmowa, czy nie?"
 date:      2019-03-27 10:00:00 +0100
 published: true
 author:    jwilczewski
+image:     java-darmowa.png
 tags:
     - java
 ---

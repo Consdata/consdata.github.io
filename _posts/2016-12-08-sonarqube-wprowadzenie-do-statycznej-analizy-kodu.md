@@ -4,6 +4,7 @@ title:     "Sonarqube - wprowadzenie do statycznej analizy kodu"
 date:      2016-12-08 08:00:00 +0100
 published: true
 author:    jgrobelny
+image:     sonarqube.png
 tags:
     - sonarqube
     - jakość kodu

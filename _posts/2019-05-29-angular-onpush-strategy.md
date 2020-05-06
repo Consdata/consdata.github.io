@@ -4,6 +4,7 @@ title:     "Angular - detekcja zmian strategią onPush"
 date:      2019-08-06 07:00:00 +0100
 published: true
 author:    kgabara
+image:     angular-onpush.png
 tags:
     - angular
     - frontend

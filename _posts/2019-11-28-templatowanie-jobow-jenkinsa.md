@@ -4,6 +4,7 @@ title:     "Automat dodający joby do Jenkinsa"
 published: true
 date:      2019-11-28 08:00:00 +0100
 author:    dkubiak
+image:     jenkins-job.png
 tags:
     - jenkins job
     - jenkins template
@@ -11,7 +12,6 @@ tags:
     - jenkins-job-builder
     - jenkins-jobs
 ---
-## Zastosowanie
 
 W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem - automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.
 

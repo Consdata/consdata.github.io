@@ -4,6 +4,7 @@ title:      "Moje własne zadania i jak się w nich odnaleźć"
 date:       2020-01-19
 published:  true
 author:     mstolarski
+image:      zarzadzanie_zadaniami.png
 tags:
   - Personal Tasks
   - Time Management

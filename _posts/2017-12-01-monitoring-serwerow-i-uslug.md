@@ -4,6 +4,7 @@ title:     "Jak szybko stworzyć system monitoringu serwerów i usług"
 date:      2017-12-01 08:00:00 +0100
 published: true
 author:    aswarcewicz
+image:     monitoring-systemow.png
 tags:
     - monitoring
     - icinga2

@@ -4,6 +4,7 @@ title:     "Budowanie aplikacji Angular CLI + Spring Boot"
 date:      2017-01-05 08:00:00 +0100
 published: true
 author:    glipecki
+image:     angular-spring-boot.png
 tags:
     - angular
     - spring boot

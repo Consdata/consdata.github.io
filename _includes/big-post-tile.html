@@ -1,0 +1,30 @@
+{% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
+{% assign debugAuthor = site.authors | where: "short_name", "jwilczewski" %}
+<div class="col-15 post-animation">
+    <div class="col-2-3">
+        <a href="{{ include.post.url }}">
+            <img class="highlight-image" src="/assets/img/posts/{{assets}}/{{include.post.image}}"
+                 alt="postimage"/>
+        </a>
+    </div>
+    <div class="col-1-3 big-post-tile-content">
+        {% assign author = site.authors | where: "short_name", include.post.author | first %}
+        <a href="{{ include.post.url }}">
+            <p class="post-title no-breaking-word">
+                {{ include.post.title }}
+            </p>
+            <p class="post-description no-breaking-word">
+                {{include.post.content | strip_html | truncatewords: 50}}
+            </p>
+        </a>
+        <div class="tile-author">
+            <a href="{{ author.url }}" class="author-name">
+                <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
+                <span>{% include post-date.html date=include.post.date %}</span>
+            </div>
+        </div>
+    </div>
+</div>

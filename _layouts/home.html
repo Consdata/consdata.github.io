@@ -9,41 +9,23 @@ layout: default
 
     {{ content }}
     <div class="blog">
-        {%- if site.posts.size > 0 -%}
-        <div class="post-list">
-            <ul>
-                {%- for post in paginator.posts -%}
-                {% assign author = site.data.authors[post.author] %}
-
-                <li class="post">
-                    <h3>
-                        <a class="post-link" href="{{ post.url | relative_url }}">
-                            {{ post.title | escape }}
-                        </a>
-                    </h3>
-                    {% include post_metadata.html %}
-                    <div class="post-entry">
-                        {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
-                        <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Czytaj&nbsp;dalej]</a>
-                    </div>
-                </li>
-                {%- endfor -%}
-            </ul>
+        <div class="row first-row">
+            {% include big-post-tile.html post=site.posts.first %}
         </div>
-        <div class="pagination">
-            {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" class="previous pagination-button" title="Poprzednia strona">Nowsze posty</a>
-            {% else %}
-            <span class="placeholder previous">Nowsze posty</span>
-            {% endif %}
+        {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
+        <div class="row">
+            {% assign postsWithoutFirst = site.posts | shift %}
+            {% for forPost in postsWithoutFirst%}
+            {% include small-post-tile.html post=forPost %}
+            {% endfor %}
 
-            {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" class="next pagination-button" title="Następna strona">Starsze posty</a>
-            {% else %}
-            <span class="placeholder next">Starsze posty</span>
+            {% assign moduloValue = postsWithoutFirst.size | modulo: 3 %}
+            {% if moduloValue > 0 %}
+            {% assign missingPosts = 3 | minus: moduloValue %}
+            {% for i in (1..missingPosts) %}
+            <div class="col-5 padding-column"></div>
+            {% endfor %}
             {% endif %}
-
         </div>
-        {%- endif -%}
     </div>
 </div>

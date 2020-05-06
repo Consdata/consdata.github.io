@@ -4,6 +4,7 @@ title:     "Tomcat - model przetwarzania żądań"
 date:      2020-03-18 14:00:00 +0100
 published: true
 author:    jwilczewski
+image:     Tomcat.png
 tags:
     - java
     - tomcat
@@ -37,10 +38,16 @@ Z punktu widzenia przetwarzania żądań, kluczowe znaczenie ma konfiguracja con
 
 ## Monitorowanie puli wątków
 
-Aktualna liczba wątków przetwarzających żądania jest, obok rozmiaru sterty, jednym z najważniejszych parametrów, które powinny być objęte monitoringiem. W tym przypadku monitorujemy atrybut `currentThreadsBusy` mbean'a `Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool` (przy czym RODZAJ_CONNECTORA to "bio" dla connectora blokującego i "nio" dla nieblokującego, PORT to numer portu, na którym nasłuchuje connector).
+Aktualna liczba wątków przetwarzających żądania jest, obok rozmiaru sterty, jednym z najważniejszych parametrów, które powinny być objęte monitoringiem. W tym przypadku monitorujemy atrybut `currentThreadsBusy` mbean'a 
+```
+Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool
+``` 
+(przy czym RODZAJ_CONNECTORA to "bio" dla connectora blokującego i "nio" dla nieblokującego, PORT to numer portu, na którym nasłuchuje connector).
 
 Do monitoringu można użyć narzędzia [jolokia](https://jolokia.org/), które udostępnia JMX za pomocą protokołu http. W takiej konfiguracji wystarczy regularnie odpytywać o stan puli wątków poprzez wywołanie http GET:
-`http://HOST:PORT/jolokia/read/Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool/currentThreadsBusy`
+```
+http://HOST:PORT/jolokia/read/Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool/currentThreadsBusy
+```
 
 W odpowiedzi dostajemy jsona, który w polu value zawiera aktualny rozmiar puli wątków 
 ```json

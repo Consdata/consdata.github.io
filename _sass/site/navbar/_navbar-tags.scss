@@ -1,0 +1,23 @@
+.navigation-tags {
+  @include flex-container;
+  align-items: center;
+  flex-basis: 100%;
+  @include tablet {
+    flex-basis: 60%;
+  }
+
+  a {
+    color: $color-logo-red;
+    cursor: pointer;
+    font-size: 1.1em;
+    padding-right: $double-content-padding;
+    letter-spacing: $general-letter-spacing;
+    @include mobile {
+      padding-right: $content-padding;
+    }
+
+    &:hover {
+      color: $color-dark-gray;
+    }
+  }
+}

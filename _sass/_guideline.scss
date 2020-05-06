@@ -1,25 +1,55 @@
-$tablet-breakpoint: 900px;
+// Viewport
 $desktop-breakpoint: 1200px;
-
-$app-min-width: 320px;
+$desktop-content-width: 1170px;
 $mobile-content-width: 100%;
 $tablet-content-width: 100%;
-$desktop-content-width: 1170px;
-
-$content-padding: 15px;
-
-$base-line-height: 1.45;
-$font-weight-light: 300;
-$font-weight-regular: 400;
-$font-weight-semibold: 500;
-$font-weight-bold: 700;
-
-$default-font-size: 14px;
-$small-font-size: 12px;
-
+$tablet-breakpoint: 900px;
+$app-min-width: 320px;
 $navbar-height-mobile: 55px;
 $navbar-height-desktop: 74px;
-
 $mobile-footer-item-height: 40px;
 $mobile-footer-height: $mobile-footer-item-height * 3;
 $desktop-footer-height: 96px;
+$header-z-index: 9999;
+$narrower-side-margins-desktop: 25%;
+$blog-side-margins-desktop: 20%;
+$blog-side-margins-tablet: 15%;
+
+// Paddings, margins
+$double-content-padding: 30px;
+$post-end-bottom-margin: 25px;
+$post-tile-margin: 20px;
+$content-padding: 15px;
+$small-padding: 10px;
+$very-small-padding: 5px;
+
+// Typography
+$base-line-height: 1.45;
+$post-content-line-height: 1.65;
+$font-weight-bold: 700;
+$font-weight-semibold: 500;
+$font-weight-regular: 400;
+$font-weight-light: 300;
+$post-title-font-size-desktop: 5em;
+$post-title-font-size-mobile: 2em;
+$post-font-size: 1.2em;
+$general-letter-spacing: 1px;
+$default-font-size: 14px;
+$small-font-size: 12px;
+
+// Specific
+$search-icon-width: 14px;
+$first-post-bottom-margin: 40px;
+$big-author-image-size: 75px;
+$medium-author-image-size: 50px;
+$small-author-image-size: 24px;
+$separator-border: 3px solid $color-logo-red;
+$inactive-input-bottom-border: 2px solid $color-dark-gray;
+$post-tile-hover-shadow: rgba(0, 0, 0, 0.22) 0 19px 30px;
+$header-image-width-mobile: 168px;
+$header-image-height-mobile: 19px;
+$header-image-width-desktop: 240px;
+$header-image-height-desktop: 27px;
+$expanded-input-width-desktop: 135px;
+$expanded-input-width-mobile: 200px;
+$svg-icon-size: 16px;
