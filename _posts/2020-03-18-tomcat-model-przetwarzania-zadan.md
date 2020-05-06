@@ -4,7 +4,7 @@ title:     "Tomcat - model przetwarzania żądań"
 date:      2020-03-18 14:00:00 +0100
 published: true
 author:    jwilczewski
-image:     Tomcat.png
+image:     /assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/Tomcat.png
 tags:
     - java
     - tomcat

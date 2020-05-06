@@ -4,7 +4,7 @@ title:     "Pozycjonowanie zależne od scrolla"
 date:      2019-02-26 08:00:00 +0100
 published: true
 author:    glipecki
-image:     pozycjonowanie-scroll.png
+image:     /assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/pozycjonowanie-scroll.png
 tags:
     - frontend
     - javascript

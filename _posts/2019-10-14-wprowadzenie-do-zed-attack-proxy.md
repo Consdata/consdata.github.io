@@ -4,7 +4,7 @@ title: Wprowadzenie do Zed Attack Proxy
 published: true
 date:      2019-10-14 03:00:00 +0100
 author:    amak
-image:     zed-attack-proxy.png
+image:     /assets/img/posts/2019-10-14-wprowadzenie-do-zed-attack-proxy/zed-attack-proxy.png
 tags:
   - programming
   - pentest

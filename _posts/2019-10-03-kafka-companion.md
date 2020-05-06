@@ -4,7 +4,7 @@ title: Kafka Companion
 published: true
 date:      2019-10-03 08:00:00 +0100
 author:    jgrobelny
-image:     kafka.png
+image:     /assets/img/posts/2019-10-03-kafka-companion/kafka.png
 tags:
   - programming
   - kafka

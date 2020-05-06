@@ -4,7 +4,7 @@ title:     Testowanie frontendu - Cz. 2. Testowanie komponentów i serwisów
 published: true
 date:      2019-11-20 15:00:00 +0100
 author:    kczechowski
-image:    testowanie frontendu.png
+image:      /assets/img/posts/2019-11-20-testowanie-komponentow-i-serwisow/testowanie_frontendu.png
 tags:
     - Jasmine
     - Angular

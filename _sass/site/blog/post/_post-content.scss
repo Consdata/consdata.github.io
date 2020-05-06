@@ -9,6 +9,7 @@
   letter-spacing: $general-letter-spacing;
   @include desktop {
     margin-bottom: 0;
+    line-height: $post-title-desktop-line-height;
   }
 
   @include mobile {
