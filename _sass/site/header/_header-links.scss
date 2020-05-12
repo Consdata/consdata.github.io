@@ -10,7 +10,7 @@
     &.mobile-nav {
       @include flex-container;
       position: absolute;
-      height: 0px;
+      height: 0;
       transition: height 1s;
       overflow: hidden;
       background-color: $color-russian-black;
@@ -22,7 +22,7 @@
     }
 
     &.show {
-      height: $mobile-link-height * 6;
+      height: $mobile-link-height * 5;
     }
   }
 
