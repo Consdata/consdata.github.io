@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Budowanie aplikacji w architekturze mikroserwisów oparte na Axon Framework"
-date:      ??
+date:      2020-05-12 08:00:00 +0100
 published: false
 author:    mkociszewski
 tags:
