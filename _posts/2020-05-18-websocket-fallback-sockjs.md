@@ -16,46 +16,46 @@ tags:
     - atmosphere
 ---
 
-# Wprowadzenie
 W ramach projektu udostępniającego ekran za pomocą przeglądarki z wykorzystaniem WebRTC, 
-zrobiliśmy moduł "signaling" który przekazuje komunikaty między użytkownikami.
+utworzyliśmy moduł "signaling", który przekazuje komunikaty między użytkownikami.
 
-Najbardziej logicznym i wygodnym podejściem do tego jest wykorzystanie WebSocket. 
-W większości przypadków sprawdza się idealnie, chociaż może się zdarzyć że użytkownik 
-nie będzie miał możliwości ustanowienia połączenia WebSocket (np. nieskonfigurowane proxy, które nie przekazuje poprawnie komunikatów WebSocket, wycinając nagłówki), 
-z tego powodu konieczne było znalezienie sposobu, który to ominie.
+Do tego celu najbardziej logicznym i wygodnym podejściem jest wykorzystanie WebSocket. 
+W większości przypadków sprawdza się idealnie, natomiast w sytuacjach, gdy użytkownik
+nie może ustanowić połączenia WebSocket 
+(np. z powodu nieskonfigurowanego proxy, które nie przekazuje poprawnie komunikatów WebSocket, wycinając nagłówki), 
+konieczne jest zastosowanie alternatywnego rozwiązania, które ominie ten przypadek.
 
-Początkowo w ramach prac badawczych, miał być zbadany Atmosphere, ponieważ pobieżnie był już wykorzystany w innym projekcie. 
-Wstępne zapoznanie z biblioteką pokazało że może ona zrobić WebSocket fallback za nas.
+Początkowo w ramach prac badawczych, skupiliśmy uwagę na Atmosphere, ponieważ pobieżnie był już wykorzystany w innym projekcie, 
+jednakże dopiero zapoznanie z biblioteką pokazało że zrobi ona WebSocket fallback za nas.
 
 
 # Biblioteki
-Podczas przeglądu literatury udało się również znaleźć bibliotekę SockJS,
-która wygląda na mniejszą i prostszą bibliotekę do zintegrowania z istniejącym projektem.
+Zapoznanie się z literaturą wskazało bibliotekę SockJS, 
+która jest mniejszą i prostszą biblioteką do zintegrowania z istniejącym projektem.
 
 
 ## Atmosphere
 Jest to framework, który dostarcza komponenty dla klienta i serwera umożliwiające zbudowanie aplikacji webowej. 
-Jest możliwe wpięcie go w Spring, chociaż wymaga to więcej pracy do wykonania.
+Dzięki temu można wpiąć go w Spring, chociaż wymaga to więcej pracy do wykonania.
 
 Wspiera on transparentnie metody komunikacji takie jak:
 * WebSockets,
 * Server Sent Events (SSE),
 * Long-Polling,
-* HTTP Streaming (Forever frame)
-* JSONP
+* HTTP Streaming (Forever frame),
+* JSONP.
 
 Można uruchomić tą bibliotekę na serwerze, który wspiera servlety.
 
 ## SockJS
-Biblioteka dekorująca WebSocket, dzięki czemu umożliwia fallback w przypadku gdy WebSocket nie jest dostępny.
+Biblioteka dekorująca WebSocket, dzięki czemu umożliwia fallback w przypadku, gdy WebSocket nie jest dostępny.
 
-Wygodna w użyciu, ponieważ w JS działa ona tak samo jak zwykły WebSocket, 
-czyli jeśli w istniejącym projekcie, jest używany `new WebSocket()`, 
+Jest wygodna w użyciu ponieważ w JS działa ona tak samo jak zwykły WebSocket, 
+czyli jeśli w istniejącym projekcie jest używany `new WebSocket()`, 
 to wystarczy zastąpić go `new SockJS()` i już można używać jego funkcjonalności bez zmian w kodzie.
 
-Tak samo prosto używa się go w Springu, chociaż same endpointy nie są już wtedy kompatybilne ze sobą, 
-więc po integracji serwera z SockJS na tym samym endpoint, konieczne jest użycie SockJS w frontend.
+Równie prosto używa się go w Springu, chociaż wtedy same endpointy przestają być kompatybilne ze sobą,
+więc po integracji serwera z SockJS na tym samym endpointcie, konieczne jest użycie SockJS w frontend.
 
 Endpointy nie są kompatybilne ze sobą, ponieważ:
 * WebSocket-owy wystawia końcówkę (np. `/endpoint`) dla połączenia WebSocket
@@ -160,8 +160,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 {% endhighlight %}
 
 I teoretycznie to wystarczy do działania, chociaż w celu zostawienia kompatybilności wstecz 
-oraz rozwiązania problemów kiedy wykorzystujemy SockJS w bibliotece wybudowanej za pomocą RollUp,
-konieczne było zmodyfikowanie kodu. 
+oraz rozwiązania problemów podczas których wykorzystujemy SockJS w bibliotece wybudowanej za pomocą RollUp,
+konieczne jest zmodyfikowanie kodu. 
 
 W przypadku kompatybilności wstecz, został dodany dodatkowy endpoint wykorzystujący wersjonowanie.
 Problemy z RollUp zostały rozwiązane poprzez załadowanie biblioteki SockJS już po stronie klienta.
