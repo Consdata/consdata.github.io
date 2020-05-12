@@ -27,11 +27,16 @@ Jeżeli chodzi o kwestie event store'a to framework zostawia tu pełną dowolno�
 Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna co moim zdaniem plasuje Axona jako mocnego gracza.
 
 ## AxonServer
+Firma odpowiedzialna za rozwój Axona stworzyła swoje 
 
-Krótki opis, jedno-dwa zdania, 
-proste przykłady podstawowych funkcjonalności (agregaty, commandy, eventy, query, sagi [przy sadze mozna wspomnieć ze tylko inject z pola działa, bo axon wymaga bezparametrowy konstruktor)
+- opis czym jest AxonServer
+- porównanie z innymi technologiami? np Kafką
+- zrzut z dashboardu
+- może inne zrzuty (monitoring eventów, commandów i queries)
+
 
 # Mikroserwisy
+- że poprę swoim projektem
 - najpierw powinno się wypracować monolit 
 - tu powinien wlecieć diagram
 - przy mikroserwisach wspomnieć o tym, że eventy powinny być w tej samej package (a może nie? może serializator coś zjebał? muszę to sprawdzić)
