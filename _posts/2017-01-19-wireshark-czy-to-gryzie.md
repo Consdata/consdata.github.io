@@ -4,6 +4,7 @@ title:     "Wireshark - czy to gryzie?"
 date:      2017-01-19 08:00:00 +0100
 published: true
 author:    tlewandowski
+image:     /assets/img/posts/2017-01-19-wireshark-czy-to-gryzie/wireshark.png
 tags:
     - wireshark
     - networks

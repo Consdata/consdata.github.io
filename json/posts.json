@@ -1,0 +1,20 @@
+---
+---
+{
+{% for post in site.posts %}
+{% assign author = site.authors | where: "short_name", post.author | first %}
+"{{ post.url | slugify }}": {
+"title": "{{ post.title | xml_escape }}",
+"tags": "{{ post.tags | join: ' '}}",
+"content": {{ post.content | strip_html | strip_newlines | escape | jsonify }},
+"url": "{{ post.url | xml_escape }}",
+"author": "{{ author.name }}",
+"authorUrl": "{{ author.url }}",
+"image": "{{ author.image }}",
+"highlight": "{{ post.image }}",
+"date": "{{ post.date | date: '%d-%m-%Y' }}",
+"path": "{{ post.path | remove: '_posts/' | remove: '.md'}}"
+}
+{% unless forloop.last %},{% endunless %}
+{% endfor %}
+}

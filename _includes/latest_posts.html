@@ -1,0 +1,14 @@
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts">
+            {%- for post in site.posts limit:5 -%}
+            <li class="sidebar-post no-breaking-word">
+                <a href="{{post.url}}" class="">{{ post.title | escape }}</a>
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+</div>

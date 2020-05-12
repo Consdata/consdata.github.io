@@ -1,11 +1,9 @@
 <div class="post-metadata">
-    <div class="post-date" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%d-%m-%Y" }}</div>
-    {% if post.author %}
-    <div class="article-author" itemscope itemtype="http://schema.org/Person">
-        <div class="author-separator">•</div>
-        {% if author.name %}
-        <div class="author-name" itemprop="name">{{author.name}}</div>
-        {% endif %}
+    <a href="{{author.url}}" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+    </a>
+    <div class="post-info">
+        <a href="{{author.url}}" class="author-name-metadata">{{author.name}}</a>
+        <span>{% include post-date.html date=post.date %}</span>
     </div>
-    {% endif %}
 </div>

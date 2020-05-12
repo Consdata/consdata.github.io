@@ -1,0 +1,67 @@
+#header-links {
+
+  $mobile-link-height: 40px;
+
+  @include desktop {
+    @include flex-container;
+  }
+
+  @include mobile {
+    &.mobile-nav {
+      @include flex-container;
+      position: absolute;
+      height: 0;
+      transition: height 1s;
+      overflow: hidden;
+      background-color: $color-russian-black;
+      width: 100%;
+      margin-left: -$content-padding;
+      border-top: 1px solid $color-medium-gray;
+      padding-left: $content-padding;
+      padding-right: $content-padding;
+    }
+
+    &.show {
+      height: $mobile-link-height * 5;
+    }
+  }
+
+  .nav {
+    @include flex-container;
+    flex-direction: column;
+    @include tablet-and-desktop {
+      flex-direction: row;
+      width: 100%;
+      margin-left: $content-padding;
+    }
+  }
+
+  .nav-link {
+    @include flex-container;
+    min-height: $mobile-link-height;
+    @include tablet-and-desktop {
+      min-height: 1px;
+      padding: 6px;
+      @include desktop {
+        padding: 8px;
+      }
+    }
+    align-items: center;
+
+    a {
+      color: $color-white;
+      text-transform: uppercase;
+      &.active,
+      &:hover {
+        color: $color-logo-red;
+      }
+    }
+  }
+
+  .hide-on-mobile {
+    display: none;
+    @include desktop {
+      @include flex-container;
+    }
+  }
+}

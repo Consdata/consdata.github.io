@@ -4,6 +4,7 @@ title:     Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego as
 published: true
 date:      2019-12-19 08:00:00 +0100
 author:    amarszalek
+image:     /assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/testowanie-frontendu-asynch.png
 tags:
     - Jasmine
     - Angular
@@ -11,7 +12,6 @@ tags:
     - unit test
     - komponent
 ---
-## Wprowadzenie
 Kończąc serię dotyczącą testowania komponentów Angularowych przy pomocy Jasmine, chciałbym poruszyć temat testów kodu wykonywanego asynchronicznie. 
 
 Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.

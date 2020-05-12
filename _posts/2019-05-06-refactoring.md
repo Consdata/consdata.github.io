@@ -4,6 +4,7 @@ title:     "Przykłady refaktoryzacji na podstawie książki Martina Fowlera i K
 published: true
 date:      2019-05-06 9:15:00 +0100
 author:    sucuncu
+image:     /assets/img/posts/2019-05-06-refactoring/refactoring.png
 tags:
     - refaktoryzacja
     - javascript

@@ -1,0 +1,13 @@
+<form action="/search.html" method="get">
+    <div class="search-input-container">
+        <input type="text" placeholder="Szukaj..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>

@@ -4,6 +4,7 @@ title:     Angular APP_INITIALIZER
 published: true
 date:      2020-02-14 08:00:00 +0100
 author:    dmejer
+image:     /assets/img/posts/2020-02-14-angular-app-initializer/app_initializer.png
 tags:
     - Angular
     - APP_INITIALIZER
@@ -17,10 +18,13 @@ tags:
 `APP_INITIALIZER` to wbudowany w Angulara `InjectionToken`.
 Pod `InjectionToken` można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu.
 Przykład zdefiniowania `MY_TOKEN`:
+
 ```js
 export const MY_TOKEN = new InjectionToken<string>('MY_TOKEN');
 ```
+
 Zarejestrowanie wartości `Hello` pod `MY_TOKEN`:
+
 ```js
 @NgModule({
 // (...)

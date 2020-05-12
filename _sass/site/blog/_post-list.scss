@@ -1,24 +1,86 @@
-.post-list {
+.post-animation {
+  transition: 0.2s;
+  animation: ease;
 
+  &:hover {
+    transform: translate3d(0, -1px, 0);
+    box-shadow: $post-tile-hover-shadow;
+  }
+}
+
+.post-tile {
+  @include flex-container;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: $post-tile-margin-top $small-padding $post-tile-margin-bottom;
+  @include mobile {
+    margin: $post-tile-margin-top 0;
+  }
+  @extend .post-animation;
+}
+
+.post-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  letter-spacing: $general-letter-spacing;
+  margin-top: 0;
+}
+
+.search-result-tile {
+  margin: $content-padding $small-padding;
+}
+
+.post-tile-content {
+  @include flex-container;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: $small-padding;
+  height: 100%;
+}
+
+.post-info {
+  @include flex-container;
+  flex-direction: column;
+}
+
+.post-description {
+  font-size: 1.2em;
+  letter-spacing: $general-letter-spacing;
+}
+
+.big-post-tile-content {
+  @include flex-container;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: $small-padding;
   @include tablet-and-desktop {
-    padding-top: $content-padding;
-    padding-bottom: $content-padding;
+    padding: $content-padding;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .post-title {
+    font-size: 1.6em;
   }
+}
 
-  .post {
-    padding-top: $content-padding;
-    padding-bottom: $content-padding;
-  }
+.small-author-image {
+  width: $medium-author-image-size;
+  height: auto;
+  border-radius: 50%;
+  margin-right: $very-small-padding;
+}
 
-  h3 {
-    font-size: 20px;
-    margin: 0;
-  }
+.tile-author {
+  @include flex-container;
+  margin-top: $content-padding;
+  align-items: center;
+}
 
+.author-name {
+  font-weight: bold;
+}
+
+.highlight-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

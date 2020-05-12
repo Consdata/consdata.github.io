@@ -2,5 +2,18 @@
   @import "post-list";
   @import "post-metadata";
   @import "post/post";
-  @import "pagination";
+
+  @include desktop {
+    margin: 0 $blog-side-margins-desktop;
+  }
+
+  @include tablet {
+    margin: 0 $blog-side-margins-tablet;
+  }
+}
+
+.narrower {
+  @include desktop {
+    margin: 0 $narrower-side-margins-desktop;
+  }
 }

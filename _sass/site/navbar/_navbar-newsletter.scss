@@ -1,0 +1,17 @@
+.newsletter-button {
+  background-color: $color-logo-red;
+  color: $color-white;
+  font-weight: bold;
+  border: none;
+  padding: $very-small-padding;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-logo-red-dark;
+  }
+}
+
+.newsletter-link {
+  width: 100%;
+  text-align: center;
+}

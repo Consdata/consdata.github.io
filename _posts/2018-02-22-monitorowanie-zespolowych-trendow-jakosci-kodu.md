@@ -4,6 +4,7 @@ title:     "Monitorowanie zespołowych trendów jakości kodu"
 date:      2018-02-22 08:00:00 +0100
 published: true
 author:    glipecki
+image:     /assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/monitorowanie-kodu.png
 tags:
     - sonarqube
     - sonarqube companion

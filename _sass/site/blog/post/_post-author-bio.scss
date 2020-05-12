@@ -1,13 +1,14 @@
 .author-bio {
   display: none;
+  letter-spacing: $general-letter-spacing;
   @include tablet-and-desktop {
     @include flex-container;
+    align-items: center;
   }
-  margin-top: 25px;
   padding: $content-padding;
 
 
-  $author-image-size: 90px;
+  $author-image-size: 120px;
 
   .author-image {
     min-width: $author-image-size;
@@ -30,7 +31,7 @@
     margin-left: $content-padding;
     width: 100%;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .header {
@@ -38,14 +39,26 @@
     align-items: center;
   }
 
-  .author-name {
-    font-size: 24px;
-    font-weight: $font-weight-semibold;
-  }
   .social-buttons {
     margin-left: $content-padding;
     svg {
       padding: 0;
     }
   }
+
+  .author-name {
+    font-size: 1.4em;
+  }
+
+  .bio {
+    margin-top: $content-padding;
+    font-size: 1.1em;
+  }
+}
+
+.big-author-image {
+  width: $big-author-image-size;
+  height: auto;
+  border-radius: 50%;
+  margin-right: $small-padding;
 }

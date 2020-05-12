@@ -4,6 +4,7 @@ title:     "Terraform - czyli o tym, jak okiełznać chmurę od Amazona"
 date:      2018-03-26 08:00:00 +0100
 published: true
 author:    jgrobelny
+image:     /assets/img/posts/2018-03-26-terraform-czyli-o-tym-jak-okielznac-chmure-od-amazona/terraform.png
 tags:
     - terraform
     - aws

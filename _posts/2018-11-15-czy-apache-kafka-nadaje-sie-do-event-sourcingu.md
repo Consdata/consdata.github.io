@@ -4,6 +4,7 @@ title:     "Czy Apache Kafka nadaje się do Event Sourcingu?"
 date:      2018-11-15 08:00:00 +0100
 published: true
 author:    mmergo
+image:     /assets/img/posts/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu/kafka-apache.png
 tags:
     - event sourcing
     - apache kafka

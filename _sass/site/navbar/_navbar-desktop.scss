@@ -1,0 +1,11 @@
+.desktop-navbar {
+  @include mobile {
+    display: none;
+  }
+
+  .navbar-links {
+    @include flex-container;
+    justify-content: space-between;
+    white-space: nowrap;
+  }
+}

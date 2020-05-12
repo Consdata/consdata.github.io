@@ -4,24 +4,24 @@ body {
   padding: 0;
   margin: 0;
   min-width: $app-min-width;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
-  margin-top: $navbar-height-mobile;
-  padding-top: $content-padding;
-  padding-bottom: $content-padding;
-  min-height: calc(100vh - #{$navbar-height-mobile + $content-padding*2 + $mobile-footer-height});
-
-  @include tablet-and-desktop {
-    margin-top: $navbar-height-desktop;
-    min-height: calc(100vh - #{$navbar-height-desktop + $content-padding*2 + $desktop-footer-height});
+  margin: 0 auto;
+  flex: 1;
+  width: 100%;
+  @include mobile {
+    box-sizing: border-box;
+    padding: 0 $small-padding;
   }
-  @include content-container;
 }
 
 .svg-icon {
-  width: 16px;
-  height: 16px;
+  width: $svg-icon-size;
+  height: $svg-icon-size;
   display: inline-block;
   fill: currentColor;
   padding: 5px 3px 2px 5px;
@@ -32,4 +32,9 @@ main {
   &, & * {
     word-break: keep-all;
   }
+}
+
+.with-bottom-separator {
+  padding-bottom: $content-padding;
+  border-bottom: $separator-border;
 }
