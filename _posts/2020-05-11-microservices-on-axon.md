@@ -20,7 +20,14 @@ Alternatywą może okazać się skorzystanie z gotowego frameworku, który od po
 
 W tym wpisie przedstawię moje podejście do tematu na konkretnych przykładach, drogę z monolitu do mikroserwisów oraz porównanie Axona z Kafką.
 
-# Axon Framework
+# Krótko o Axonie
+AxonFramework to... framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie.
+Axon bierze na barki zarządzanie przepływem wszystkich informacji między komponentami np. kierowanie commandów do odpowiednich agregatów, czy zapisywanie eventów w event store. 
+Jeżeli chodzi o kwestie event store'a to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli.
+Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna co moim zdaniem plasuje Axona jako mocnego gracza.
+
+## AxonServer
+
 Krótki opis, jedno-dwa zdania, 
 proste przykłady podstawowych funkcjonalności (agregaty, commandy, eventy, query, sagi [przy sadze mozna wspomnieć ze tylko inject z pola działa, bo axon wymaga bezparametrowy konstruktor)
 
