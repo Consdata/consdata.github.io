@@ -4,6 +4,7 @@ layout: search
 
 <article>
     {% assign author = site.authors | where: 'short_name', page.short_name | first %}
+    {% include main-page-link.html %}
     <div class="row">
         <div class="col-15 with-bottom-separator">
             {% include author_bio.html %}
