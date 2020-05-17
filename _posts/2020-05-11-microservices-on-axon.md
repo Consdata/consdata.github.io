@@ -112,7 +112,7 @@ Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalno
 Przejście na mikroserwisy wiązało się również ze stworzeniem API Gateway kierującym ruch do odpowiedniego serwisu w zależności od endpointu. 
 
 Na diagramie prezentuje się to następująco:
-(DIAGRAM)
+![AxonDashboard](/assets/img/posts/2020-05-11-microservices-on-axon/diagram_komponentow.png)
 
 ### Problemy
 Migracja okazała się bezbolesna dla Axon Servera, który bez problemu zaczął wykrywać nowe instancje. 
@@ -174,6 +174,7 @@ public class ProxyCommandHandler {
     ...
 }
 ```
+
 Jako że trailers i cast dostały swój własny serwis i nie były już powiązane z agregatem filmu, musiałem przekonwertować je na samodzielne agregaty:
 ```java
 @Aggregate
