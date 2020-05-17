@@ -15,10 +15,10 @@ tags:
 
 Znając definicję Event Sourcingu oraz korzyści, jakie nam zapewnia (dla przypomnienia polecam [**wpis Marcina poświęcony częściowo tej tematyce**]({% post_url 2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu %})) warto rozważyć zastosowanie tego wzorca w swoim projekcie (oczywiście nie wszędzie się on nada).
 Osoby zainteresowane tematem jednak z pewnością zostaną postawione przed wyborem technologii, w której rozpoczną implementację. 
-Niezależnie od języka programowania, można implementować CQRS oraz Event Sourcing samemu, od A-Z, jednakże byłoby to czasochłonne i mogłoby prowadzić do wielu błędów. 
-Alternatywą może okazać się skorzystanie z gotowego frameworku, który od początku tworzony był z myślą o wspomnianych wzorcach - mowa tutaj o [**AxonFramework**](https://axoniq.io/).
+Niezależnie od języka programowania, można implementować CQRS oraz Event Sourcing samemu, od A-Z, jednakże byłoby to czasochłonne i może prowadzić do wielu błędów. 
+Alternatywą może okazać się skorzystanie z gotowego frameworku, który od początku tworzony był z myślą o wspomnianych wzorcach (włączając w to mikroserwisy) - mowa tutaj o [**AxonFramework**](https://axoniq.io/).
 
-W tym wpisie przedstawię moje podejście do tematu na konkretnych przykładach, drogę z monolitu do mikroserwisów oraz porównanie Axona z Kafką.
+W tym wpisie przedstawię Axona, omówię wybory, przed którymi stałem w kontekście tego frameworka, oraz drogę migracji z monolitu do mikroserwisów wraz z problemami, na które się natknąłem.
 
 # Krótko o Axonie
 AxonFramework to... framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie.
@@ -27,7 +27,7 @@ Jeżeli chodzi o kwestie event store'a to framework zostawia tu pełną dowolno�
 Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna co moim zdaniem plasuje Axona jako mocnego gracza.
 
 # Event store
-Fundamentem projektu opartego o Event Sourcing jest oczywiście event store - źródło prawdy całego systemu, stąd wybór narzędzia pod tą funkcję powinien być dokonany z rozwagą.
+Fundamentem projektu opartego o Event Sourcing jest oczywiście event store - źródło prawdy całego systemu, stąd wybór narzędzia pod tą funkcję jest kluczowy.
 
 ### Może Kafka?
 Kafka opiera się na eventach, których kolejność pojawiania się może zostać zachowana - co zapobiega sytuacji, w której wykonamy aktualizację krotki, zanim zostanie ona utworzona.
@@ -38,22 +38,22 @@ Kafka w tym momencie musiałaby przeiterować cały topic od pewnego offsetu, a�
 W kolejnym kroku trzeba by odfiltrować te eventy, które nie dotyczą agregatu, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny dodatkowy narzut na event store (odfiltrowane eventy nie są nam potrzebne).
 - Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym narzucie zdarzeń może trwać wieki.
 
-Potencjalnym rozwiązaniem pierwszego braku mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
+Potencjalnym rozwiązaniem pierwszego problemu mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
 To rozwiązanie jednak może nie sprawdzić się przy ogromnej ilości agregatów. 
 Wynika to ze sposobu, w jaki Kafka przechowuje topici (a właściwie partycje) - dla każdej tworzony jest osobny katalog w systemie plików. 
 Szczegółowe wyjaśnienie znajduje się w [**filmie**](https://youtu.be/zUSWsJteRfw?t=2179) przygotowanym przez AxonIQ (firma odpowiedzialna za rozwój Axona).
 
 ### AxonServer
-W kwestii event store AxonIQ wyszedł na przeciw potrzebom dając do dyspozycji swoje narzędzie, które idealnie spełnia się w roli event store'a - AxonServer:
-- pozwala na dokładanie eventów (z jednoczesnym brakiem możliwości edycji nałożonych już eventów)
+W kwestii event store AxonIQ wyszedł na przeciw potrzebom dając do dyspozycji swoje narzędzie, które idealnie spełnia się w tej roli - AxonServer:
+- pozwala na dokładanie eventów (z jednoczesnym brakiem możliwości edycji już istniejących)
 - zapewnia stałą wydajność niezależnie od ilości danych przetrzymywanych w event store
 - umożliwia konstruowanie snapshotów dla agregatów i nakładanie ich (w przypadku dużej ilości eventów rekonstrukcja agregatu bez funkcjonalności snapshotów może trochę trwać)
 
 Po uruchomieniu AxonServera mamy dostęp do dashboardu pokazującego który mikroserwis jest podpięty pod event store wraz z jego liczbą instancji:
 ![AxonDashboard](/assets/img/posts/2020-05-11-microservices-on-axon/axon_dashboard.png)
-Na samym dashboardzie funkcjonalności panelu administracyjnego się nie kończą:
+Na samym dashboardzie, funkcjonalności panelu administracyjnego się nie kończą:
 - podgląd konfiguracji wraz z przepustowością (commandy/eventy/query/snapshoty na sekundę)
-- możliwość wyszukania eventu używając ichniego języka zapytań
+- możliwość wyszukiwania eventu przy użyciu zapytań
 - tabelka ze wskazaniem, który command, ile razy i w jakim serwisie został obsłużony
 - zarządzanie dostępem do panelu
 
@@ -61,8 +61,8 @@ Oczywiście AxonFramework jest w pełni kompatybilny z AxonServerem i działa ou
 
 # Najpierw monolit
 Zaczynając przygodę z Axonem, nie chciałem skakać na głęboką wodę, zacząłem więc od monolitu, mając jednak z tyłu głowy perspektywę zmigrowania na coś bardziej skalowalnego.
-Migracja z monolitu na mikroserwisy nierzadko sprawia wiele problemów, tak było również w moim przypadku z [tą aplikacją](https://github.com/matty-matt/movie-keeper-core).
-W skrócie pozwala ona na wyszukiwanie filmów po tytułach, wraz z ich obsadę oraz trailerami korzystając z [API TMDb](https://developers.themoviedb.org/3/getting-started), zapisywanie wszystkiego w bazie, oznaczanie filmu jako przeczytany oraz sprawdzanie premiery cyfrowego wydania.
+Migracja z monolitu na mikroserwisy nierzadko sprawia wiele problemów, tak było również w moim przypadku z [**tą aplikacją**](https://github.com/matty-matt/movie-keeper-core).
+W skrócie pozwala ona na wyszukiwanie filmów po tytułach, wraz z ich obsadę oraz trailerami korzystając z [**API TMDb**](https://developers.themoviedb.org/3/getting-started), zapisywanie wszystkiego w bazie, oznaczanie filmu jako przeczytany oraz sprawdzanie premiery cyfrowego wydania.
 Stworzyłem więc agregat filmu wraz z encjami zawierającymi trailery oraz obsadę:
 ```java
 @Aggregate
@@ -76,7 +76,7 @@ public class MovieAggregate {
     ...
 }
 ```
-Pobieranie danych z zewnętrznego serwisu działo się w EventHandlerze, poprzez zawołanie odpowiedniej metody z klasy ExternalService:
+Pobieranie danych z zewnętrznego serwisu działo się w EventHandlerze, poprzez zawołanie odpowiedniej metody z interfejsu ExternalService:
 ```java
 @Service
 public class MovieEventsHandler {
@@ -99,15 +99,15 @@ Projekt w tym momencie spełniał moje wymagania i składał się z trzech eleme
 2. Event store - AxonServer
 3. Storage, read model - MongoDB
  
-Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami mowa tu o zarządzaniu: filmami, trailerami oraz obsadą (cyfrowe premiery też powinny mieć swój serwis).
+Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami - mowa tu o zarządzaniu: filmami, trailerami oraz obsadą (cyfrowe premiery też powinny mieć swój serwis).
 
 # Mikroserwisy
-Przyszła pora na przekucie teorii w praktykę wykorzystując wypracowany wcześniej podział odpowiedzialności aplikacji.
+Przyszła pora na przekucie teorii w praktykę wykorzystując wypracowany wcześniej podział odpowiedzialności.
 Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalności) wyglądałaby w ten sposób:
-- proxy-service odpowiedzialny jest za pobieranie danych z zewnętrznego serwisu
-- trailer-service obsługuje zapis/odczyt trailerów, serwuje endpointy do pobierania trailerów
-- cast-service robi to samo dla obsady
-- movie-service odpowiada za szczegóły dot. filmu wraz z funkcjonalnością cyfrowych premier oraz serwuje wszystkie endpointy związane z filmem
+- proxy-service, odpowiedzialny za pobieranie danych z zewnętrznego serwisu
+- trailer-service, obsługujący zapis/odczyt trailerów, serwujący endpointy do pobierania trailerów
+- cast-service, robiący to samo dla obsady
+- movie-service, odpowiadający za szczegóły dot. filmu wraz z funkcjonalnością cyfrowych premier, serwujący wszystkie endpointy związane z filmem
 
 Przejście na mikroserwisy wiązało się również ze stworzeniem API Gateway kierującym ruch do odpowiedniego serwisu w zależności od endpointu. 
 
@@ -189,7 +189,7 @@ public class TrailerAggregate {
 Przejście na architekturę mikroserwisów niewątpliwie daje wiele korzyści, jednak bez wyklarowanego dobrego podziału jest to mocno utrudnione.
 Axon sam w sobie sprzyja tej architekturze, a korzystając z gotowych narzędzi, można taką migrację przeprowadzić w relatywnie krótkim czasie.
 
-Cały kod znajduje się w moim repozytorium [**tutaj](https://github.com/matty-matt/movie-keeper-core).
+Cały kod znajduje się w moim repozytorium [**tutaj**](https://github.com/matty-matt/movie-keeper-core).
 
 # Źródła
 - https://github.com/matty-matt/movie-keeper-core
