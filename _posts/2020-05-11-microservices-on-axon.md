@@ -58,7 +58,9 @@ Na samym dashboardzie funkcjonalności panelu administracyjnego się nie kończ�
 - zarządzanie dostępem do panelu
 
 Oczywiście AxonFramework jest w pełni kompatybilny z AxonServerem i działa out-of-the-box, bez dodatkowej konfiguracji.
+
 # Mikroserwisy
+
 - że poprę swoim projektem
 - najpierw powinno się wypracować monolit 
 - tu powinien wlecieć diagram
@@ -66,3 +68,8 @@ Oczywiście AxonFramework jest w pełni kompatybilny z AxonServerem i działa ou
 
 # Podsumowanie
 pierdu pierdu, niebawem kolejne wpisy itd
+
+# Źródła
+- https://github.com/matty-matt/movie-keeper-core
+- https://axoniq.io/
+- https://youtu.be/zUSWsJteRfw?t=2179
