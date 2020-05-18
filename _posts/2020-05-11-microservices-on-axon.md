@@ -36,7 +36,7 @@ Do tego Kafka bardzo łatwo się skaluje oraz uniemożliwia edycję nałożonych
 - Problem pojawia się w momencie, gdy chcielibyśmy odtworzyć agregat na podstawie eventów. 
 Kafka w tym momencie musiałaby przeiterować cały topic od pewnego offsetu, aż do końca.
 W kolejnym kroku konieczne jest odfiltrowanie eventów nie związanych z agregatem, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny dodatkowy narzut na event store (odfiltrowane eventy nie są nam potrzebne).
-- Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym narzucie zdarzeń może trwać wieki.
+- Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym wolumenie może trwać wieki.
 
 Potencjalnym rozwiązaniem pierwszego problemu mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
 To rozwiązanie jednak może nie sprawdzić się przy ogromnej ilości agregatów. 
@@ -193,6 +193,6 @@ Axon sam w sobie sprzyja tej architekturze, a korzystając z gotowych narzędzi,
 Cały kod znajduje się w moim repozytorium [**tutaj**](https://github.com/matty-matt/movie-keeper-core).
 
 # Źródła
-- https://github.com/matty-matt/movie-keeper-core
-- https://axoniq.io/
-- https://youtu.be/zUSWsJteRfw?t=2179
+- <https://github.com/matty-matt/movie-keeper-core>
+- <https://axoniq.io/>
+- <https://youtu.be/zUSWsJteRfw?t=2179>
