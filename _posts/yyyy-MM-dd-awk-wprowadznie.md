@@ -6,12 +6,18 @@ published: true
 author:    dmejer
 image:     /assets/img/posts/2016-08-31-tytul-artykulu/nazwa_obrazka.png
 tags:
-    - AWK
+    - awk
     - gawk
 ---
 
-## Struktura  
+## Co to ?
 
-## Pattern
+## Wzorzec  
 
 ## Akcje
+
+## Zmienne wbudowane
+
+## Funkcje
+
+## Przykład - logi
