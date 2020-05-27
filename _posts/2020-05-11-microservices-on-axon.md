@@ -23,7 +23,7 @@ W tym wpisie przedstawię Axona i omówię wybory, przed którymi stałem w kont
 # Krótko o Axonie
 Axon to framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie.
 Axon bierze na barki zarządzanie przepływem wszystkich informacji między komponentami np. kierowanie commandów do odpowiednich agregatów, czy zapisywanie eventów w event store. 
-Jeżeli chodzi o kwestie event store'a to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli.
+Jeżeli chodzi o kwestie event store'a, to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli.
 Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna, co moim zdaniem czyni Axona mocnym graczem.
 
 # Event store
