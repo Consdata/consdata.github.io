@@ -46,7 +46,7 @@ Google Cloud oferuje bezpieczeństwo, o które ciężko w przypadku on-premise. 
 
 1. Bieżące aktualizacje bezpieczeństwa, które odbywają się bez przerw w dostępie do usługi;
 
-2. Ponad 500 ekspertów bezpieczeństwa Google, w tym czołowych ekspertów na świecie którzy pracują przez całą dobę, aby wcześniej wykryć zagrożenia i zareagować;
+2. Ponad 500 ekspertów bezpieczeństwa Google, w tym czołowych ekspertów na świecie, którzy pracują przez całą dobę, aby wcześniej wykryć zagrożenia i zareagować;
 
 3. Szyfrowanie danych przesyłanych między Google a klientami oraz między centrami danych, a także szyfrowanie danych zapisanych w chmurze;
 
@@ -58,13 +58,13 @@ Google Cloud oferuje bezpieczeństwo, o które ciężko w przypadku on-premise. 
 
 7. Bezpieczeństwo fizyczne centrów danych Google, które odwiedzić może jednie niewielka część pracowników firmy;
 
-8. Wieloletnie doświadczenie zdobyte podczas ataków na usługi wyszukiwarki Google, Gmail, oraz YouTube;
+8. Wieloletnie doświadczenie zdobyte podczas ataków na usługi wyszukiwarki Google, Gmail oraz YouTube;
 
 9. Wykorzystanie niestandardowego sprzętu oraz podpisów kryptograficznych na wszystkich niskopoziomowych komponentach (takich jak BIOS, Bootloader, Kernel).
 
 Google posiada rozbudowaną warstwę bezpieczeństwa, która zabezpiecza infrastrukturę od sprzętu aż po system operacyjny. Nie wszystko jest jednak dostępne out-of-the-box.
 
-Musimy pamiętać, że niektóre elementy muszą zostać przez nas poprawnie skonfigurowane. Mam na myśli na przykład uprawnienia/role czy reguły firewall. Jeśli tego nie zrobimy, to może się okazać, że nasz system będzie dostępny dla osób nieupoważnionych z poziomu internetu.
+Musimy pamiętać, że niektóre elementy muszą zostać przez nas poprawnie skonfigurowane. Mam na myśli na przykład uprawnienia/role czy reguły firewall. Jeśli tego nie zrobimy, to może się okazać, że nieupoważnione osoby mogą mięc dostęp do naszego systemu przez internet.
 
 ## Elastyczność
 
@@ -99,4 +99,4 @@ Jeśli nasz system przyjmuje wzmożony ruch np. przez kilka dni w każdym miesi�
 
 Zaoszczędzimy również na utrzymaniu infrastruktury, ponieważ nie potrzebujemy już administratorów opiekujących się naszymi serwerami.
 
-Dzięki automatyzacji jaką daje nam chmura możemy być mniej DevOps, a bardziej NoOps.
+Dzięki automatyzacji, jaką daje nam chmura, możemy być mniej DevOps, a bardziej NoOps.
