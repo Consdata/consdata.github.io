@@ -12,7 +12,7 @@ tags:
     - serverless
 ---
 
-Chmury obliczeniowe prężnie się rozwijają i zyskują na coraz większej popularności. Wiele firm decyduje się na skorzystanie z produktów oferowanych przez Google, Amazon czy Microsoft.
+Chmury obliczeniowe prężnie się rozwijają i zyskują coraz większą popularność. Wiele firm decyduje się na skorzystanie z produktów oferowanych przez Google, Amazon czy Microsoft.
 
 Z inicjatywy PKO Banku Polskiego powstaje [Chmura Krajowa](https://chmurakrajowa.pl/), która nawiązuje współpracę z Google. [Google Cloud otwiera nowy region w Warszawie. 🔗](https://itwiz.pl/operator-chmury-krajowej-google-cloud-otwieraja-region-google-cloud-warszawa-buduja-data-center/)
 
