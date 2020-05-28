@@ -20,7 +20,7 @@ W ostatnich latach bardzo dużo się dzieje w świecie Cloud Computing. Coraz cz
 
 ### Na co nam ta chmura?
 
-W tym wpisie chciałbym przedstawić kilka powodów, dla których warto skorzystać z [**Google Cloud Platform**](https://cloud.google.com/), jednak wiele elementów pokrywa się również z innymi usługodawcami, czy ogólną ideą chmury.
+W tym wpisie przedstawię kilka powodów, dla których warto skorzystać z [**Google Cloud Platform**](https://cloud.google.com/), jednak wiele elementów pokrywa się również z innymi usługodawcami, czy ogólną ideą chmury.
 
 ## Wydajność
 
@@ -42,13 +42,13 @@ Korzystając z chmury nie musimy więc przejmować się awariami sprzętu (np. w
 
 ## Bezpieczeństwo
 
-Google Cloud oferuje bezpieczeństwo, o które ciężko w przypadku on-premise. Składa się na to wiele elementów, między innymi:
+Google Cloud oferuje bezpieczeństwo, o które trudno w przypadku on-premise. Składa się na to wiele elementów, między innymi:
 
 1. Bieżące aktualizacje bezpieczeństwa, które odbywają się bez przerw w dostępie do usługi;
 
 2. Ponad 500 ekspertów bezpieczeństwa Google, w tym czołowych ekspertów na świecie, którzy pracują przez całą dobę, aby wcześniej wykryć zagrożenia i zareagować;
 
-3. Szyfrowanie danych przesyłanych między Google a klientami oraz między centrami danych, a także szyfrowanie danych zapisanych w chmurze;
+3. Szyfrowanie danych przesyłanych między Google, a klientami oraz między centrami danych, a także szyfrowanie danych zapisanych w chmurze;
 
 4. Automatyczna rotacja kluczy [(**Cloud KMS**);](https://cloud.google.com/kms/docs/key-rotation)
 
@@ -64,7 +64,7 @@ Google Cloud oferuje bezpieczeństwo, o które ciężko w przypadku on-premise. 
 
 Google posiada rozbudowaną warstwę bezpieczeństwa, która zabezpiecza infrastrukturę od sprzętu aż po system operacyjny. Nie wszystko jest jednak dostępne out-of-the-box.
 
-Musimy pamiętać, że niektóre elementy muszą zostać przez nas poprawnie skonfigurowane. Mam na myśli na przykład uprawnienia/role czy reguły firewall. Jeśli tego nie zrobimy, to może się okazać, że nieupoważnione osoby mogą mięc dostęp do naszego systemu przez internet.
+Musimy pamiętać, że niektóre elementy muszą zostać przez nas poprawnie skonfigurowane. Mam na myśli na przykład uprawnienia/role czy reguły firewall. Jeśli tego nie zrobimy, to może się okazać, że nieupoważnione osoby mogą mieć dostęp do naszego systemu przez internet.
 
 ## Elastyczność
 
@@ -80,7 +80,7 @@ W przypadku usług w modelu SaaS, takich jak np. Cloud SQL czy Cloud Function, n
 
 Jeśli uruchomimy naszą aplikację w modelu PaaS, np. korzystając z usługi App Engine (w wersji standard), Google automatycznie będzie skalował ją w zależności od obciążenia. Większą kontrolę nad skalowaniem naszej aplikacji zapewni nam Kubernetes Engine, który jest hybrydą między IaaS a PaaS.
 
-Również w przypadku modelu IaaS, korzystając z maszyn wirtualnych Compute Engine, mamy możliwość automatycznego skalowania. W tym wypadku musimy jednak skonfigurować grupę instancji i ustalić minimalną/maksymalną liczbę maszyn wirtualnych oraz na jakiej podstawie usługa ma być skalowana (np. obciążenie CPU). W zamian otrzymujemy największą kontrolę nad tym w jaki sposób odbywa się skalowanie.
+Również w przypadku modelu IaaS, korzystając z maszyn wirtualnych Compute Engine, mamy możliwość automatycznego skalowania. W tym wypadku musimy jednak skonfigurować grupę instancji i ustalić minimalną/maksymalną liczbę maszyn wirtualnych oraz na jakiej podstawie usługa ma być skalowana (np. obciążenie CPU). W zamian otrzymujemy największą kontrolę nad tym, w jaki sposób odbywa się skalowanie.
 
 ## Obniżenie kosztów
 
@@ -88,12 +88,12 @@ W przypadku modelu IaaS, jeśli zmigrujemy się do chmury strategią "Lift and S
 
 Sytuacja zmienia się w przypadku modeli PaaS czy SaaS, a także hybrydy w postaci Google Kubernetes Engine. Ponieważ zasoby w chmurze są dostępne na żądanie, to płacimy tylko za te, które faktycznie wykorzystujemy.
 
-Jeśli nasz system przyjmuje wzmożony ruch np. przez kilka dni w każdym miesiącu, to w tych dniach zostaną przydzielone dodatkowe zasoby. Jak ruch spadnie, to zasoby zostaną zredukowane, dzięki czemu nie będziemy płacić za to, czego w danej chwili nie potrzebujemy.
+Jeśli nasz system przyjmuje wzmożony ruch np. przez kilka dni w każdym miesiącu, to w tych dniach zostaną przydzielone dodatkowe zasoby. Gdy ruch spadnie, to zasoby zostaną zredukowane, dzięki czemu nie będziemy płacić za to, czego w danej chwili nie potrzebujemy.
 
 **Google Cloud oferuje również zniżki:**
 
 - [**Sustained use discounts**](https://cloud.google.com/compute/docs/sustained-use-discounts) - zniżki za uruchamianie określonych zasobów przez znaczną część miesiąca;
-- [**Committed use discounts**](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) - zniżki w ramach umowy z Google, jeśli zobowiązujemy się do korzystania z zasobów przez określony czas.
+- [**Committed use discounts**](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts) - zniżki w ramach umowy z Google, jeśli zobowiążemy się do korzystania z zasobów przez określony czas.
 
 [**a także darmowe limity. 🔗**](https://cloud.google.com/free)
 
