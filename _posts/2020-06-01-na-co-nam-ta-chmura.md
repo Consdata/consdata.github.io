@@ -29,6 +29,7 @@ Infrastruktura Google Cloud Platform zapewnia nam wydajność kilkudziesięciu c
 Sieć Google jest odpowiedzialna za 40% ruchu całego internetu i jest największa siecią tego typu na świecie. Komunikacja między usługami Google Cloud odbywa się przez wewnętrzną infrastrukturę sieciową, co zapewnia bardzo wysoką przepustowość oraz niską latencję.
 
 ![Google Cloud Network](/assets/img/posts/2020-06-01-na-co-nam-ta-chmura/google-cloud-network.png)
+<span class="img-legend">Google Network<br />źródło: <a href="https://cloud.google.com/about/locations#network">https://cloud.google.com</a> - dostęp: 2020-06-01</span>
 
 ## Niezawodność
 
