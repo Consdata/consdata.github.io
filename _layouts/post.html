@@ -39,8 +39,9 @@ layout: default
                         <div class="post-content">
                             {{ content }}
                             <div id="myModal" class="modal">
-                                <i id="modal-close" class="fa fa-times close" aria-hidden="true" onclick="closeModal()"></i>
-                                <img class="modal-content" id="img01">
+                                <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                                   onclick="closeModal()"></i>
+                                <img class="modal-content">
                             </div>
                         </div>
                     </div>
@@ -122,14 +123,12 @@ layout: default
 
     function zoomImage($event) {
         const modal = document.getElementById('myModal');
-        const modalImg = document.getElementById('img01')
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
         modal.style.display = 'flex';
-        modalImg.src = $event.target.src;
     }
 
     function closeModal() {
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
+        document.getElementById('myModal').style.display = 'none';
     }
 
     const postImages = document.querySelectorAll('.post-content img');
