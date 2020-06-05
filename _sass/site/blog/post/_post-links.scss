@@ -1,3 +1,11 @@
-:not(.no-breaking-word) > a {
-  word-break: break-all;
+.post-content {
+  a {
+    font-style: italic;
+    word-break: keep-all;
+    color: $color-logo-red;
+
+    &:hover {
+      color: $color-dark-gray;
+    }
+  }
 }
