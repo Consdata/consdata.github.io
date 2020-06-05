@@ -37,6 +37,7 @@ Do tego Kafka bardzo łatwo się skaluje oraz uniemożliwia edycję nałożonych
 Kafka w tym momencie musiałaby przeiterować cały topic od pewnego offsetu, aż do końca.
 W kolejnym kroku konieczne jest odfiltrowanie eventów nie związanych z agregatem, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny narzut na event store (odfiltrowane eventy nie są nam potrzebne).
 - Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym wolumenie może trwać wieki.
+- Kolejnym ograniczeniem równie ważnym co poprzednie, jest brak optimistic lockingu w Kafce (istnieje jedynie obejście w postaci jednego wątku piszącego na topic). Bez tego mechanizmu, w wielowątkowej aplikacji może pojawić się problem, gdy wpadną dwa eventy w tym samym czasie - wtedy zostanie nadpisany przez drugi. 
 
 Potencjalnym rozwiązaniem pierwszego problemu mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
 To rozwiązanie jednak może nie sprawdzić się przy ogromnej ilości agregatów. 
