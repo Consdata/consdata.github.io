@@ -35,7 +35,7 @@ Ponadto Kafka trzyma dane na topicach, zapamiętując offset (liczbę porządkow
 Do tego Kafka bardzo łatwo się skaluje oraz uniemożliwia edycję nałożonych eventów, co niewątpliwie jest plusem. Jest jednak parę punktów, które brakują Kafce, do bycia idealnym kandydatem na event store:
 - Problem pojawia się w momencie, gdy chcielibyśmy odtworzyć agregat na podstawie eventów. 
 Kafka w tym momencie musiałaby przeiterować cały topic od pewnego offsetu, aż do końca.
-W kolejnym kroku konieczne jest odfiltrowanie eventów nie związanych z agregatem, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny dodatkowy narzut na event store (odfiltrowane eventy nie są nam potrzebne).
+W kolejnym kroku konieczne jest odfiltrowanie eventów nie związanych z agregatem, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny narzut na event store (odfiltrowane eventy nie są nam potrzebne).
 - Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym wolumenie może trwać wieki.
 
 Potencjalnym rozwiązaniem pierwszego problemu mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
@@ -76,24 +76,33 @@ public class MovieAggregate {
     ...
 }
 ```
-Pobieranie danych z zewnętrznego serwisu działo się w EventHandlerze, poprzez zawołanie odpowiedniej metody z interfejsu ExternalService:
+Pobieranie danych z zewnętrznego serwisu działo się w event handlerze, poprzez zawołanie odpowiedniej metody z interfejsu ExternalService:
 ```java
 @Service
 public class MovieEventsHandler {
     ...
     @EventHandler
     public void handle(MovieSearchDelegatedEvent event) {
-            log.info("Handling {}, id={}", event.getClass().getSimpleName(), event.getMovieId().getId());
-            try {
+            ...
                 ExternalMovie externalMovie = externalService.searchMovie(event.getSearchPhrase());
                 commandGateway.send(new SaveMovieCommand(event.getMovieId(), externalMovie));
-            } catch (NotFoundInExternalServiceException e) {
-                queryUpdateEmitter.emit(GetMovieQuery.class, query -> true, new MovieDTO(MovieState.NOT_FOUND_IN_EXTERNAL_SERVICE));
-            }
+            ...
     }
     ...
 }
 ```
+Agregat obsługiwał SaveMovieCommand, wysyłając MovieSavedEvent, który z kolei powoduje zapis do bazy:
+```java
+    @EventHandler
+    public void handle(MovieSavedEvent event) {
+        ...
+        movieRepository.findByExternalMovieId(event.getExternalMovie().getExternalMovieId().getId()).ifPresentOrElse(
+                movie -> handleMovieDuplicate(),
+                () -> persistMovie(event));
+    }
+```
+Szczegółowy diagram przepływu dla tego przypadku użycia (już dla mikroserwisów) znajduje się w kolejnym rozdziale.
+
 Projekt w tym momencie spełniał moje wymagania i składał się z trzech elementów:
 1. Aplikacja-monolit
 2. Event store - AxonServer
@@ -112,7 +121,11 @@ Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalno
 Przejście na mikroserwisy wiązało się również ze stworzeniem API Gateway kierującym ruch do odpowiedniego serwisu w zależności od endpointu. 
 
 Na diagramie prezentuje się to następująco:
-![AxonDashboard](/assets/img/posts/2020-05-11-microservices-on-axon/diagram_komponentow.png)
+![Diagram komponentów](/assets/img/posts/2020-05-11-microservices-on-axon/diagram_komponentow.png)
+
+A tak prezentuje się przepływ Axonowych zdarzeń w przypadku wyszukania filmu z automatycznym zwróceniem wyniku.
+Obsada i trailery pobierane są z zewnętrznego serwisu od razu i zapisywane do bazy. Użytkownik dopiero później może je pobrać wchodząc w szczegóły wyszukanego filmu. 
+![Diagram przepływu](/assets/img/posts/2020-05-11-microservices-on-axon/flowchart.png)
 
 ### Problemy
 Migracja okazała się bezbolesna dla Axon Servera, który bez problemu zaczął wykrywać nowe instancje. 
@@ -132,18 +145,14 @@ public class MovieSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "movieId")
     public void handle(MovieSearchDelegatedEvent event) {
-        log.info("[saga] Handling {}, id={}", event.getClass().getSimpleName(), event.getMovieId());
-        movieId = event.getMovieId();
-        String proxyId = PROXY_PREFIX.concat(movieId);
-        associateWith("proxyId", proxyId);
+        ...
         commandGateway.send(new FetchMovieDetailsCommand(proxyId, event.getSearchPhrase()));
     }
 
     @SagaEventHandler(associationProperty = "proxyId")
     @EndSaga
     public void handle(MovieDetailsFetchedEvent event) {
-        log.info("[saga] Handling {}, id={}", event.getClass().getSimpleName(), event.getProxyId());
-
+        ...
         var movie = event.getExternalMovie();
         if (MovieState.NOT_FOUND_IN_EXTERNAL_SERVICE == movie.getMovieState()) {
             queryUpdateEmitter.emit(GetMovieQuery.class, query -> true, new MovieDTO(MovieState.NOT_FOUND_IN_EXTERNAL_SERVICE));
