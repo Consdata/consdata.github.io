@@ -38,6 +38,11 @@ layout: default
                         </div>
                         <div class="post-content">
                             {{ content }}
+                            <div id="myModal" class="modal">
+                                <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                                   onclick="closeModal()"></i>
+                                <img class="modal-content">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,4 +120,17 @@ layout: default
             const results = idx.search(tags);
             displayResults(results);
         })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
 </script>

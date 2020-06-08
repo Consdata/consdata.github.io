@@ -10,7 +10,7 @@
     margin-bottom: $first-post-bottom-margin;
   }
   @include mobile {
-    margin: 0 $small-padding;
+    margin: 0;
   }
 }
 
