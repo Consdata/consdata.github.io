@@ -51,7 +51,7 @@ W kwestii event store AxonIQ wyszedł na przeciw potrzebom dając do dyspozycji 
 - Umożliwia konstruowanie snapshotów dla agregatów i nakładanie ich (w przypadku dużej ilości eventów rekonstrukcja agregatu bez funkcjonalności snapshotów może trochę trwać).
 
 Po uruchomieniu AxonServera mamy dostęp do dashboardu pokazującego, który mikroserwis jest podpięty pod event store wraz z jego liczbą instancji:
-![AxonDashboard](/assets/img/posts/2020-05-11-microservices-on-axon/axon_dashboard.png)
+![AxonDashboard](/assets/img/posts/2020-06-08-microservices-on-axon/axon_dashboard.png)
 Na samym dashboardzie, funkcjonalności panelu administracyjnego się nie kończą:
 - Podgląd konfiguracji wraz z przepustowością (commandy/eventy/query/snapshoty na sekundę).
 - Możliwość wyszukiwania eventu przy użyciu zapytań.
@@ -122,11 +122,11 @@ Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalno
 Przejście na mikroserwisy wiązało się również ze stworzeniem API Gateway kierującym ruch do odpowiedniego serwisu w zależności od endpointu. 
 
 Na diagramie prezentuje się to następująco:
-![Diagram komponentów](/assets/img/posts/2020-05-11-microservices-on-axon/diagram_komponentow.png)
+![Diagram komponentów](/assets/img/posts/2020-06-08-microservices-on-axon/diagram_komponentow.png)
 
 A tak prezentuje się przepływ Axonowych zdarzeń w przypadku wyszukania filmu z automatycznym zwróceniem wyniku.
 Obsada i trailery pobierane są z zewnętrznego serwisu od razu i zapisywane do bazy. Użytkownik dopiero później może je pobrać wchodząc w szczegóły wyszukanego filmu. 
-![Diagram przepływu](/assets/img/posts/2020-05-11-microservices-on-axon/flowchart.png)
+![Diagram przepływu](/assets/img/posts/2020-06-08-microservices-on-axon/flowchart.png)
 
 ### Problemy
 Migracja okazała się bezbolesna dla Axon Servera, który bez problemu zaczął wykrywać nowe instancje. 
