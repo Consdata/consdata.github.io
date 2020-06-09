@@ -3,6 +3,6 @@ name:   Mateusz Kociszewski
 title:   Mateusz Kociszewski
 short_name: mkociszewski
 github: matty-matt
-bio: Fullstack Developer stawiający rozwój na szczycie piramidy potrzeb. Mimo wiecznego narzekania na brak czasu, stara się być aktywny - na siłowni lub na basenie. Mniej wymagające spędzanie czasu w postaci dobrego filmu, serialu czy gry również nie jest mu obce.
+bio: Full Stack Developer stawiający rozwój na szczycie piramidy potrzeb. Tak jak każdy w świecie dostrzega na własnej skórze ograniczoność czasu, lecz pomimo tego stara się być aktywny - na siłowni lub na basenie. Mniej wymagające spędzanie czasu w postaci obejrzenia dobrego filmu czy serialu również nie jest mu obce. Pograć też lubi, cyfrowo jak i planszowo.
 image:  mkociszewski.jpg
 ---

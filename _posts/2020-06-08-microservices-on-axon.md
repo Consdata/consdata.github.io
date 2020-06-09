@@ -1,10 +1,10 @@
 ---
 layout:    post
 title:     "Mikroserwisy na Axonie"
-date:      2020-05-11 08:00:00 +0100
+date:      2020-06-09 08:00:00 +0100
 published: true
 author:    mkociszewski
-image:     
+image:     /assets/img/posts/2020-06-08-microservices-on-axon/axon.jpg
 tags:
     - java
     - microservices
