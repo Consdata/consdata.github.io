@@ -108,10 +108,12 @@ services_protocol: http
 services_host: eximee-services
 services_port: 8080
 servicemix_host: eximee-servicemix
-validation_url: "{{ validation_protocol }}://{{ validation_host }}:{{ validation_port }}/osgi-bridge/validation/"
-services_url: "{{ services_protocol }}://{{ services_host }}:{{ services_port }}/osgi-bridge/serviceproxy/"
-eximee_status_url: "{{ eximee_status_protocol }}://{{ eximee_status_host }}:{{ eximee_status_port }}/eximee-status/"
-repository_url: "{{ repository_protocol }}://{{ repository_host }}:{{ repository_port }}/repository/"
+# Poniższe "placeholdery" opakowane w nawiasy klamrowe nie powinny zawwierać spacji. 
+# Występuje ona tylko dlatego, że zmienne znajdujące się wewnątrz nawiasów nie są prawidłowo renderowane na stronie z wpisem.
+validation_url: "{ { validation_protocol } }://{ { validation_host } }:{ { validation_port } }/osgi-bridge/validation/"
+services_url: "{ { services_protocol } }://{ { services_host } }:{ { services_port } }/osgi-bridge/serviceproxy/"
+eximee_status_url: "{ { eximee_status_protocol } }://{ { eximee_status_host }}:{ { eximee_status_port } }/eximee-status/"
+repository_url: "{ { repository_protocol } }://{ { repository_host } }:{ { repository_port } }/repository/"
 repository_username: UZUPELNIJ
 repository_password: UZUPELNIJ
 mongodb_host: eximee-mongo
