@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Ansible - jak uporządkować chaos?"
-date:      2020-06-29 15:00:00 +0100
+date:      2020-07-01 12:00:00 +0100
 published: true
 author:    rmastalerek
 image:     /assets/img/posts/2020-06-29-ansible-jak-uporzadkowac-chaos/chaos.png
@@ -80,11 +80,11 @@ function cleanOldVersion {
 ```
 Niby nic nadzwyczajnego, a jednak na samo logowanie postępu i usunięcie plików, które i tak zostaną ponownie wgrane na środowisko wraz z nową paczką, przeznaczono jakieś 30 linii kodu. Choć logowanie niekoniecznie było niezbędne, to jednak pozwalało śledzić kolejne etapy procesu instalacji, dając większą wiedzę osobom analizującym ewentualne przyczyny nieudanej instalacji.
 
-W takim razie co miał zrobić administrator systemu, który chciałby skrócić proces i zainstalować tylko te komponenty, które uległy zmianie? No cóż, musiał on wykazać się nie lada cierpliwością i pewnością siebie, modyfikując dołączony do paczki skrypt instalacyjny lub po prostu pogodzić się z faktem, że nie da się tego zrobić „na skróty”. 
+W takim razie, co miał zrobić administrator systemu, który chciałby skrócić proces i zainstalować tylko te komponenty, które uległy zmianie? No cóż, musiał on wykazać się nie lada cierpliwością i pewnością siebie, modyfikując dołączony do paczki skrypt instalacyjny lub po prostu pogodzić się z faktem, że nie da się tego zrobić „na skróty”. 
 
 Jakby tego było mało, chcąc zainstalować kompletną platformę na „świeżym” środowisku konieczna była praca z kilkoma archiwami zip, które zawierały poszczególne składowe systemu. Osobno bowiem dostarczano strukturę bazy danych, frontend, backend czy aplikacje do zarządzania systemem plików. W skrócie, aby administrator zainstalował platformę Eximee musiał co najmniej 4 razy powtórzyć podobny proces dla każdej części platformy. 
 
-# Era Ansible ![Logo Ansible](/assets/img/posts/2020-06-29-ansible-jak-uporzadkowac-chaos/ansible.png)
+# Era Ansible ![Logo Ansible](/assets/img/posts/2020-07-01-ansible-jak-uporzadkowac-chaos/ansible.png)
 Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (`KISS – Keep it simple, stupid`). Doskonale w ten trend wpasowuje się **Ansible**. To kupione przez firmę **Red Hat** opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. W prosty sposób, za pomocą języka **YAML** pozwala opisać wzajemne relacje między systemami. 
 
 Czytając dokumentację dostajemy obietnicę ujednolicenia konfiguracji, organizacji złożonych procesów i jednocześnie łatwą do zarządzania architekturę. Ponadto czytamy, że Ansible pozwala osiągnąć wzrost wydajności i nie nakłada dodatkowych wymagań na otoczenie, w którym działa. 
@@ -95,9 +95,9 @@ Do pracy z Ansible wymagane jest tylko, aby na maszynie sterującej zainstalowan
 
 Ansible wymaga hasła lub klucza SSH w celu rozpoczęcia zarządzania systemami i może rozpocząć zarządzanie nimi bez instalowania oprogramowania agenta, unikając problemu „zarządzania zarządzaniem” powszechnego w wielu systemach do automatyzacji.
 
-Ansible łączy się z systemami poprzez mechanizmy transportowe – SSH (Unix) lub PowerShell (Windows). **Moduły**, które są małymi programami, zawierające uzupełnione argumenty, przenoszone są do tymczasowego katalogu przez wspomniane mechanizmy na zarządzane maszyny. Tam są wykonywane, a następnie usuwane w ramach jednej akcji. Moduły zwracają obiekty JSON na standardowe wyjście, a te z kolei przetwarzane są przez program Ansible na maszynie sterującej. Moga one zarządzać idempotentnymi zasobami. Oznacza to, że moduł działa w sposób deklaratywny, czyli może zdecydować np. czy dany pakiet powinien zostać zainstalowany w określonej wersji lub nie wykonać żadnej akcji, gdy system jest już w pożądanym stanie. Można je też uruchamiać pojedynczo (imperatywnie).
+Ansible łączy się z systemami poprzez mechanizmy transportowe – SSH (Unix) lub PowerShell (Windows). **Moduły**, które są małymi programami, zawierające uzupełnione argumenty, przenoszone są do tymczasowego katalogu przez wspomniane mechanizmy na zarządzane maszyny. Tam są wykonywane, a następnie usuwane w ramach jednej akcji. Moduły zwracają obiekty JSON na standardowe wyjście, a te z kolei przetwarzane są przez program Ansible na maszynie sterującej. Mogą one zarządzać idempotentnymi zasobami. Oznacza to, że moduł działa w sposób deklaratywny, czyli może zdecydować np. czy dany pakiet powinien zostać zainstalowany w określonej wersji lub nie wykonać żadnej akcji, gdy system jest już w pożądanym stanie. Można je też uruchamiać pojedynczo (imperatywnie).
 
-Aby zarządzać administrowanymi systemami służą pliki **inventory**. Pozwalają one na grupowanie serwerów i definiowanie zmiennych, które później wykorzystywane będą w tzw. **playbookach**. Plik inventory może być użyty globalnie, gdzie zainstalowano Ansible lub wykorzystać lokalne pliki inventory dedykowane dla konkretnego projektu. Przykładowy fragment pliku inventory wygląda następująco:
+Do zarządzania administrowanymi systemami służą pliki **inventory**. Pozwalają one na grupowanie serwerów i definiowanie zmiennych, które później wykorzystywane będą w tzw. **playbookach**. Plik inventory może być użyty globalnie, gdzie zainstalowano Ansible lub wykorzystać lokalne pliki inventory dedykowane dla konkretnego projektu. Przykładowy fragment pliku inventory wygląda następująco:
 ```
 ### Ogólne parametry instalacji
 
@@ -118,7 +118,7 @@ mongodb_host: eximee-mongo
 mongo_db_auth: MONGODB-CR
 ...
 ```
-W pliku inventory znajdują się zatem dane dotyczące hostów, używanych portów czy dane autentykacyjne. W inventory warto umieścić również takie zmienne, które są częściej wykorzystywane w playbookach lub zależne są np. od serwerów, na którym instalujemy aplikację. Nie powinno się bowiem modyfikować playbooków przy okazji każdej instalacji, a raczej utrzymywać dla danego serwera odpowiednią konfigurację. W przypadku platformy Eximee takimi zmiennymi są np. adresy URL różnych aplikacji. Warto też zwrócić uwagę, że adresy w powyższym przykładzie nie są zdefiniowane „na sztywno”. Zawierają one odwołania do kilku innych zmiennych tworząc nową wartość, na co również pozwala Ansible.
+W pliku inventory znajdują się zatem dane dotyczące hostów, używanych portów czy dane autentykacyjne. W inventory warto umieścić również takie zmienne, które są częściej wykorzystywane w playbookach lub zależne są np. od serwerów, na którym instalujemy aplikację. Nie powinno się bowiem modyfikować playbooków przy okazji każdej instalacji, a utrzymywać dla danego serwera odpowiednią konfigurację. W przypadku platformy Eximee takimi zmiennymi są np. adresy URL różnych aplikacji. Warto też zwrócić uwagę, że adresy w powyższym przykładzie nie są zdefiniowane „na sztywno”. Zawierają one odwołania do kilku innych zmiennych tworząc nową wartość, na co również pozwala Ansible.
 
 Wiedząc już czym jest moduł oraz gdzie należy umieścić konfigurację, potrzebna jest jeszcze wiedza, jak definiować pewien stan systemu, który chcemy osiągnąć. Do tego właśnie służą **playbooki**. Definicja takiego stanu dzieli się na taski. Zwiększa to nie tylko czytelność kodu playbooka, ale też oddziela od siebie niezależne etapy instalacji. 
 ```
@@ -148,7 +148,7 @@ Wiedząc już czym jest moduł oraz gdzie należy umieścić konfigurację, potr
         path: "{{ eximee_platform_dest }}/installation_tmp"
         state: absent
 ```
-W powyższym przykładzie widoczne są dwa proste zadania. Pierwsze, o nazwie Create installation_tmp dir tworzy tymczasowy katalog instalacyjny installation_tmp w lokalizacji, która zdefiniowana zostala pod zmienną eximee_platform_dest. Drugie (Remove installation_tmp dir) ten katalog uswuwa. Pomiędzy tymi zadaniami zaimportowane zostały odseparowane logicznie playbooki. Każdy z nich instaluje odrębną część platformy, a ich rozdzielenie jeszcze bardziej zwiększa czytelność kodu. Co ciekawe, również importowane playbooki zostały odpowiednio podzielone na **role**, które na podstawie określonej struktury plików, pozwalają na automatyczne ładowanie zmiennych czy tasków. Ponadto, grupowanie zadań w role pozwala na ich łatwe reużywanie.
+W powyższym przykładzie widoczne są dwa proste zadania. Pierwsze, o nazwie Create installation_tmp dir tworzy tymczasowy katalog instalacyjny installation_tmp w lokalizacji, która zdefiniowana została pod zmienną eximee_platform_dest. Drugie (`Remove installation_tmp dir`) ten katalog usuwa. Pomiędzy tymi zadaniami zaimportowane zostały odseparowane logicznie playbooki. Każdy z nich instaluje odrębną część platformy, a ich rozdzielenie jeszcze bardziej zwiększa czytelność kodu. Co ciekawe, również importowane playbooki zostały odpowiednio podzielone na **role**, które na podstawie określonej struktury plików, pozwalają na automatyczne ładowanie zmiennych czy tasków. Ponadto, grupowanie zadań w role pozwala na ich łatwe reużywanie.
 
 Jak uruchomić taki skrypt instalacyjny? Nic prostszego – wystarczy poniższa instrukcja: `ansible-playbook nazwa_playbooka.yml`
 
@@ -180,25 +180,25 @@ eximee-ansible
 ```
 
 Jakie korzyści niosła za sobą taka zmiana? Tych było kilka:
-- idempotenetność stanu docelowego – nie instalujemy czegoś, co już jest w pożądanym stanie
-- możliwość zarządzania konfiguracjami poszczególnych komponentów platformy Eximee
-- platforma dostarczana jest jedną paczką, zawierającą wszystkie komponenty
-- instalacja odbywać się będzie bardzo podobnie, jak miało to miejsce w przypadku skryptów bashowych – uruchamiany będzie główny playbook wraz ze wskazanaiem pliku konfiguracyjnego
-- możliwość uruchomienia skryptów z poziomu maszyny sterującej – system będzie wiedział na jakim serwerze ma zostać zainstalowana platforma
-- instalowane będą tylko te aplikacje, których konfiguracja się zmieniła 
-- wbudowany mechanizm logowania postępu instalacji 
-- znaczna poprawa czytelności 
-- łatwa możliwość rozszerzerzania skryptów – np. o tagi, pozwalające na wykonanie skryptów tylko dla danego komponentu lub grupy komponentów 
+- idempotenetność stanu docelowego – nie instalujemy czegoś, co już jest w pożądanym stanie;
+- możliwość zarządzania konfiguracjami poszczególnych komponentów platformy Eximee;
+- platforma dostarczana jest jedną paczką, zawierającą wszystkie komponenty;
+- instalacja odbywać się będzie bardzo podobnie, jak miało to miejsce w przypadku skryptów bashowych – uruchamiany będzie główny playbook wraz ze wskazanaiem pliku konfiguracyjnego;
+- możliwość uruchomienia skryptów z poziomu maszyny sterującej – system będzie wiedział na jakim serwerze ma zostać zainstalowana platforma;
+- instalowane będą tylko te aplikacje, których konfiguracja się zmieniła;
+- wbudowany mechanizm logowania postępu instalacji;
+- znaczna poprawa czytelności;
+- łatwa możliwość rozszerzerzania skryptów – np. o tagi, pozwalające na wykonanie skryptów tylko dla danego komponentu lub grupy komponentów.
 
 # Ansible, a instalacja mikroserwisów
 Przejście na nowy sposób instalacji wykonane zostało nie tylko dla komponentów platformy, ale też dla mikroserwisów dostarczanych dla jednego z klientów. W każdym takim mikroserwisie, będącym klasyczną aplikacją Spring Bootową, wydzielono dodatkowy moduł, w którym zdefiniowano taski odpowiedzialne za:
-  - kopiowanie wykonywalnego jara na docelowe środowisko, pod określoną w konfiguracji lokalizację
-  - utworzenie katalogu z konfiguracją
-  - kopiowanie konfiguracji do utworzonego katalogu
-  - utworzenie katalogu z logami
-  - kopiowanie konfiguracji logback’a na środowisko docelowe
-  - restart aplikacji, jeżeli ta jest już uruchomiona na środowisku
-  - weryfikację działania aplikacji
+  - kopiowanie wykonywalnego jara na docelowe środowisko, pod określoną w konfiguracji lokalizację;
+  - utworzenie katalogu z konfiguracją;
+  - kopiowanie konfiguracji do utworzonego katalogu;
+  - utworzenie katalogu z logami;
+  - kopiowanie konfiguracji logback’a na środowisko docelowe;
+  - restart aplikacji, jeżeli ta jest już uruchomiona na środowisku;
+  - weryfikację działania aplikacji.
 
 Instalacja takiego mikroserwisu sprowadzała się do uzupełnienia parametrów konfiguracyjnych w pliku hosts-template.yml oraz wykonania polecenia: 
 ```
@@ -217,7 +217,7 @@ Plik microservice-x.yml to nic innego, jak główny playbook grupujący w rolach
 ```
 Już na pierwszy rzut oka widać, że wspomniane taski mogły zostać z powodzeniem wydzielone do osobnego projektu. Ten odrębny byt, mógłby stać się wspólnym elementem dla wszystkich mikroserwisów po to, by nie powielać kodu i zmniejszyć złożoność dodatkowego modułu. W takich kwestiach bardzo pomocny jest rozdział poświęcony dobrym praktykom w samej dokumentacji Ansible, dostępny pod adresem: [**Dobre praktyki**](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
 
-Podczas pierwszych wdrożeń na środowisku klienckim okazało się, że konieczne jest wprowadzenie dodatkowej konfiguracji. Powyższa definicja playbooka jest już w nią zaopatrzona. Chodzi bowiem o dyrektywy `become` oraz `become_user`. Pierwsze instalacje aplikacji kończyły się niepowodzeniem z powodu braku odpowiednich uprawnień. Dyrektywa `become` pozwala na ich tzw. eskalację czyli wykonanie zadania z uprawnieniami innyego użytkownika, niż obecnie zalogowany (zdalny). Innymi słowy zastosowanie dyrektywy `become` pozwala na wykonanie poleceń przy użyciu takich narzędzi jak sudo, su, runas, itd. Jeżeli zdefiniowana zostanie jedynie dyrektywa `become`, użytkownik domyślnie otrzymuje uprawnienia root’a. Problem w tym, że nie zawsze to właśnie ten użytkownik był tym pożądanym. Tu z pomocą przyszła dyrektywa `become_user`, która pozwala na zdefiniowanie nazwy użytkownika, z którym mamy np. wykonać odpowiednie zadanie. Wykorzystanie w powyższym przykładzie playbooka następujących wartości: 
+Podczas pierwszych wdrożeń na środowisku klienckim okazało się, że konieczne jest wprowadzenie dodatkowej konfiguracji. Powyższa definicja playbooka jest już w nią zaopatrzona. Chodzi bowiem o dyrektywy `become` oraz `become_user`. Pierwsze instalacje aplikacji kończyły się niepowodzeniem z powodu braku odpowiednich uprawnień. Dyrektywa `become` pozwala na ich tzw. eskalację czyli wykonanie zadania z uprawnieniami innego użytkownika, niż obecnie zalogowany (zdalny). Innymi słowy zastosowanie dyrektywy `become` pozwala na wykonanie poleceń przy użyciu takich narzędzi jak sudo, su, runas, itd. Jeżeli zdefiniowana zostanie jedynie dyrektywa `become`, użytkownik domyślnie otrzymuje uprawnienia root’a. Problem w tym, że nie zawsze to właśnie ten użytkownik był tym pożądanym. Tu z pomocą przyszła dyrektywa `become_user`, która pozwala na zdefiniowanie nazwy użytkownika, z którym mamy np. wykonać odpowiednie zadanie. Wykorzystanie w powyższym przykładzie playbooka następujących wartości: 
 ```
 switch_user: yes            # włączenie eskalacji uprawnień
 switched_user: tomcat       # przełączenie na użytkownika o nazwie tomcat
@@ -303,4 +303,4 @@ Ansible daje możliwość wykonania playbooka z większą ilością informacji p
 # Podsumowanie
 Zgrabne zarządzanie konfiguracją, automatyzacja i uproszczenie procesu instalacji, do tego czytelność i większa kontrola nad procesem wdrażania aplikacji. To główne zalety tego, co udało się wprowadzić zastępując nieco archaiczne podejście oparte o bashowe skrypty. 
 
-Wymienione korzyści wpływają przede wszystkim na skrócenie czasu wykonywania powtarzalnych czynności. Sama automatyzacja pozwala ograniczyć do minimum ryzyko popełnienia błędu ludzkiego podczas instalowania aplikacji. Zapis kroków instalacji aplikacji czy systemu w postaci prostych tasków oraz grupowanie ich w moduły a następnie playbooki pozwala na standaryzację procesu. To z kolei wyklucza niepotrzebne wykonywanie ręcznych zmian i późniejszą, często czasochłonną analizę problemu, gdy taki wystąpi. Dzięki plikom inventory nie jest konieczne utrzymywanie przez administratora konfiguracji do znacznej ilości serwerów i dokumentacji do nich. Niewątpliwą zaletą Ansible jest przewidywalność. Zapewnia ona efektywną pracę adminitratora czy DevOpsa i ogranicza wystąpienie nieoczekiwanych problemów. 
+Wymienione korzyści wpływają przede wszystkim na skrócenie czasu wykonywania powtarzalnych czynności. Sama automatyzacja pozwala ograniczyć do minimum ryzyko popełnienia błędu ludzkiego podczas instalowania aplikacji. Zapis kroków instalacji aplikacji czy systemu w postaci prostych tasków oraz grupowanie ich w moduły a następnie playbooki pozwala na standaryzację procesu. To z kolei wyklucza niepotrzebne wykonywanie ręcznych zmian i późniejszą, często czasochłonną analizę problemu, gdy taki wystąpi. Dzięki plikom inventory nie jest konieczne utrzymywanie przez administratora konfiguracji do znacznej ilości serwerów i dokumentacji do nich. Niewątpliwą zaletą Ansible jest przewidywalność. Zapewnia ona efektywną pracę administratora czy DevOpsa i ogranicza wystąpienie nieoczekiwanych problemów. 
