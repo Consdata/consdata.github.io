@@ -1,10 +1,10 @@
 ---
 layout:    post
 title:     "Ansible - jak uporządkować chaos?"
-date:      2020-07-03 15:00:00 +0100
+date:      2020-07-06 15:00:00 +0100
 published: true
 author:    rmastalerek
-image:     /assets/img/posts/2020-07-03-ansible-jak-uporzadkowac-chaos/chaos.png
+image:     /assets/img/posts/2020-07-06-ansible-jak-uporzadkowac-chaos/chaos.png
 tags:
     - ansible
     - automation
@@ -84,7 +84,7 @@ W takim razie, co miał zrobić administrator systemu, który chciałby skróci�
 
 Jakby tego było mało, chcąc zainstalować kompletną platformę na „świeżym” środowisku konieczna była praca z kilkoma archiwami zip, które zawierały poszczególne składowe systemu. Osobno bowiem dostarczano strukturę bazy danych, frontend, backend czy aplikacje do zarządzania systemem plików. W skrócie, aby administrator zainstalował platformę Eximee musiał co najmniej 4 razy powtórzyć podobny proces dla każdej części platformy. 
 
-## Era Ansible ![Logo Ansible](/assets/img/posts/2020-07-03-ansible-jak-uporzadkowac-chaos/ansible.png)
+## Era Ansible ![Logo Ansible](/assets/img/posts/2020-07-06-ansible-jak-uporzadkowac-chaos/ansible.png)
 Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (`KISS – Keep it simple, stupid`). Doskonale w ten trend wpasowuje się **Ansible**. To kupione przez firmę **Red Hat** opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka **YAML**, w prosty sposób pozwala opisać wzajemne relacje między systemami. 
 
 Czytając dokumentację dostajemy obietnicę ujednolicenia konfiguracji, organizacji złożonych procesów i jednocześnie łatwą do zarządzania architekturę. Ponadto czytamy, że Ansible pozwala osiągnąć wzrost wydajności i nie nakłada dodatkowych wymagań na otoczenie, w którym działa. 
@@ -95,9 +95,9 @@ Do pracy z Ansible wymagane jest tylko, aby na maszynie sterującej zainstalowan
 
 Ansible wymaga hasła lub klucza SSH w celu rozpoczęcia zarządzania systemami i może rozpocząć zarządzanie nimi bez instalowania oprogramowania agenta, unikając problemu „zarządzania zarządzaniem” powszechnego w wielu systemach do automatyzacji.
 
-Ansible łączy się z systemami poprzez mechanizmy transportowe – SSH (Unix) lub PowerShell (Windows). **Moduły**, które są małymi programami, zawierające uzupełnione argumenty, przenoszone są do tymczasowego katalogu przez wspomniane mechanizmy na zarządzane maszyny. Tam są wykonywane, a następnie usuwane w ramach jednej akcji. Moduły zwracają obiekty JSON na standardowe wyjście, a te z kolei przetwarzane są przez program Ansible na maszynie sterującej. Mogą one zarządzać idempotentnymi zasobami. Oznacza to, że moduł działa w sposób deklaratywny, czyli może zdecydować np. czy dany pakiet powinien zostać zainstalowany w określonej wersji lub nie wykonać żadnej akcji, gdy system jest już w pożądanym stanie. Można je też uruchamiać pojedynczo (imperatywnie).
+Ansible łączy się z systemami poprzez mechanizmy transportowe – SSH (Unix) lub PowerShell (Windows). **Moduły**, które są małymi programami, zawierające uzupełnione argumenty, przenoszone są do tymczasowego katalogu przez wspomniane mechanizmy na zarządzane maszyny. Tam są wykonywane, a następnie usuwane w ramach jednej akcji. Moduły zwracają obiekty JSON na standardowe wyjście, a te z kolei przetwarzane są przez program Ansible na maszynie sterującej. Mogą one zarządzać zasobami w sposób indempotentny. Oznacza to, że moduł działa w sposób deklaratywny, czyli może zdecydować np. czy dany pakiet powinien zostać zainstalowany w określonej wersji lub nie wykonać żadnej akcji, gdy system jest już w pożądanym stanie. Można je też uruchamiać pojedynczo (imperatywnie).
 
-Do zarządzania administrowanymi systemami służą pliki **inventory**. Pozwalają one na grupowanie serwerów i definiowanie zmiennych, które później wykorzystywane będą w tzw. **playbookach**. Plik inventory może być użyty globalnie, gdzie zainstalowano Ansible lub wykorzystać lokalne pliki inventory dedykowane dla konkretnego projektu. Przykładowy fragment pliku inventory wygląda następująco:
+Do zarządzania administrowanymi systemami służą pliki **inventory**. Pozwalają one na grupowanie serwerów i definiowanie zmiennych, które później wykorzystywane będą w tzw. **playbookach**. Plik inventory może być użyty globalnie, w ramach instalacji Ansible, lub wykorzystać lokalne pliki inventory dedykowane dla konkretnego projektu. Przykładowy fragment pliku inventory wygląda następująco:
 ```yaml
 # eximee-ansible/settings/settings-template.yml
 
@@ -120,7 +120,39 @@ mongodb_host: eximee-mongo
 mongo_db_auth: MONGODB-CR
 ...
 ```
-W pliku inventory znajdują się zatem dane dotyczące hostów, używanych portów czy dane uwierzytelniające. W inventory warto umieścić również takie zmienne, które są częściej wykorzystywane w playbookach lub zależne są np. od serwerów, na których instalujemy aplikację. Nie powinno się bowiem modyfikować playbooków przy okazji każdej instalacji, a utrzymywać dla danego serwera odpowiednią konfigurację. W przypadku platformy Eximee takimi zmiennymi są np. adresy URL różnych aplikacji. Warto też zwrócić uwagę, że adresy w powyższym przykładzie nie są zdefiniowane „na sztywno”. Zawierają one odwołania do kilku innych zmiennych tworząc nową wartość, na co również pozwala Ansible.
+W pliku inventory znajdują się zatem dane dotyczące hostów czy używanych portów. W inventory warto umieścić również takie zmienne, które są częściej wykorzystywane w playbookach lub zależne są np. od serwerów, na których instalujemy aplikację. Nie powinno się bowiem modyfikować playbooków przy okazji każdej instalacji, a utrzymywać dla danego serwera odpowiednią konfigurację. W przypadku platformy Eximee takimi zmiennymi są np. adresy URL różnych aplikacji. Warto też zwrócić uwagę, że adresy w powyższym przykładzie nie są zdefiniowane „na sztywno”. Zawierają one odwołania do kilku innych zmiennych tworząc nową wartość, na co również pozwala Ansible.
+
+Do zapamiętania haseł i innych danych uwierzytelniających pomocne okaże się **Ansible Vault**. Właściwość ta pozwala na przechowywanie poufnych i wrażliwych danych (np. haseł) w inny sposób, niż w postaci zwykłego tekstu w plikach inventory, rolach lub playbookach. 
+Wykorzystując poniższe polecenie i podając hasło, przy użyciu którego konfiguracja zostanie zaszyfrowana, można w prosty sposób zabezpieczyć wskazany plik.
+
+```bash
+$ ansible-vault encrypt /path/to/file
+New Vault password: 
+Confirm New Vault password: 
+Encryption successful
+```
+Zawartość takiego zasobu, który przed wykonaniem operacji wyglądał następująco:
+```yaml
+---
+repository_username: repoUser
+repository_password: ^$asdY$4-(56as
+```
+po użyciu Ansible Vault wygląda znacznie bezpieczniej:
+```bash
+$ANSIBLE_VAULT;1.1;AES256
+39303839656563346138653734383861363937643934323563356533366437333633383339323739
+3135386136336365316535346630333261316232393238360a353437383762386665363662316138
+63636139373162306165396231386265333264636537616463633935373637366164623762353135
+3263663338323163350a386230383034653538363538303537376435356166346337386637623662
+38613839356538336530636136333065343935393034656434666464623033633330656162643838
+64376165663330366463313165336237343863636437666437303964313362313935366332346362
+33313438383262383933643332663539373139376637626537393439323633366231653534356465
+31366662633837353562
+```
+Uruchomienie **playbooka**, który wykorzystuje zaszyfrowane pliki możliwe jest poprzez użycie dyrektywy `--ask-vault-pass`, np.:
+```bash
+$ ansible-playbook --ask-vault-pass --inventory inventory_file sample_playbook.yml
+```
 
 Wiedząc już czym jest moduł oraz gdzie należy umieścić konfigurację, potrzebna jest jeszcze wiedza, jak definiować pewien stan systemu, który chcemy osiągnąć. Do tego właśnie służą **playbooki**. Definicja takiego stanu dzieli się na taski. Zwiększa to nie tylko czytelność kodu playbooka, ale też oddziela od siebie niezależne etapy instalacji. 
 ```yaml 
@@ -210,7 +242,7 @@ Przejście na nowy sposób instalacji wykonane zostało nie tylko dla komponent�
 
 Instalacja takiego mikroserwisu sprowadzała się do uzupełnienia parametrów konfiguracyjnych w pliku hosts-template.yml oraz wykonania polecenia: 
 ```bash
-$ ansible-playbook -i hosts-template.yml microservice-x.yml -vvvv
+$ ansible-playbook --inventory hosts-template.yml microservice-x.yml -vvvv
 ```
 
 Plik microservice-x.yml to nic innego, jak główny playbook grupujący w rolach wszystkie powyższe zadania. Playbook jest bardzo prosty i wygląda następująco:
@@ -238,8 +270,6 @@ Ansible dostarcza wbudowany mechanizm logowania, pozwalający na śledzenie post
 PLAY [deploy microservice-x] ********************************************************************************************************************************************************************************
 
 TASK [Gathering Facts] **********************************************************************************************************************************************************************************
-[WARNING]: Platform linux on host lan is using the discovered Python interpreter at /usr/bin/python, but future installation of another Python interpreter could change this. See
-https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
 ok: [lan]
 
 TASK [microservice-x : copy microservice-x jar] *****************************************************************************************************************************************************************
