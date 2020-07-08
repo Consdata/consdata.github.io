@@ -1,10 +1,10 @@
 ---
 layout:    post
 title:     "Ansible - jak uporządkować chaos?"
-date:      2020-07-06 15:00:00 +0100
+date:      2020-07-08 08:00:00 +0100
 published: true
 author:    rmastalerek
-image:     /assets/img/posts/2020-07-06-ansible-jak-uporzadkowac-chaos/chaos.png
+image:     /assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/chaos.png
 tags:
     - ansible
     - automation
@@ -84,7 +84,7 @@ W takim razie, co miał zrobić administrator systemu, który chciałby skróci�
 
 Jakby tego było mało, chcąc zainstalować kompletną platformę na „świeżym” środowisku konieczna była praca z kilkoma archiwami zip, które zawierały poszczególne składowe systemu. Osobno bowiem dostarczano strukturę bazy danych, frontend, backend czy aplikacje do zarządzania systemem plików. W skrócie, aby administrator zainstalował platformę Eximee musiał co najmniej 4 razy powtórzyć podobny proces dla każdej części platformy. 
 
-## Era Ansible ![Logo Ansible](/assets/img/posts/2020-07-06-ansible-jak-uporzadkowac-chaos/ansible.png)
+## Era Ansible ![Logo Ansible](/assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/ansible.png)
 Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (`KISS – Keep it simple, stupid`). Doskonale w ten trend wpasowuje się **Ansible**. To kupione przez firmę **Red Hat** opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka **YAML**, w prosty sposób pozwala opisać wzajemne relacje między systemami. 
 
 Czytając dokumentację dostajemy obietnicę ujednolicenia konfiguracji, organizacji złożonych procesów i jednocześnie łatwą do zarządzania architekturę. Ponadto czytamy, że Ansible pozwala osiągnąć wzrost wydajności i nie nakłada dodatkowych wymagań na otoczenie, w którym działa. 
