@@ -109,7 +109,7 @@ Projekt w tym momencie spełniał moje wymagania i składał się z trzech eleme
 2. Event store - AxonServer
 3. Storage, read model - MongoDB
  
-Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami - mowa tu o zarządzaniu: filmami, trailerami oraz obsadą (cyfrowe premiery też powinny mieć swój serwis).
+Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami - mowa tu o zarządzaniu: filmami, trailerami, obsadą oraz serwis odpowiedzialny za odświeżanie dat cyfrowej premiery wraz z ocenami i liczbą głosów.
 
 # Mikroserwisy
 Przyszła pora na przekucie teorii w praktykę wykorzystując wypracowany wcześniej podział odpowiedzialności.
