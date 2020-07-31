@@ -1,8 +1,8 @@
 ---
 layout:    post
 title:     "Axon - Kompleksowe testowanie aplikacji"
-date:      2020-08-08 08:00:00 +0100
-published: false
+date:      2020-07-30 08:00:00 +0100
+published: true
 author:    mkociszewski
 tags:
     - java
@@ -19,7 +19,7 @@ Ten artykuł ma nadrobić zaległości w tej kwestii. Przedstawię dziś parę e
 
 # Testy domenowe
 Myślę, że warto zacząć od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
-W Axonie jest to bardzo łatwe, ponieważ do dyspozycji dostajemy gotowe narzędzia.
+W Axonie jest ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
 ### Agregaty
 Zostając przy aplikacji z poprzedniego wpisu weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
 Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie.
