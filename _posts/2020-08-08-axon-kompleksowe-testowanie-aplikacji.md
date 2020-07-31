@@ -13,4 +13,16 @@ tags:
     - tests
 ---
 
-W tym poście (drugim [z trzech] z serii o Axonie) chciałbym przedstawić jak wygląda testowanie jednostkowe apki na axonie (agregaty, sagi). Ponadto pokażę jak poradziłem sobie z testami integracyjnymi (nigdzie nie znalazłem w internecie przykładu, a AxonIQ zarzeka się, że nie bardzo jest sposób na to, otóż jest). Ostatni akapit miałby dotyczyć integracji z Travisem, jako bonus.
+Wstępik
+
+# Testy domenowe
+- Testy agregatu i sagi, przykładowa implementacja z wyjaśnieniem
+
+# Testy integracyjne
+- Problem testów integracyjnych (znaleźć wpis axoniq mówiący o tym, że jest to niemożliwe?)
+- Rozwiązanie problemu - przykładowa implementcja (jakie problemy napotkałem po drodze, być może na trello mam gdzieś zapisane, ale na pewno kwestia namiarów na axon-server + uwaga żeby nie podłączyć się do 'produkcyjnego')
+
+# Automatyzacja
+- Przedstawienie Travisa i jego możliwości, zalety
+- Przykładowy config z omówieniem
+- Screenshoty z działającej instalacji
