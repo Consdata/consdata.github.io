@@ -91,8 +91,7 @@ public class MovieAggregateTest {
 ```
 
 ## Sagi
-Drugim obiektem domenowym, który poddam testom, jest Saga. 
-Do przetestowania jest logika, która zadzieje się po wyemitowaniu eventu (lub kilku eventów) przez konkretny agregat.
+Drugim obiektem domenowym, który poddam testom, jest Saga, w której umieściłem logikę, która ma się wykonać po wyemitowaniu eventu (lub kilku eventów) przez konkretny agregat.
 W mojej aplikacji zdarzeniem otwierającym sagę dla filmu jest **MovieCreatedEvent** wyemitowany przez MovieAggrate - po jego pojawieniu się, wysyłam command, który zostanie obsłużony w mikroserwisie (*proxy-service*) odpowiedzialnym za pobieranie szczegółów filmu z zewnętrznego źródła:
  ```java
 public class MovieSaga {
@@ -109,7 +108,7 @@ public class MovieSaga {
 }
 ```
 Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
-Gdy *proxy-service* wyemituje odpowiedź w postaci **MovieDetailsEvent**, uznaję sagę za zakończoną i ślę command z uzupełnionymi szczegółami dla filmu:
+Gdy *proxy-service* wyemituje odpowiedź w postaci **MovieDetailsEvent**, to w zależności czy film został znaleziony, ślę command z uzupełnionymi szczegółami dla filmu (lub nie), a saga powinna się zakończyć:
 ```java
 public class MovieSaga {
     ...
@@ -126,7 +125,7 @@ public class MovieSaga {
     ...
 }
 ```
-W tym przypadku podobnie jak z agregatami, wykorzystamy **fixture** dostosowany pod sagi:
+Do przetestowania tego przypadku znów będziemy potrzebować **fixture**, tyle że tym razem skrojony pod sagi:
 ```java
 public class MovieSagaTest {
     ...
@@ -156,7 +155,7 @@ public class MovieSagaTest {
                 .whenAggregate(movieId)                                      // 3
                 .publishes(new MovieCreatedEvent(movieId, searchPhrase))     // 4
                 .expectActiveSagas(1)                                        // 5
-                .expectDispatchedCommands(                                   // 5
+                .expectDispatchedCommands(                                   
                     new FetchMovieDetailsCommand(proxyId, searchPhrase));
     }
     @Test
@@ -166,7 +165,7 @@ public class MovieSagaTest {
                 .whenAggregate(proxyId)                                       // 3
                 .publishes(new MovieDetailsEvent(proxyId, externalMovie))     // 4
                 .expectActiveSagas(0)                                         // 5
-                .expectDispatchedCommands(                                    // 5
+                .expectDispatchedCommands(                                    
                     new SaveMovieCommand(movieId, externalMovie));
     }
 }
