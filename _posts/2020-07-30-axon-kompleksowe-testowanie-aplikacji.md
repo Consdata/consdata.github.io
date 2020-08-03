@@ -171,8 +171,12 @@ public class MovieSagaTest {
     }
 }
 ```
-
 # Testy integracyjne
+Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), pora zweryfikować działanie funkcjonalności od A do Z.
+
+ 
+
+
 - Problem testów integracyjnych (znaleźć wpis axoniq mówiący o tym, że jest to niemożliwe?)
 - Rozwiązanie problemu - przykładowa implementcja (jakie problemy napotkałem po drodze, być może na trello mam gdzieś zapisane, ale na pewno kwestia namiarów na axon-server + uwaga żeby nie podłączyć się do 'produkcyjnego')
 
