@@ -20,7 +20,7 @@ Ten artykuł ma nadrobić zaległości w tej kwestii. Przedstawię dziś parę e
 # Testy domenowe
 Myślę, że warto zacząć od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
 W Axonie jest to ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
-### Agregaty
+## Agregaty
 Zostając przy aplikacji z poprzedniego wpisu, weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
 Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie (zmienić stan na ten sam i odwrotnie).
 Wystąpienie takiej anomalii odnotowywane jest w logu, a **ToggleWatchedEvent** nie zostaje wyemitowany.
@@ -59,6 +59,8 @@ Test piszemy w następujący sposób:
 3. Definiujemy stan oczekiwany i/lub wyemitowane eventy (**then/expect**).
 
 ```java
+public class MovieAggregateTest {
+    ...
     @Test
     public void shouldToggleWatchedEventAppear() {
         fixture.given(
@@ -68,10 +70,13 @@ Test piszemy w następujący sposób:
                 .expectEvents(new ToggleWatchedEvent(movieId, new Watched(true))) // 3
                 .expectState(state -> assertThat(state.getWatched().isWatched()).isTrue());
     }
+}
 ```
 Druga ścieżka do sprawdzenia to brak emisji zdarzenia w momencie zmiany stanu na ten sam.
 Dorzućmy więc do **given** wystąpienie eventu **ToggleWatchedEvent** - wtedy agregat nie powinien wyemitować nic nowego:
 ```java
+public class MovieAggregateTest {
+    ...
     @Test
     public void shouldNotToggleWatchedEventAppear() {
         fixture.given(
@@ -81,9 +86,90 @@ Dorzućmy więc do **given** wystąpienie eventu **ToggleWatchedEvent** - wtedy 
                 .when(new ToggleWatchedCommand(movieId, new Watched(true)))
                 .expectNoEvents();
     }
+}
 ```
 
-### Sagi
+## Sagi
+Drugim obiektem domenowym, który poddam testom, jest Saga. 
+Do przetestowania jest logika, która zadzieje się po wyemitowaniu eventu (lub kilku eventów) przez konkretny agregat.
+W mojej aplikacji zdarzeniem otwierającym sagę dla filmu jest **MovieCreatedEvent** wyemitowany przez MovieAggrate - po jego pojawieniu się, wysyłam command, który zostanie obsłużony w mikroserwisie (*proxy-service*) odpowiedzialnym za pobieranie szczegółów filmu z zewnętrznego źródła:
+ ```java
+public class MovieSaga {
+    ...
+    @StartSaga
+    @SagaEventHandler(associationProperty = MOVIE_ID)
+    public void handle(MovieCreatedEvent event) {
+        movieId = event.getMovieId();
+        String proxyId = PROXY_PREFIX.concat(movieId);
+        associateWith("proxyId", proxyId);
+        commandGateway.send(new FetchMovieDetailsCommand(proxyId, event.getSearchPhrase()));
+    }
+    ...
+}
+```
+Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
+Gdy *proxy-service* wyemituje odpowiedź w postaci **MovieDetailsEvent**, uznaję sagę za zakończoną i ślę command z uzupełnionymi szczegółami dla filmu:
+```java
+public class MovieSaga {
+    ...
+    @SagaEventHandler(associationProperty = PROXY_ID)
+    @EndSaga
+    public void handle(MovieDetailsEvent event) {
+        var movie = event.getExternalMovie();
+        if (MovieState.NOT_FOUND_IN_EXTERNAL_SERVICE == movie.getMovieState()) {
+            // handle when movie not found
+        } else {
+            commandGateway.send(new SaveMovieCommand(movieId, event.getExternalMovie()));
+        }
+    }
+    ...
+}
+```
+W tym przypadku podobnie jak z agregatami, wykorzystamy **fixture** dostosowany pod sagi:
+```java
+public class MovieSagaTest {
+    ...
+    private SagaTestFixture<MovieSaga> fixture;
+
+    @BeforeEach
+    public void setup() {
+        fixture = new SagaTestFixture<>(MovieSaga.class);
+        ...
+    }
+}
+```
+Testy mają sprawdzić czy odpowiednie commandy zostaną wyemitowane, oraz czy saga "wystartowała", bądź zakończyła się pod pewnymi warunkami.
+Struktura prezentuje się następująco:
+1. Mając agregat X o identyfikatorze równym **movieId**.
+2. Wiedząc, że X nie wyemitował żadnego eventu / wyemitował konkretny event.
+3. To gdy agregat X.
+4. Wyemituje konkretny event.
+5. Oczekujemy aktywnej/nieaktywnej sagi oraz opublikowany command / nieopublikowanie niczego.
+```java
+public class MovieSagaTest {
+    ...
+    @Test
+    public void shouldDispatchFetchMovieDetailsCommand() {
+        fixture.givenAggregate(movieId)                                      // 1
+                .published()                                                 // 2
+                .whenAggregate(movieId)                                      // 3
+                .publishes(new MovieCreatedEvent(movieId, searchPhrase))     // 4
+                .expectActiveSagas(1)                                        // 5
+                .expectDispatchedCommands(                                   // 5
+                    new FetchMovieDetailsCommand(proxyId, searchPhrase));
+    }
+    @Test
+    public void shouldDispatchSaveCastCommand() {
+        fixture.givenAggregate(movieId)                                       // 1
+                .published(new MovieCreatedEvent(movieId, searchPhrase))      // 2
+                .whenAggregate(proxyId)                                       // 3
+                .publishes(new MovieDetailsEvent(proxyId, externalMovie))     // 4
+                .expectActiveSagas(0)                                         // 5
+                .expectDispatchedCommands(                                    // 5
+                    new SaveMovieCommand(movieId, externalMovie));
+    }
+}
+```
 
 # Testy integracyjne
 - Problem testów integracyjnych (znaleźć wpis axoniq mówiący o tym, że jest to niemożliwe?)
