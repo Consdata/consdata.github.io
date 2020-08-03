@@ -63,12 +63,13 @@ public class MovieAggregateTest {
     ...
     @Test
     public void shouldToggleWatchedEventAppear() {
-        fixture.given(
-                    new MovieCreatedEvent(movieId, searchPhrase), // 1
+        fixture.given(                                                              // 1
+                    new MovieCreatedEvent(movieId, searchPhrase),
                     new MovieSavedEvent(movieId, externalMovie))
-                .when(new ToggleWatchedCommand(movieId, new Watched(true))) // 2
-                .expectEvents(new ToggleWatchedEvent(movieId, new Watched(true))) // 3
-                .expectState(state -> assertThat(state.getWatched().isWatched()).isTrue());
+                .when(new ToggleWatchedCommand(movieId, new Watched(true)))         // 2
+                .expectEvents(new ToggleWatchedEvent(movieId, new Watched(true)))   // 3
+                .expectState(                                                       // 3
+                    state -> assertThat(state.getWatched().isWatched()).isTrue());
     }
 }
 ```
