@@ -21,6 +21,7 @@ Ten artykuł ma nadrobić zaległości w tej kwestii. Przedstawię dziś parę e
 Zacznijmy od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
 W Axonie jest to ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
 Zaleta tych testów jest taka, że nie podnoszą one żadnego kontekstu, a więc wykonują się bardzo szybko.
+
 ## Agregaty
 Zostając przy aplikacji z poprzedniego wpisu, weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
 Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie (zmienić stan na ten sam i odwrotnie).
@@ -171,14 +172,84 @@ public class MovieSagaTest {
     }
 }
 ```
+
 # Testy integracyjne
-Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), pora zweryfikować działanie funkcjonalności od A do Z.
+Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), pora zweryfikować trochę większy wycinek aplikacji.
 
- 
+## Konfiguracja
+Twórcy w tym aspekcie akurat nie przygotowali nam rozwiązania, a na pewnej grupie dyskusyjnej proponują skorzystać z obrazu dockerowego - uruchomić AxonServer z terminala i podłączyć się testami do tej instancji.
+Wręcz idealna rola dla [**testcontainers**](https://www.testcontainers.org/) - pomyślałem (po przygotowaniu testów z użyciem tego narzędzia, trafiłem na podobne rozwiązanie na stacku).
+Powstała więc klasa umożliwiająca podniesienie potrzebnych mi kontenerów, aby skorzystać z nich podczas testów:
+```java
+@ActiveProfiles("test")
+public class TestContainers {
+
+    private static final int MONGO_PORT = 29019;
+    private static final int AXON_HTTP_PORT = 8024;
+    private static final int AXON_GRPC_PORT = 8124;
+
+    public static void startAxonServer() {
+        GenericContainer axonServer = new GenericContainer("axoniq/axonserver:latest")
+                .withExposedPorts(AXON_HTTP_PORT, AXON_GRPC_PORT)
+                .waitingFor(
+                        Wait.forLogMessage(".*Started AxonServer.*", 1)
+                );
+        axonServer.start();
+
+        System.setProperty("ENV_AXON_GRPC_PORT", String.valueOf(axonServer.getMappedPort(AXON_GRPC_PORT)));
+    }
+
+    public static void startMongo() {
+        GenericContainer mongo = new GenericContainer("mongo:latest")
+                .withExposedPorts(MONGO_PORT)
+                .withEnv("MONGO_INITDB_DATABASE", "moviekeeper")
+                .withCommand(String.format("mongod --port %d", MONGO_PORT))
+                .waitingFor(
+                        Wait.forLogMessage(".*waiting for connections.*", 1)
+                );
+        mongo.start();
+
+        System.setProperty("ENV_MONGO_PORT", String.valueOf(mongo.getMappedPort(MONGO_PORT)));
+    }
+}
+```
+Należy tu jednak pamiętać o tym, że `withExposedPorts` wystawia porty, ale tylko wewnątrz kontenera, potrzebny więc był sposób na pozyskanie *zewnętrznych* portów.
+Testcontainers przy każdym restarcie kontenera wystawia go na losowym wolnym porcie z danego zakresu, istnieje jednak metoda na pobranie tych portów w runtime.
+Robię to w ostatniej instrukcji, każdej z metod jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych **ENV_AXON_GRPC_PORT** oraz **ENV_MONGO_PORT**.
+Zmienne te używam w yamlu konfiguracyjnym pod testy:
+```yaml
+spring:
+  data:
+        mongodb:
+            uri: mongodb://localhost:${ENV_MONGO_PORT}/moviekeeper
+axon:
+  axonserver:
+        servers: localhost:${ENV_AXON_GRPC_PORT}
+```
+Metody `startMongo` i `startAxonServer` wykorzystałem w klasie, z której dziedziczą wszystkie testy integracyjne:
+```java
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class CommonIntegrationSetup {
+    ...
+    @BeforeAll
+    public static void beforeAll() {
+        TestContainers.startAxonServer();
+        TestContainers.startMongo();
+    }
+    ...
+}
+```
+Należy pamiętać o ustawieniu profilu i pliku konfiguracyjnym pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych) podczas gdy aplikacja chodziła 'produkcyjnie' - zgadnijcie do jakiego AxonServera owe testy się podłączyły. :)
+
+## Skonfigurowane. Do dzieła!
 
 
-- Problem testów integracyjnych (znaleźć wpis axoniq mówiący o tym, że jest to niemożliwe?)
-- Rozwiązanie problemu - przykładowa implementcja (jakie problemy napotkałem po drodze, być może na trello mam gdzieś zapisane, ale na pewno kwestia namiarów na axon-server + uwaga żeby nie podłączyć się do 'produkcyjnego')
+# Testy E2E
+Test user-story, czyli np znalezienie filmu
+
+
 
 # Automatyzacja
 - Przedstawienie Travisa i jego możliwości, zalety
