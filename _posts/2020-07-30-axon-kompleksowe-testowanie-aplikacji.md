@@ -241,7 +241,7 @@ public class CommonIntegrationSetup {
     ...
 }
 ```
-Należy pamiętać o ustawieniu profilu i pliku konfiguracyjnym pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych) podczas gdy aplikacja chodziła 'produkcyjnie' - zgadnijcie do jakiego AxonServera owe testy się podłączyły. :)
+Należy pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła "produkcyjnie" - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)
 
 ## Skonfigurowane. Do dzieła!
 
