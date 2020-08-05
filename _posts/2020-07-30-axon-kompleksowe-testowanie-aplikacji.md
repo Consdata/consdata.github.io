@@ -244,11 +244,75 @@ public class CommonIntegrationSetup {
 Należy pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła "produkcyjnie" - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)
 
 ## Skonfigurowane. Do dzieła!
+W mojej aplikacji w momencie, gdy uda się znaleźć film o żądanym tytule dzieją się dwie operacje:
+1. Zwracane są szczegóły znalezionego filmu.
+2. Wysyłany jest command, który mówi **znajdź trailery i obsadę dla tego filmu**.
+Parę kroków później efektem tego commanda, są kolejne commandy, już skierowane do konkretnego mikroserwisu (odpowiedzialnego za pobranie obsady i trailerów).
+Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z poprzedniego wpisu), więc wymaga to ode mnie stworzenie mocka zgodnie z zasadą *duck typingu*:
 
+```java
+@Profile("test")
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class MockProxyCommandHandler {
+
+    private final EventGateway eventGateway;
+
+    @CommandHandler
+    public void handle(FetchTrailersCommand command) {
+        log.info("MOCK fetching...");
+        eventGateway.publish(new TrailersDetailsEvent(command.getProxyId(), TRAILERS));
+    }
+}
+```
+
+W teście chcę zasymulować sytuację, w której pojawia się command **CreateTrailersCommand**.
+W efekcie aplikacja powinna pobrać trailery dla wskazanego filmu i umieścić je w bazie:
+```java
+public class TrailersIntegrationTest extends CommonIntegrationSetup {
+    @Autowired
+    private CommandGateway commandGateway;
+    ...
+
+    @BeforeEach
+    public void beforeEach() {
+        this.movieId = "123";
+        this.trailers = generateTrailers(movieId);
+    }
+
+    @Test
+    public void shouldRetrieveTrailers() {
+        // given
+        commandGateway.send(new CreateTrailersCommand(trailers.getAggregateId(), trailers.getExternalMovieId(), trailers.getMovieId()));
+
+        await()
+            .atMost(FIVE_SECONDS)
+            .with()
+            .pollInterval(ONE_HUNDRED_MILLISECONDS)
+            .until(() -> trailerRepository.findByMovieId(movieId).isPresent());
+
+        // when
+        ResponseEntity<TrailerDTO[]> trailerResponse = testRestTemplate
+                .getForEntity(
+                        String.format(GET_TRAILERS_URL, randomServerPort, movieId),
+                        TrailerDTO[].class);
+        // then
+        assertThat(trailerResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(trailerResponse.getBody()).isNotNull();
+
+        List<TrailerDTO> trailerDTOS = Arrays.asList(trailerResponse.getBody());
+
+        assertThat(trailerDTOS.size()).isEqualTo(2);
+        assertThat(trailerDTOS).isEqualTo(trailers.getTrailers());
+    }
+}
+```
+
+Skorzystałem z [**awaitility**](https://github.com/awaitility/awaitility), żeby poczekać chwilę na odpowiedź w razie małej czkawki.  
 
 # Testy E2E
 Test user-story, czyli np znalezienie filmu
-
 
 
 # Automatyzacja
