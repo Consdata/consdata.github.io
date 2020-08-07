@@ -14,7 +14,7 @@ tags:
 ---
 
 Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana coś zepsuje, a my się o tym nie dowiemy.
-[**W poprzednim wpisie**]({% post_url 2020-06-08-microservices-on-axon %}) opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, nie wspomniałem tam jednak ani słowa o testach.
+[W poprzednim wpisie]({% post_url 2020-06-08-microservices-on-axon %}) opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, nie wspomniałem tam jednak ani słowa o testach.
 Ten artykuł ma nadrobić zaległości w tej kwestii. Przedstawię dziś parę elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona.
 
 # Testy domenowe
@@ -24,7 +24,7 @@ Zaleta tych testów jest taka, że nie podnoszą one żadnego kontekstu, a więc
 
 ## Agregaty
 Zostając przy aplikacji z poprzedniego wpisu, weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
-Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie (zmienić stan na ten sam i odwrotnie).
+Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie - tak samo nieobejrzanego filmu nie możemy "odzobaczyć" ;).
 Wystąpienie takiej anomalii odnotowywane jest w logu, a **ToggleWatchedEvent** nie zostaje wyemitowany.
 ```java
 @Aggregate
@@ -58,7 +58,7 @@ public class MovieAggregateTest {
 Test piszemy w następujący sposób:
 1. Określamy "punkt startowy" dla naszego agregatu, czyli jakie eventy zostały zastosowane w agregacie do tej pory (jest to **given** w podejściu behawioralnym).
 2. Wpisujemy command, który chcemy poddać testom (odpowiednio - **when**). W naszym przypadku to **ToggleWatchedCommand**
-3. Definiujemy stan oczekiwany i/lub wyemitowane eventy (**then/expect**).
+3. Definiujemy stan oczekiwany.
 
 ```java
 public class MovieAggregateTest {
@@ -70,7 +70,7 @@ public class MovieAggregateTest {
                     new MovieSavedEvent(movieId, externalMovie))
                 .when(new ToggleWatchedCommand(movieId, new Watched(true)))         // 2
                 .expectEvents(new ToggleWatchedEvent(movieId, new Watched(true)))   // 3
-                .expectState(                                                       // 3
+                .expectState(                                                       
                     state -> assertThat(state.getWatched().isWatched()).isTrue());
     }
 }
@@ -91,9 +91,8 @@ public class MovieAggregateTest {
     }
 }
 ```
-
 ## Sagi
-Drugim obiektem domenowym, który poddam testom, jest Saga, w której umieściłem logikę, która ma się wykonać po wyemitowaniu eventu (lub kilku eventów) przez konkretny agregat.
+Drugim obiektem domenowym, który poddam testom, jest saga (zob. DDD).
 W mojej aplikacji zdarzeniem otwierającym sagę dla filmu jest **MovieCreatedEvent** wyemitowany przez MovieAggrate - po jego pojawieniu się, wysyłam command, który zostanie obsłużony w mikroserwisie (*proxy-service*) odpowiedzialnym za pobieranie szczegółów filmu z zewnętrznego źródła:
  ```java
 public class MovieSaga {
@@ -110,7 +109,7 @@ public class MovieSaga {
 }
 ```
 Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
-Gdy *proxy-service* wyemituje odpowiedź w postaci **MovieDetailsEvent**, to w zależności czy film został znaleziony, ślę command z uzupełnionymi szczegółami dla filmu (lub nie), a saga powinna się zakończyć:
+Gdy *proxy-service* wyemituje zdarzenie **MovieDetailsEvent**, to w zależności od zawartości payloadu, ślę command z uzupełnionymi szczegółami dla filmu lub nie, a saga powinna się zakończyć:
 ```java
 public class MovieSaga {
     ...
@@ -140,13 +139,14 @@ public class MovieSagaTest {
     }
 }
 ```
-Testy mają sprawdzić czy odpowiednie commandy zostaną wyemitowane, oraz czy saga "wystartowała", bądź zakończyła się pod pewnymi warunkami.
-Struktura prezentuje się następująco:
-1. Mając agregat X o identyfikatorze równym **movieId**.
-2. Wiedząc, że X nie wyemitował żadnego eventu / wyemitował konkretny event.
+Testy mają sprawdzić czy odpowiednie commandy zostaną wyemitowane, oraz czy saga "wystartowała", bądź zakończyła się w odpowiednim momencie.
+Szkielet testu wygląda następująco:
+1. Mając agregat X z ustalonym identyfikatorem.
+2. Wiedząc, że X nie wyemitował żadnego eventu (lub wyemitował konkretny event).
 3. To gdy agregat X.
 4. Wyemituje konkretny event.
-5. Oczekujemy aktywnej/nieaktywnej sagi oraz opublikowany command / nieopublikowanie niczego.
+5. Oczekujemy aktywnej (lub nieaktywnej) sagi oraz opublikowany command (lub nieopublikowanie niczego).
+
 ```java
 public class MovieSagaTest {
     ...
@@ -173,13 +173,16 @@ public class MovieSagaTest {
 }
 ```
 
+Jak widać zastosowanie fixture również w przypadku sagi, okazuje się proste i intuicyjne.
+
 # Testy integracyjne
-Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), pora zweryfikować trochę większy wycinek aplikacji.
+Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), można zabrać się za weryfikację trochę większego fragmentu aplikacji.
 
 ## Konfiguracja
-Twórcy w tym aspekcie akurat nie przygotowali nam rozwiązania, a na pewnej grupie dyskusyjnej proponują skorzystać z obrazu dockerowego - uruchomić AxonServer z terminala i podłączyć się testami do tej instancji.
-Wręcz idealna rola dla [**testcontainers**](https://www.testcontainers.org/) - pomyślałem (po przygotowaniu testów z użyciem tego narzędzia, trafiłem na podobne rozwiązanie na stacku).
-Powstała więc klasa umożliwiająca podniesienie potrzebnych mi kontenerów, aby skorzystać z nich podczas testów:
+Testy integracyjne wymagają trochę konfiguracji - twórcy w tym aspekcie akurat nie przygotowali nam rozwiązania.
+Na pewnej grupie dyskusyjnej proponują skorzystać z obrazu dockerowego - uruchomić AxonServer z terminala i podłączyć się testami do tej instancji.
+Wręcz idealna rola dla [**testcontainers**](https://www.testcontainers.org/) - pomyślałem (po przygotowaniu konfiguracji pod testy, trafiłem na podobne rozwiązanie na stacku).
+Stworzyłem klasę umożliwiającą podniesienie potrzebnych kontenerów, aby skorzystać z nich podczas testów:
 ```java
 @ActiveProfiles("test")
 public class TestContainers {
@@ -213,7 +216,7 @@ public class TestContainers {
     }
 }
 ```
-Należy tu jednak pamiętać o tym, że `withExposedPorts` wystawia porty, ale tylko wewnątrz kontenera, potrzebny więc był sposób na pozyskanie *zewnętrznych* portów.
+Należy tu jednak pamiętać o tym, że **withExposedPorts** wystawia porty tylko **wewnątrz kontenera**, potrzebny więc był sposób na pozyskanie portów, do których testy będą mogły się połączyć.
 Testcontainers przy każdym restarcie kontenera wystawia go na losowym wolnym porcie z danego zakresu, istnieje jednak metoda na pobranie tych portów w runtime.
 Robię to w ostatniej instrukcji, każdej z metod jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych **ENV_AXON_GRPC_PORT** oraz **ENV_MONGO_PORT**.
 Zmienne te używam w yamlu konfiguracyjnym pod testy:
@@ -226,7 +229,7 @@ axon:
   axonserver:
         servers: localhost:${ENV_AXON_GRPC_PORT}
 ```
-Metody `startMongo` i `startAxonServer` wykorzystałem w klasie, z której dziedziczą wszystkie testy integracyjne:
+Metody **startMongo** i **startAxonServer** wykorzystałem w klasie, z której dziedziczą wszystkie testy integracyjne:
 ```java
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -247,8 +250,10 @@ Należy pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten 
 W mojej aplikacji w momencie, gdy uda się znaleźć film o żądanym tytule dzieją się dwie operacje:
 1. Zwracane są szczegóły znalezionego filmu.
 2. Wysyłany jest command, który mówi **znajdź trailery i obsadę dla tego filmu**.
+
 Parę kroków później efektem tego commanda, są kolejne commandy, już skierowane do konkretnego mikroserwisu (odpowiedzialnego za pobranie obsady i trailerów).
-Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z poprzedniego wpisu), więc wymaga to ode mnie stworzenie mocka zgodnie z zasadą *duck typingu*:
+Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z [poprzedniego wpisu]({% post_url 2020-06-08-microservices-on-axon %})).
+Oczywiście nie chcę, aby test był zależny od jakiegoś serwisu, więc konieczne jest stworzenie mocka (zgodnie z zasadą *duck typingu*):
 
 ```java
 @Profile("test")
@@ -319,3 +324,6 @@ Test user-story, czyli np znalezienie filmu
 - Przedstawienie Travisa i jego możliwości, zalety
 - Przykładowy config z omówieniem
 - Screenshoty z działającej instalacji
+
+# Podsumowanie
+Jak widać korzystanie z Axonowych **fixture** bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również idzie coś zaradzić. 
