@@ -199,7 +199,9 @@ public class TestContainers {
                 );
         axonServer.start();
 
-        System.setProperty("ENV_AXON_GRPC_PORT", String.valueOf(axonServer.getMappedPort(AXON_GRPC_PORT)));
+        System.setProperty(
+                "ENV_AXON_GRPC_PORT", 
+                String.valueOf(axonServer.getMappedPort(AXON_GRPC_PORT)));
     }
 
     public static void startMongo() {
@@ -212,7 +214,9 @@ public class TestContainers {
                 );
         mongo.start();
 
-        System.setProperty("ENV_MONGO_PORT", String.valueOf(mongo.getMappedPort(MONGO_PORT)));
+        System.setProperty(
+                "ENV_MONGO_PORT", 
+                String.valueOf(mongo.getMappedPort(MONGO_PORT)));
     }
 }
 ```
@@ -289,7 +293,10 @@ public class TrailersIntegrationTest extends CommonIntegrationSetup {
     @Test
     public void shouldRetrieveTrailers() {
         // given
-        commandGateway.send(new CreateTrailersCommand(trailers.getAggregateId(), trailers.getExternalMovieId(), trailers.getMovieId()));
+        commandGateway.send(new CreateTrailersCommand(
+                    trailers.getAggregateId(), 
+                    trailers.getExternalMovieId(), 
+                    trailers.getMovieId()));
 
         await()
             .atMost(FIVE_SECONDS)
@@ -317,13 +324,63 @@ public class TrailersIntegrationTest extends CommonIntegrationSetup {
 Skorzystałem z [**awaitility**](https://github.com/awaitility/awaitility), żeby poczekać chwilę na odpowiedź w razie małej czkawki.  
 
 # Testy E2E
-Test user-story, czyli np znalezienie filmu
+Na samym szczycie piramidy testów są testy end-to-end, czyli sprawdzenie aplikacji w ten sposób, w jaki klient z niej korzysta.
+W moim przypadku klientem jest aplikacja frontendowa, która uderzając na konkretny endpoint, oczekuje konkretnej odpowiedzi.
+Przetestujmy wyszukanie filmu po tytule.
 
+Taki test powinien:
+- uderzyć na endpoint, za którym kryje się dana funkcjonalność,
+- sprawdzić status odpowiedzi od serwera,
+- sprawdzić zawartość odpowiedzi,
+- upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, co dostaliśmy w ciele odpowiedzi.
 
-# Automatyzacja
-- Przedstawienie Travisa i jego możliwości, zalety
-- Przykładowy config z omówieniem
-- Screenshoty z działającej instalacji
+```java
+public class CommonIntegrationSetup {
+    ...
+    protected ResponseEntity<MovieDTO> storeMovie(String title) {
+        ResponseEntity<MovieDTO> responseMovie = testRestTemplate.postForEntity(
+                        String.format(GET_OR_POST_MOVIES, randomServerPort), 
+                        new TitleBody(title), 
+                        MovieDTO.class);
+        moviesToCleanAfterTests.add(responseMovie.getBody());
+        return responseMovie;
+    }
+    ...
+}
+
+public class MovieE2ETest {
+    ...
+    @Test
+    public void shouldStoreMovie() {
+        // when
+        ResponseEntity<MovieDTO> storedMovieResponse = storeMovie(SUPER_MOVIE);
+
+        assertThat(storedMovieResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        MovieDTO body = storedMovieResponse.getBody();
+
+        // then
+        assertThat(body).isNotNull();
+        assertThat(body.getAggregateId()).isNotEmpty();
+        assertThat(body.getTitle()).isEqualTo(SUPER_MOVIE);
+
+        Optional<MovieDTO> persistedMovie = movieRepository
+                    .findByExternalMovieId(body.getExternalMovieId());
+        persistedMovie.ifPresent(movie -> {
+            assertThat(movie).isEqualTo(body);
+            assertThat(movie.getCreationDate()).isEqualTo(NOW);
+            assertThat(movie.isWatched()).isFalse();
+        });
+    }
+    ...
+}
+```
+W tym podejściu również wykorzystałem kontenery testowe, tak samo, jak przy testach integracyjnych, konfiguracja jest identyczna.
+Nie chcę uzależniać żadnych testów od połączenia z zewnętrznym serwisem, więc i w tym przypadku posłużyłem się mockiem, symulującym działanie proxy-service.
 
 # Podsumowanie
-Jak widać korzystanie z Axonowych **fixture** bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również idzie coś zaradzić. 
+Jak widać korzystanie z Axonowych **fixture** bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również istnieją rozwiązania.
+Uruchamianie takich testów można w łatwy sposób zautomatyzować, np. używając Travisa, dzięki czemu będziemy znali na bieżąco stan naszej aplikacji.
+
+# Źródła
+- <https://github.com/matty-matt/movie-keeper-core>
