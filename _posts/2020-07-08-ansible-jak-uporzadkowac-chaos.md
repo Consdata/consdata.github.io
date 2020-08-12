@@ -4,7 +4,7 @@ title:     "Ansible - jak uporządkować chaos?"
 date:      2020-07-08 08:00:00 +0100
 published: true
 author:    rmastalerek
-image:     /assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/chaos.png
+image:     /assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/chaos.jpg
 tags:
     - ansible
     - automation
