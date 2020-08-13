@@ -4,7 +4,7 @@ title:     "Na co nam ta chmura?"
 date:      2020-06-01 08:00:00 +0100
 published: true
 author:    mhoja
-image:     /assets/img/posts/2020-06-01-na-co-nam-ta-chmura/cloud.png
+image:     /assets/img/posts/2020-06-01-na-co-nam-ta-chmura/cloud.jpg
 tags:
     - cloud
     - google cloud platform

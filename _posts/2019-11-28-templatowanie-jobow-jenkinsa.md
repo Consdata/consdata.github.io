@@ -4,7 +4,7 @@ title:     "Automat dodający joby do Jenkinsa"
 published: true
 date:      2019-11-28 08:00:00 +0100
 author:    dkubiak
-image:     /assets/img/posts/2019-11-28-templatowanie-jobow-jenkinsa/jenkins-job.png
+image:     /assets/img/posts/2019-11-28-templatowanie-jobow-jenkinsa/jenkins-job.jpg
 tags:
     - jenkins job
     - jenkins template

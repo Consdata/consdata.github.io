@@ -4,7 +4,7 @@ title:     "Testy jednostkowe frontendu okiem programisty full stack"
 published: true
 date:      2019-07-26 08:00:00 +0100
 author:    mmendlik
-image:     /assets/img/posts/2019-07-25-testy-frontendu-okiem-full-stacka/testy-jednostkowe.png
+image:     /assets/img/posts/2019-07-25-testy-frontendu-okiem-full-stacka/testy-jednostkowe.jpg
 tags:
     - unit test
     - jasmine
