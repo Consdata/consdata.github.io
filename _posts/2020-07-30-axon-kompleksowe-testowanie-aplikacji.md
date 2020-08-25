@@ -14,8 +14,9 @@ tags:
 ---
 
 Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana coś zepsuje, a my się o tym nie dowiemy.
-[W poprzednim wpisie]({% post_url 2020-06-08-microservices-on-axon %}) opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, nie wspomniałem tam jednak ani słowa o testach.
-Ten artykuł ma nadrobić zaległości w tej kwestii. Przedstawię dziś parę elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona.
+[W poprzednim wpisie]({% post_url 2020-06-08-microservices-on-axon %}) opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, umyślnie pomijając kwestię związaną z testami.
+Niniejszy artykuł jest poświęcony w pełni temu tematowi.
+Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona. 
 
 # Testy domenowe
 Zacznijmy od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
@@ -87,7 +88,9 @@ public class MovieAggregateTest {
                     new MovieSavedEvent(movieId, externalMovie),
                     new ToggleWatchedEvent(movieId, new Watched(true)))
                 .when(new ToggleWatchedCommand(movieId, new Watched(true)))
-                .expectNoEvents();
+                .expectNoEvents()
+                .expectState(                                                       
+                    state -> assertThat(state.getWatched().isWatched()).isTrue());
     }
 }
 ```
@@ -248,6 +251,7 @@ public class CommonIntegrationSetup {
     ...
 }
 ```
+Po wszystkim nie musimy zatrzymywać kontenerów, zadzieje się to automatycznie (GenericContainer implementuje `AutoCloseable`).
 Należy pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła "produkcyjnie" - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)
 
 ## Skonfigurowane. Do dzieła!
@@ -257,7 +261,7 @@ W mojej aplikacji w momencie, gdy uda się znaleźć film o żądanym tytule dzi
 
 Parę kroków później efektem tego commanda, są kolejne commandy, już skierowane do konkretnego mikroserwisu (odpowiedzialnego za pobranie obsady i trailerów).
 Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z [poprzedniego wpisu]({% post_url 2020-06-08-microservices-on-axon %})).
-Oczywiście nie chcę, aby test był zależny od jakiegoś serwisu, więc konieczne jest stworzenie mocka (zgodnie z zasadą *duck typingu*):
+Oczywiście nie chcę, aby test był zależny od jakiegoś serwisu, więc konieczne jest stworzenie mocka:
 
 ```java
 @Profile("test")
@@ -335,25 +339,15 @@ Taki test powinien:
 - upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, co dostaliśmy w ciele odpowiedzi.
 
 ```java
-public class CommonIntegrationSetup {
-    ...
-    protected ResponseEntity<MovieDTO> storeMovie(String title) {
-        ResponseEntity<MovieDTO> responseMovie = testRestTemplate.postForEntity(
-                        String.format(GET_OR_POST_MOVIES, randomServerPort), 
-                        new TitleBody(title), 
-                        MovieDTO.class);
-        moviesToCleanAfterTests.add(responseMovie.getBody());
-        return responseMovie;
-    }
-    ...
-}
-
 public class MovieE2ETest {
     ...
     @Test
     public void shouldStoreMovie() {
         // when
-        ResponseEntity<MovieDTO> storedMovieResponse = storeMovie(SUPER_MOVIE);
+        ResponseEntity<MovieDTO> storedMovieResponse = testRestTemplate.postForEntity(
+                           String.format(GET_OR_POST_MOVIES, randomServerPort), 
+                           new TitleBody(SUPER_MOVIE), 
+                           MovieDTO.class);
 
         assertThat(storedMovieResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
