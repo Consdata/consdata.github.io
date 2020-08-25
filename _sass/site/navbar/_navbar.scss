@@ -5,7 +5,7 @@
 @import "navbar-tags";
 
 .navigation-bar {
-  margin: $navbar-height-desktop + $content-padding $blog-side-margins-desktop $double-content-padding;
+  margin: $content-padding $blog-side-margins-desktop $double-content-padding;
   @include tablet {
     margin: $navbar-height-desktop + $content-padding $blog-side-margins-tablet $content-padding;
   }
@@ -29,8 +29,3 @@
     margin-bottom: unset;
   }
 }
-
-
-
-
-
