@@ -13,7 +13,7 @@ tags:
     - tests
 ---
 
-Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana coś zepsuje, a my się o tym nie dowiemy.
+Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.
 [W poprzednim wpisie]({% post_url 2020-06-08-microservices-on-axon %}) opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, umyślnie pomijając kwestię związaną z testami.
 Niniejszy artykuł jest poświęcony w pełni temu tematowi.
 Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona. 
@@ -112,7 +112,7 @@ public class MovieSaga {
 }
 ```
 Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
-Gdy *proxy-service* wyemituje zdarzenie **MovieDetailsEvent**, to w zależności od zawartości payloadu, ślę command z uzupełnionymi szczegółami dla filmu lub nie, a saga powinna się zakończyć:
+Gdy *proxy-service* wyemituje zdarzenie **MovieDetailsEvent**, to w zależności od zawartości payloadu, śle command z uzupełnionymi szczegółami dla filmu lub nie i bez względu na rezultat kończę sagę:
 ```java
 public class MovieSaga {
     ...
@@ -178,12 +178,13 @@ public class MovieSagaTest {
 
 Jak widać zastosowanie fixture również w przypadku sagi, okazuje się proste i intuicyjne.
 
-# Testy integracyjne
+# Testy integracyjne - możliwe z Axonem?
 Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), można zabrać się za weryfikację trochę większego fragmentu aplikacji.
 
 ## Konfiguracja
-Testy integracyjne wymagają trochę konfiguracji - twórcy w tym aspekcie akurat nie przygotowali nam rozwiązania.
-Na pewnej grupie dyskusyjnej proponują skorzystać z obrazu dockerowego - uruchomić AxonServer z terminala i podłączyć się testami do tej instancji.
+Testy integracyjne z użyciem prawdziwego Event Store'a (w naszym przypadku AxonServera) wymagają więcej konfiguracji - twórcy w tym aspekcie akurat nie przygotowali nam gotowego rozwiązania.
+Trochę się naszukałem, zanim znalazłem informację o tym, że rekomendowanym przez AxonIQ rozwiązaniem problemu jest skorzystanie z obrazu dockerowego.
+Konkretnie wspominają o uruchomieniu AxonServer z terminala i podłączeniu się testami do tej instancji.
 Wręcz idealna rola dla [**testcontainers**](https://www.testcontainers.org/) - pomyślałem (po przygotowaniu konfiguracji pod testy, trafiłem na podobne rozwiązanie na stacku).
 Stworzyłem klasę umożliwiającą podniesienie potrzebnych kontenerów, aby skorzystać z nich podczas testów:
 ```java
@@ -225,7 +226,7 @@ public class TestContainers {
 ```
 Należy tu jednak pamiętać o tym, że **withExposedPorts** wystawia porty tylko **wewnątrz kontenera**, potrzebny więc był sposób na pozyskanie portów, do których testy będą mogły się połączyć.
 Testcontainers przy każdym restarcie kontenera wystawia go na losowym wolnym porcie z danego zakresu, istnieje jednak metoda na pobranie tych portów w runtime.
-Robię to w ostatniej instrukcji, każdej z metod jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych **ENV_AXON_GRPC_PORT** oraz **ENV_MONGO_PORT**.
+Robię to w ostatniej instrukcji każdej z metod, jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych **ENV_AXON_GRPC_PORT** oraz **ENV_MONGO_PORT**.
 Zmienne te używam w yamlu konfiguracyjnym pod testy:
 ```yaml
 spring:
@@ -252,10 +253,10 @@ public class CommonIntegrationSetup {
 }
 ```
 Po wszystkim nie musimy zatrzymywać kontenerów, zadzieje się to automatycznie (GenericContainer implementuje `AutoCloseable`).
-Należy pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła "produkcyjnie" - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)
+Należy jednak pamiętać o **ustawieniu profilu** i **pliku konfiguracyjnym** pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła "produkcyjnie" - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)
 
 ## Skonfigurowane. Do dzieła!
-W mojej aplikacji w momencie, gdy uda się znaleźć film o żądanym tytule dzieją się dwie operacje:
+W mojej aplikacji w momencie, gdy znaleziony zostanie film o żądanym tytule, mają miejsce następujące kroki:
 1. Zwracane są szczegóły znalezionego filmu.
 2. Wysyłany jest command, który mówi **znajdź trailery i obsadę dla tego filmu**.
 
@@ -336,7 +337,7 @@ Taki test powinien:
 - uderzyć na endpoint, za którym kryje się dana funkcjonalność,
 - sprawdzić status odpowiedzi od serwera,
 - sprawdzić zawartość odpowiedzi,
-- upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, co dostaliśmy w ciele odpowiedzi.
+- upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, który dostaliśmy w ciele odpowiedzi.
 
 ```java
 public class MovieE2ETest {
@@ -352,6 +353,12 @@ public class MovieE2ETest {
         assertThat(storedMovieResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         MovieDTO body = storedMovieResponse.getBody();
+
+        await()
+                .atMost(FIVE_SECONDS)
+                .with()
+                .pollInterval(ONE_HUNDRED_MILLISECONDS)
+                .until(() -> movieRepository.findById(body.getAggregateId()).isPresent());
 
         // then
         assertThat(body).isNotNull();
