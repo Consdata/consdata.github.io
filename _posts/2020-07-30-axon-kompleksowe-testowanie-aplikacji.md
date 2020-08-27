@@ -1,13 +1,15 @@
 ---
 layout:    post
 title:     "Axon - Kompleksowe testowanie aplikacji"
-date:      2020-07-30 08:00:00 +0100
+date:      2020-08-27 08:00:00 +0100
 published: true
 author:    mkociszewski
+image:     /assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/axontest.jpg
 tags:
     - java
     - microservices
     - axon
+    - axon-server
     - event-sourcing
     - spring-boot
     - tests
