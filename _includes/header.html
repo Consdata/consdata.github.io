@@ -2,27 +2,18 @@
     <div class="container">
         <div class="header navbar-default" role="navigation">
             <div class="header-brand">
-                <div>
-                    <button class="header-toggle"
-                            onclick="document.getElementById('header-links').classList.toggle('show');"><i
-                            class="fa fa-bars"></i></button>
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="https://www.consdata.com/pl/" target="_blank">BLOG.CONSDATA.TECH</a></div>
                 </div>
-                <a class="header-logo-mobile" href="https://consdata.tech/" id="header-logo">
-                    <img src="/assets/img/logo.png" alt="logo">
-                </a>
+
                 <div class="mobile-search">
                     {% include search-component-mobile.html %}
                 </div>
             </div>
             <div id="header-links" class="mobile-nav">
-                <div class="nav navbar-nav">
-                    <div class="nav-link"><a href="https://consdata.tech/poprzednie-edycje">Poprzednie edycje</a></div>
-                    <div class="nav-link hide-on-mobile"><a href="/" class="active">Blog</a></div>
-                    <div class="nav-link"><a href="https://consdata.tech/open-source">Open Source</a></div>
-                    <div class="nav-link"><a href="https://consdata.tech/newsletter">Newsletter</a></div>
-                    <div class="nav-link"><a href="https://kariera.consdata.pl/">Kariera</a></div>
-                    <div class="nav-link"><a href="https://www.consdata.com/pl/" target="_blank">Consdata</a></div>
-                </div>
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
                 <div class="feed-subscribe">
                     <a href="{{ "/feed.xml" | relative_url }}">
                     <svg class="svg-icon">

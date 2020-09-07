@@ -5,11 +5,8 @@ $mobile-content-width: 100%;
 $tablet-content-width: 100%;
 $tablet-breakpoint: 900px;
 $app-min-width: 320px;
-$navbar-height-mobile: 55px;
-$navbar-height-desktop: 74px;
-$mobile-footer-item-height: 40px;
-$mobile-footer-height: $mobile-footer-item-height * 3;
-$desktop-footer-height: 96px;
+$navbar-height-mobile: 42px;
+$navbar-height-desktop: 67px;
 $header-z-index: 99;
 $narrower-side-margins-desktop: 25%;
 $blog-side-margins-desktop: 20%;
@@ -48,10 +45,13 @@ $small-author-image-size: 24px;
 $separator-border: 3px solid $color-logo-red;
 $inactive-input-bottom-border: 2px solid $color-dark-gray;
 $post-tile-hover-shadow: rgba(0, 0, 0, 0.22) 0 19px 30px;
-$header-image-width-mobile: 168px;
-$header-image-height-mobile: 19px;
-$header-image-width-desktop: 240px;
-$header-image-height-desktop: 27px;
+
+$header-image-width-mobile: 151px;
+$header-image-height-mobile: 15px;
+
+$header-image-width-desktop: 172px;
+$header-image-height-desktop: 17px;
+
 $expanded-input-width-desktop: 135px;
 $expanded-input-width-mobile: 200px;
 $svg-icon-size: 16px;
