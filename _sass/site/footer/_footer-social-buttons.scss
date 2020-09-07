@@ -2,10 +2,14 @@
   @include flex-container;
   $social-button-size: 36px;
 
+  @include desktop {
+    margin-right: 2*$small-padding;
+  }
+
   .social-buttons-container {
     @include flex-container;
     flex-direction: row;
-    margin-top: 1em;
+    margin-top: 20px;
   }
 
   .social-btn {
