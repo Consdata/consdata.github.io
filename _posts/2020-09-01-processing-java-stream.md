@@ -2,9 +2,9 @@
 layout:    post
 title:     "Java Stream - przetwarzanie elementów"
 date:      2020-09-01 08:00:00 +0100
-published: true
+published: false
 author:    tdrag
-image:     /assets/img/posts/2020-09-01-java-stream-processing/x.jpg
+image:     /assets/img/posts/2020-09-01-java-stream-processing/waterfall-stream.jpg
 tags:
     - java
     - stream
@@ -121,4 +121,3 @@ Wiemy już jak przetwarzać strumienie w bardziej efektywnie. Nasuwa się pytani
 Jednostką pomiarową jest ilość operacji na sekundę, czyli innymi słowy ile razy udało się wywołać daną metodę w ciągu jednej sekundy.
 Jak widać na wykresie dla 1 elementu, pętla okazała się zdecydowanie szybsza niż strumienie. Test 100 elementów pokazał że strumienie powoli doganiają zwykłą pętlę, jednocześnie strumień równoległy okazał się zdecydowanie najwolniejszym rozwiązaniem. W kolejnych testach dla 10 000 i 1 000 000 elementów, widzimy siłę przetwarzania równoległego. Dodatkowo warto zauważyć, że dla testu największej kolekcji, przetwarzanie w pętli uzyskało delikatnie słabszy wynik niż w jednowątkowym strumieniu.
 ![Java Stream Benchmark](/assets/img/posts/2020-09-01-java-stream-processing/java-stream-benchmark.png)
-
