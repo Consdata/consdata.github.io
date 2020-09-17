@@ -15,7 +15,7 @@ Strumienie zostały dodane do Javy w wersji 8, wzbogacając język o namiastkę 
 Pierwsze pytania jakie się nasuwają, to czy warto stosować strumienie oraz jak robić to świadomie.
 Artykuł ma na celu analizę kilku podstawowych właściwości strumieni oraz porównanie ich z pętlami pod względem wydajności.
 
-# Intermidiet vs Terminal
+# intermediate vs Terminal
 Java Stream API definiuje dwa rodzaje operacji jakie możemy wykonać w trakcie przetwarzania strumieni, operacje pośrednie – intermediate,
 oraz operacje końcowe - terminal.
 Operacje pośrednie w sposób deklaratywny opisują jak dane powinny być przetworzone, a dodatkowo zawsze zwracają obiekt typu **Stream** co daje możliwość łączenia ich z kolejnymi operacjami pośrednimi.
