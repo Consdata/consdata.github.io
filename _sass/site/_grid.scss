@@ -52,4 +52,5 @@
   @include mobile {
     display: none;
   }
+  margin: $post-tile-margin-top $small-padding $post-tile-margin-bottom;
 }

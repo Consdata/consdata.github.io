@@ -1,0 +1,7 @@
+.company {
+  @include flex-container;
+  img {
+    width: 168px;
+    height: 19px;
+  }
+}

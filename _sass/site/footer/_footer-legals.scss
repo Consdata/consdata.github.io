@@ -1,24 +1,13 @@
 .legals {
   @include flex-container;
-  justify-content: space-between;
-  align-items: center;
 
-  @include tablet-and-desktop {
-    justify-content: flex-end;
-  }
-
-  .legals-separator {
-    display: none;
-    @include tablet-and-desktop {
-      display: block;
-      padding: 5px;
-    }
+  @include desktop {
+    margin-left: 4*$small-padding;
   }
 
   a {
     text-decoration: none;
-    color: $color-light-gray;
-
+    color: $color-stormgray;
     &:hover {
       color: $color-white;
     }
