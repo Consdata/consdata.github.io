@@ -23,7 +23,7 @@ Operacje pośrednie w sposób deklaratywny opisują, jak dane powinny być przet
 Jak widać na przykładzie strumień danych stworzony z listy filtruje te, które zaczynają się na literę "a",
 następnie zamienia wszystkie litery na litery wielkie, a na koniec wyświetla przetworzone elementy.
 Niestety uruchamiając taki kod nic się nie zadzieje, a konsola nie wypisze żadnego elementu
-ponieważ w naszym strumieniu brakuje operacji końcowej -  czyli takiej która kończy strumień i sprawia, że nie można go już więcej przetwarzać.
+ponieważ w naszym strumieniu brakuje operacji końcowej -  czyli takiej, która kończy strumień i sprawia, że nie można go już więcej przetwarzać.
 
 ```java
     private static final List<String> LIST = Arrays.asList("aab", "aab", 
