@@ -1,0 +1,95 @@
+.sign-up-container {
+  margin: 0;
+  position: fixed;
+  background-color: white;
+  bottom: -999px;
+  right: 0;
+  width: 380px;
+  border: 15px solid #b31536;
+  padding: 22px;
+  -webkit-animation: slide-top 0.5s 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: slide-top 0.5s 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+  .sign-up-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sign-up-close-button {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      outline: none;
+    }
+
+    span {
+      font-size: 1.2em;
+      padding: 0.4em;
+      line-height: 0.4em;
+    }
+  }
+
+  .sign-up-form {
+    @include flex-container;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+
+  .contact-info-input {
+    padding: 0.6em 0.8em;
+    border: 1px solid #aeaeae;
+    margin-bottom: 0.5em;
+  }
+
+  .sign-up-button {
+    background-color: #b31536;
+    color: white;
+    text-align: center;
+    padding: 0.9em;
+    outline: none;
+    border: 1px solid #801229;
+    &:hover {
+      background-color: #801229;
+      cursor: pointer;
+    }
+  }
+
+  .hide-sign-up {
+    animation: slide-bottom 0.5s 0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
+}
+
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-999px);
+    transform: translateY(-999px);
+  }
+}
+
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-999px);
+    transform: translateY(-999px);
+  }
+}
+

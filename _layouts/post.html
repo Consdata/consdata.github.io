@@ -79,6 +79,23 @@ layout: default
         </div>
     </article>
 </div>
+<div id="sign-up-container" class="sign-up-container">
+    <div class="sign-up-content">
+        <button id="sign-up-close-button"
+                class="sign-up-close-button"
+                onclick="hideSignupModal()">
+            <span>×</span>
+        </button>
+        <div class="title">
+            Zapisz się na Consdata.Tech!
+        </div>
+        <form action="" class="sign-up-form" onsubmit="setUserSignedUp()">
+            <input required id="sign-up-name" placeholder="Imię" type="text" class="contact-info-input"/>
+            <input required id="sign-up-email" placeholder="Adres e-mail" type="email" class="contact-info-input"/>
+            <input type="submit" value="Zapisz mnie!" class="sign-up-button"/>
+        </form>
+    </div>
+</div>
 <script>
     fetch("/json/posts.json")
         .then(response => response.json())
@@ -131,6 +148,25 @@ layout: default
         document.getElementById('myModal').style.display = 'none';
     }
 
+    function hideSignupModal() {
+        document.getElementById('sign-up-container').animate(
+            {
+                transform: 'translateY(999px)',
+            }, {
+                duration: 500,
+                fill: 'forwards',
+                easing: 'cubic-bezier(0.550, 0.085, 0.680, 0.530)'
+            }
+        );
+    }
+
+    function setUserSignedUp() {
+        localStorage.setItem('signedUp', 'true');
+    }
+
+    if (localStorage.getItem('signedUp') === 'true') {
+        document.getElementById('sign-up-container').style.display = 'none';
+    }
     const postImages = document.querySelectorAll('.post-content img');
     postImages.forEach(x => x.addEventListener('click', zoomImage));
 </script>
