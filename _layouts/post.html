@@ -80,20 +80,36 @@ layout: default
     </article>
 </div>
 <div id="sign-up-container" class="sign-up-container">
+    <a id="sign-up-close-button"
+       class="sign-up-close-button"
+       onclick="hideSignupModal()">
+        <span>×</span>
+    </a>
     <div class="sign-up-content">
-        <button id="sign-up-close-button"
-                class="sign-up-close-button"
-                onclick="hideSignupModal()">
-            <span>×</span>
-        </button>
-        <div class="title">
-            Zapisz się na Consdata.Tech!
+        <div class="signup-modal-title">
+            DOŁĄCZ DO WEBINARU CONSDATA TECH #4
         </div>
-        <form action="" class="sign-up-form" onsubmit="setUserSignedUp()">
-            <input required id="sign-up-name" placeholder="Imię" type="text" class="contact-info-input"/>
-            <input required id="sign-up-email" placeholder="Adres e-mail" type="email" class="contact-info-input"/>
-            <input type="submit" value="Zapisz mnie!" class="sign-up-button"/>
-        </form>
+        <div class="signup-modal-red-tex">
+            26.11.2020, CZWARTEK, 18.00-19.00
+        </div>
+        <div class="event-title">
+            SPRING WEBFLUX - REAKTYWNE PROGRAMOWANIE W SPRINGU
+        </div>
+        <div class="event-description">
+            Stwórz z nami przykładowe Webfluxowe API i wykorzystaj w praktyce nową reaktywną alternatywę RestTemplate'a:
+            WebClient'a! A na koniec weź udział w konkursie i prześcignij swoich rywali!
+        </div>
+        <div class="signup-modal-red-tex">
+            ZAPISY:
+        </div>
+        <div class="signup-icons-container">
+            <a class="signup-link-icon" href="#" onclick="setUserSignedUp()">
+                <img class="signup-link-icon-meetup" alt="Meetup sign up" src="/assets/img/meetup.png"/>
+            </a>
+            <a class="signup-link-icon" href="#" onclick="setUserSignedUp()">
+                <img class="signup-link-icon-facebook" alt="Facebook sign up" src="/assets/img/facebook.png"/>
+            </a>
+        </div>
     </div>
 </div>
 <script>
@@ -149,15 +165,24 @@ layout: default
     }
 
     function hideSignupModal() {
-        document.getElementById('sign-up-container').animate(
-            {
-                transform: 'translateY(999px)',
-            }, {
-                duration: 500,
-                fill: 'forwards',
-                easing: 'cubic-bezier(0.550, 0.085, 0.680, 0.530)'
+        document.getElementById('sign-up-container').animate([
+            { // from
+                transform: 'perspective(400px)',
+                opacity: 1,
+            },
+            { // 30%
+                transform: 'perspective(400px) rotate3d(1, 0, 0, -20deg)',
+                offset: 0.3
+            },
+            { // to
+                transform: 'perspective(400px) rotate3d(1, 0, 0, 90deg)',
+                opacity: 0
             }
-        );
+        ], {
+            duration: 500,
+            fill: "forwards",
+            easing: "ease-in"
+        });
     }
 
     function setUserSignedUp() {
