@@ -7,7 +7,7 @@
   max-width: 500px;
   box-sizing: border-box;
   border: 15px solid #b31536;
-  padding: 22px;
+  padding: 20px;
   animation-fill-mode: forwards;
   -webkit-animation: flipInX 0.5s 5s forwards;
   animation: flipInX 0.5s 5s forwards;
@@ -15,6 +15,8 @@
 
   * {
     letter-spacing: 1px;
+    font-size: 16px;
+    line-height: 19px;
   }
 
   .sign-up-content {
@@ -54,37 +56,34 @@
     font-weight: bold;
     text-align: center;
     color: black;
-    margin-bottom: 5px;
+    margin: 6px;
     max-width: 60%;
+    line-height: 1.2em;
   }
 
-  .signup-modal-red-tex {
+  .signup-modal-red-text {
     color: #800000;
     font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 20px;
     text-align: center;
   }
 
   .event-title {
     color: black;
-    font-size: 16px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 10px;
   }
 
   .event-description {
     color: black;
-    font-size: 16px;
     text-align: center;
     font-weight: 300;
-    margin-bottom: 30px;
+    margin-bottom: 41px;
   }
 
   .signup-icons-container {
     @include flex-container;
     align-items: center;
+    max-height: 66px;
   }
 
   .signup-link-icon {
@@ -103,7 +102,19 @@
   .signup-link-icon-facebook {
     width: 54px;
     height: auto;
-    margin: 5px
+    margin: 4px
+  }
+
+  .small-margin {
+    margin-bottom: 10px
+  }
+
+  .medium-margin {
+    margin-bottom: 20px;
+  }
+
+  .big-margin {
+    margin-bottom: 45px;
   }
 }
 
