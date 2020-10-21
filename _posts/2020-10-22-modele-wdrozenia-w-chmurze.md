@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych"
-date:      2020-08-27 08:00:00 +0100
+date:      2020-10-21 08:00:00 +0100
 published: true
 author:    glipecki
 image:     /assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/cloud.jpg
