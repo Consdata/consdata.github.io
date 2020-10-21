@@ -5,9 +5,6 @@ url: "https://blog.consdata.tech"
 
 google_analytics: UA-28387432-1
 
-paginate: 5
-paginate_path: "/blog/page:num/"
-
 sass:
   sass_dir: _sass
   style: compressed
@@ -32,4 +29,3 @@ plugins:
   - jekyll-feed
   - jekyll-autoprefixer
   - jekyll-seo-tag
-  - jekyll-paginate
