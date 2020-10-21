@@ -7,6 +7,13 @@ author:    glipecki
 image:     /assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/cloud.jpg
 tags:
     - cloud
+    - iaas
+    - caas
+    - paas
+    - faas
+    - gcp
+    - aws
+    - azure
 ---
 
 Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!
@@ -23,7 +30,7 @@ Powyższy diagram przedstawia uproszczony model elementów, za które jesteś od
 
 # IaaS - Infrastructure as a service
 
-Użytkownik zarządza systemem na poziomie konkretnych maszyn wirtualnych, a dostawca chmury przejmuje za niego odpowiedzialność za fizyczny sprzęt potrzebny do uruchomienia infrastruktury. 
+Dostawca chmury przejmuje odpowiedzialność za fizyczny sprzęt potrzebny do uruchomienia infrastruktury. Użytkownik zarządza systemem na poziomie konkretnych maszyn wirtualnych.
 
 ![Charakterystyka wdrożeń IaaS](/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-iaas.png)
 
@@ -49,14 +56,14 @@ Model IaaS może być prostym pierwszym krokiem, który pozwoli szybko wskoczyć
 
 # CaaS - Container as a service
 
-Dostawca chmury przejmuje za nas odpowiedzialność za utrzymanie maszyn wirtualnych obsługujących infrastrukturę. Użytkownik zarządza systemem na poziomie kontenerów aplikacji.
+Dostawca chmury przejmuje odpowiedzialność za utrzymanie maszyn wirtualnych obsługujących infrastrukturę. Użytkownik zarządza systemem na poziomie kontenerów aplikacji.
 
 ![Charakterystyka wdrożeń CaaS](/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-caas.png)
 
 Najpopularniejszym rozwiązaniem w tej kategorii jest klaster Kubernetes w pełni zarządzany przez dostawcę chmury. W praktyce zarządzanie maszynami wirtualnymi zostaje ograniczone do zdefiniowania ich rozmiaru i liczby, a czasem wręcz do określenia limitów minimalnej i maksymalnej liczby węzłów. Aktualizację, konfigurację, zabezpieczenie czy  monitorowanie systemów maszyn wirtualnych oddajesz w ręce specjalistów. Dzięki temu możesz skupić się na tworzeniu niezawodnego oprogramowania.
 
 Migrując w modelu CaaS zyskujesz:
-- aktualizację i konfigurację systemów maszyn wirtualnych,
+- aktualizacje i konfiguracje systemów maszyn wirtualnych,
 - bezpieczeństwo zainstalowanych na maszynach systemów operacyjnych,
 - aktualizacje, konfiguracje i bezpieczeństwo klastra dostarczanego przez dostawcę,
 - równoważenie obciążenia hostów klastra i optymalizację kosztów działania systemu,
@@ -74,7 +81,7 @@ Model CaaS pozwala w praktyce wdrożyć wiele rozwiązań kojarzonych z publiczn
 
 # PaaS - Platform as a service
 
-Dostawca chmury przejmuje za nas odpowiedzialność za wdrożenie i utrzymanie aplikacji. Użytkownik zarządza systemem na poziomie pojedynczych aplikacji.
+Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie aplikacji. Użytkownik zarządza systemem na poziomie pojedynczych aplikacji.
 
 ![Charakterystyka wdrożeń PaaS](/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-paas.png)
 
@@ -99,7 +106,7 @@ Model sprawdzi się dobrze w aplikacjach webowych i serwerach usług HTTP - wsz�
 
 # FaaS - Function as a service
 
-Dostawca chmury przejmuje za nas odpowiedzialność za wdrożenie i utrzymanie pojedynczych funkcji. Użytkownik zarządza systemem na poziomie kodu źródłowego konkretnych funkcji.
+Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie pojedynczych funkcji. Użytkownik zarządza systemem na poziomie kodu źródłowego konkretnych funkcji.
 
 ![Charakterystyka wdrożeń FaaS](/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-faas.png)
 
@@ -136,7 +143,7 @@ Niskie koszty utrzymania infrastruktury, wysokie tempo wprowadzania zmian i wzor
 
 Przytaczane do tej pory koszty związane z migracją zakładały dostosowanie i wdrożenie działających systemów. Przy ich ocenie zakładałem, że zespół nie posiada wiedzy i doświadczenia w tworzeniu aplikacji w chmurze. W takiej sytuacji koszt szkoleń, prób i błędów oraz faktycznego wdrożenia rośnie wraz ze wzrostem "chmurowości" rozwiązania.
 
-Sytuacja będzie wyglądać zupełnie inaczej dla zespołu tworzącego i utrzymującego już rozwiązania chmurowe. W takiej sytuacji koszt nowej technologii został już poniesiony i nie wpływa na koszt przygotowywania nowych rozwiązań. Dla doświadczonych zespołów koszt dostarczenia nowej funkcjonalności w środowisku chmurowym będzie wyraźnie niższy niż w tradycyjnym podejściu ze względu na:
+Sytuacja będzie wyglądać zupełnie inaczej dla zespołu tworzącego i utrzymującego już istniejące rozwiązania chmurowe. W takim wypadku koszt nowej technologii został już poniesiony i nie wpływa na koszt przygotowywania nowych rozwiązań. Dla doświadczonych zespołów koszt dostarczenia nowej funkcjonalności w środowisku chmurowym będzie wyraźnie niższy niż w tradycyjnym podejściu ze względu na:
 - abstrakcję infrastruktury,
 - minimalny koszt wdrożenia i utrzymania aplikacji,
 - przeniesienie ciężaru na rozwój funkcjonalny aplikacji,
@@ -152,9 +159,9 @@ Dla podejść IaaS i CaaS możemy przyjąć, że ryzyko wyjścia z chmury niesie
 
 W przypadku PaaS i FaaS prawdopodobnie zaprojektowałeś system pod kątem oferty konkretnej chmury. Najwięksi dostawcy zapewniają ujednoliconą ofertę produktów. O ile różnice pomiędzy oferowanymi rozwiązaniami w wielu przypadkach uniemożliwiają migrację systemu bez żadnych zmian, to jednak znajdziemy pomiędzy nimi odpowiadające sobie rozwiązania pozwalające zrealizować system w podobnej architekturze.
 
-Warto zauważyć, że problem _vendor lock-in_, jako poważne ryzyko migracji do chmury, często jest adresowany wprost przez dostawców. Większość produktów Google Cloud Platform jest zbudowana w oparciu o otwarte standardy oraz narzędzia open-source. Przykładowo Google Kubernetes Engine do działania wykorzystuje platformę Kubernetes, Cloud Bigtable jest zgodny z HBase, itd.
+Warto zauważyć, że problem _vendor lock-in_, jako poważne ryzyko migracji do chmury, często jest adresowany wprost przez dostawców. Przykładowo w Google Cloud Platform większość produktów jest zbudowana w oparciu o otwarte standardy oraz narzędzia open-source. Przykładowo Google Kubernetes Engine do działania wykorzystuje platformę Kubernetes, Cloud Bigtable jest zgodny z HBase, itd. Podobne podejście jest stosowane przez wiodących dostawców chmur publicznych.
 
-Szacując koszty wyjścia z chmury powinieneś rozważyć również utracony zyski wynikające z obaw przed _vendor lock-in_. Obawa przed uzależnieniem może doprowadzić do zwiększenia złożoności systemu, zwiększenia kosztu produkcji i utrzymania systemu, utraty funkcjonalności dających przewagę, itp. Czy ew. koszt wyjścia z chmury będzie większy niż oszczędności wynikające z wykorzystania chmury? W przypadku dużego prawdopodobieństwa lub wysokiego kosztu wyjścia z chmury warto rozważyć ograniczenie migracji do modelu CaaS.
+Szacując koszty wyjścia z chmury powinieneś rozważyć również utracone zyski wynikające z obaw przed _vendor lock-in_. Obawa przed uzależnieniem może doprowadzić do zwiększenia złożoności systemu, zwiększenia kosztu produkcji i utrzymania systemu, utraty funkcjonalności dających przewagę, itp. Czy ew. koszt wyjścia z chmury będzie większy niż oszczędności wynikające z jej wykorzystania? W przypadku dużego prawdopodobieństwa lub wysokiego kosztu wyjścia z chmury warto rozważyć ograniczenie migracji do modelu CaaS.
 
 # On-prem, IaaS, CaaS, PaaS, FaaS
 
@@ -166,11 +173,11 @@ Im bardziej zaadaptujemy rozwiązania chmurowe, tym więcej odpowiedzialności p
 
 # Dojrzałość chmurowa
 
-Znając system, możemy pokusić się o ocenę jego dojrzałości chmurowej. Z jednej strony mamy klasyczne rozwiązania _on-premises_, a z drugiej rozwiązania w pełni serverless. Podsumowując wady i zalety opisywanych do tej pory podejść możemy pokusić się o prosty diagram szans i ryzyk zależny od stopnia migracji do chmury:
+Znając system możemy pokusić się o ocenę jego dojrzałości chmurowej. Z jednej strony mamy klasyczne rozwiązania _on-premises_, a z drugiej rozwiązania w pełni serverless. Podsumowując wady i zalety opisywanych do tej pory podejść naszkicujmy prosty diagram szans i ryzyk zależny od stopnia migracji do chmury:
 
 ![Porównanie modeli wdrożeń](/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/native-vs-metrics.png)
 
-Im dalej zbliżymy się do podejść serverless, tym więcej korzyści osiągniemy z migracji. Należy jednak zwrócić uwagę, że im dalej się przesuwamy, tym droższa będzie migracja oraz wzrośnie ryzyko uzależnienia się od konkretnego dostawcy.
+Im bardziej zbliżymy się do podejść serverless, tym więcej korzyści osiągniemy z migracji. Należy jednak zwrócić uwagę, że im dalej się przesuwamy, tym droższa będzie migracja oraz wzrośnie ryzyko uzależnienia się od konkretnego dostawcy.
 
 # Cele migracji
 
