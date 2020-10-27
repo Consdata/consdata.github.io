@@ -39,6 +39,11 @@
   line-height: $post-content-line-height;
   letter-spacing: $general-letter-spacing;
 
+  code {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
   p:first-child {
     margin-top: $content-padding;
   }
