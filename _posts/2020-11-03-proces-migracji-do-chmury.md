@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Proces migracji do chmury - czyli od czego zacząć?"
-date:      2020-10-03 08:00:00 +0100 # TODO
+date:      2020-11-03 08:00:00 +0100
 published: true
 author:    mhoja
 image:     /assets/img/posts/2020-11-03-proces-migracji-do-chmury/clouds.jpg
