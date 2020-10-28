@@ -1,2 +1,0 @@
-I"�<p>Każda nietrywialna aplikacja potrzebuje backendu. O ile obecnie to nie jest prawda, to na potrzeby tego artykułu przyjmijmy, że tak jest. A jak backend współpracujący z aplikacją webową to <em>REST</em>, a jak <em>REST</em> to <em>Spring</em> i <em>Spring Boot</em>. W kilku kolejnych akapitach stworzymy i z sukcesem przygotujemy gotowy do wdrożenia artefakt składający się z aplikacji webowej w <em>Angular 2</em> i backendu usługowego wykorzystującego <em>Spring Boot</em>.</p>
-:ET

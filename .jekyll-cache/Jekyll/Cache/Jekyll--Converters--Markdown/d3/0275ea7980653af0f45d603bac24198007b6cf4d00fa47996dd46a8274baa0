@@ -1,5 +1,0 @@
-I"><p>Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.
-<a href="/2020/06/09/microservices-on-axon.html">W poprzednim wpisie</a> opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, umyślnie pomijając kwestię związaną z testami.
-Niniejszy artykuł jest poświęcony w pełni temu tematowi.
-Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona.</p>
-:ET

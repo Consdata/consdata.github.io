@@ -1,8 +1,0 @@
-I"�<p>Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecność frameworków ułatwiających tę czynność w projektach, z którymi stykamy się na co dzień, nie powinna na żadnym chociaż trochę doświadczonym programiście robić wrażenia i nie trzeba go przekonywać, że <strong>jedne z wielu zalet pisania testów jednostkowych</strong>, to:</p>
-<ul>
-  <li>zmuszenie twórcy do zastanowienia się nad zadaniem sprawdzanego kodu (co może potencjalnie poprawić design aplikacji),</li>
-  <li>ułatwienie wczesnego wyłapywania błędów,</li>
-  <li>ekspozycja przypadków brzegowych,</li>
-  <li>ułatwienie zrozumienia działania kodu osobom, które go nie tworzyły.</li>
-</ul>
-:ET

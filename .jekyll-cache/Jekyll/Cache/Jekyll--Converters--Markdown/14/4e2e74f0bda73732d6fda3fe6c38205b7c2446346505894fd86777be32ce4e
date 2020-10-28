@@ -1,4 +1,0 @@
-I"�<p>W nawiązaniu do mojego poprzedniego wpisu pt.:<br />
-<a href="/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html"><strong>“Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot”</strong> 🔗</a><br />
-chciałbym krótko opisać standard <a href="https://openid.net/connect/">OpenID Connect</a>, który został wykorzystany podczas logowania do aplikacji przy użyciu serwera uwierzytelniania <a href="https://www.keycloak.org/">Keycloak</a>.</p>
-:ET
