@@ -96,7 +96,7 @@ Stream - filter: ddd
 ## Przetwarzanie równoległe
 Wartościowym mechanizmem, który został dodany do Java Stream API jest możliwość równoległego przetwarzania strumieni, co daje możliwość wykorzystania większej liczby rdzeni procesora do wykonania zadania.
 Jak widać na załączonym kodzie wystarczy, że skorzystamy z metody **parallelStream** zamiast **stream** i nasze dane zostaną odpowiednio podzielone i przetworzone równolegle z użyciem wielu wątków.
-Stream tworzony w domyślny sposób korzysta ze wspólnej puli wątków, więc przetwarzanie w taki sposób większej ilości danych może zmniejszyć zasoby przeznoczone na inne procesy w aplikacji.
+Stream tworzony w domyślny sposób korzysta ze wspólnej puli wątków, więc przetwarzanie w taki sposób większej ilości danych może zmniejszyć zasoby przeznaczone na inne procesy w aplikacji.
 Warto zwrócić uwagę na to, że samo dzielenie danych wymaga dodatkowej pracy, dlatego przeliczanie równoległe mniejszej ilości danych może trwać dłużej niż zrobienie tego samego z wykorzystaniem jednego wątku.
 Dodatkowo kolejność przetwarzanie elementów przez wiele wątków jednocześnie jest niedeterministyczna.
 
