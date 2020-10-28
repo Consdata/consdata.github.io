@@ -1,0 +1,79 @@
+I"�<p>Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest <em><a href="https://en.wikipedia.org/wiki/Singleresponsibilityprinciple">Single Responsibility Principle</a></em>, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat <em>JavaScript’u</em> próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard <em>ES6</em> pozwolił w pełni zaadaptować takie podejście.</p>
+
+<h2 id="modularyzacja-w-es6">Modularyzacja w ES6</h2>
+
+<p>W ramach standardu <em>ES6</em> wprowadzono pojęcie modułu oraz standardowego sposobu wyrażania zależności za pomocą polecenia <em>import</em>.</p>
+
+<p>Za moduł przyjmuje się pojedyczny plik. Wszystkie elementy w nim zdefiniowane są jego własnością i nie zabrudzają globalnej przestrzeni aplikacji. Elementy, które chcemy udostępnić innym modułom należy jawnie wskazać przez oznaczenie ich poleceniem <em>export</em>. Wyeksportowane elementy możemy importować i używać w modułach zależnych poleceniem <em>import</em>.</p>
+
+<p>Przykładowo, możemy zdefiniować zależność pomiędzy modułami:</p>
+
+<p><em>service.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">Service</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p><em>component.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Service</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">Component</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">Service</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="problemy-z-importowaniem-zależności">Problemy z importowaniem zależności</h2>
+
+<p>Standardowo importowane moduły są wyszukiwane względem importującego pliku. W przypadku nietrywialnej struktury może to doprowadzić do pogroszenia czytelności aplikacji.</p>
+
+<p>Wyobraźmy sobie strukturę kodu:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>src
+  \- user
+    \- details
+      user-details.component.ts
+  \- authentication
+    \- authentication.service.ts
+</code></pre></div></div>
+
+<p>Wówczas zawartość pliku <em>user-details.component.ts</em> mogłaby wyglądać:</p>
+
+<p><em>component.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">AuthenticationService</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../../authentication/authentication.service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserDetailsService</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">AuthenticationService</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Utrzymywanie względnych ścieżek importowanych modułów jest trudne. Czytelność istniejących importów jest wątpliwa, a dopisywanie nowych niewygodne. Rozwiązaniem tego problemu może być stosowanie absolutnych ścieżek do modułów, liczonych względem głównego katalogu ze źródłami. Przy takim podejściu dopisywanie nowych importów jest proste (widząc strukturę aplikacji), a czytając jesteśmy w stanie szybko się zorientować jakie zależności właściwie wciągamy.</p>
+
+<h2 id="użycie-absolutnych-ścieżek-zależności">Użycie absolutnych ścieżek zależności</h2>
+
+<p>Na szczęście zalecane podejście do pisania aplikacji w <em>Angular 2</em> zakłada stosowanie kompilatora <em>TypeScript</em>, a ten od dłuższego czasu wspiera stosowanie absolutnych ścieżek przy importowaniu zależności. Dodatkowo, również <em>Angular CLI</em> prawidłowo obsluguje bundlowanie zasobów zbudowanych z wykorzystaniem absolutnych ścieżek.</p>
+
+<p>W tym celu należy zmodyfikować plik konfiguracyjny kompilatora <em>TypeScript</em>. W pliku <em>tsconfig.json</em> dopisujemy atrybut <em>baseUrl: “.”</em></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Od teraz możemy we wszystkich miejscach importować zależności podając ich absolutne ścieżki:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">AuthenticationService</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">authentication/authentication.service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserDetailsService</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">AuthenticationService</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Wprowdzenie modularyzacji do standardu <em>ES6</em> to ogromny krok w stronę poprawy jakości aplikacji. Jednak podawanie względnych ścieżek do zależności może szybko doprowadzić do pogorszenia czytelności kodu i przyprawić niejednego programistę o ból głowy. Na szczęścię kompilator <em>TypeScript</em> pozawala definiować zależności wskazując absolutne ścieżki - wystarczy za pomocą atrybutu <em>baseUrl</em> kompilatora zdefiniować katalog, względem którego chcemy wyszukiwać plików do importowania.</p>
+
+<ul>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/5728">Wsparcie dla absolutnych importów w kompilatorze TypeScript</a></li>
+  <li><a href="https://github.com/angular/angular-cli/pull/2470">Wsparcie dla konfiguracji baseUrl w Angular CLI</a></li>
+</ul>
+:ET

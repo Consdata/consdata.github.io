@@ -1,0 +1,430 @@
+I"-�<p>Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem (enkapsulacją) stylów - czyli tym jak style z jednego komponentu wpływają na inne komponenty.<br />
+Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest <strong>Shadow DOM</strong>.</p>
+
+<h2 id="shadow-dom">Shadow DOM</h2>
+
+<p>Shadow DOM wprowadza kapsułkowanie do DOM-u. Pozwala to odseparować styl i kod potrzebny do wyświetlenia elementu od dokumentu, w którym się znajduje. Przykładem może być np. element HTML <code class="language-plaintext highlighter-rouge">&lt;video&gt;</code></p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;video</span> <span class="na">width=</span><span class="s">"320"</span> <span class="na">height=</span><span class="s">"240"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"movie.mp4"</span> <span class="na">type=</span><span class="s">"video/mp4"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"movie.ogg"</span> <span class="na">type=</span><span class="s">"video/ogg"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/video&gt;</span>
+</code></pre></div></div>
+
+<p>Po włączeniu opcji wyświetlania Shadow Root w przeglądarce (na przykładzie Google Chrome):<br />
+<img src="/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/devtools_config_shadow_dom.jpg" alt="Devtools Configuration" />
+<span class="img-legend">DevTools &gt; Settings &gt; Preferences &gt; Elements</span></p>
+
+<p>możemy zobaczyć z czego tak naprawdę składa się element <code class="language-plaintext highlighter-rouge">&lt;video&gt;</code>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;video</span> <span class="na">width=</span><span class="s">"320"</span> <span class="na">height=</span><span class="s">"240"</span><span class="nt">&gt;</span>
+    #shadow-root
+        <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls"</span> <span class="na">class=</span><span class="s">"sizing-small phase-ready state-stopped"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-loading-panel"</span> <span class="na">aria-label=</span><span class="s">"buforowanie"</span> <span class="na">aria-live=</span><span class="s">"polite"</span>
+                <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-overlay-enclosure"</span><span class="nt">&gt;&lt;input</span>
+                    <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overlay-cast-button"</span> <span class="na">type=</span><span class="s">"button"</span>
+                    <span class="na">aria-label=</span><span class="s">"odtwarzanie na urządzeniu zdalnym"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-enclosure"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-panel"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-scrubbing-message"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;/div&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-button-panel"</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                            <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-play-button"</span> <span class="na">aria-label=</span><span class="s">"odtwórz"</span> <span class="na">class=</span><span class="s">"pause"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">aria-label=</span><span class="s">"upłynęło: 0:00"</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-current-time-display"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>0:00
+                        <span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">aria-label=</span><span class="s">"pozostało: / 0:12"</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-time-remaining-display"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                            /
+                            0:12<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-button-spacer"</span><span class="nt">&gt;&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-volume-control-container"</span> <span class="na">class=</span><span class="s">"closed"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                            <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-volume-control-hover-background"</span><span class="nt">&gt;&lt;/div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"range"</span>
+                                <span class="na">step=</span><span class="s">"any"</span> <span class="na">max=</span><span class="s">"1"</span> <span class="na">aria-valuemax=</span><span class="s">"100"</span> <span class="na">aria-valuemin=</span><span class="s">"0"</span> <span class="na">aria-label=</span><span class="s">"volume"</span>
+                                <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-volume-slider"</span> <span class="na">aria-valuenow=</span><span class="s">"100"</span> <span class="na">class=</span><span class="s">"closed"</span>
+                                <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-mute-button"</span>
+                                <span class="na">aria-label=</span><span class="s">"wyciszenie"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;/div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">role=</span><span class="s">"button"</span> <span class="na">aria-label=</span><span class="s">"włącz tryb obrazu w&amp;nbsp;obrazie"</span>
+                            <span class="na">pseudo=</span><span class="s">"-internal-media-controls-picture-in-picture-button"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span>
+                            <span class="na">type=</span><span class="s">"button"</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-fullscreen-button"</span>
+                            <span class="na">aria-label=</span><span class="s">"przejdź do pełnego ekranu"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                            <span class="na">aria-label=</span><span class="s">"pokaż więcej opcji sterowania multimediami"</span> <span class="na">title=</span><span class="s">"więcej opcji"</span>
+                            <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-button"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;/div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"range"</span> <span class="na">step=</span><span class="s">"any"</span> <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-timeline"</span> <span class="na">max=</span><span class="s">"12.612"</span>
+                        <span class="na">aria-label=</span><span class="s">"pasek czasu odtwarzania filmu 0:00 / 0:12"</span> <span class="na">aria-valuetext=</span><span class="s">"upłynęło: 0:00"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">"menu"</span> <span class="na">aria-label=</span><span class="s">"Opcje"</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-text-track-list"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list"</span> <span class="na">role=</span><span class="s">"menu"</span> <span class="na">class=</span><span class="s">"closed"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">" Odtwórz "</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-play-button"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">aria-label=</span><span class="s">"odtwórz"</span> <span class="na">class=</span><span class="s">"pause"</span>
+                        <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Odtwórz<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">"przejdź do pełnego ekranu Pełny ekran "</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-fullscreen-button"</span> <span class="na">aria-label=</span><span class="s">"przejdź do pełnego ekranu"</span>
+                        <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Pełny ekran<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">"pobierz multimedia Pobierz "</span> <span class="na">class=</span><span class="s">"animated-1"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">aria-label=</span><span class="s">"pobierz multimedia"</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-download-button"</span> <span class="na">tabindex=</span><span class="s">"-1"</span>
+                        <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Pobierz<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">" Wycisz "</span> <span class="na">class=</span><span class="s">"animated-2"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-mute-button"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">aria-label=</span><span class="s">"wyciszenie"</span>
+                        <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Wycisz<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">"odtwarzanie na urządzeniu zdalnym Przesyłaj "</span> <span class="na">class=</span><span class="s">"animated-1"</span>
+                    <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-cast-button"</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">aria-label=</span><span class="s">"odtwarzanie na urządzeniu zdalnym"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Przesyłaj<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">"wyświetlanie menu napisów Napisy "</span> <span class="na">class=</span><span class="s">"animated-0"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;input</span>
+                        <span class="na">aria-label=</span><span class="s">"wyświetlanie menu napisów"</span> <span class="na">type=</span><span class="s">"button"</span>
+                        <span class="na">pseudo=</span><span class="s">"-webkit-media-controls-toggle-closed-captions-button"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Napisy<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;label</span> <span class="na">pseudo=</span><span class="s">"-internal-media-controls-overflow-menu-list-item"</span> <span class="na">role=</span><span class="s">"menuitem"</span> <span class="na">tabindex=</span><span class="s">"0"</span>
+                    <span class="na">aria-label=</span><span class="s">"włącz tryb obrazu w&amp;nbsp;obrazie Obraz w&amp;nbsp;obrazie "</span> <span class="na">class=</span><span class="s">"animated-0"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;&lt;input</span>
+                        <span class="na">type=</span><span class="s">"button"</span> <span class="na">role=</span><span class="s">"button"</span> <span class="na">aria-label=</span><span class="s">"włącz tryb obrazu w&amp;nbsp;obrazie"</span>
+                        <span class="na">pseudo=</span><span class="s">"-internal-media-controls-picture-in-picture-button"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">style=</span><span class="s">""</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;&lt;span&gt;</span>Obraz w<span class="ni">&amp;nbsp;</span>obrazie<span class="nt">&lt;/span&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;/label&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"movie.mp4"</span> <span class="na">type=</span><span class="s">"video/mp4"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"movie.ogg"</span> <span class="na">type=</span><span class="s">"video/ogg"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/video&gt;</span>
+</code></pre></div></div>
+
+<p>Shadow DOM ukrywa całą implementację pod prostym tagiem.<br />
+Dzięki temu style zaaplikowane do naszego elementu nie wpływają na inne elementy DOM-u.</p>
+
+<p><img src="/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/shadow-dom-browser-support.png" alt="Shadow DOM browser support" />
+<span class="img-legend">Wsparcie Shadow DOM przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-08-20</span></p>
+
+<h2 id="view-encapsulation-w-angularze">View Encapsulation w Angularze</h2>
+
+<p>Domyślnie Angular korzysta z własnego kapsułkowania stylów (<code class="language-plaintext highlighter-rouge">ViewEncapsulation.Emulated</code>), ale udostępnia jeszcze 3 inne tryby kapsułkowania (w tym jeden deprecated).</p>
+
+<p>Aby zmienić domyślny tryb kapsułkowania, wystarczy dodać odpowiednią opcję w dekoratorze <code class="language-plaintext highlighter-rouge">@Component</code>, np.:<br />
+<code class="language-plaintext highlighter-rouge">encapsulation: ViewEncapsulation.ShadowDom</code></p>
+
+<p>Omówimy je na przykładzie kodu z projektu demo. <a href="https://github.com/Michuu93/view-encapsulation-demo">Link do repozytorium</a></p>
+
+<p>Projekt demo składa się z 4 komponentów:</p>
+
+<ul>
+  <li><a href="https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/app.component.ts"><code class="language-plaintext highlighter-rouge">app-root</code></a> - główny komponent zawierający w sobie pozostałe komponenty</li>
+  <li><a href="https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/red-module/red.component.ts"><code class="language-plaintext highlighter-rouge">app-red</code></a></li>
+  <li><a href="https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/green-module/green.component.ts"><code class="language-plaintext highlighter-rouge">app-green</code></a></li>
+  <li><a href="https://github.com/Michuu93/view-encapsulation-demo/blob/master/src/app/blue-module/blue.component.ts"><code class="language-plaintext highlighter-rouge">app-blue</code></a></li>
+</ul>
+
+<p>Każdy z komponentów <code class="language-plaintext highlighter-rouge">app-red</code>, <code class="language-plaintext highlighter-rouge">app-green</code> oraz <code class="language-plaintext highlighter-rouge">app-blue</code> składa się z jednego paragrafu z odpowiednim kolorem tekstu dla tego elementu. Oprócz tego istnieją 3 branche, po jednym dla każdego z omawianych trybów, co pozwoli na zobrazowanie nakładania się oraz kapsułkowania stylów.</p>
+
+<h3 id="viewencapsulationnone">ViewEncapsulation.None</h3>
+
+<p>Brak kapsułkowania, czyli style utworzone w komponencie są globalne (w sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code>).<br />
+W tym trybie elementy HTML i odpowiadające im selektory CSS wyglądają tak samo jak te, które napisaliśmy w kodzie.<br />
+Może to spowodować niechciane nadpisywanie stylów lub dodawanie ich do elementów, które nie posiadają żadnego stylu.</p>
+
+<p>W przykładzie usunęliśmy styl paragrafu w komponencie <code class="language-plaintext highlighter-rouge">app-green</code>.<br />
+<a href="https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.None">Link do repozytorium</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ViewEncapsulation</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-red</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Red paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: red;
+        }
+    </span><span class="s2">`</span><span class="p">],</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">None</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">RedComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ViewEncapsulation</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-green</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Green paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">None</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">GreenComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ViewEncapsulation</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-blue</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Blue paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: blue;
+        }
+    </span><span class="s2">`</span><span class="p">],</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">None</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">BlueComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Wynikowy kod HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nt">p</span> <span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nt">p</span> <span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;app-root</span> <span class="na">ng-version=</span><span class="s">"8.2.2"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;app-red&gt;</span>
+            <span class="nt">&lt;p&gt;</span>Red paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-red&gt;</span>
+        <span class="nt">&lt;app-green&gt;</span>
+            <span class="nt">&lt;p&gt;</span>Green paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-green&gt;</span>
+        <span class="nt">&lt;app-blue&gt;</span>
+            <span class="nt">&lt;p&gt;</span>Blue paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-blue&gt;</span>
+    <span class="nt">&lt;/app-root&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_none_result.jpg" alt="ViewEncapsulation.None" />
+<span class="img-legend">Wynik widoczny w przeglądarce</span></p>
+
+<p>Jak widzimy, style zostały dodane w sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code>, co spowodowało nadpisanie pierwszego stylu paragrafu drugim - <code class="language-plaintext highlighter-rouge">color: blue</code>. W efekcie wszystkie paragrafy mają ten sam kolor, również paragraf z komponentu <code class="language-plaintext highlighter-rouge">app-green</code>, który nie posiada żadnego stylu i powinien mieć kolor domyślny.</p>
+
+<h3 id="viewencapsulationemulated-default">ViewEncapsulation.Emulated (default)</h3>
+
+<p>Domyślny tryb kapsułkowania w Angularze, w którym style są domknięte w komponencie.<br />
+W tym trybie style również znajdują się w sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code>, ale posiadają dodatkowe atrybuty które wiążą je z elementami HTML pochodzącymi z tego samego komponentu.<br />
+Dzięki temu na stronie może istnieć kilka komponentów zawierających element tego samego typu, ale z różnymi stylami.</p>
+
+<p><strong>Uwaga!</strong> W tym trybie style nie mają wpływu na inne elementy na stronie (jednak mogą mieć wpływ na elementy komponentu dziecka - jeśli komponent dziecka posiada tryb kapsułkowania inny niż Shadow DOM), ponieważ są domknięte unikalnymi atrybutami. Globalne style strony (oraz style innych komponentów, które mają wyłączony tryb kapsułkowania) mogą jednak mieć wpływ na ten komponent.</p>
+
+<p>W przykładzie przenieśliśmy komponent <code class="language-plaintext highlighter-rouge">app-green</code> z komponentu <code class="language-plaintext highlighter-rouge">app-root</code> do komponentu <code class="language-plaintext highlighter-rouge">app-blue</code> i usunęliśmy jego style.<br />
+<a href="https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.Emulated">Link do repozytorium</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-red</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Red paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: red;
+        }
+    </span><span class="s2">`</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">RedComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-green</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Green paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">GreenComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-blue</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;app-green&gt;&lt;/app-green&gt;
+        &lt;p&gt;Blue paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: blue;
+        }
+    </span><span class="s2">`</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">BlueComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Wynikowy kod HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nt">p</span><span class="o">[</span><span class="nt">_ngcontent-pes-c0</span><span class="o">]</span> <span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+        <span class="nt">p</span><span class="o">[</span><span class="nt">_ngcontent-pes-c1</span><span class="o">]</span> <span class="p">{</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;app-root</span> <span class="na">ng-version=</span><span class="s">"8.2.2"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;app-red</span> <span class="na">_nghost-pes-c0</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;p</span> <span class="na">_ngcontent-pes-c0</span><span class="nt">&gt;</span>Red paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-red&gt;</span>
+        <span class="nt">&lt;app-blue</span> <span class="na">_nghost-pes-c1</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;app-green</span> <span class="na">_ngcontent-pes-c1</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;p&gt;</span>Green paragraph!<span class="nt">&lt;/p&gt;</span>
+            <span class="nt">&lt;/app-green&gt;</span>
+            <span class="nt">&lt;p</span> <span class="na">_ngcontent-pes-c1</span><span class="nt">&gt;</span>Blue paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-blue&gt;</span>
+    <span class="nt">&lt;/app-root&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_emulated_result.jpg" alt="ViewEncapsulation.Emulated" />
+<span class="img-legend">Wynik widoczny w przeglądarce</span></p>
+
+<p>Domyślny tryb pozwolił nam odseparować style między poszczególnymi komponentami. W kodzie wynikowym widzimy, że style z komponentu rodzica <code class="language-plaintext highlighter-rouge">app-blue</code> nie zostały zaaplikowane do komponentu dziecka <code class="language-plaintext highlighter-rouge">app-green</code>, w efekcie czego paragraf ma kolor domyślny. Stało się tak, ponieważ Angular dodał atrybut do stylu. Gdybyśmy dodali styl w runtime, to zostałby zaaplikowany również do komponentu dziecka.</p>
+
+<p>Na przykładzie komponentu <code class="language-plaintext highlighter-rouge">app-red</code> - Angular dodał atrybut <code class="language-plaintext highlighter-rouge">_ngcontent-pes-c0</code> do selektora CSS oraz elementu HTML. W ten sposób style dodane w sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> aplikują się tylko do odpowiednich elementów z tego samego komponentu. Oprócz tego, na komponencie dodany został atrybut <code class="language-plaintext highlighter-rouge">_nghost-pes-c0</code>. Z czego składają się te atrybuty?</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">_ngcontent</code> - określa typ elementu, w tym przypadku zawartość komponentu</li>
+  <li><code class="language-plaintext highlighter-rouge">_nghost</code> - określa element <code class="language-plaintext highlighter-rouge">root</code> komponentu</li>
+  <li><code class="language-plaintext highlighter-rouge">-pes</code> - oznacza ID aplikacji (<a href="https://angular.io/api/core/APP_ID">APP_ID</a>), jeśli nie został ustawiony to zostanie przyjęty wygenerowany ciąg znaków - dzięki temu nie nakładają się style między różnymi aplikacjami wyświetlanymi w jednym oknie</li>
+  <li><code class="language-plaintext highlighter-rouge">-c0</code> - numeruje kolejno elementy w komponencie</li>
+</ul>
+
+<h3 id="viewencapsulationshadowdom">ViewEncapsulation.ShadowDom</h3>
+
+<p>Kapsułkowanie oparte na Shadow DOM (wymaga wsparcia przeglądarki dla Shadow DOM).
+W tym trybie style nie są dodawane w sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code>, a istnieją w <strong>Shadow Root</strong>.</p>
+
+<p><strong>Uwaga!</strong> W tym trybie style nie mają wpływu na inne elementy na stronie (jednak mogą mieć wpływ na elementy komponentu dziecka - jeśli komponent dziecka posiada tryb kapsułkowania inny niż Shadow DOM). Globalne style strony (oraz style innych komponentów) również nie mają wpływu na ten komponent.</p>
+
+<p>W przykładzie przenieśliśmy komponent <code class="language-plaintext highlighter-rouge">app-green</code> z komponentu <code class="language-plaintext highlighter-rouge">app-root</code> do komponentu <code class="language-plaintext highlighter-rouge">app-blue</code>, usunęliśmy jego style i ustawiliśmy domyślny tryb kapsułkowania.<br />
+<a href="https://github.com/Michuu93/view-encapsulation-demo/tree/ViewEncapsulation.ShadowDom">Link do repozytorium</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ViewEncapsulation</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-red</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Red paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: red;
+        }
+    </span><span class="s2">`</span><span class="p">],</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">ShadowDom</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">RedComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-green</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;p&gt;Green paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">GreenComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ViewEncapsulation</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-blue</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        &lt;app-green&gt;&lt;/app-green&gt;
+        &lt;p&gt;Blue paragraph!&lt;/p&gt;
+    </span><span class="s2">`</span><span class="p">,</span>
+    <span class="na">styles</span><span class="p">:</span> <span class="p">[</span><span class="s2">`</span><span class="err">
+        p {
+            color: blue;
+        }
+    </span><span class="s2">`</span><span class="p">],</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">ShadowDom</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">BlueComponent</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Wynikowy kod HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;app-root</span> <span class="na">ng-version=</span><span class="s">"8.2.2"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;app-red&gt;</span>
+            #shadow-root
+            <span class="nt">&lt;style&gt;</span>
+                <span class="nt">p</span> <span class="p">{</span>
+                    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="nt">&lt;/style&gt;</span>
+            <span class="nt">&lt;p&gt;</span>Red paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-red&gt;</span>
+        <span class="nt">&lt;app-blue&gt;</span>
+            #shadow-root
+            <span class="nt">&lt;style&gt;</span>
+                <span class="nt">p</span> <span class="p">{</span>
+                    <span class="nl">color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="nt">&lt;/style&gt;</span>
+            <span class="nt">&lt;app-green&gt;</span>
+                <span class="nt">&lt;p&gt;</span>Green paragraph!<span class="nt">&lt;/p&gt;</span>
+            <span class="nt">&lt;/app-green&gt;</span>
+            <span class="nt">&lt;p&gt;</span>Blue paragraph!<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/app-blue&gt;</span>
+    <span class="nt">&lt;/app-root&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/posts/2019-08-22-view-encapsulation-w-angularze/view_encapsulation_shadow_dom_result.jpg" alt="ViewEncapsulation.ShadowDom" />
+<span class="img-legend">Wynik widoczny w przeglądarce</span></p>
+
+<p>Tryb Shadow DOM również pozwolił nam odseparować style między poszczególnymi komponentami. W sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> nie ma już żadnych stylów, natomiast są ukryte w Shadow Root elementów DOM-u. Na przykładzie widzimy, że style z komponentu rodzica <code class="language-plaintext highlighter-rouge">app-blue</code> zostały zaaplikowane do komponentu dziecka <code class="language-plaintext highlighter-rouge">app-green</code>, w efekcie czego paragraf ma kolor niebieski. Gdyby komponent <code class="language-plaintext highlighter-rouge">app-green</code> również posiadał tryb <code class="language-plaintext highlighter-rouge">ViewEncapsulation.ShadowDom</code>, to style rodzica nie zostałyby zaaplikowane, ponieważ korzystałby ze stylów z własnego Shadow Root. Tryb Shadow DOM zabezpiecza nasz komponent również przed stylami z komponentu rodzica, dodanymi w runtime.</p>
+
+<h3 id="viewencapsulationnative"><del>ViewEncapsulation.Native</del></h3>
+
+<p>Do niedawna zamiast <code class="language-plaintext highlighter-rouge">ViewEncapsulation.ShadowDom</code> dostępny był tryb <code class="language-plaintext highlighter-rouge">ViewEncapsulation.Native</code>.<br />
+Działał on w podobny sposób, ale został wycofany z powodu wykorzystywania przestarzałego standardu Shadow DOM.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Ogólnie rzecz biorąc, powinniśmy unikać braku kapsułkowania stylów, ponieważ powoduje to często niechciane efekty.<br />
+Tryb Shadow DOM zapewnia całkowite domknięcie stylów w komponencie, dzięki czemu style globalne oraz inne komponenty nie mają na niego wpływu, tak samo jak komponent w tym trybie nie ma wpływu na inne komponenty na stronie (za wyjątkiem komponentów dzieci które mają włączony tryb kapsułkowania inny niż Shadow DOM).</p>
+
+<p>Niestety nie wszystkie przeglądarki mogą wspierać ten tryb, dlatego Angular domyślnie udostępnił własny, emulowany tryb kapsułkowania. W trybie domyślnym na nasz komponent mają jednak wpływ style globalne, a także mogą mieć wpływ inne komponenty, ponieważ komponent w tym trybie nadal wykorzystuje style z sekcji <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code>. W większości przypadków tryb domyślny jest wystarczający, więc jeśli zależy nam na jak najlepszym wsparciu przeglądarek i nie mamy problemów z nadpisywaniem stylów przez inne komponenty lub aplikacje, to możemy z powodzeniem z niego korzystać.</p>
+
+<p>Musimy jednak pamiętać, że mieszanie różnych trybów kapsułkowania między komponentami również może spowodować niezamierzone efekty.</p>
+:ET

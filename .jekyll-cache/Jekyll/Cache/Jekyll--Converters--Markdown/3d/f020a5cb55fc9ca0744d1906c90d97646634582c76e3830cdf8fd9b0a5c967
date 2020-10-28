@@ -1,0 +1,4 @@
+I"�<p><code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code> to wbudowany w Angulara <code class="language-plaintext highlighter-rouge">InjectionToken</code>.
+Pod <code class="language-plaintext highlighter-rouge">InjectionToken</code> można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu.
+Przykład zdefiniowania <code class="language-plaintext highlighter-rouge">MY_TOKEN</code>:</p>
+:ET

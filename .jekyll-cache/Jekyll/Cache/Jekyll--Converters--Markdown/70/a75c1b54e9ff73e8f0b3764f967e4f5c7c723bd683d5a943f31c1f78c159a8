@@ -1,0 +1,4 @@
+I"�<p>Same site cookies (<em>First-Part-Only</em>) to stworzony kilka lat temu mechanizm, który pozwala na zmniejszenie ryzyka ataków typu CSRF.
+Zapewnia on, że dane ciasteczko może być wysyłane wyłącznie z żądaniami zainicjowanymi z domeny, dla której zostało zarejestrowane. 
+Dokładniejszy opis znajdziesz pod tym adresem: <span class="no-breaking-word"><a href="https://web.dev/samesite-cookies-explained/">https://web.dev/samesite-cookies-explained/</a></span>.</p>
+:ET

@@ -1,0 +1,216 @@
+I"_h<h2 id="custom-element-co-to-takiego">Custom element, co to takiego?</h2>
+<p>Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.
+Na Web Components składają sie następujące specyfikacje:</p>
+<ul>
+  <li><strong>Templates</strong> - wprowadza element <code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>, który pozwala na wyrenderowanie jego zawartości dopiero na żądanie stworzenia kopii. Dzięki temu problem z przedwczesnym ładowaniem danych nie występuje,</li>
+  <li><strong>HTML imports</strong> - tworzone komponenty mogą zawierać szablony (<strong>Templates</strong>) i kod (<strong>Custom elements</strong>), specyfikacja ta pozwala wydzielić obie te części do oddzielnego pliku HTML i importować go za pomocą <code class="language-plaintext highlighter-rouge">&lt;link rel="import" href="plik-komponentu.html" /&gt;</code>,</li>
+  <li><strong>Shadow DOM</strong> - specyfikacja ta pozwala na enkapsulację DOM’u oraz styli. Każdy element może mieć swój shadow root, który jest wyświetlany jako jego zawartość, przy czym zawartość ta jest odseparowana logicznie od pozostałych elementów DOM,</li>
+  <li><strong>Custom Elements</strong> - specyfikuje sposób tworzenia własnych elementów DOM oraz dostarcza obiekty do kontrolowania cyklu życia elementu.
+W tym artykule skupimy się jedynie na <strong>Custom Elements</strong> (oraz w mniejszym stopniu na <strong>Shadow DOM</strong>), który jest minimalnym zestawem narzędzi pozwalającym na dodanie własnego elementu HTML niezależnego od wykorzystywanych (lub nie) frameworków czy bibliotek.</li>
+</ul>
+
+<h2 id="wsparcie-przez-główne-przeglądarki">Wsparcie przez główne przeglądarki</h2>
+<div class="img-with-legend">
+<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-27-custom-elements/browser_support.png" />
+<span class="img-legend">Wsparcie custom components przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-03-16</span>
+</div>
+
+<p>Custom Elements jest wspierany przez większość najpopularniejszych przeglądarek. Na pozostałych implementację zapewniają polyfille:</p>
+<ul>
+  <li><a href="https://github.com/webcomponents/custom-elements">https://github.com/webcomponents/custom-elements</a> lub</li>
+  <li><a href="https://github.com/webcomponents/webcomponentsjs">https://github.com/webcomponents/webcomponentsjs</a></li>
+</ul>
+
+<h2 id="customelementregistry">CustomElementRegistry</h2>
+<p>Obiekt typu <code class="language-plaintext highlighter-rouge">CustomElementRegistry</code> zapewnia metody pozwalające na rejestrowanie oraz pobierania już zarejestrowanych elementów. Instancję klasy <code class="language-plaintext highlighter-rouge">CustomElementRegistry</code> otrzymamy odwołując się do <code class="language-plaintext highlighter-rouge">window.customElements</code>. W klasie tej znajdziemy następujące metody:</p>
+
+<h3 id="customelementregistrydefinelocalname-string-constructor-function-options-extends-string-void"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.define(localName: string, constructor: Function, options?: {extends: string}): void</code></h3>
+<p>Pozwala na zdefiniowanie elementu. Pierwszym parametrem jest nazwa tagu, drugim konstruktor klasy elementu. Dodatkowo, można podać trzeci parametr, który zawiera opcje komponentu. W aktualnej wersji specyfikacji dostępna jest jedynie opcja <code class="language-plaintext highlighter-rouge">extends</code>, której wartością jest nazwa rozszerzanego elementu (wykorzystujemy ją wyłacznie w przypadku rozszerzania już istniejącego elementu).
+Przykładowe zastosowanie:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">,</span> <span class="kd">class</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="nx">connectedCallback</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;strong&gt;hello world&lt;/strong&gt;</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>Tak zdefiniowanego elementu można użyć w następujący sposób:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-element&gt;&lt;/my-element&gt;</span>
+</code></pre></div></div>
+
+<h4 id="ograniczenia-nazwy-tagu">Ograniczenia nazwy tagu</h4>
+<p>Nazwa naszego elementu musi spełniać następujące wyrażenie regularne:</p>
+<pre><code class="language-regexp">^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$
+</code></pre>
+<p>Innymi słowy tag musi zaczynać się od litery, musi zawierać przynajmniej jeden myślnik, a poza tym może zawierać jedynie litery alfabetu łaińskiego oraz następujace znaki: <code class="language-plaintext highlighter-rouge">_</code>, <code class="language-plaintext highlighter-rouge">.</code> i <code class="language-plaintext highlighter-rouge">-</code>. Taka reguła sugeruje aby stosować konwencję nazewniczą <code class="language-plaintext highlighter-rouge">kebab-case</code>.</p>
+
+<p>Dodatkowo, nazwa nie może kolidować z żadną nazw z następującej listy:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">annotation-xml</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">color-profile</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-src</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-uri</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-format</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-name</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">missing-glyph</code>.</li>
+</ul>
+
+<h3 id="customelementregistrygetname-string-functionundefined"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.get(name: string): Function|undefined</code></h3>
+<p>Metoda <code class="language-plaintext highlighter-rouge">get</code> zwraca constructor utworzonego custom elementu lub <code class="language-plaintext highlighter-rouge">undefined</code>, jeżeli taki nie został znaleziony.
+Przykład:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">myElement</span> <span class="o">=</span> <span class="nx">customElements</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="customelementregistryupgraderoot-node-void"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.upgrade(root: Node): void</code></h3>
+<p>Metoda <code class="language-plaintext highlighter-rouge">upgrade</code> pozwala zainicjować element znajdujący się w DOM po tym jak custom element został zarejestrowany.</p>
+
+<p>Przykład:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">my-element</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">class</span> <span class="nx">MyElement</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{}</span>
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">my-element</span><span class="dl">"</span><span class="p">,</span> <span class="nx">MyElement</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">MyElement</span><span class="p">));</span> <span class="c1">// not yet upgraded</span>
+
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">upgrade</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">MyElement</span><span class="p">);</span>    <span class="c1">// upgraded!</span>
+</code></pre></div></div>
+
+<h3 id="customelementregistrywhendefined-promiseundefined"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.whenDefined(): Promise&lt;undefined&gt;</code></h3>
+<p>Zwraca <a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Promise">Promise</a>, który rozwiązany jest w momencie, gdy element zostanie zarejestrowany.</p>
+
+<p>Przykład:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">customElements</span><span class="p">.</span><span class="nx">whenDefined</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">).</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="zarządzanie-cyklem-życia-custom-elementu">Zarządzanie cyklem życia custom elementu</h2>
+<p>W każdym custom elemencie możemy wykorzystać jeden z predefiniowanych callbacków:</p>
+<ul>
+  <li><strong>connectedCallback</strong> - wywoływany za każdym razem, gdy custom element jest dołączany do dokumentu,</li>
+  <li><strong>disconnectedCallback</strong> - wywoływany zawsze po odłączeniu custom elementu z DOM,</li>
+  <li><strong>adoptedCallback</strong> - wywoływany po przeniesieniu custom elementu do innego dokumentu,</li>
+  <li><strong>attributeChangedCallback</strong> - wywoływany, gdy atrybuty elementu zostaną dodane, usunięte lub zmodyfikowane - jest wywoływany jedynie dla atrybutów, których nazwy zostaną zwrócone ze statycznego pola <code class="language-plaintext highlighter-rouge">observedAttributes</code>.</li>
+</ul>
+
+<h2 id="custom-elementy-w-akcji">Custom elementy w akcji</h2>
+
+<h3 id="przykładowy-prosty-custom-element">Przykładowy prosty custom element</h3>
+<p>Załóżmy, że w naszej aplikacji chcemy stworzyć komponent obrazka z podpisem. Do tej pory używaliśmy HTMLa o takiej strukturze:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"image-with-caption"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"image"</span> <span class="na">src=</span><span class="s">"obrazek.jpg"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"image-caption"</span><span class="nt">&gt;</span>Podpis obrazka<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;style&gt;</span>
+<span class="nt">img</span><span class="nc">.image</span> <span class="p">{</span>
+   <span class="nl">max-width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+   <span class="nl">max-height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.image-caption</span> <span class="p">{</span>
+   <span class="nl">font-size</span><span class="p">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+<p>Chcielibyśmy wydzielić taki fragment kodu, do elementu, który będziemy definiować w następujący sposób:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;image-with-caption</span> <span class="na">src=</span><span class="s">"obrazek.jpg"</span><span class="nt">&gt;</span>Podpis obrazka<span class="nt">&lt;/image-with-caption&gt;</span>
+</code></pre></div></div>
+
+<p>Zacznijmy od stworzenia i zarejestrowania komponentu:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">ImageWithCaption</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">image-with-caption</span><span class="dl">'</span><span class="p">,</span> <span class="nx">ImageWithCaption</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Na tym etapie po dodaniu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption /&gt;</code> zostanie na nim zainicjowany element ImageWithCaption. Zajmijmy się dodaniem obrazka.
+Dodajmy do klasy pole <code class="language-plaintext highlighter-rouge">img</code> typu <code class="language-plaintext highlighter-rouge">HTMLImageElement</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">ImageWithCaption</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">img</span><span class="p">:</span> <span class="nx">HTMLImageElement</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Następnie do konstruktora dopiszmy:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">img</span><span class="dl">'</span><span class="p">);</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">attachShadow</span><span class="p">({</span><span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>W ten sposób dodaliśmy do elementu shadow root (dzięki temu style elementu będą odseparowane od dokumentu).
+A potem dodajmy metodę <code class="language-plaintext highlighter-rouge">connectedCallback</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">connectedCallback</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>W ten sposób przypiszemy źródło obrazka z atrybutu <code class="language-plaintext highlighter-rouge">src</code> elementu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption src="..."&gt;</code>. Na tym etapie po osadzeniu naszego elementu pojawi się obrazek, który wskażemy w atrybucie <code class="language-plaintext highlighter-rouge">src</code>. Niestety jego wartość nie będzie mogła się zmieniać po inicjalizacji elementu. Aby nasłuchiwać na zmiany po inicjalizacji należy zadeklarować, że będziemy nasłuchiwać na zmiany atrybutu <code class="language-plaintext highlighter-rouge">src</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kd">get</span> <span class="nx">observedAttributes</span><span class="p">():</span> <span class="kr">string</span><span class="p">[]</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Następnie należy zdefiniować metodę <code class="language-plaintext highlighter-rouge">attributeChangedCallback</code>, która posłuży do obsługi zmian atrybutu src:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">attributeChangedCallback</span><span class="p">(</span><span class="nx">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">newValue</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Dzięki temu możemy zmieniać wartość atrybutu <code class="language-plaintext highlighter-rouge">src</code> po zainicjowaniu komponentu. Zajmijmy się teraz dodaniem etykiety do obrazka. Do konstruktora dopiszmy następujący kod:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">caption</span><span class="p">:</span> <span class="nx">HTMLDivElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">caption</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;slot&gt;&lt;/slot&gt;</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">caption</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Dodaliśmy do naszego shadow DOM element <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>, którego zawartość zdefiniowaliśmy jako <code class="language-plaintext highlighter-rouge">&lt;slot&gt;&lt;/slot&gt;</code>. Podczas działania aplikacji <code class="language-plaintext highlighter-rouge">&lt;slot&gt;&lt;/slot&gt;</code> zostanie zastąpione zawartością elementu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption&gt;&lt;/image-with-caption&gt;</code>.
+Zostało nam dodanie styli do naszego komponentu. Dopiszmy do konstruktora:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">style</span><span class="p">:</span> <span class="nx">HTMLStyleElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">style</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">style</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`</span><span class="err">
+    img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+    div {
+        font-size: 10px;
+    }
+</span><span class="s2">`</span><span class="p">;</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Dzięki użyciu Shadow DOM style, które właśnie dodaliśmy nie wypływają poza element.</p>
+
+<p>Voilà!</p>
+
+<h3 id="mały-bonus---rozszerzanie-istniejących-elementów">Mały bonus - Rozszerzanie istniejących elementów</h3>
+
+<p>Poza możliwością zdefiniowania nowego elementu specyfikacja Custom Elements pozwala na rozszerzenie już istniejących elementów. Załóżmy, że chcemy dokonać prostej modyfikacji elementu <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> polegającej na tym, że przejście do łącza nastąpi dopiero po potwierdzeniu przez użytkownika. Poniżej kod przykładowego elementu:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">LinkWithConfirmation</span> <span class="kd">extends</span> <span class="nx">HTMLAnchorElement</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nx">connectedCallback</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">MouseEvent</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">confirm</span><span class="p">(</span><span class="dl">'</span><span class="s1">Are you sure?</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">link-with-confirmation</span><span class="dl">'</span><span class="p">,</span> <span class="nx">LinkWithConfirmation</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">'</span><span class="s1">a</span><span class="dl">'</span> <span class="p">});</span>
+</code></pre></div></div>
+<p>Zwróćmy uwagę, że w ostatnim parametrze metody <code class="language-plaintext highlighter-rouge">define</code> przekazaliśmy obiekt <code class="language-plaintext highlighter-rouge">{ extends: 'a' }</code>, który informuje, że będziemy rozszerzać element <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code>.
+Aby skorzystać z napisanego elementu musimy użyć elementu <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> z atrybutem <code class="language-plaintext highlighter-rouge">is</code> o wartości <code class="language-plaintext highlighter-rouge">link-with-confirmation</code>, a nie <code class="language-plaintext highlighter-rouge">&lt;link-with-confirmation&gt;</code>:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">is=</span><span class="s">"link-with-confirmation"</span> <span class="na">href=</span><span class="s">"https://consdata.com"</span><span class="nt">&gt;</span>consdata.com<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<h2 id="przydatne-linki">Przydatne linki</h2>
+<ul>
+  <li><a href="https://www.webcomponents.org/">www.webcomponents.org</a></li>
+  <li><a href="https://caniuse.com/#feat=custom-elementsv1">Wsparcie dla custom elements</a></li>
+  <li><a href="https://developers.google.com/web/fundamentals/web-components/best-practices">Dobre praktyki z przykładami</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements">O Custom elements na MDN</a></li>
+</ul>
+:ET

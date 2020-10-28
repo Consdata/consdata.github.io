@@ -1,0 +1,204 @@
+I"�R<p>Znając definicję Event Sourcingu oraz korzyści, jakie nam zapewnia (dla przypomnienia polecam <a href="/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html"><strong>wpis Marcina poświęcony częściowo tej tematyce</strong></a>) warto rozważyć zastosowanie tego wzorca w swoim projekcie (oczywiście nie wszędzie się on nada).
+Osoby zainteresowane tematem z pewnością zostaną postawione przed wyborem technologii, w której rozpoczną implementację. 
+Niezależnie od języka programowania, można implementować CQRS oraz Event Sourcing samemu, od A-Z, jednakże byłoby to czasochłonne i może prowadzić do wielu błędów. 
+Alternatywą będzie zatem skorzystanie z gotowego frameworku, który od początku tworzony był z myślą o wspomnianych wzorcach (włączając w to mikroserwisy) - mowa tutaj o <a href="https://axoniq.io/"><strong>AxonFramework</strong></a>.</p>
+
+<p>W tym wpisie przedstawię Axona i omówię wybory, przed którymi stałem w kontekście tego frameworka, oraz drogę migracji z monolitu do mikroserwisów wraz z problemami, na które się natknąłem.</p>
+
+<h1 id="krótko-o-axonie">Krótko o Axonie</h1>
+<p>Axon to framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie.
+Axon bierze na barki zarządzanie przepływem wszystkich informacji między komponentami np. kierowanie commandów do odpowiednich agregatów, czy zapisywanie eventów w event store. 
+Jeżeli chodzi o kwestie event store’a, to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli.
+Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna, co moim zdaniem czyni Axona mocnym graczem.</p>
+
+<h1 id="event-store">Event store</h1>
+<p>Fundamentem projektu opartego o Event Sourcing jest oczywiście event store - źródło prawdy całego systemu, stąd wybór narzędzia pod tę funkcję jest kluczowy.</p>
+
+<h3 id="może-kafka">Może Kafka?</h3>
+<p>Kafka opiera się na eventach, których kolejność pojawiania się może zostać zachowana - co zapobiega sytuacji, w której wykonamy aktualizację krotki, zanim zostanie ona utworzona.
+Ponadto Kafka trzyma dane na topicach, zapamiętując offset (liczbę porządkową) dla każdego eventu. Znając offset istnieje możliwość odtworzenia topica od tego offsetu, aż do końca - umożliwia to odtwarzanie idealnego stanu aplikacji dosłownie na zawołanie (dopóki nie mamy do czynienia z paruset milionami eventów :wink:).
+Do tego Kafka bardzo łatwo się skaluje oraz uniemożliwia edycję nałożonych eventów, co niewątpliwie jest plusem. Jest jednak parę punktów, które brakują Kafce, do bycia idealnym kandydatem na event store:</p>
+<ul>
+  <li>Problem pojawia się w momencie, gdy chcielibyśmy odtworzyć agregat na podstawie eventów. 
+Kafka w tym momencie musiałaby przeiterować cały topic od pewnego offsetu, aż do końca.
+W kolejnym kroku konieczne jest odfiltrowanie eventów nie związanych z agregatem, który próbujemy odtworzyć, co wymaga od nas dodatkowej logiki w kodzie, oraz nakłada niepotrzebny narzut na event store (odfiltrowane eventy nie są nam potrzebne).</li>
+  <li>Drugim problemem jest brak natywnego wsparcia dla mechanizmu snapshotów, bez którego odtwarzanie stanu przy dużym wolumenie może trwać wieki.</li>
+  <li>Kolejnym ograniczeniem równie ważnym co poprzednie, jest brak optimistic lockingu w Kafce (istnieje jedynie obejście w postaci jednego wątku piszącego na topic). Bez tego mechanizmu, w wielowątkowej aplikacji może pojawić się problem, gdy wpadną dwa eventy w tym samym czasie - wtedy jedno z tych zdarzeń zaaplikuje się na modelu zbudowanym z niekompletnego zestawu eventów.</li>
+</ul>
+
+<p>Potencjalnym rozwiązaniem pierwszego problemu mógłby być osobny topic dla każdego agregatu, wówczas odpada konieczność filtrowania eventów.
+To rozwiązanie jednak może nie sprawdzić się przy ogromnej ilości agregatów. 
+Wynika to ze sposobu, w jaki Kafka przechowuje topici (a właściwie partycje) - dla każdej tworzony jest osobny katalog w systemie plików. 
+Szczegółowe wyjaśnienie znajduje się w <a href="https://youtu.be/zUSWsJteRfw?t=2179"><strong>filmie</strong></a> przygotowanym przez AxonIQ (firma odpowiedzialna za rozwój Axona).</p>
+
+<h3 id="axonserver">AxonServer</h3>
+<p>W kwestii event store AxonIQ wyszedł na przeciw potrzebom dając do dyspozycji swoje narzędzie, które idealnie spełnia się w tej roli - AxonServer:</p>
+<ul>
+  <li>Pozwala na dokładanie eventów (z jednoczesnym brakiem możliwości edycji już istniejących).</li>
+  <li>Zapewnia stałą wydajność niezależnie od ilości danych przetrzymywanych w event store.</li>
+  <li>Umożliwia konstruowanie snapshotów dla agregatów i nakładanie ich (w przypadku dużej ilości eventów rekonstrukcja agregatu bez funkcjonalności snapshotów może trochę trwać).</li>
+</ul>
+
+<p>Po uruchomieniu AxonServera mamy dostęp do dashboardu pokazującego, który mikroserwis jest podpięty pod event store wraz z jego liczbą instancji:
+<img src="/assets/img/posts/2020-06-08-microservices-on-axon/axon_dashboard.png" alt="AxonDashboard" />
+Na samym dashboardzie, funkcjonalności panelu administracyjnego się nie kończą:</p>
+<ul>
+  <li>Podgląd konfiguracji wraz z przepustowością (commandy/eventy/query/snapshoty na sekundę).</li>
+  <li>Możliwość wyszukiwania eventu przy użyciu zapytań.</li>
+  <li>Tabelka ze wskazaniem, który command, ile razy i w jakim serwisie został obsłużony.</li>
+  <li>Zarządzanie dostępem do panelu.</li>
+</ul>
+
+<p>Oczywiście AxonFramework jest w pełni kompatybilny z AxonServerem i działa out-of-the-box, bez dodatkowej konfiguracji.</p>
+
+<h1 id="najpierw-monolit">Najpierw monolit</h1>
+<p>Zaczynając przygodę z Axonem, nie chciałem skakać na głęboką wodę, zacząłem więc od monolitu, mając jednak z tyłu głowy perspektywę zmigrowania na coś bardziej skalowalnego.
+Migracja z monolitu na mikroserwisy nierzadko sprawia wiele problemów, tak było również w moim przypadku z <a href="https://github.com/matty-matt/movie-keeper-core"><strong>tą aplikacją</strong></a>.
+W skrócie pozwala ona na wyszukiwanie filmów po tytułach, wraz z ich obsadą oraz trailerami korzystając z <a href="https://developers.themoviedb.org/3/getting-started"><strong>API TMDb</strong></a>, zapisywanie wszystkiego w bazie, oznaczanie filmu jako przeczytany oraz sprawdzanie premiery cyfrowego wydania.
+Stworzyłem więc agregat filmu wraz z encjami zawierającymi trailery oraz obsadę:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Aggregate</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregate</span> <span class="o">{</span>
+    <span class="nd">@AggregateIdentifier</span>
+    <span class="kd">private</span> <span class="nc">MovieId</span> <span class="n">movieId</span><span class="o">;</span>
+    <span class="nd">@AggregateMember</span>
+    <span class="kd">private</span> <span class="nc">TrailerEntity</span> <span class="n">trailerEntity</span><span class="o">;</span>
+    <span class="nd">@AggregateMember</span>
+    <span class="kd">private</span> <span class="nc">CastEntity</span> <span class="n">castEntity</span><span class="o">;</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Pobieranie danych z zewnętrznego serwisu działo się w event handlerze, poprzez zawołanie odpowiedniej metody z interfejsu ExternalService:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieEventsHandler</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@EventHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieSearchDelegatedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">...</span>
+                <span class="nc">ExternalMovie</span> <span class="n">externalMovie</span> <span class="o">=</span> <span class="n">externalService</span><span class="o">.</span><span class="na">searchMovie</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getSearchPhrase</span><span class="o">());</span>
+                <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">SaveMovieCommand</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">(),</span> <span class="n">externalMovie</span><span class="o">));</span>
+            <span class="o">...</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Agregat obsługiwał SaveMovieCommand, wysyłając MovieSavedEvent, który z kolei powoduje zapis do bazy:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@EventHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieSavedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="o">...</span>
+        <span class="n">movieRepository</span><span class="o">.</span><span class="na">findByExternalMovieId</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">().</span><span class="na">getExternalMovieId</span><span class="o">().</span><span class="na">getId</span><span class="o">()).</span><span class="na">ifPresentOrElse</span><span class="o">(</span>
+                <span class="n">movie</span> <span class="o">-&gt;</span> <span class="n">handleMovieDuplicate</span><span class="o">(),</span>
+                <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">persistMovie</span><span class="o">(</span><span class="n">event</span><span class="o">));</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<p>Szczegółowy diagram przepływu dla tego przypadku użycia (już dla mikroserwisów) znajduje się w kolejnym rozdziale.</p>
+
+<p>Projekt w tym momencie spełniał moje wymagania i składał się z trzech elementów:</p>
+<ol>
+  <li>Aplikacja-monolit</li>
+  <li>Event store - AxonServer</li>
+  <li>Storage, read model - MongoDB</li>
+</ol>
+
+<p>Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami - mowa tu o zarządzaniu: filmami, trailerami, obsadą oraz serwis odpowiedzialny za odświeżanie dat cyfrowej premiery wraz z ocenami i liczbą głosów.</p>
+
+<h1 id="mikroserwisy">Mikroserwisy</h1>
+<p>Przyszła pora na przekucie teorii w praktykę wykorzystując wypracowany wcześniej podział odpowiedzialności.
+Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalności) wyglądałaby w ten sposób:</p>
+<ul>
+  <li>proxy-service, odpowiedzialny za pobieranie danych z zewnętrznego serwisu.</li>
+  <li>trailer-service, obsługujący zapis/odczyt trailerów, serwujący endpointy do pobierania trailerów.</li>
+  <li>cast-service, robiący to samo dla obsady.</li>
+  <li>movie-service, odpowiadający za szczegóły dot. filmu wraz z funkcjonalnością cyfrowych premier, serwujący wszystkie endpointy związane z filmem.</li>
+</ul>
+
+<p>Przejście na mikroserwisy wiązało się również ze stworzeniem API Gateway kierującym ruch do odpowiedniego serwisu w zależności od endpointu.</p>
+
+<p>Na diagramie prezentuje się to następująco:
+<img src="/assets/img/posts/2020-06-08-microservices-on-axon/diagram_komponentow.png" alt="Diagram komponentów" /></p>
+
+<p>A tak prezentuje się przepływ Axonowych zdarzeń w przypadku wyszukania filmu z automatycznym zwróceniem wyniku.
+Obsada i trailery pobierane są z zewnętrznego serwisu od razu i zapisywane do bazy. Użytkownik dopiero później może je pobrać wchodząc w szczegóły wyszukanego filmu. 
+<img src="/assets/img/posts/2020-06-08-microservices-on-axon/flowchart.png" alt="Diagram przepływu" /></p>
+
+<h3 id="problemy">Problemy</h3>
+<p>Migracja okazała się bezbolesna dla Axon Servera, który bez problemu zaczął wykrywać nowe instancje. 
+Pierwsze problemy zaczęły pojawiać się w momencie, gdy chciałem wysłać command do innego mikroserwisu.
+Z jakiegoś powodu aplikacja nie potrafiła skorelować commanda o tych samych polach i nazwie w jednym serwisie z identycznym commandem w drugim serwisie.
+Okazało się, że problem tkwi w serializacji - commandy były w pakietach o innych nazwach, przez co nie były interpretowane jako ten sam byt.
+Nie chcąc tracić czasu, uspójniłem pakiety między commandami i przepływ zaczął działać.</p>
+
+<h3 id="usprawnienia">Usprawnienia</h3>
+<p>W międzyczasie zastąpiłem EventHandler odpowiadający za pobieranie danych z zewnętrznego serwisu Sagami, które wysyłają commandy do proxy-service, aby wyszukał podany tytuł.
+Ten asynchronizm uodpornił aplikację na niedostępność zewnętrznego serwisu lub długi czas odpowiedzi:</p>
+<ul>
+  <li>movie-service
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Saga</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSaga</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nd">@StartSaga</span>
+  <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="s">"movieId"</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieSearchDelegatedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">FetchMovieDetailsCommand</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getSearchPhrase</span><span class="o">()));</span>
+  <span class="o">}</span>
+
+  <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="s">"proxyId"</span><span class="o">)</span>
+  <span class="nd">@EndSaga</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieDetailsFetchedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="kt">var</span> <span class="n">movie</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">NOT_FOUND_IN_EXTERNAL_SERVICE</span> <span class="o">==</span> <span class="n">movie</span><span class="o">.</span><span class="na">getMovieState</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">queryUpdateEmitter</span><span class="o">.</span><span class="na">emit</span><span class="o">(</span><span class="nc">GetMovieQuery</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">query</span> <span class="o">-&gt;</span> <span class="kc">true</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MovieDTO</span><span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">NOT_FOUND_IN_EXTERNAL_SERVICE</span><span class="o">));</span>
+          <span class="n">end</span><span class="o">();</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">SaveMovieCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">()));</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>proxy-service
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProxyCommandHandler</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nd">@CommandHandler</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">FetchMovieDetailsCommand</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">ExternalMovie</span> <span class="n">externalMovie</span><span class="o">;</span>
+      <span class="k">try</span> <span class="o">{</span>
+          <span class="n">externalMovie</span> <span class="o">=</span> <span class="n">tmdbService</span><span class="o">.</span><span class="na">searchMovie</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getSearchPhrase</span><span class="o">());</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">NotFoundInExternalServiceException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">externalMovie</span> <span class="o">=</span> <span class="nc">ExternalMovie</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">movieState</span><span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">NOT_FOUND_IN_EXTERNAL_SERVICE</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="n">eventGateway</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieDetailsFetchedEvent</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getProxyId</span><span class="o">(),</span> <span class="n">externalMovie</span><span class="o">));</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Jako że trailers i cast dostały swój własny serwis i nie były już powiązane z agregatem filmu, musiałem przekonwertować je na samodzielne agregaty:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Aggregate</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrailerAggregate</span> <span class="o">{</span>
+    <span class="nd">@AggregateIdentifier</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">trailersId</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Trailer</span><span class="o">&gt;</span> <span class="n">trailers</span><span class="o">;</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="podsumowanie">Podsumowanie</h1>
+<p>Przejście na architekturę mikroserwisów niewątpliwie daje wiele korzyści, jednak bez wyklarowanego dobrego podziału jest to mocno utrudnione.
+Axon sam w sobie sprzyja tej architekturze, a korzystając z gotowych narzędzi, można taką migrację przeprowadzić w relatywnie krótkim czasie.</p>
+
+<p>Cały kod znajduje się w moim repozytorium <a href="https://github.com/matty-matt/movie-keeper-core"><strong>tutaj</strong></a>.</p>
+
+<h1 id="źródła">Źródła</h1>
+<ul>
+  <li><a href="https://github.com/matty-matt/movie-keeper-core">https://github.com/matty-matt/movie-keeper-core</a></li>
+  <li><a href="https://axoniq.io/">https://axoniq.io/</a></li>
+  <li><a href="https://youtu.be/zUSWsJteRfw?t=2179">https://youtu.be/zUSWsJteRfw?t=2179</a></li>
+</ul>
+:ET

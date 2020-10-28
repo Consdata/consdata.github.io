@@ -1,0 +1,238 @@
+I" U<p>Planując migrację systemu informatycznego do chmury, zastanawiamy się <em>od czego zacząć</em>? Proces migracji składa się z kilku etapów, które pomogą nam przejść z punktu A (systemu źródłowego), do punktu B (systemu docelowego).</p>
+
+<p>Przed rozpoczęciem lektury warto zapoznać się z wpisem Grzegorza pt.<br />
+<a href="/2020/10/21/modele-wdrozenia-w-chmurze.html">W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych</a><br />
+który przedstawia poszczególne modele wdrożenia w chmurze.</p>
+
+<p>Swoją wiedzę opierać będę na doświadczeniach z chmurą Google (<a href="https://cloud.google.com/">Google Cloud Platform, GCP</a>), dlatego w tekście będę nawiązywał do usług i pojęć związanych z tą platformą.</p>
+
+<p><img src="/assets/img/posts/2020-11-03-proces-migracji-do-chmury/etapy_migracji.jpg" alt="Etapy migracji do chmury" /></p>
+
+<h1 id="szacowanie">Szacowanie</h1>
+
+<p>Pierwszym z etapów migracji jest etap szacowania, na którym przeprowadzona zostaje dokładna analiza istniejącego systemu oraz infrastruktury.
+Podczas szacowania analizujemy wykorzystywane zasoby, zależności pomiędzy elementami systemu oraz wymagania.
+Wybieramy te elementy systemu, które chcemy przenieść do chmury, co pozwoli na obliczenie dokładnych kosztów utrzymania infrastruktury.
+W przypadku kiedy przenosimy maszyny wirtualne, szacujemy zasoby które są nam potrzebne, aby określić np. typ maszyn <a href="https://cloud.google.com/compute">Compute Engine</a> oraz ich parametry.</p>
+
+<p>Jeśli znamy już dokładnie system źródłowy i jego wymagania, musimy zapoznać się z platformą usługodawcy, do którego będziemy migrować nasz system. Próg wejścia będzie tutaj zależał od modelu wdrożenia, ponieważ w zależności od niego musimy poznać mniej lub bardziej całą platformę.</p>
+
+<p>Pierwszy etap migracji jest tym miejscem, w którym zapoznajemy się z możliwościami chmury oraz zdobywamy potrzebne do migracji kompetencje (na przykład poprzez szkolenia czy certyfikacje).
+Pomóc może nam w tym również przetestowanie platformy, wdrożenie PoC oraz eksperymenty, które pozwolą rozwiać wszelkie wątpliwości i przewidzieć potencjalne problemy.</p>
+
+<p><strong>Rozważyć należy między innymi:</strong></p>
+
+<ul>
+  <li>porównanie wydajności i możliwości aktualnej bazy danych z usługami bazodanowymi w chmurze (np. <a href="https://cloud.google.com/products/databases">Cloud SQL, Cloud Firestore</a>),</li>
+  <li>przetestowanie opóźnień sieciowych,</li>
+  <li>zastąpienie mechanizmów logowania oraz monitorowania aplikacji przez dedykowane usługi (np. <a href="https://cloud.google.com/products/operations">Operations/Stackdriver</a>),</li>
+  <li>przetestowanie wydajności funkcji (np. <a href="https://cloud.google.com/functions">Cloud Functions</a>) oraz ich problemu z tzw. zimnym startem (cold start), który może zdyskwalifikować wykorzystanie ich w systemie docelowym,</li>
+  <li>porównanie czasów budowania, wdrażania i uruchamiania aplikacji (on-premises vs infrastruktura w chmurze),</li>
+  <li>koszty migracji i utrzymania systemu docelowego w zależności od zastosowanego modelu (<a href="/2020/10/21/modele-wdrozenia-w-chmurze.html">IaaS, PaaS, CaaS, FaaS</a>).</li>
+</ul>
+
+<p>Powinniśmy również ustalić kolejność migrowanych elementów, zaczynając od mniej złożonych aplikacji, co pozwoli nabrać doświadczenia i ograniczyć ryzyko. Zdobytą wiedzę wykorzystamy później podczas migracji bardziej złożonych systemów. Dzięki temu programiści będą mogli uruchamiać i testować pierwsze aplikacje w chmurze, skupiając się na samej migracji, a nie złożoności systemu.</p>
+
+<p><strong>Aplikacje będące dobrymi kandydatami:</strong></p>
+
+<ul>
+  <li>nie są krytyczne pod względem biznesowym,</li>
+  <li>mogą być przydatne do zbudowania bazy wiedzy,</li>
+  <li>są wspierane przez zespół developerski, który jest zmotywowany do zdobycia kompetencji w pracy z chmurą,</li>
+  <li>są bezstanowe (stateless), czyli nie przechowują żadnych informacji pomiędzy interakcjami (np. sesji użytkownika) i mają małą liczbę zależności
+(takie aplikacje są łatwiejsze do przeniesienia i nie pociągają za sobą potrzeby przeniesienia innych elementów systemu),</li>
+  <li>wymagają minimalnych zmian w kodzie i konfiguracji,</li>
+  <li>nie wymagają przenoszenia dużych ilości danych,</li>
+  <li>nie wymagają licencji innych firm, ponieważ niektórzy dostawcy nie licencjonują swoich produktów w chmurze lub mogą wymagać zmiany typu licencji,</li>
+  <li>nie są wrażliwe na przestój spowodowany migracją, co pozwala na łatwiejsze zaplanowanie migracji danych z bazy.</li>
+</ul>
+
+<p>Przydatne mogą okazać się narzędzia takie jak <a href="https://cloud.google.com/products/calculator">Google Cloud Pricing Calculator</a> (który pomoże nam obliczyć koszt utrzymania infrastruktury w chmurze Google) czy <a href="https://www.cloudphysics.com/">CloudPhysics</a> (które pozwoli nam zarządzać własną infrastrukturą, porównać koszty utrzymania infrastruktury on-premises vs chmura oraz wybrać te elementy, których migracja do chmury przyniesie najwięcej korzyści).</p>
+
+<p>Efektem etapu szacowania jest szczegółowa analiza systemu źródłowego, określone wymagania i wykorzystywane zasoby oraz posiadane licencje na oprogramowanie.
+W wyniku takiej analizy może okazać się, że niektóre elementy nie mogą zostać przeniesione do chmury.</p>
+
+<p><strong>Powody mogą być różne:</strong></p>
+
+<ul>
+  <li>wymagania co do lokalizacji zapisanych danych,</li>
+  <li>specyficzne systemy operacyjne,</li>
+  <li>oprogramowanie którego nie oferuje chmura,</li>
+  <li>obostrzenia wynikające z licencji,</li>
+  <li>zbyt duże ryzyko lub brak opłacalności migracji.</li>
+</ul>
+
+<h1 id="planowanie">Planowanie</h1>
+
+<p>Drugim z etapów migracji jest etap planowania, na którym powstaje podstawowa infrastruktura w chmurze oraz planowane jest przeniesienie systemu.
+Planowanie obejmuje takie elementy jak zarządzanie tożsamością, struktura i organizacja projektu w GCP, infrastruktura sieci oraz komunikacja pomiędzy elementami systemu.
+Wybrana zostaje również strategia migracji, co zostało opisane w dalszej części.</p>
+
+<p>Etap ten jest ściśle związany z konkretną platformą, ponieważ od niej zależą czynności które należy wykonać.</p>
+
+<p><strong>W przypadku Google Cloud Platform musimy:</strong></p>
+
+<ul>
+  <li>skonfigurować użytkowników i konta systemowe (Google Accounts, <a href="https://cloud.google.com/iam/docs/service-accounts">Service Accounts</a>, Google Groups, G Suite domains, <a href="https://cloud.google.com/iam/docs/overview">Cloud Identity domains</a>),</li>
+  <li>zaprojektować strukturę zasobów (organizacje, foldery, projekty),</li>
+  <li>zdefiniować grupy i role posiadające uprawnienia do tych zasobów (minimum to: organization admin, network admin, security admin, billing admin),</li>
+  <li>zaprojektować topologię sieci i skonfigurować połączenie istniejącego środowiska z chmurą (minimum to przynajmniej jedna sieć <a href="https://cloud.google.com/vpc">VPC</a>).
+Do połączenia własnej infrastruktury z chmurą można wykorzystać połączenia hybrydowe, takie jak: Internet publiczny, <a href="https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview">Cloud VPN</a>, Peering (<a href="https://cloud.google.com/network-connectivity/docs/direct-peering">Direct</a>/<a href="https://cloud.google.com/network-connectivity/docs/carrier-peering">Carrier</a>), <a href="https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview">Cloud Interconnect</a> (Dedicated/Partner).</li>
+</ul>
+
+<p>Efektem etapu planowania jest gotowy plan migracji oraz architektura systemu w chmurze.
+Plan migracji uwzględnia elementy które będą przenoszone do chmury, zasoby które będą wykorzystywane, szacowane koszty utrzymania systemu docelowego oraz listę rzeczy niezbędnych do wykonania przed rozpoczęciem migracji.</p>
+
+<h2 id="strategie-migracji">Strategie migracji</h2>
+
+<p>Podczas etapu planowania wybieramy strategię migracji, która wpływa na to jak wyglądać będzie system docelowy, w jakim modelu zostanie on wdrożony, ile będzie kosztowała sama migracja oraz jakie będą płynąć z niej korzyści.</p>
+
+<p><strong>Na wybór strategii wpływa wiele czynników:</strong></p>
+
+<ol>
+  <li><strong>Infrastruktura źródłowa</strong> - czy jest to on-premises, prywatny hosting czy inna publiczna chmura.</li>
+  <li><strong>Złożoność systemu</strong> - czy można go łatwo przepisać na natywne rozwiązania chmurowe lub zastąpić usługami SaaS.</li>
+  <li><strong>Budżet</strong> - czy proces migracji można wydłużyć w czasie, obniżając dzięki temu koszty z nim związane.</li>
+  <li><strong>Czas</strong> - czy migracja musi odbyć się w określonym czasie, np. w celu zwolnienia zasobów, czy może być wykonywana w dłuższej perspektywie czasu.</li>
+  <li><strong>Kompetencje</strong> - czy dobrze znana jest platforma docelowa, czy można poświęcić czas na zdobycie nowych kompetencji.</li>
+</ol>
+
+<h3 id="strategia-lift-and-shift">Strategia “Lift and shift”</h3>
+
+<p><img src="/assets/img/posts/2020-11-03-proces-migracji-do-chmury/lift_and_shift.jpg" alt="Strategia &quot;Lift and shift&quot;" /></p>
+
+<p><strong>Lift and shift</strong> - czyli “podnieś i przesuń”, jest strategią w której system przenoszony jest do chmury z minimalną liczbą modyfikacji.
+Ewentualne zmiany są związane tylko z przystosowaniem systemu do infrastruktury docelowej.
+Jest to najszybszy sposób na migrację, ponieważ ilość zmian jest ograniczona do minimum.</p>
+
+<p>Strategię <em>“lift and shift”</em> wybiera się wtedy, kiedy system ma zostać przeniesiony do chmury w jak najkrótszym czasie.
+Również ograniczona możliwość modyfikacji aplikacji (lub jej brak) oraz koszty z tym związane mogą być powodem wyboru te strategii.</p>
+
+<p><strong>Zalety:</strong></p>
+
+<ul>
+  <li>szybkość procesu migracji i niskie koszty z tym związane,</li>
+  <li>niewielkie ryzyko i niski próg wejścia (programiści wykorzystują znane im rozwiązania, np. migrując maszyny wirtualne do <a href="https://cloud.google.com/compute">Compute Engine</a> czy kontenery z orkiestracji Kubernetes/OpenShift do <a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE)</a>),</li>
+  <li>możliwość automatyzacji (np. wykorzystując narzędzie <a href="https://cloud.google.com/migrate/compute-engine">Migrate for Compute Engine</a>).</li>
+</ul>
+
+<p><strong>Wady:</strong></p>
+
+<ul>
+  <li>brak wykorzystania natywnych rozwiązań chmury (np. skalowania horyzontalnego, usług SaaS),</li>
+  <li>droższa i trudniejsza w utrzymaniu infrastruktura docelowa,</li>
+  <li>duża odpowiedzialność za system docelowy po naszej stronie.</li>
+</ul>
+
+<h3 id="strategia-improve-and-move">Strategia “Improve and move”</h3>
+
+<p><img src="/assets/img/posts/2020-11-03-proces-migracji-do-chmury/improve_and_move.jpg" alt="Strategia &quot;Improve and move&quot;" /></p>
+
+<p><strong>Improve and move</strong> - czyli “ulepsz i przenieś”, to strategia podczas której dokonywane są modyfikacje unowocześniające system o rozwiązania chmurowe.
+Modyfikacje te są wykonywane w celu wykorzystywania natywnych możliwości chmury, a nie tylko przystosowania systemu do nowej infrastruktury.
+Pozwalają one ulepszyć system pod kątem wydajności, funkcjonalności, kosztów utrzymania oraz wrażenia na użytkowniku końcowym.</p>
+
+<p>Strategię <em>“improve and move”</em> wybiera się wtedy, kiedy architektura systemu umożliwia łatwe i szybkie przepisanie lub zastąpienie pewnych elementów usługami SaaS,
+ale nie możemy z jakiegoś powodu przepisać całego systemu, w celu wykorzystania wszystkich rozwiązań chmurowych.</p>
+
+<p>Niezbędne do tego celu jest lepsze poznanie możliwości oferowanych przez chmurę (wyższy próg wejścia) oraz poświęcenie większej ilości czasu
+na przystosowanie systemu do nowej infrastruktury.</p>
+
+<p><strong>Zalety:</strong></p>
+
+<ul>
+  <li>wykorzystanie niektórych natywnych rozwiązań chmury, które wpływają bezpośrednio na dostępność systemu, jego bezpieczeństwo oraz wydajność,</li>
+  <li>niższe koszty utrzymania infrastruktury docelowej niż w przypadku strategii <em>“lift and shift”</em>,</li>
+  <li>przeniesienie części odpowiedzialności za system docelowy na operatora chmury,</li>
+  <li>podczas modyfikacji można dodatkowo zastosować rozwiązania, które ułatwią w przyszłości migrację do innych platform.</li>
+</ul>
+
+<p><strong>Wady:</strong></p>
+
+<ul>
+  <li>dłuższy czas migracji niż w przypadku strategii <em>“lift and shift”</em> oraz wyższe koszty z tym związane,</li>
+  <li>nadal brak wykorzystywania pełni możliwości chmury.</li>
+</ul>
+
+<h3 id="strategia-rip-and-replace">Strategia “Rip and replace”</h3>
+
+<p><img src="/assets/img/posts/2020-11-03-proces-migracji-do-chmury/rip_and_replace.jpg" alt="Strategia &quot;Rip and replace&quot;" /></p>
+
+<p><strong>Rip and replace</strong> - czyli “zniszcz i zastąp”, to strategia w której wykorzystujemy w pełni natywne rozwiązania chmury, modyfikując lub całkowicie zastępując elementy systemu źródłowego.
+Modyfikacje mogą polegać na przepisaniu aplikacji np. na funkcje lub na zastąpieniu pewnych elementów usługami SaaS (np. bazy danych czy kolejki).</p>
+
+<p>Strategię <em>“rip and replace”</em> wybiera się wtedy, kiedy jakiś element systemu źródłowego nie spełnia oczekiwań lub wymagań i może zostać całkowicie przepisany lub zastąpiony usługą SaaS.
+Taka zmiana pozwoli wykorzystać natywne rozwiązania chmury, które zapewnią skalowanie horyzontalne, wysoką wydajność i dostępność systemu, większe bezpieczeństwo, optymalizację kosztów utrzymania oraz minimalną odpowiedzialność po stronie użytkownika (<a href="/2020/10/21/modele-wdrozenia-w-chmurze.html">patrz wykres odpowiedzialności we wpisie Grzegorza</a>).</p>
+
+<p><strong>Zalety:</strong></p>
+
+<ul>
+  <li>wykorzystujemy w pełni natywne rozwiązania oferowane przez chmurę, które pozytywnie wpływają na wydajność, dostępność i bezpieczeństwo systemu,</li>
+  <li>przepisując lub zastępując elementy systemu eliminujemy dług techniczny,</li>
+  <li>usługi SaaS zapewniają aktualizacje przeźroczyste dla działania systemu,</li>
+  <li>rozwiązania w modelu FaaS/SaaS mogą nie generować żadnych kosztów w przypadku braku ruchu użytkowników, dzięki czemu minimalizujemy koszty utrzymania,</li>
+  <li>zmniejszamy naszą odpowiedzialność za system docelowy (konfiguracja, zarządzanie, skalowanie, klastrowanie, bezpieczeństwo i wiele więcej), dzięki czemu stajemy się mniej DevOps, a bardziej NoOps.</li>
+</ul>
+
+<p><strong>Wady:</strong></p>
+
+<ul>
+  <li>bardzo wysoki próg wejścia, ponieważ musimy dokładnie poznać wszystkie usługi i rozwiązania jakie oferuje dana platforma,</li>
+  <li>wysokie ryzyko migracji, ponieważ natywne rozwiązania chmury mogą mieć swoje ograniczenia (np. konkretne API),</li>
+  <li>wysoki koszt i czasochłonność migracji,</li>
+  <li>uzależnianie się od operatora chmury (<a href="/2020/10/21/modele-wdrozenia-w-chmurze.html">vendor lock-in</a>).</li>
+</ul>
+
+<h1 id="wdrażanie">Wdrażanie</h1>
+
+<p>Trzecim z etapów migracji jest etap wdrażania, na którym projektujemy, implementuje oraz wdrażamy system docelowy w chmurze.
+Część elementów systemu może zostać przeniesiona bez większych zmian, inne zaś wymagać mogą gruntownej refaktoryzacji lub zastąpienia innym rozwiązaniem (np. usługami SaaS).
+Niezbędne są również takie elementy jak CI/CD, czyli proces budowania i wdrażania aplikacji (wykorzystujący na przykład <a href="https://www.terraform.io/">Terraform</a> oraz usługę <a href="https://cloud.google.com/cloud-build">Cloud Build</a>). Konieczne może okazać się również dopracowanie infrastruktury w chmurze, aby sprostać wymaganiom systemu.</p>
+
+<p><strong>Do wyboru mamy następujące procesy wdrażania:</strong></p>
+
+<ol>
+  <li><strong>Wdrażanie ręczne</strong> - pozwala na szybkie testowanie i eksperymentowanie z chmurą, ale podatne jest na błędy, często niepowtarzalne.
+Zasoby można tworzyć ręcznie z poziomu <a href="https://console.cloud.google.com/">Google Cloud Console</a>, a polecenia mogą być wprowadzane z poziomu terminala lokalnego lub <a href="https://cloud.google.com/shell">Cloud Shell</a>.</li>
+  <li><strong>Narzędzia do wdrażania</strong> - takie jak <a href="https://www.ansible.com/">Ansible</a>, <a href="https://www.chef.io/">Chef</a>, <a href="https://puppet.com/">Puppet</a> czy <a href="https://www.saltstack.com/">SaltStack</a> umożliwiają konfigurowanie środowiska w sposób zautomatyzowany, powtarzalny oraz kontrolowany.
+Narzędzia te nie umożliwiają jednak wdrażania bezprzerwowego lub typu <a href="https://en.wikipedia.org/wiki/Blue-green_deployment">Blue-Green</a> (niektóre umożliwiają implementację własnej logiki wdrażania, ale jest to dodatkowym obciążeniem).</li>
+  <li><strong>Orkiestracja kontenerów</strong> - jeżeli aplikacje zostaną skonteneryzowane, można skorzystać z usługi <a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE)</a>.
+Kubernetes nie tylko zarządza, automatyzuje i skaluje aplikacje kontenerowe, ale oferuje również wiele metod bezprzerwowego wdrażania.</li>
+  <li><strong>Automatyzacja wdrażania</strong> - wdrażając proces CI/CD, można zautomatyzować budowanie i wdrażanie aplikacji.</li>
+  <li><strong>Infrastruktura jako kod (<a href="https://en.wikipedia.org/wiki/Infrastructure_as_code">IaC</a>)</strong> - rozwiązanie to pozwala w sposób deklaratywny tworzyć zasoby i wdrażać aplikacje.
+Umożliwia to również utworzenie testów do kodu tworzącego infrastrukturę.
+Aby zaimplementować infrastrukturę jako kod, można wykorzystać <a href="https://cloud.google.com/deployment-manager">Cloud Deployment Manager</a> lub jego alternatywę w postaci <a href="https://www.terraform.io/">Terraform</a>,
+który umożliwi wdrożenie nie tylko w chmurze Google.</li>
+</ol>
+
+<p>W przypadku migracji maszyn wirtualnych (VMware vSphere, Amazon AWS, Microsoft Azure) do GCP, możemy skorzystać z narzędzia <a href="https://cloud.google.com/migrate/compute-engine">Migrate for Compute Engine</a>, które zautomatyzuje ten proces.</p>
+
+<p>Efektem etapu wdrażania jest gotowy i działający system w architekturze chmurowej. Skonfigurowane są takie elementy jak sieć, uprawnienia, skalowanie czy monitoring aplikacji.</p>
+
+<h1 id="optymalizacja">Optymalizacja</h1>
+
+<p>Ostatnim i trzecim z etapów migracji jest etap optymalizacji, na którym monitoruje się działający system w celu optymalizacji jego działania.
+Podczas optymalizacji wykonujemy testy wydajnościowe, które możemy porównać z testami systemu źródłowego oraz konfigurujemy wykorzystywane usługi i zasoby tak, aby system działał stabilnie, bezawaryjnie oraz wydajnie.</p>
+
+<p>Optymalizacja aplikacji w chmurze może być również efektem zmian usług platformy chmurowej - na przykład nowym API, nowymi funkcjami lub nowymi usługami.
+Również nabieranie doświadczenia i kompetencji przez zespół programistów może być powodem późniejszych usprawnień systemu w chmurze.</p>
+
+<p>Z czasem coraz więcej elementów infrastruktury zostaje zautomatyzowanych, co redukuje koszty utrzymania oraz czas wdrażania aplikacji.
+Zastępowane są również kolejne elementy infrastruktury usługami SaaS, dążąc do w pełni natywnych rozwiązań chmurowych.</p>
+
+<p>Działający system jest optymalizowany pod kątem wykorzystywanych zasobów (na przykład zmieniając typ maszyn <a href="https://cloud.google.com/compute">Compute Engine</a>), dostosowując je do aktualnych wymagań, a także skonfigurowane
+zostaje automatyczne skalowanie.</p>
+
+<p>Przydatne mogą okazać się narzędzia z grupy <a href="https://cloud.google.com/products/operations">Operations/Stackdriver</a>, a także narzędzia i usługi przydatne w automatyzacji infrastruktury i procesu CI/CD (np. <a href="https://www.terraform.io/">Terraform</a> i <a href="https://cloud.google.com/cloud-build">Cloud Build</a>).</p>
+
+<p>Proces optymalizacji nie ma swojego końca, ponieważ działający system może wymagać okresowych zmian w konfiguracji, aby sprostać nowym wymaganiom i obciążeniu generowanemu przez
+użytkowników. Stale analizowane są miesięczne koszty utrzymania, badane trendy i produkty, które są wykorzystywane najczęściej.
+Dzięki temu można zmniejszać koszty, na przykład podpisując umowy na korzystanie z <a href="https://cloud.google.com/compute">Compute Engine</a> (<a href="https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts">committed use discounts</a>), czy zmieniając model płatności za usługę BigQuery na <a href="https://cloud.google.com/bigquery/pricing#flat_rate_pricing">flat-rate</a>.</p>
+
+<h1 id="podsumowanie">Podsumowanie</h1>
+
+<p>Na zakończenie chciałbym jeszcze dodać, że opisane tutaj strategie migracji mogą być różnie opisywane w literaturze.</p>
+
+<p>Możemy spotkać się z artykułami opisującymi 4 czy 6 strategii, np. <a href="https://aws.amazon.com/blogs/enterprise-strategy/6-strategies-for-migrating-applications-to-the-cloud/">6 Strategies for Migrating Applications to the Cloud</a>, lub nazywającymi je inaczej. Opisywane strategie pokrywają się mniej lub bardziej, a rozbieżności są spowodowane innym punktem widzenia (niekoniecznie z punktu widzenia programisty).</p>
+
+:ET

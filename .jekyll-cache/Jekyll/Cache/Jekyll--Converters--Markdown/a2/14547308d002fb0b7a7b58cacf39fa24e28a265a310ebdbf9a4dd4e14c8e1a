@@ -1,0 +1,107 @@
+I"
+<p>W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem - automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.</p>
+
+<p>Do budowania projektów starajmy się używać jednego narzędzia, ogromnie wpłynie to na proces unifikacji. W tym artykule będziemy posługiwać się mavenem.</p>
+
+<p>Do zautomatyzowania procesu posłuży nam Jenkins.</p>
+
+<p>Przejdźmy do sedna, czyli jak budować dużą liczbę projektów z jak najmniejszym nakładem pracy i ilością kodu do utrzymania.</p>
+
+<h2 id="startujemy">Startujemy</h2>
+
+<p>Przy założeniu, że projekty budujemy</p>
+
+<p><code class="language-plaintext highlighter-rouge">mvn clean package</code></p>
+
+<p>-/+ jakieś super ważne przełączniki typu<code class="language-plaintext highlighter-rouge"> -DskipTes...</code> ;) jesteśmy w stanie w bardzo prosty i schludny sposób zbudować kod/konfigurację, która zautomatyzuje cały proces.</p>
+
+<p>Automatyzację rozpoczniemy od użycia narzędzia: <a href="https://docs.openstack.org/infra/jenkins-job-builder/" title="jenkins-job-builder">jenkins-job-builder</a></p>
+
+<p>Instalacja:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">--user</span> jenkins-job-builder
+</code></pre></div></div>
+
+<p>macOS:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>jenkins-job-builder
+</code></pre></div></div>
+
+<p>Definiujemy plik konfiguracyjny dla jenkins-jobs w lokalizacji <code class="language-plaintext highlighter-rouge">/etc/jenkins_jobs/jenkins_jobs.ini</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[jenkins]
+query_plugins_info=False
+user=jenkins #Użytkownik Jenkinsowy
+password=93a1160c11dc014b7214d4e8769fe8c9
+url=http://localhost:8080 #Url do jenkinsa
+</code></pre></div></div>
+
+<ul>
+  <li>user - Użytkownik Jenkinsowy</li>
+  <li>password - API Token dla swojego użytkownika <a href="https://support.cloudbees.com/hc/en-us/articles/115003090592-How-to-re-generate-my-Jenkins-user-token">link</a></li>
+  <li>url - Adres URL do Jenkinsa</li>
+</ul>
+
+<p>Tak skonfigurowane narzędzie pozwoli nam utworzyć dowolny job jenkinsowy.
+Utwórzmy plik o nazwie <code class="language-plaintext highlighter-rouge">project1-build.yaml</code> w katalogu <code class="language-plaintext highlighter-rouge">jobs</code> z zawartością</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">job</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">project-1-build</span>
+    <span class="na">project-type</span><span class="pi">:</span> <span class="s">freestyle</span>
+    <span class="na">disabled</span><span class="pi">:</span> <span class="no">false</span>
+    <span class="na">builders</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">shell</span><span class="pi">:</span> <span class="s1">'</span><span class="s">mvn</span><span class="nv"> </span><span class="s">clean</span><span class="nv"> </span><span class="s">package'</span>
+</code></pre></div></div>
+<p>Zasilenie jenkinsa nowo utworzonym jobem:
+<code class="language-plaintext highlighter-rouge">jenkins-jobs update jobs</code></p>
+
+<p>Po wykonaniu polecenia, utworzony zostanie pierwszy z projektów jenkinsowych. Good Job!</p>
+
+<h2 id="szablony">Szablony</h2>
+
+<p>Uwielbiamy opakowywać wszystko w pewne wzorce, wspólne procesy, reużywać raz dobrze napisany kod. :) Dlatego ten wątek będzię esencją artykułu.
+Wiemy już, że projekty budujemy w bardzo podobny sposób. Zbudujmy więc pierwszy szablon.</p>
+
+<p>Utwórzmy szablon o nazwie <code class="language-plaintext highlighter-rouge">project-build-template.yaml</code> w katalogu <code class="language-plaintext highlighter-rouge">jobs</code></p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">job-template</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{name}-{subname}-build'</span>
+    <span class="na">project-type</span><span class="pi">:</span> <span class="s">freestyle</span>
+    <span class="na">disabled</span><span class="pi">:</span> <span class="no">false</span>
+    <span class="na">builders</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">shell</span><span class="pi">:</span> <span class="s1">'</span><span class="s">mvn</span><span class="nv"> </span><span class="s">clean</span><span class="nv"> </span><span class="s">package'</span>
+</code></pre></div></div>
+<p>Szablon posiada dwie zmienne</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>name : nazwa projektu
+subname: numer oznaczajacy jeden z koljenych projektów
+</code></pre></div></div>
+
+<p>Zwróć uwagę na wartość w polu name <code class="language-plaintext highlighter-rouge">{name}-{subname}-build</code> jest to pattern, po którym będzie szukany szablon.</p>
+
+<p>Aby użyć szablonu tworzymy plik w katalogu <code class="language-plaintext highlighter-rouge">jobs</code> o nazwie <code class="language-plaintext highlighter-rouge">projects.yaml</code></p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">project</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">project</span>
+    <span class="na">subname</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="m">1</span>
+        <span class="pi">-</span> <span class="m">2</span>
+        <span class="pi">-</span> <span class="m">3</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s1">'</span><span class="s">{name}-{subname}-build'</span>
+</code></pre></div></div>
+<p>Całość kończymy aktualizacją jobów: <code class="language-plaintext highlighter-rouge">jenkins-jobs update jobs</code></p>
+
+<p>W ten sposób jednym ruchem wygenerowaliśmy 3 joby:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>project-1-build
+project-2-build
+project-3-build
+</code></pre></div></div>
+
+<p>Każdy z nich zawiera definicję joba opisanego w szablonie o nazwie <code class="language-plaintext highlighter-rouge">{name}-{subname}-build'</code> czyli wywołanie <code class="language-plaintext highlighter-rouge">mvn clean package</code></p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Cel został osiągnięty! Raz napisana definicja builda została użyta wiele razy (w naszym przykładzie tylko 3 ;) ). Zmniejszyliśmy liczbę zdublowanych konfiguracji, dzięki czemu jesteśmy w stanie lepiej nimi zarządzać.</p>
+
+<p>Był to prosty przykład ukazujący istnienie takiego narzędzia. Jeśli chcesz dowiedzieć się czegoś więcej - zostawiam kilka linków.</p>
+
+<p><a href="https://docs.openstack.org/infra/jenkins-job-builder/">Dokumentacja</a></p>
+
+<p><a href="https://opendev.org/jjb/jenkins-job-builder">Repozytorium projektu</a></p>
+:ET

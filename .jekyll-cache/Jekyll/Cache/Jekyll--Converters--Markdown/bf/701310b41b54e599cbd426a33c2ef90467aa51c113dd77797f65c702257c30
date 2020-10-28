@@ -1,0 +1,84 @@
+I"�<p>W jednym z wcześniejszych wpisów omawialiśmy już zalety i zasadność statycznej analizy kodu z pomocą SonarQube (<a href="/2016/12/08/sonarqube-wprowadzenie-do-statycznej-analizy-kodu.html">tutaj</a>).</p>
+
+<p>Przyjmijmy więc, że jesteśmy już przekonani do całego przedsięwzięcia, inwestujemy w infrastrukturę i zaczynamy mierzyć. Pierwsze sukcesy zapewne już są na naszym koncie, jakość projektów wzrosła, naruszeń o krytycznych priorytetach mamy coraz mniej, a cały zespół jest zadowolony z dbania o własne podwórko. Powstaje jednak pytanie, jak monitorować trend zmian? Jak ocenić czy prowadzone przez nas prace przynoszą faktyczne efekty? Dodatkowo powstaje problem, jak monitorować statystyki naruszeń na poziomie zespołu utrzymującego wiele projektów?</p>
+
+<h2 id="sonarqube-companion">SonarQube Companion</h2>
+<p>W odpowiedzi na zadane pytania, stworzyliśmy aplikację dashboardu dla SonarQube i udostępniliśmy ją wszystkim na <a href="https://github.com/Consdata/sonarqube-companion">GitHub</a>!</p>
+
+<p>Projekt na pierwszym miejscu stawia zespoły i ich potrzeby. Monitorowane projekty są agregowane w zespoły, zgodnie ze strukturą firmy. Dodatkowo naruszenia możemy śledzić na wykresach z konfigurowalnymi zakresami sprintów, czy nawet naniesionymi ważnymi datami z życia zespołu.</p>
+
+<p>W zależności od oczekiwań, możesz śledzić stan bazy kodu na różnych poziomach. Przykładowo, drzewo projektów pokazuje szybki rzut na stan wszystkich projektów oraz sumaryczny stan firmy / zespołu. Alternatywnie, przeglądając ekran konkretnego zespołu, czy nawet projektu, widzisz obszary na które warto zwrócić uwagę przy codziennej pracy.</p>
+
+<h2 id="drzewo-zespołów">Drzewo zespołów</h2>
+<p>Drzewo zespołów przedstawia hierarchiczną reprezentację organizacji na projekty oraz pracujące nad nimi zespoły.</p>
+
+<p><img src="/assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/1.png" alt="Drzewo zespołów" /></p>
+
+<p>Poszczególne kafle projektów/zespołów przedstawiają ich bieżącą kondycję oraz krótkie podsumowanie statystyk. Celem nadrzędnym jest dążyć do bezwzględnej zielenie na całym ekranie ;-)</p>
+
+<p>Poszczególne kolory są ustalane zgodnie z zasadą:</p>
+<ul>
+  <li>kolor czerwony (unhealthy) - występują naruszenia o priorytecie bloker, bezpośrednio w grupie lub jednej z podgrup, wymagana natychmiastowa akcja,</li>
+  <li>kolor pomarańczowy (warning) - występują naruszenia o priorytecie krytyczny, bezpośrednio w grupie lub jednej z podgrup, należy planować rozwiązanie problemów,</li>
+  <li>kolor zielony (healthy) - brak naruszeń o priorytecie bloker oraz krytyczny, mogą znajdować się naruszenia o niższych priorytetach, wystarczające są codzienne akcje porządkowe.</li>
+</ul>
+
+<p>Zasady kolorystyczne będą się powtarzały przy takich samych ograniczeniach na innych ekranach. Same akcje/interakcje to już wypracowana przez nas indywidualnie polityka i w różnych zespołach może zostać zrealizowana inaczej.</p>
+
+<p>Dodatkowo, dla każdego kafla widzimy szybką statystykę liczby projektów, ogólnej oceny zdrowia i podsumowanie liczby naruszeń.</p>
+
+<h2 id="przegląd-zespołu">Przegląd zespołu</h2>
+<p>Strona zespołu pozwala na bieżąco śledzić stan projektów nad którymi pracuje zespół, bez dodatkowych rozproszeń związanych z działalnością innych zespołów.</p>
+
+<p><img src="/assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/2.png" alt="Podgląd stanu zespołu" /></p>
+
+<p>W ramach ekranu zespołu możemy śledzić:</p>
+<ul>
+  <li>szybki przegląd stanu projektu, liczbę projektów, podgrup, itp,</li>
+  <li>wykres zmian liczby naruszeń w wybranym przedziale czasu:
+    <ul>
+      <li>uwzględniający filtrowanie po różnych typach naruszeń,</li>
+      <li>zaznaczanie na osi wykresu dat i nanoszenie sprintów zespołu,</li>
+    </ul>
+  </li>
+  <li>przegląd grup, z których składa się bieżąca grupa (w przypadku głębszych hierarchii z dodatkowymi grupami agregującymi),</li>
+  <li>listę projektów składających się na grupę:
+    <ul>
+      <li>w grupie znajdują się projekty zdefiniowane w niej oraz w grupach pod nią w drzewie,</li>
+      <li>listę projektów można filtrować na podstawie ich statusu, tj. zmiany liczby naruszeń, poprawienia, pogorszenia jakości projektów</li>
+      <li>dla każdego projektu, kolorem zaprezentowana jest jego bieżąca kondycja,</li>
+      <li>dla każdego projektu prezentowana jest bieżąca liczba naruszeń oraz zmian tej wartości w oknie czasowym wybranym na wykresie.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="przegląd-projektu">Przegląd projektu</h2>
+<p>Możliwe jest również przeglądanie stanu konkretnego projektu, niezależnie od jego przynależności do grup czy zespołów.</p>
+
+<p><img src="/assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/3.png" alt="Podgląd stanu projektu" /></p>
+
+<p>Widok pojedynczego projektu jest uproszczonym widokiem zespołu prezentującym jedynie podzbiór danych zasadnych dla tego projektu.</p>
+
+<h2 id="realny-wpływ-na-pracę-zespołów">Realny wpływ na pracę zespołów</h2>
+<p>Wprowadzenie dodatkowych narzędzi historycznego śledzenia jakości projektów pozwoliło utrzymać motywację zespołów do zmniejszania liczby naruszeń.</p>
+
+<p>Miły dla oka interfejs i możliwość szybkiego porównania wprowadziły mały aspekt rywalizacji oraz pogoni za zielonym wśród programistów.</p>
+
+<p>Wszystko to pozytywnie przełożyło się zarówno na poprawę istniejących, jak i zwiększenie świadomości i zmniejszenie liczby nowych naruszeń.</p>
+
+<p>Wprowadzone narzędzie pozwoliło nam długofalowo monitoroawć zespoły pracujące nad wieloma małymi projektami (co jest nieuniknione przy architekturach typu microservices), jak i utrzymać zaangażowanie oraz zainteresowanie programistów ponad początkową euforię, również w kolejnych, bardziej mozolnych miesiącach.</p>
+
+<h2 id="uruchomienie-aplikacji">Uruchomienie aplikacji</h2>
+<p>Kompletne kody projektu dostępne są dla każdego na GitHub. Dodatkowo, zbudowane wersje kodów wrzucamy w postaci gotowego do użycia obrazu na Docker Hub.</p>
+
+<p>Nic nie stoi na przeszkodzie, żebyś też skorzystał z naszych doświadczeń. Szczegółowe informacje, jak uruchomić projekt, zarówno produkcyjnie, jak i lokalnie, znajdują się w README projektu na GitHub.</p>
+
+<p>Zachęcamy do skorzystania, zgłaszania uwag i wsparcia przy dalszych pracach rozwojowo/utrzymaniowych.</p>
+
+<h2 id="przydatne-linki">Przydatne linki:</h2>
+
+<ul>
+  <li><a href="https://github.com/Consdata/sonarqube-companion">Projekt GitHub</a></li>
+  <li><a href="https://hub.docker.com/r/consdata/sonarqube-companion/">Obraz w Docker Hub</a></li>
+</ul>
+:ET

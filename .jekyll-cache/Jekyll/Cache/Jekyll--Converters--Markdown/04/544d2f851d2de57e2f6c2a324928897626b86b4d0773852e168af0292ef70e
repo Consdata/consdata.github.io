@@ -1,0 +1,8 @@
+I"9<h2 id="awaria">Awaria:</h2>
+<p>Do katastrofy prowadzi często splot różnych czynników, które w pojedynkę nie stanowią większego zagrożenia. Wymieńmy więc:</p>
+<ul>
+  <li>system, z którym się komunikujemy miewa od czasu do czasu długi czas odpowiedzi - no, cóż zdarza się, cztery dziewiątki to wciąż 0,01% możliwych faili, przy 0.5 miliona requestów dziennie, wychodzi jakieś 5000 - rozwiązanie: dłuższe timeouty;</li>
+  <li>zdarzają się dłuższe przerwy, np. system nie działa parę minut - brak bezprzerwowych wdrożeń, problemy ze stabilnością środowiska - póki nie wpływa to bezpośrednio na user experience jest do ogrania, np. za pomocą kolejek;</li>
+  <li>ograniczona liczba wątków w kontenerze aplikacji - sprzęt kosztuje czy to w chmurze czy we własnej serwerowni.</li>
+</ul>
+:ET

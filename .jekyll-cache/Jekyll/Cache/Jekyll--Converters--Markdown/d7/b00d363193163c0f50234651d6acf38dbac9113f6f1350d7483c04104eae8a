@@ -1,0 +1,137 @@
+I"o.<p>Mój poprzedni wpis był o tym <a href="/2019/07/26/testy-frontendu-okiem-full-stacka.html"><strong>co</strong> testować w projektach frontendowych</a>, teraz przyszedł czas aby wybrać odpowiednie narzędzia, zakasać rękawy i przejść do praktyki. Pokażę jak zainstalować i używać frameworka Jasmine w projekcie Node’owym.</p>
+
+<h3 id="node">Node</h3>
+<h4 id="instalacja-za-pomocą-nvm">Instalacja za pomocą nvm</h4>
+<p>Aby zainstalować lokalnie Node’a można posłużyć się nvm, więcej w <a href="/2019/05/09/node-version-menager.html">artykule autorstwa Krzysztofa Czechowskiego na łamach naszego bloga</a>.
+Do używania frameworka będzie potrzebny projekt Node’owy, w przypadku jego braku można w dowolnym katalogu taki stworzyć za pomocą polecenia</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm init
+</code></pre></div></div>
+
+<h3 id="jasmine">Jasmine</h3>
+<p>Framework
+Jasmine jest frameworkiem służącym do testowania napisanym w duchu behaviour-driven development, nie ma dodatkowych zależności oraz, jak twierdzą twórcy, dostajemy go z bateriami, czyli powinien zawierać wszystko, co jest potrzebne do pisania testów jednostkowych w naszym projekcie.</p>
+
+<h4 id="instalacja">Instalacja</h4>
+<p>Instrukcja instalacji jest zwięźle opisana w <a href="https://jasmine.github.io/setup/nodejs.html">dokumentacji</a>. Aby zainstalować framework w projekcie, należy:</p>
+
+<p>dodać zależność w devDependencies,</p>
+
+<p>npm:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save-dev</span> jasmine
+</code></pre></div></div>
+
+<p>yarn:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add jasmine <span class="nt">--dev</span>
+</code></pre></div></div>
+
+<p>inicjować lokalnie zainstalowany framework, polecenie utworzy domyślną konfigurację w katalogu <em>spec</em>, domyślnie Jasmine będzie wykonywał testy w plikach w katalogu <em>spec</em> o nazwach kończących się na <em>spec.js</em> lub <em>Spec.js</em>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node node_modules/jasmine/bin/jasmine init
+</code></pre></div></div>
+
+<p>framework zainicjował się z domyślną konfiguracją:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"spec_dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"spec_files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"**/*[sS]pec.js"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"helpers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"helpers/**/*.js"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"stopSpecOnExpectationFailure"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"random"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>następnie należy dodać wpis do package.json,</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jasmine"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>zweryfikować instalację.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">test</span>
+</code></pre></div></div>
+<p>albo</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn <span class="nb">test</span>
+</code></pre></div></div>
+
+<h3 id="angular-cli">Angular CLI</h3>
+<p>W przypadku użycia frameworka Angular CLI mamy już dostępny framework Jasmine i wymaga on jedynie <a href="https://angular.io/guide/testing#test-file-name-and-location">innej konwencji nazewniczej plików z testami</a>.</p>
+
+<h3 id="struktura-testu">Struktura testu</h3>
+
+<p>Testy są znajdowane przez Jasmine na podstawie ścieżki i nazwy pliku, są to po prostu pliki o strukturze:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">A suite is just a function</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">a</span><span class="p">;</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">and so is a spec</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">a</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Randomized with seed 12095
+Started
+<span class="nb">.</span>
+
+
+1 spec, 0 failures
+Finished <span class="k">in </span>0.008 seconds
+Randomized with seed 12095 <span class="o">(</span>jasmine <span class="nt">--random</span><span class="o">=</span><span class="nb">true</span> <span class="nt">--seed</span><span class="o">=</span>12095<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>Nawet doświadczonemu programiście przyzwyczajonemu do testów backendu powyższy przykład może wydawać się mało intuicyjny, na szczęście jest to tylko złudzenie.</p>
+
+<p><code class="language-plaintext highlighter-rouge">describe</code> - to funkcja opisująca zestaw testów, jako pierwszy parametr przyjmuje opis zestawu, jako drugi funkcję zawierającą poszczególne przypadki testowe.</p>
+
+<p><code class="language-plaintext highlighter-rouge">it</code> - funkcja opisująca pojedynczy przypadek testowy, tak samo jako <code class="language-plaintext highlighter-rouge">describe</code> pierwszym parametrem jest opis, drugim funkcja zawierający faktyczny test.</p>
+
+<p><code class="language-plaintext highlighter-rouge">expect</code> - przyjmuje bieżącą wartość i porównuje ją za pomocą wbudowanych metod porównujących z oczekiwaną wartością, w powyższym przypadku jest to <code class="language-plaintext highlighter-rouge">toBe</code>, ale są dostępne bardziej specyficzne porównania albo ich zaprzeczenia (np. <code class="language-plaintext highlighter-rouge">not.toBeNull</code>, <code class="language-plaintext highlighter-rouge">toBeUndefined</code> etc.)</p>
+
+<p>Dostępne są również funkcje wykonujące się przed lub po wszystkich testach, lub każdym (<code class="language-plaintext highlighter-rouge">beforeEach</code>, <code class="language-plaintext highlighter-rouge">afterEach</code>, <code class="language-plaintext highlighter-rouge">beforeAll</code>, <code class="language-plaintext highlighter-rouge">afterAll</code>), przykładowo:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Test for resetting value before each test</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">value</span><span class="p">;</span>
+
+  <span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">value should be 1</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">});</span>
+  
+  <span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">value should be 0</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">});</span>
+
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Randomized with seed 22493
+Started
+..
+
+
+2 specs, 0 failures
+Finished <span class="k">in </span>0.009 seconds
+Randomized with seed 22493 <span class="o">(</span>jasmine <span class="nt">--random</span><span class="o">=</span><span class="nb">true</span> <span class="nt">--seed</span><span class="o">=</span>22493<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Jeśli chcemy wyłączyć dany zestaw testów, lub pojedynczy przypadek testowy, możemy posłużyć się funkcjami <code class="language-plaintext highlighter-rouge">xdescribe</code> lub <code class="language-plaintext highlighter-rouge">xit</code>,<code class="language-plaintext highlighter-rouge">fdescribe</code> oraz <code class="language-plaintext highlighter-rouge">fit</code> służą po to, by wyłączyć resztę testów, a zostawić te oznaczone właśnie tą literką f (od <em>focus</em>). Jest to szczególnie przydatne gdy pracujemy nad nowymi funkcjonalnościami i nie chcemy marnować czasu na wykonywanie testów, które w tym momencie są nieistotne.</p>
+
+<p>Jak widać na powyższych przykładach podstawy frameworka Jasmine są proste, sama instalacja i konfiguracja nie jest specjalnie skomplikowana, a w przypadku Angular CLI wszystko mamy już dostępne po instalacji. Ten wpis jest wprowadzeniem do testów jednostkowych we frontendzie, w następnej odsłonie pokażemy jak mockować lub stubować zależności w komponentach angularowych i serwisach.</p>
+
+<h3 id="materiały-źródłowe">Materiały źródłowe</h3>
+<ul>
+  <li><a href="https://jasmine.github.io">https://jasmine.github.io</a></li>
+  <li><a href="https://github.com/nvm-sh/nvm">https://github.com/nvm-sh/nvm</a></li>
+  <li><a href="https://angular.io/guide/testing">https://angular.io/guide/testing</a></li>
+</ul>
+
+:ET

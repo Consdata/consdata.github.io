@@ -1,0 +1,3 @@
+I"!<p>Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem (enkapsulacją) stylów - czyli tym jak style z jednego komponentu wpływają na inne komponenty.<br />
+Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest <strong>Shadow DOM</strong>.</p>
+:ET

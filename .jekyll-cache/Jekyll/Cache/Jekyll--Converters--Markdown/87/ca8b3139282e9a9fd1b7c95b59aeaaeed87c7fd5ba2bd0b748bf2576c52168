@@ -1,0 +1,5 @@
+I"�<p>Znając definicję Event Sourcingu oraz korzyści, jakie nam zapewnia (dla przypomnienia polecam <a href="/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html"><strong>wpis Marcina poświęcony częściowo tej tematyce</strong></a>) warto rozważyć zastosowanie tego wzorca w swoim projekcie (oczywiście nie wszędzie się on nada).
+Osoby zainteresowane tematem z pewnością zostaną postawione przed wyborem technologii, w której rozpoczną implementację. 
+Niezależnie od języka programowania, można implementować CQRS oraz Event Sourcing samemu, od A-Z, jednakże byłoby to czasochłonne i może prowadzić do wielu błędów. 
+Alternatywą będzie zatem skorzystanie z gotowego frameworku, który od początku tworzony był z myślą o wspomnianych wzorcach (włączając w to mikroserwisy) - mowa tutaj o <a href="https://axoniq.io/"><strong>AxonFramework</strong></a>.</p>
+:ET

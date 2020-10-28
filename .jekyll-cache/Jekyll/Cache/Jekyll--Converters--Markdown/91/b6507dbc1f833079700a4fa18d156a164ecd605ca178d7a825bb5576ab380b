@@ -1,0 +1,530 @@
+I"��<p>Każda nietrywialna aplikacja potrzebuje backendu. O ile obecnie to nie jest prawda, to na potrzeby tego artykułu przyjmijmy, że tak jest. A jak backend współpracujący z aplikacją webową to <em>REST</em>, a jak <em>REST</em> to <em>Spring</em> i <em>Spring Boot</em>. W kilku kolejnych akapitach stworzymy i z sukcesem przygotujemy gotowy do wdrożenia artefakt składający się z aplikacji webowej w <em>Angular 2</em> i backendu usługowego wykorzystującego <em>Spring Boot</em>.</p>
+
+<p><em>Artykuł zakłada podstawową znajomość Angular CLI, Spring Boot i Maven.</em></p>
+
+<p><em>Wszystkie przedstawione kroki są commitami do testowego repozytorium, dzięki temu sam możesz prześledzić proces tworzenia aplikacji oraz rozwiać wszelkie wątpliwości. Link do repozytorium: <a href="https://github.com/glipecki/spring-with-angular-cli-demo">demo@github</a>.</em></p>
+
+<h2 id="stworzenie-minimalnego-projektu">Stworzenie minimalnego projektu</h2>
+
+<p>Nowy projekt najłatwiej stworzymy wykorzystując <em>Spring Initializer</em>, możemy to zrobić wchodząc <a href="http://start.spring.io/">http://start.spring.io/</a> i wyklikując konfigurację projektu, lub możemy to zrobić w stylu prawdziwego geeka - <em>curlem</em>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>demo
+<span class="nv">$ </span>curl https://start.spring.io/starter.tgz <span class="se">\</span>
+  <span class="nt">-d</span> <span class="nv">groupId</span><span class="o">=</span>net.lipecki.demo <span class="se">\</span>
+  <span class="nt">-d</span> <span class="nv">packageName</span><span class="o">=</span>net.lipecki.demo <span class="se">\</span>
+  <span class="nt">-d</span> <span class="nv">artifactId</span><span class="o">=</span>demo <span class="se">\</span>
+  <span class="nt">-d</span> <span class="nv">dependencies</span><span class="o">=</span>web <span class="se">\</span>
+  | <span class="nb">tar</span> <span class="nt">-xzvf</span> -
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 50190  100 50104  100    86  54925     94 <span class="nt">--</span>:--:-- <span class="nt">--</span>:--:-- <span class="nt">--</span>:--:-- 54878
+x mvnw
+x .mvn/
+x .mvn/wrapper/
+x src/
+x src/main/
+x src/main/java/
+x src/main/java/net/
+x src/main/java/net/lipecki/
+x src/main/java/net/lipecki/demo/
+x src/main/resources/
+x src/main/resources/static/
+x src/main/resources/templates/
+x src/test/
+x src/test/java/
+x src/test/java/net/
+x src/test/java/net/lipecki/
+x src/test/java/net/lipecki/demo/
+x .gitignore
+x .mvn/wrapper/maven-wrapper.jar
+x .mvn/wrapper/maven-wrapper.properties
+x mvnw.cmd
+x pom.xml
+x src/main/java/net/lipecki/demo/DemoApplication.java
+x src/main/resources/application.properties
+x src/test/java/net/lipecki/demo/DemoApplicationTests.java
+</code></pre></div></div>
+
+<p>W efekcie dostajemy minimalną aplikację <em>Spring Boot</em>, którą możemy zbudować i uruchomić. Do testów dorzućmy prosty kontroler.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-L</span> https://goo.gl/MbWM8s <span class="nt">-o</span> src/main/java/net/lipecki/demo/GreetingRestController.java
+<span class="nv">$ </span><span class="nb">cat </span>src/main/java/net/lipecki/demo/GreetingRestController.java
+package net.lipecki.demo<span class="p">;</span>
+
+import org.springframework.web.bind.annotation.RequestMapping<span class="p">;</span>
+import org.springframework.web.bind.annotation.RestController<span class="p">;</span>
+
+@RestController
+public class GreetingRestController <span class="o">{</span>
+
+	@RequestMapping<span class="o">(</span><span class="s2">"/greeting"</span><span class="o">)</span>
+	public String greeting<span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s2">"Welcome!"</span><span class="p">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Całość możemy zbudować wykorzystując <em>Maven</em>. W zależności od preferencji możemy zbudować aplikację wykorzystując globalnie zainstalowaną w systemie instancję lub skorzystać z dostarczanego ze szkieletem <em>Maven Wrappera</em>. Stosowanie <em>Wrappera</em> pozwala pracować z aplikacją nie zmieniając zainstalowanych w systemie pakietów oraz zapewnia, że możemy różne projekty budować różnymi wersjami <em>Mavena</em>. <em>Wrapper</em> w razie potrzeby ściągnie odpowiednią wersję bibliotek przy pierwszym uruchomieniu.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./mvnw clean package
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+<span class="o">[</span>INFO] <span class="nt">---</span> spring-boot-maven-plugin:1.4.2.RELEASE:repackage <span class="o">(</span>default<span class="o">)</span> @ demo <span class="nt">---</span>
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] BUILD SUCCESS
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Total <span class="nb">time</span>: 4.929 s
+<span class="o">[</span>INFO] Finished at: 2016-12-07T20:43:32+01:00
+<span class="o">[</span>INFO] Final Memory: 28M/325M
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+</code></pre></div></div>
+
+<p>uruchomić</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-jar</span> target/demo-0.0.1-SNAPSHOT.jar
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+2016-12-07 20:44:13.392  INFO 70743 <span class="nt">---</span> <span class="o">[</span>           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port<span class="o">(</span>s<span class="o">)</span>: 8080 <span class="o">(</span>http<span class="o">)</span>
+2016-12-07 20:44:13.397  INFO 70743 <span class="nt">---</span> <span class="o">[</span>           main] net.lipecki.demo.DemoApplication         : Started DemoApplication <span class="k">in </span>2.271 seconds <span class="o">(</span>JVM running <span class="k">for </span>2.643<span class="o">)</span>
+</code></pre></div></div>
+
+<p>i przetestować</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://localhost:8080/greeting <span class="o">&amp;&amp;</span> <span class="nb">echo
+</span>Welcome!
+</code></pre></div></div>
+
+<h2 id="docelowa-struktura-projektu">Docelowa struktura projektu</h2>
+
+<p>W przypadku najprostszego podejścia wystarczające byłoby dorzucenie tylko kodów części webowej do aktualnego szkieletu i zadbania o jego poprawne budowanie. Jednak dla nas wystarczające to za mało, od razu przygotujemy strukturę która będzie miała szansę wytrzymać próbę czasu.</p>
+
+<p>Minimalny sensowny podział to przygotowanie dwóch modułów:</p>
+
+<ul>
+  <li>artefaktu wdrożeniowego z usługami REST,</li>
+  <li>aplikacji webowej.</li>
+</ul>
+
+<p>Taki podział aplikacja pozwala nam na dodatkową separację części <em>backend</em> i <em>frontend</em> (w pogoni za ideałem możemy przygotować jeszcze ciekawszą strukturę, szczegóły w jednym z ostatnich akapitów wpisu).</p>
+
+<p>W tym celu:</p>
+
+<ul>
+  <li>dodajemy do projektu dwa moduły,
+    <ul>
+      <li>demo-app,</li>
+      <li>demo-web,</li>
+    </ul>
+  </li>
+  <li>przenosimy dotychczasową konfigurację budowania i kody do demo-app.</li>
+</ul>
+
+<p>Całość zmian możemy zweryfikować w commicie do testowego repozytorium <em>GitHub</em>: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/2ee4efcdddf5c6f68e9191607a429f574f58e371">commit</a>.</p>
+
+<p>Po tych zmianach, nadal możemy budować i uruchamiać aplikację, jednak tym razem z poziomu modułu demo-app.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./mvnw clean package
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+<span class="o">[</span>INFO] Reactor Summary:
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] demo ............................................... SUCCESS <span class="o">[</span>  0.141 s]
+<span class="o">[</span>INFO] demo-app ........................................... SUCCESS <span class="o">[</span>  4.909 s]
+<span class="o">[</span>INFO] demo-web ........................................... SUCCESS <span class="o">[</span>  0.002 s]
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] BUILD SUCCESS
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Total <span class="nb">time</span>: 5.329 s
+<span class="o">[</span>INFO] Finished at: 2016-12-07T21:15:51+01:00
+<span class="o">[</span>INFO] Final Memory: 30M/309M
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+
+<span class="nv">$ </span>java <span class="nt">-jar</span> demo-app/target/demo-app-0.0.1-SNAPSHOT.jar
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+2016-12-07 21:16:30.569  INFO 71306 <span class="nt">---</span> <span class="o">[</span>           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port<span class="o">(</span>s<span class="o">)</span>: 8080 <span class="o">(</span>http<span class="o">)</span>
+2016-12-07 21:16:30.574  INFO 71306 <span class="nt">---</span> <span class="o">[</span>           main] net.lipecki.demo.DemoApplication         : Started DemoApplication <span class="k">in </span>2.732 seconds <span class="o">(</span>JVM running <span class="k">for </span>3.117<span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="dodanie-i-budownie-części-web">Dodanie i budownie części web</h2>
+
+<p>Projekt części webowej najłatwiej stworzyć z wykorzystaniem Angular CLI, w tym celu wykonujemy:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">pwd</span>
+/tmp/demo/demo-web/
+<span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-rf</span> src
+<span class="nv">$ </span>ng init <span class="nt">--style</span><span class="o">=</span>scss
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+Installing packages <span class="k">for </span>tooling via npm.
+Installed packages <span class="k">for </span>tooling via npm.
+</code></pre></div></div>
+
+<p>Standardowy <em>Angular CLI</em> będzie budował aplikację do folderu <em>dist</em>. Jednak konwencja budowania przez <em>Maven</em> zakłada, że wszystkie zasoby, czy to pośrednie, czy docelowe, wygenerowane w trakcie procesu budowania trafią do odpowiednich podfolderów katalogu <em>target</em>. Preferowanie konwencji ponad konfigurację to zawsze dobry pomysł. W tym celu zmieniamy standardową konfigurację folderu budowania z <em>dist</em> na <em>target/webapp</em> w <em>angular-cli.json</em>: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/3edaecb08c40e93d5bf0c24da06f140ecefa0d74">commit</a>.</p>
+
+<p>W tym momencie możemy już swobodnie pracować z aplikacją uruchamiając ją za pomocą <em>ng serve</em>. Kolejnym krokiem będzie zintegrowanie procesu budowania <em>ng build</em> z budowaniem modułu <em>Maven</em>. W tym celu wykorzystamy plugin <em>frontend-maven-plugin</em>.</p>
+
+<p>Plugin <em>frontend-maven-plugin</em> pozwala:</p>
+
+<ul>
+  <li>zainstalować niezależną od systemowej wersję <em>node</em> i <em>npm</em>,</li>
+  <li>uruchomić instalację zależności <em>npm</em>,</li>
+  <li>uruchomić budowanie aplikacji za pomocą <em>ng</em>.</li>
+</ul>
+
+<p>Całość konfiguracji wprowadzamy definiując dodatkowe elementy <em>execution</em> konfiguracji pluginu.</p>
+
+<p>Przed dodaniem konfiguracji poszczególnych kroków dodajemy do sekcji <em>build.plugins</em> definicję samego pluginu:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.github.eirslett<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>frontend-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;installDirectory&gt;</span>target<span class="nt">&lt;/installDirectory&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="c">&lt;!-- tutaj będą konfiguracje kroków budowaia --&gt;</span>
+  <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>W pierwszym kroku instalujemy wskazaną wersję runtime <em>node</em> i menadżera pakietów <em>npm</em>. Całość jest instalowana lokalnie w folderze <em>target</em>. Dzięki lokalnej instalacji minimalizujemy listę wymagań wstępnych do pracy z naszym projektem, co jest szczególnie ważne przy wykorzystaniu systemów <em>CI/CD</em>.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;execution&gt;</span>
+  <span class="nt">&lt;id&gt;</span>install node and npm<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;goals&gt;</span>
+    <span class="nt">&lt;goal&gt;</span>install-node-and-npm<span class="nt">&lt;/goal&gt;</span>
+  <span class="nt">&lt;/goals&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;nodeVersion&gt;</span>v6.9.1<span class="nt">&lt;/nodeVersion&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/execution&gt;</span>
+</code></pre></div></div>
+
+<p>W drugim kroku plugin za pomocą <em>npm</em> instaluje wszystkie zdefiniowane w <em>package.json</em> zależności naszego projektu. Jest to odpowiednik wykonania <em>npm install</em> w katalogu głównym projektu.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;execution&gt;</span>
+  <span class="nt">&lt;id&gt;</span>npm install<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;goals&gt;</span>
+    <span class="nt">&lt;goal&gt;</span>npm<span class="nt">&lt;/goal&gt;</span>
+  <span class="nt">&lt;/goals&gt;</span>
+<span class="nt">&lt;/execution&gt;</span>
+</code></pre></div></div>
+
+<p>Ostatni krok to wykonanie właściwego procesu budowania aplikacji z wykorzystaniem <em>Angular CLI</em>.</p>
+
+<p>W celu uproszczenia konfiguracji dodajemy nowy task o nazwie <em>build</em> w pliku <em>package.json</em>. Ręczne zdefiniowanie taska jest o tyle ważne, że w ten sposób będziemy się mogli uniezależnić od systemowej instancji <em>Angular CLI</em> i stosować lokalną wersję zainstalowaną na podstawie definicji w <em>package.json</em>.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node node_modules/angular-cli/bin/ng build"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Oraz dodajemy wykonanie nowo utworzonego tasku przez plugin.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;execution&gt;</span>
+  <span class="nt">&lt;id&gt;</span>node build app<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;phase&gt;</span>prepare-package<span class="nt">&lt;/phase&gt;</span>
+  <span class="nt">&lt;goals&gt;</span>
+    <span class="nt">&lt;goal&gt;</span>npm<span class="nt">&lt;/goal&gt;</span>
+  <span class="nt">&lt;/goals&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;arguments&gt;</span>run-script build<span class="nt">&lt;/arguments&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/execution&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Nazwa tasku <em>build</em> jest czysto umowna, jedyne wymaganie to używanie tej samej w <em>package.json</em> i <em>pom.xml</em>. Jednak trzymanie się konkretnej konwencji, np. build, ułatwi pracę pomiędzy różnymi projektami.</p>
+</blockquote>
+
+<p>Tak przygotowana konfiguracja pozwala zintegrować budowanie aplikacji web z fazami cyklu życia <em>Maven</em>. Dodatkowo dostajemy uspójniony sposób uruchomienia za pomocą polecenia <em>npm build</em>. Dzięki wykorzystaniu <em>frontend-maven-plugin</em> uniezależniamy proces budowania od środowiska, wszystkie wymagane biblioteki (<em>node</em>, <em>npm</em>, <em>angular-cli</em>) są instalowane i wykonywane lokalnie w folderze projektu.</p>
+
+<p>Całość zmian z tego kroku możemy obejrzeć w commicie <em>GitHub</em>: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/03f54e8ad670555e23f45d617b8642d7f8c48a64">commit</a>.</p>
+
+<h2 id="składanie-artefaktu-z-częścią-web">Składanie artefaktu z częścią web</h2>
+
+<p>Kolejnym krokiem jest umożliwienie spakowania modułu odpowiedzialnego za część web do pojedynczego artefaktu, gotowego do wykorzystania jako zależność lub przesłania do repozytorium artefaktów.</p>
+
+<p>Standardowo <em>Maven</em> obsługuje najpopularniejsze typy artefaktów, np. <em>jar</em>, <em>war</em>, <em>ear</em>. Dla tych typów znany jest sposób ich budowania, struktura archiwów jest odgórnie ustalona i niezmienna pomiędzy projektami. Jednak my chcemy przygotować archiwum w postaci pliku <em>zip</em>, więc wykorzystując <em>maven-assembly-plugin</em> będziemy mogli sami określić jakie pliki i w jaki sposób zbierać budując wynikowy artefakt.</p>
+
+<p>Do <em>pom.xml</em> modułu <em>demo-web</em> dodajemy definicję <em>maven-assembly-plugin</em> zawierającą docelową nazwę artefaktu oraz plik assembly opisujący sposób jego składania.</p>
+
+<p>W sekcji <em>build.plugins</em> dopisujemy:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;descriptor&gt;</span>assembly.xml<span class="nt">&lt;/descriptor&gt;</span>
+    <span class="nt">&lt;finalName&gt;</span>demo-web-${project.version}<span class="nt">&lt;/finalName&gt;</span>
+    <span class="nt">&lt;appendAssemblyId&gt;</span>false<span class="nt">&lt;/appendAssemblyId&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+  <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>Następnie dodajemy plik <em>assembly.xml</em> (obok pliku <em>pom.xml</em>), w którym określamy docelowy format (<em>zip</em>) oraz które pliki, z którego katalogu spakować do artefaktu (wszystkie z folder <em>target/webapp</em>).</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;assembly&gt;</span>
+  <span class="nt">&lt;id&gt;</span>zip<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;formats&gt;</span>
+    <span class="nt">&lt;format&gt;</span>zip<span class="nt">&lt;/format&gt;</span>
+  <span class="nt">&lt;/formats&gt;</span>
+  <span class="nt">&lt;includeBaseDirectory&gt;</span>false<span class="nt">&lt;/includeBaseDirectory&gt;</span>
+  <span class="nt">&lt;fileSets&gt;</span>
+    <span class="nt">&lt;fileSet&gt;</span>
+      <span class="nt">&lt;directory&gt;</span>target/webapp<span class="nt">&lt;/directory&gt;</span>
+      <span class="nt">&lt;outputDirectory&gt;&lt;/outputDirectory&gt;</span>
+      <span class="nt">&lt;includes&gt;</span>
+        <span class="nt">&lt;include&gt;</span>**<span class="nt">&lt;/include&gt;</span>
+      <span class="nt">&lt;/includes&gt;</span>
+    <span class="nt">&lt;/fileSet&gt;</span>
+  <span class="nt">&lt;/fileSets&gt;</span>
+<span class="nt">&lt;/assembly&gt;</span>
+</code></pre></div></div>
+
+<p>Całość możemy przetestować wykonując:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">pwd</span>
+/tmp/demo
+<span class="nv">$ </span>./mvnw clean package
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+<span class="nv">$ </span><span class="nb">ls </span>demo-web/target/demo-web-0.0.1-SNAPSHOT.zip
+demo-web/target/demo-web-0.0.1-SNAPSHOT.zip
+</code></pre></div></div>
+
+<p>Commit zawierający zmiany: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/6e0e6a99badc0ed27846c5a62316fe0ad31d77e4">commit</a>.</p>
+
+<h2 id="składanie-artefaktu-wdrożeniowego">Składanie artefaktu wdrożeniowego</h2>
+
+<p>Ostatnie co musimy zrobić żeby nasza aplikacja składała się w pojedynczy wykonywalny artefakt to skonfigurować moduł <em>demo-web</em> jako zależność w projekcie <em>demo-app</em> oraz skonfigurowanie pluginu <em>maven-dependency-plugin</em>, który będzie odpowiadał za odpowiednie rozpakowanie zasobów.</p>
+
+<p>Definiujemy zależność na moduł <em>demo-web</em> w <em>pom.xml</em> w sekcji <em>dependencies</em>:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>net.lipecki.demo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>demo-web<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;type&gt;</span>zip<span class="nt">&lt;/type&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Standardowo <em>Maven</em> szuka zależności typu <em>jar</em>, jednak nasz moduł <em>web</em> jest typu <em>zip</em>, co możemy jawnie wskazać definiując zależność.</p>
+</blockquote>
+
+<p>Aplikacja Spring Boot poza serwowaniem zdefiniowany servletów i usług <em>REST</em> hostuje również wszystkie zasoby, które znajdują się na zdefiniowanych ścieżkach zasobów statycznych. W standardowej konfiguracji, jedną z takich ścieżek są zasoby wewnątrz samego <em>jara</em> aplikacji. Korzystając z tej wiedzy skonfigurujemy plugin <em>maven-dependency-plugin</em> w taki sposób, żeby rozpakowywał archiwum modułu <em>web</em> do odpowiedniego katalogu budowania.</p>
+
+<p>W sekcji <em>build.plugins</em> dodajemy:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>maven-dependency-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>unpack<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>generate-resources<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>unpack<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;artifactItems&gt;</span>
+          <span class="nt">&lt;artifactItem&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>net.lipecki.demo<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>demo-web<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;type&gt;</span>zip<span class="nt">&lt;/type&gt;</span>
+          <span class="nt">&lt;/artifactItem&gt;</span>
+        <span class="nt">&lt;/artifactItems&gt;</span>
+        <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/classes/resources<span class="nt">&lt;/outputDirectory&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+  <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>W tym momencie mamy już kompletny proces budowania aplikacji. Po jego wykonaniu i uruchomieniu aplikacji możemy zarówno wywołać testową usługę <em>REST</em>, jak i obejrzeć szkielet <em>Angular 2</em>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./mvnw clean package
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Reactor Summary:
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] demo ............................................... SUCCESS <span class="o">[</span>  0.120 s]
+<span class="o">[</span>INFO] demo-web ........................................... SUCCESS <span class="o">[</span> 18.459 s]
+<span class="o">[</span>INFO] demo-app ........................................... SUCCESS <span class="o">[</span>  5.797 s]
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] BUILD SUCCESS
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Total <span class="nb">time</span>: 24.644 s
+<span class="o">[</span>INFO] Finished at: 2016-12-07T22:06:14+01:00
+<span class="o">[</span>INFO] Final Memory: 37M/346M
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+
+<span class="nv">$ </span>java <span class="nt">-jar</span> demo-app/target/demo-app-0.0.1-SNAPSHOT.jar
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+2016-12-07 22:08:02.937  INFO 72316 <span class="nt">---</span> <span class="o">[</span>           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port<span class="o">(</span>s<span class="o">)</span>: 8080 <span class="o">(</span>http<span class="o">)</span>
+2016-12-07 22:08:02.942  INFO 72316 <span class="nt">---</span> <span class="o">[</span>           main] net.lipecki.demo.DemoApplication         : Started DemoApplication <span class="k">in </span>2.681 seconds <span class="o">(</span>JVM running <span class="k">for </span>3.077<span class="o">)</span>
+
+<span class="nv">$ </span>curl http://localhost:8080/greeting <span class="o">&amp;&amp;</span> <span class="nb">echo
+</span>Welcome!
+
+<span class="nv">$ </span>curl http://localhost:8080/
+&lt;<span class="o">!</span>doctype html&gt;
+&lt;html&gt;
+&lt;<span class="nb">head</span><span class="o">&gt;</span>
+  &lt;meta <span class="nv">charset</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="o">&gt;</span>
+  &lt;title&gt;DemoWeb&lt;/title&gt;
+  &lt;base <span class="nv">href</span><span class="o">=</span><span class="s2">"/"</span><span class="o">&gt;</span>
+
+  &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"viewport"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"width=device-width, initial-scale=1"</span><span class="o">&gt;</span>
+  &lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"icon"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"image/x-icon"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"favicon.ico"</span><span class="o">&gt;</span>
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;app-root&gt;Loading...&lt;/app-root&gt;
+&lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">"text/javascript"</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"inline.bundle.js"</span><span class="o">&gt;</span>&lt;/script&gt;&lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">"text/javascript"</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"styles.bundle.js"</span><span class="o">&gt;</span>&lt;/script&gt;&lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">"text/javascript"</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"vendor.bundle.js"</span><span class="o">&gt;</span>&lt;/script&gt;&lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">"text/javascript"</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"main.bundle.js"</span><span class="o">&gt;</span>&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>Komplet dotychczasowych zmian możemy podsumować w repozytorium <em>GitHub</em>: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/tree/4042649049dd65bf66e438779c0b8966d57d097f">repozytorium</a>.</p>
+
+<h2 id="obsługa-routingu-z-wykorzystaniem-historypushstate-html5-url-style">Obsługa routingu z wykorzystaniem history.pushState (html5 url style)</h2>
+
+<p>Poza samym budowaniem i uruchamianiem aplikacji, warto jeszcze zadbać o wsparcie dla nowych sposobów nawigacji. Całość można łatwo zrealizować wykorzystując mechanizmy generowania stron błędów w <em>Springu</em>. Zanim przejdziemy do kodu, kilka słów wprowadzenia teoretycznego.</p>
+
+<p>Dotychczas aplikacje web można było łatwo rozpoznać po routingu opartym o #… w url. Taki sposób nawigacji nie narzuca żadnych ograniczeń na stronę serwerową aplikacji, jednak tworzy kilka niemożliwych do rozwiązania problemów, np. renderowanie po stronie serwerowej, czy wsparcie dla SEO.</p>
+
+<p>Obecnie, większość nowoczesnych przeglądarek dostarcza nowe <em>API</em> <em>history.pushState</em> pozwalające zrealizować nawigację z pominięciem znaku #. Po szczegóły odsyłam do oficjalnej dokumentacji <em>Angular</em>, natomiast w kolejnych akapitach zajmiemy się konfiguracją Spring Boot wspierającą tę strategię.</p>
+
+<p>Całość jest o tyle ważna, że nawigacja bez <em>#</em> jest zalecaną przez zespół <em>Angular 2</em> konfiguracją. Przez to jest stosowana zarówna w dokumentacji, oficjalnym guide oraz wszystkich szablonach projektów, w tym również <em>Angular CLI</em>. To jednak oznacza, że do serwera usług będą generowane żądania oparte o ścieżki, które fizycznie nie są nigdzie zdefiniowane, co zakończy się błędami 404. <strong>W tej sytuacji, bez dostosowania naszego projektu, nie będziemy w stanie w ogóle uruchomić aplikacji oferującej nawigację opartą o routing.</strong></p>
+
+<p>W założeniu przedstawiony problem możemy uprościć do zwracania treści <em>index.html</em> zawsze wtedy, kiedy standardowo zwrócilibyśmy błąd <em>404</em>. Rozwiązanie powinno uwzględniać zarówno istnienie zdefiniowanych w aplikacji mapowań, jak i pobieranie zasobów dostępnych w lokalizacjach zasobów statycznych.</p>
+
+<p>Najprostszym rozwiązaniem jest zdefiniowanie własnego <em>ErrorViewResolver</em>, który dla błędów <em>404</em> wykona przekierowanie na zasób <em>/index.html</em>.</p>
+
+<p>W tym celu dodajemy do kontekstu beana <em>customErrorViewResolver</em>, który wszystkie żądania standardowo zwracając <em>HttpStatus.NOT_FOUND</em> przekieruje na <em>index.html</em>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">ErrorViewResolver</span> <span class="nf">customErrorViewResolver</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="nc">ModelAndView</span> <span class="n">redirectToIndexHtml</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"forward:/index.html"</span><span class="o">,</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">emptyMap</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">status</span><span class="o">,</span> <span class="n">model</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">status</span> <span class="o">==</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">NOT_FOUND</span> <span class="o">?</span> <span class="n">redirectToIndexHtml</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><em>Przy takim podejściu warto zadbać o to, żeby zawsze jakiś index.html mógł się rozwiązać!</em></p>
+
+<p>Sposób wprowadzenia zmiany można prześledzić w commicie GitHub: <a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/57149a404989fc44a012628f4506b7c556d4b36d">57149a4</a>.</p>
+
+<p>Wykorzystanie własnego <em>ErrorViewResolver</em> dodatkowo zapewnia nam wsparcie dla rozróżniania żądań na podstawie nagłówka <em>HTTP</em> <em>produces</em>. To znaczy, że żądania z przeglądarek (zawierające produces = “text/html”) zostaną obsłużone zawartością zasobu <em>/index.html</em>, natomiast pozostałe (np. curl) odpowiedzą standardowym błędem <em>404</em>.</p>
+
+<h2 id="możliwe-rozszerzenia">Możliwe rozszerzenia</h2>
+
+<p>Wartym rozważenia rozszerzeniem projektu może być wydzielenie trzeciego modułu i dodatkowe podzielenie aplikacji:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>demo
+\-- demo-rest
+\-- demo-app
+\-- demo-web
+</code></pre></div></div>
+
+<p>Gdzie moduły:</p>
+
+<ul>
+  <li>demo-web - zawiera zasoby aplikacji web,</li>
+  <li>demo-rest - zawiera samodzielnie uruchamialną aplikację dostarczającą komplet usług <em>REST</em>,</li>
+  <li>demo-app - jest złączeniem modułów web i rest w jeden wykonywalny artefakt.</li>
+</ul>
+
+<p>Przy takim podziale uzyskujemy dużą separację pomiędzy modułami. Część <em>backend</em> odpowiedzialna ze udostępnienie usług <em>REST</em> i jest całkowicie niezależna od modułu <em>demo-web</em>. Moduł <em>demo-web</em> także nie ma żadnej zależności. To oznacza, że możemy je rozwijać, wersjonować oraz osadzać rozdzielnie. Dodatkowo wprowadzenie modułu <em>app</em> pozwala pisać usługi <em>REST</em> w oderwaniu od produkcyjnego osadzania, np. możliwe jest lokalne uruchamianie modułu <em>demo-rest</em> jako <em>fat jar</em> z <em>Jetty</em>, podczas gdy produkcyjnie moduł <em>demo-app</em> będzie osadzany jako <em>war</em> na <em>Tomcat</em>.</p>
+
+<h2 id="codzienna-praca-z-aplikacją">Codzienna praca z aplikacją</h2>
+
+<p>Pełnię możliwości duetu Spring Boot i Angular CLI poczujemy dopiero odpowiednio przygotowując środowisko codziennej pracy.</p>
+
+<p>Część kliencką uruchamiamy przez <em>ng serve</em>, dzięki temu dostajemy kompilację i budowanie aplikacji po każdej zmianie kodów źródłowych oraz dodatkowo powiadomienia <em>live reload</em> i odświeżanie aplikacji w przeglądarce. Część serwerową uruchamiamy w <em>IDE</em> wspierającym <em>hot swap</em> kodów.</p>
+
+<p>Przy takiej konfiguracji aplikacja webowa jest dostępna na porcie <em>4200</em>, a backend <em>REST</em> na porcie <em>8080</em>. Musimy jeszcze umożliwić dostęp do usług <em>REST</em> w sposób identyczny z docelowym, w tym celu na porcie <em>4200</em> skonfigurujemy proxy do usług.</p>
+
+<p>Dla wygody konfiguracji przenosimy wystawione usługi pod prefix <em>/api</em> i tworzymy plik mapowań proxy w <em>demo-web/proxy.conf.json</em>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"/api"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:8080"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"secure"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><em>We wszystkich zdefiniowanych adnotacjach @RequestMapping dopisałem prefix /api w mapowanym url.</em></p>
+
+<p>Część serwerową uruchamiamy w <em>IDE</em> (lub dowolny inny sposobów), natomiast część web uruchamiamy przez <em>Angular CLI</em>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ng serve <span class="nt">--proxy-config</span> proxy.conf.json
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+webpack: bundle is now VALID.
+<span class="nv">$ </span>curl http://localhost:8080/api/greeting <span class="o">&amp;&amp;</span> <span class="nb">echo
+</span>Welcome!
+<span class="nv">$ </span>curl http://localhost:4200/api/greeting <span class="o">&amp;&amp;</span> <span class="nb">echo
+</span>Welcome!
+</code></pre></div></div>
+
+<p>Dodakowo konfigurację uruchomienia wspierającą proxy usług warto zdefiniować w pliku <em>package.json</em>, w sekcji <em>scripts</em> modyfikujemy polecenie skrypt <em>start</em>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng serve --proxy-config proxy.conf.json"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Dzięki temu nie musimy pamiętać przełączików i parametrów, a całość możemy uruchamiać jednym poleceniem:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm start
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+ <span class="nb">.</span>
+webpack: bundle is now VALID.
+</code></pre></div></div>
+
+<p>W ten sposób pracujemy z aplikacją wystawioną pod adresem http://localhost:4200/, a wszystkie zmiany w części serwerowej i webowej możemy mieć odświeżane na bieżąco, zaraz po ich wprowadzeniu.</p>
+
+<p><a href="https://github.com/glipecki/spring-with-angular-cli-demo/commit/e1e66fe641a33d061227dd47e53a6f83c442f72f">Commit opisujący wprowadzone zmiany.</a></p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Jeżeli na co dzień pracujesz z projektami opartymi o <em>Spring Boot</em> i <em>Maven</em> ich integracja z aplikacjami pisanymi w <em>Angular CLI</em> nie będzie stanowić dużego wyzwania. W podstawowej realizacji pomoże Ci plugin <em>maven-frontend-plugin</em>, natomiast wykorzystując dodatkowo <em>maven-assembly-plugin</em> i <em>maven-dependency-plugin</em> możliwe jest przygotowanie dużo bardziej złożonych procesów budowania aplikacji.</p>
+
+<p>Ostateczną wersję aplikacji możemy obejrzeć na GitHub: <a href="https://github.com/glipecki/spring-with-angular-cli-demo">demo@github</a>.</p>
+
+<p><em>Na sam koniec chciałbym podziękować <strong>Krysi</strong>, <strong>Jackowi</strong> i <strong>Marcinowi</strong>. Bez Was nie byłoby tego wpisu, dzięki!</em></p>
+
+<h2 id="materiały">Materiały</h2>
+<ul>
+  <li><a href="https://github.com/glipecki/spring-with-angular-cli-demo">https://github.com/glipecki/spring-with-angular-cli-demo</a></li>
+  <li><a href="http://www.consdata.pl/blog/7-szybki-start-z-angular-cli">http://www.consdata.pl/blog/7-szybki-start-z-angular-cli</a></li>
+  <li><a href="https://angular.io/docs/ts/latest/guide/router.html#!#browser-url-styles">https://angular.io/docs/ts/latest/guide/router.html#!#browser-url-styles</a></li>
+  <li><a href="http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties">http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties</a></li>
+</ul>
+:ET

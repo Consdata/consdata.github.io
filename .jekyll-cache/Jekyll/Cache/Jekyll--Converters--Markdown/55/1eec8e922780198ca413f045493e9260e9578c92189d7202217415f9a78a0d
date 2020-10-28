@@ -1,0 +1,142 @@
+I"�O<p>Książka “Refactoring” Martina Fowlera i Kenta Becka została po raz pierwszy wydana w 1999 roku i często określana jest jako pozycja wybitna, ponadczasowa, jako must read każdego programisty. 
+Dodatkowo w tym roku wyszła jej druga edycja. Po co?</p>
+
+<p>Martin podkreśla przecież, że notatki z lat dziewięćdziesiątych, które tworzył i ogólnie zasady refaktoryzacji wciąż są aktualne i wciąż sam ich używa. Mimo to wszystkie jej rozdziały zostały przepisane, a przede wszystkim zmienił się język wykorzystany w przykładach - wtedy wybrali Javę, tym razem postawili na JavaScript.</p>
+
+<p>Dominująca część tej pozycji to katalog reguł refaktoryzacji wraz z motywacją, sposobem jej wykonania i oczywiście kodem. 
+Zanim jednak tam dotrzemy, Fowler próbuje wytłumaczyć, po co w ogóle refaktoryzować i kiedy to robić.
+I to, co najbardziej wyniosłam z tej lektury to podejście, które przewija się w niej bardzo często: mianowicie, że refaktoryzacja powinna być “częścią naturalnego flow programisty”.</p>
+
+<p>Gdy podchodzimy do zadania, chcemy dodać nową funkcjonalność, powinniśmy móc ją wprowadzić w zastany kod w sposób łatwy i ładny. Jeśli jednak jego stan nam na to nie pozwala, może powinniśmy pokusić się o jego reorganizację, tak żebyśmy mogli później szybko i bez wyrzutów sumienia wprowadzać zmiany. Bardzo trafnie opisuje to cytat:</p>
+
+<blockquote>"It's like I want to go 100 miles east but instead of just traipsing through the woods, I'm going to drive 20 miles north to the highway and then I'm going to go 100 miles east at three times the speed I could have if I just went straight there. When people are pushing you to just go straight there, sometimes you need to say 'Wait, I need to check the map and find the quickest route'."</blockquote>
+<p>Zanim przejdziemy do przykładów, jeszcze jedna motywacja, czyli to, jak określa sam siebie Kent Beck:</p>
+
+<blockquote>"I'm not a great programmer. I'm just a good programmer with great habits."</blockquote>
+
+<h2 id="przykład-pierwszy">Przykład pierwszy</h2>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">solveIdealRocketEquation</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">const</span> <span class="nx">exhaustVelocity</span> <span class="o">=</span> <span class="nx">specificImpulse</span> <span class="o">*</span> <span class="mf">9.81</span><span class="p">;</span>
+	<span class="kd">const</span> <span class="nx">massFraction</span> <span class="o">=</span> <span class="nx">initialMass</span><span class="o">/</span><span class="nx">finalMass</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">exhaustVelocity</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">massFraction</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Refaktor powyższego przykładu rozpoczniemy od zastosowania wyodrębnienia metod (Extract Function).</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">solveIdealRocketEquation</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">const</span> <span class="nx">exhaustVelocity</span> <span class="o">=</span> <span class="nx">specificImpulse</span> <span class="o">*</span> <span class="mf">9.81</span><span class="p">;</span>
+	<span class="kd">const</span> <span class="nx">massFraction</span> <span class="o">=</span> <span class="nx">initialMass</span><span class="o">/</span><span class="nx">finalMass</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">exhaustVelocity</span><span class="p">,</span> <span class="nx">massFraction</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">exhaustVelocity</span><span class="p">,</span> <span class="nx">massFraction</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nx">exhaustVelocity</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">massFraction</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Następnie wprowadzimy strukturę służącą do komunikacji (Introduce Parameter Object).</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">solveIdealRocketEquation</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">const</span> <span class="nx">exhaustVelocity</span> <span class="o">=</span> <span class="nx">specificImpulse</span> <span class="o">*</span> <span class="mf">9.81</span><span class="p">;</span>
+	<span class="kd">const</span> <span class="nx">massFraction</span> <span class="o">=</span> <span class="nx">initialMass</span><span class="o">/</span><span class="nx">finalMass</span><span class="p">;</span>
+	<span class="kd">const</span> <span class="nx">velocityData</span> <span class="o">=</span> <span class="p">{</span><span class="na">exhaustVelocity</span><span class="p">:</span> <span class="nx">exhaustVelocity</span><span class="p">,</span> <span class="na">massFraction</span><span class="p">:</span> <span class="nx">massFraction</span><span class="p">}</span>
+	<span class="k">return</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nx">velocityData</span><span class="p">.</span><span class="nx">exhaustVelocity</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">.</span><span class="nx">massFraction</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I z tak posprzątanymi parametrami, możemy wydzielić dwie, niezależne fazy naszych obliczeń (Split Phase).</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">solveIdealRocketEquation</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">const</span> <span class="nx">velocityData</span> <span class="o">=</span> <span class="nx">calculateVelocityData</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">calculateVelocity</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nx">velocityData</span><span class="p">.</span><span class="nx">exhaustVelocity</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">velocityData</span><span class="p">.</span><span class="nx">massFraction</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">calculateVelocityData</span><span class="p">(</span><span class="nx">specificImpulse</span><span class="p">,</span> <span class="nx">initialMass</span><span class="p">,</span> <span class="nx">finalMass</span><span class="p">){</span>
+	<span class="kd">const</span> <span class="nx">exhaustVelocity</span> <span class="o">=</span> <span class="nx">specificImpulse</span> <span class="o">*</span> <span class="mf">9.81</span><span class="p">;</span>
+	<span class="kd">const</span> <span class="nx">massFraction</span> <span class="o">=</span> <span class="nx">initialMass</span><span class="o">/</span><span class="nx">finalMass</span><span class="p">;</span>
+	<span class="k">return</span> <span class="p">{</span><span class="na">exhaustVelocity</span><span class="p">:</span> <span class="nx">exhaustVelocity</span><span class="p">,</span> <span class="na">massFraction</span><span class="p">:</span> <span class="nx">massFraction</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="przykład-drugi">Przykład drugi</h2>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">aggregateStarsData</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+    <span class="kd">let</span> <span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">?</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">temperature</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">totalMass</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">s</span> <span class="k">of</span> <span class="nx">stars</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span> <span class="o">&gt;</span> <span class="nx">highestTemperature</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span>
+	    <span class="p">}</span>
+	<span class="nx">totalMass</span> <span class="o">+=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">mass</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">highestTemperature</span><span class="p">:</span> <span class="nx">highestTemperature</span><span class="p">,</span> <span class="na">totalMass</span><span class="p">:</span> <span class="nx">totalMass</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>W powyższym przykładzie obliczamy łączną masę gwiazd oraz znajdujemy gwiazdę, której temperatura jest najwyższa. Wyliczenia te przetwarzane są w tej samej pętli, chociaż są od siebie niezależne. Minusem tego podejścia jest to, że za każdym razem, gdy będziemy chcieli taką pętlę zmodyfikować, będziemy musieli zrozumieć obie te rzeczy. Podzielmy ją więc na dwie, tak abyśmy mogli próbować zrozumieć tylko tę część, którą musimy zmodyfikować (Split Loop).</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">aggregateStarsData</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+    <span class="kd">let</span> <span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">?</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">temperature</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">s</span> <span class="k">of</span> <span class="nx">stars</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span> <span class="o">&gt;</span> <span class="nx">highestTemperature</span><span class="p">)</span> <span class="p">{</span>
+		    <span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span>
+	    <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kd">let</span> <span class="nx">totalMass</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">s</span> <span class="k">of</span> <span class="nx">stars</span><span class="p">)</span> <span class="p">{</span>
+	        <span class="nx">totalMass</span> <span class="o">+=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">mass</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">highestTemperature</span><span class="p">:</span> <span class="nx">highestTemperature</span><span class="p">,</span> <span class="na">totalMass</span><span class="p">:</span> <span class="nx">totalMass</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Następnie powydzielajmy metody (Extract Function).</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">aggregateStarsData</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+	<span class="k">return</span> <span class="p">{</span><span class="na">highestTemperature</span><span class="p">:</span> <span class="nx">highestTemperature</span><span class="p">(</span><span class="nx">stars</span><span class="p">),</span> <span class="na">totalMass</span><span class="p">:</span> <span class="nx">totalMass</span><span class="p">(</span><span class="nx">stars</span><span class="p">)}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">highestTemperature</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+	<span class="kd">let</span> <span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">?</span> <span class="nx">stars</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">temperature</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">s</span> <span class="k">of</span> <span class="nx">stars</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span> <span class="o">&gt;</span> <span class="nx">highestTemperature</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">highestTemperature</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">highestTemperature</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">totalMass</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+	<span class="kd">let</span> <span class="nx">totalMass</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">s</span> <span class="k">of</span> <span class="nx">stars</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">totalMass</span> <span class="o">+=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">mass</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">totalMass</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>I użyjmy jeszcze dwóch metod refaktoryzacji: Replace Loop with Pipeline oraz Subsitute Algorithm.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">aggregateStarsData</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+	<span class="k">return</span> <span class="p">{</span><span class="na">highestTemperature</span><span class="p">:</span> <span class="nx">highestTemperature</span><span class="p">(</span><span class="nx">stars</span><span class="p">),</span> <span class="na">totalMass</span><span class="p">:</span> <span class="nx">totalMass</span><span class="p">(</span><span class="nx">stars</span><span class="p">)}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">highestTemperature</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(...</span><span class="nx">stars</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">s</span><span class="o">=&gt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">temperature</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">totalMass</span><span class="p">(</span><span class="nx">stars</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">stars</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">totalMass</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">totalMass</span> <span class="o">+=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">mass</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>“Refactoring” Fowlera i Becka to książka, którą na pewno docenią osoby, które pracują przy dużych i długofalowych projektach. Wtedy bowiem potrzeba refaktorowania jest bezdyskusyjna, jednak jest on czasochłonny i ryzykowny. Łatwo wpaść w pułapkę, w której zmiany, które dodajemy, wprowadzają bałagan do kodu i tłumaczone są pośpiechem. Jednak czas, który zaoszczędzimy przy jej dodawaniu, zostanie zjedzony w całości, a pewnie i przekroczony, gdy kolejna osoba będzie musiała wejść w nasze klasy i zrozumieć, jak to właściwie działa.</p>
+
+<p>Podejdźmy więc do problemu zdrowo i po prostu - zawsze zostawiajmy kod choć odrobinę lepszym, niż ten który zastaliśmy;)</p>
+:ET

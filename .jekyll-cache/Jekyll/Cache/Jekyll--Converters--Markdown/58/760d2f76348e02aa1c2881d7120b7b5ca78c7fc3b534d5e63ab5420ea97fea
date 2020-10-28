@@ -1,0 +1,11 @@
+I"�<h2 id="custom-element-co-to-takiego">Custom element, co to takiego?</h2>
+<p>Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.
+Na Web Components składają sie następujące specyfikacje:</p>
+<ul>
+  <li><strong>Templates</strong> - wprowadza element <code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>, który pozwala na wyrenderowanie jego zawartości dopiero na żądanie stworzenia kopii. Dzięki temu problem z przedwczesnym ładowaniem danych nie występuje,</li>
+  <li><strong>HTML imports</strong> - tworzone komponenty mogą zawierać szablony (<strong>Templates</strong>) i kod (<strong>Custom elements</strong>), specyfikacja ta pozwala wydzielić obie te części do oddzielnego pliku HTML i importować go za pomocą <code class="language-plaintext highlighter-rouge">&lt;link rel="import" href="plik-komponentu.html" /&gt;</code>,</li>
+  <li><strong>Shadow DOM</strong> - specyfikacja ta pozwala na enkapsulację DOM’u oraz styli. Każdy element może mieć swój shadow root, który jest wyświetlany jako jego zawartość, przy czym zawartość ta jest odseparowana logicznie od pozostałych elementów DOM,</li>
+  <li><strong>Custom Elements</strong> - specyfikuje sposób tworzenia własnych elementów DOM oraz dostarcza obiekty do kontrolowania cyklu życia elementu.
+W tym artykule skupimy się jedynie na <strong>Custom Elements</strong> (oraz w mniejszym stopniu na <strong>Shadow DOM</strong>), który jest minimalnym zestawem narzędzi pozwalającym na dodanie własnego elementu HTML niezależnego od wykorzystywanych (lub nie) frameworków czy bibliotek.</li>
+</ul>
+:ET

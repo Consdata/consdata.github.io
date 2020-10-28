@@ -1,0 +1,369 @@
+I"��<p>Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.
+<a href="/2020/06/09/microservices-on-axon.html">W poprzednim wpisie</a> opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, umyślnie pomijając kwestię związaną z testami.
+Niniejszy artykuł jest poświęcony w pełni temu tematowi.
+Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona.</p>
+
+<h1 id="testy-domenowe">Testy domenowe</h1>
+<p>Zacznijmy od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
+W Axonie jest to ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
+Zaleta tych testów jest taka, że nie podnoszą one żadnego kontekstu, a więc wykonują się bardzo szybko.</p>
+
+<h2 id="agregaty">Agregaty</h2>
+<p>Zostając przy aplikacji z poprzedniego wpisu, weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
+Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie - tak samo nieobejrzanego filmu nie możemy “odzobaczyć” ;).
+Wystąpienie takiej anomalii odnotowywane jest w logu, a <strong>ToggleWatchedEvent</strong> nie zostaje wyemitowany.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Aggregate</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregate</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@CommandHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">ToggleWatchedCommand</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">watched</span><span class="o">.</span><span class="na">isWatched</span><span class="o">()</span> <span class="o">==</span> <span class="n">command</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Cannot toggle to the same state, skipping.."</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">apply</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedEvent</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">(),</span> <span class="n">command</span><span class="o">.</span><span class="na">getWatched</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Rozważmy tzw. happy path w testach dla tego przypadku biznesowego. 
+Będziemy potrzebować obiektu <strong>FixtureConfiguration</strong>, który zasymuluje nam sytuację, w której może znaleźć się nasz agregat.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">private</span> <span class="nc">FixtureConfiguration</span><span class="o">&lt;</span><span class="nc">MovieAggregate</span><span class="o">&gt;</span> <span class="n">fixture</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">fixture</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AggregateTestFixture</span><span class="o">&lt;&gt;(</span><span class="nc">MovieAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Test piszemy w następujący sposób:</p>
+<ol>
+  <li>Określamy “punkt startowy” dla naszego agregatu, czyli jakie eventy zostały zastosowane w agregacie do tej pory (jest to <strong>given</strong> w podejściu behawioralnym).</li>
+  <li>Wpisujemy command, który chcemy poddać testom (odpowiednio - <strong>when</strong>). W naszym przypadku to <strong>ToggleWatchedCommand</strong></li>
+  <li>Definiujemy stan oczekiwany.</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldToggleWatchedEventAppear</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">given</span><span class="o">(</span>                                                              <span class="c1">// 1</span>
+                    <span class="k">new</span> <span class="nf">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">MovieSavedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>         <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">expectEvents</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>   <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">expectState</span><span class="o">(</span>                                                       
+                    <span class="n">state</span> <span class="o">-&gt;</span> <span class="n">assertThat</span><span class="o">(</span><span class="n">state</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isTrue</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Druga ścieżka do sprawdzenia to brak emisji zdarzenia w momencie zmiany stanu na ten sam.
+Dorzućmy więc do <strong>given</strong> wystąpienie eventu <strong>ToggleWatchedEvent</strong> - wtedy agregat nie powinien wyemitować nic nowego:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldNotToggleWatchedEventAppear</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">given</span><span class="o">(</span>
+                    <span class="k">new</span> <span class="nf">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">MovieSavedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">ToggleWatchedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">expectNoEvents</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">expectState</span><span class="o">(</span>                                                       
+                    <span class="n">state</span> <span class="o">-&gt;</span> <span class="n">assertThat</span><span class="o">(</span><span class="n">state</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isTrue</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h2 id="sagi">Sagi</h2>
+<p>Drugim obiektem domenowym, który poddam testom, jest saga (zob. DDD).
+W mojej aplikacji zdarzeniem otwierającym sagę dla filmu jest <strong>MovieCreatedEvent</strong> wyemitowany przez MovieAggrate - po jego pojawieniu się, wysyłam command, który zostanie obsłużony w mikroserwisie (<em>proxy-service</em>) odpowiedzialnym za pobieranie szczegółów filmu z zewnętrznego źródła:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSaga</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@StartSaga</span>
+    <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="no">MOVIE_ID</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieCreatedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">movieId</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">proxyId</span> <span class="o">=</span> <span class="no">PROXY_PREFIX</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">movieId</span><span class="o">);</span>
+        <span class="n">associateWith</span><span class="o">(</span><span class="s">"proxyId"</span><span class="o">,</span> <span class="n">proxyId</span><span class="o">);</span>
+        <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">FetchMovieDetailsCommand</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getSearchPhrase</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
+Gdy <em>proxy-service</em> wyemituje zdarzenie <strong>MovieDetailsEvent</strong>, to w zależności od zawartości payloadu, śle command z uzupełnionymi szczegółami dla filmu lub nie i bez względu na rezultat kończę sagę:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSaga</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="no">PROXY_ID</span><span class="o">)</span>
+    <span class="nd">@EndSaga</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieDetailsEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">movie</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">NOT_FOUND_IN_EXTERNAL_SERVICE</span> <span class="o">==</span> <span class="n">movie</span><span class="o">.</span><span class="na">getMovieState</span><span class="o">())</span> <span class="o">{</span>
+            <span class="c1">// handle when movie not found</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">SaveMovieCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">()));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Do przetestowania tego przypadku znów będziemy potrzebować <strong>fixture</strong>, tyle że tym razem skrojony pod sagi:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSagaTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">private</span> <span class="nc">SagaTestFixture</span><span class="o">&lt;</span><span class="nc">MovieSaga</span><span class="o">&gt;</span> <span class="n">fixture</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SagaTestFixture</span><span class="o">&lt;&gt;(</span><span class="nc">MovieSaga</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Testy mają sprawdzić czy odpowiednie commandy zostaną wyemitowane, oraz czy saga “wystartowała”, bądź zakończyła się w odpowiednim momencie.
+Szkielet testu wygląda następująco:</p>
+<ol>
+  <li>Mając agregat X z ustalonym identyfikatorem.</li>
+  <li>Wiedząc, że X nie wyemitował żadnego eventu (lub wyemitował konkretny event).</li>
+  <li>To gdy agregat X.</li>
+  <li>Wyemituje konkretny event.</li>
+  <li>Oczekujemy aktywnej (lub nieaktywnej) sagi oraz opublikowany command (lub nieopublikowanie niczego).</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSagaTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldDispatchFetchMovieDetailsCommand</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">givenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                      <span class="c1">// 1</span>
+                <span class="o">.</span><span class="na">published</span><span class="o">()</span>                                                 <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">whenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                      <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">publishes</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">))</span>     <span class="c1">// 4</span>
+                <span class="o">.</span><span class="na">expectActiveSagas</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>                                        <span class="c1">// 5</span>
+                <span class="o">.</span><span class="na">expectDispatchedCommands</span><span class="o">(</span>                                   
+                    <span class="k">new</span> <span class="nf">FetchMovieDetailsCommand</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldDispatchSaveCastCommand</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">givenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                       <span class="c1">// 1</span>
+                <span class="o">.</span><span class="na">published</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">))</span>      <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">whenAggregate</span><span class="o">(</span><span class="n">proxyId</span><span class="o">)</span>                                       <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">publishes</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieDetailsEvent</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">))</span>     <span class="c1">// 4</span>
+                <span class="o">.</span><span class="na">expectActiveSagas</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>                                         <span class="c1">// 5</span>
+                <span class="o">.</span><span class="na">expectDispatchedCommands</span><span class="o">(</span>                                    
+                    <span class="k">new</span> <span class="nf">SaveMovieCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Jak widać zastosowanie fixture również w przypadku sagi, okazuje się proste i intuicyjne.</p>
+
+<h1 id="testy-integracyjne---możliwe-z-axonem">Testy integracyjne - możliwe z Axonem?</h1>
+<p>Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), można zabrać się za weryfikację trochę większego fragmentu aplikacji.</p>
+
+<h2 id="konfiguracja">Konfiguracja</h2>
+<p>Testy integracyjne z użyciem prawdziwego Event Store’a (w naszym przypadku AxonServera) wymagają więcej konfiguracji - twórcy w tym aspekcie akurat nie przygotowali nam gotowego rozwiązania.
+Trochę się naszukałem, zanim znalazłem informację o tym, że rekomendowanym przez AxonIQ rozwiązaniem problemu jest skorzystanie z obrazu dockerowego.
+Konkretnie wspominają o uruchomieniu AxonServer z terminala i podłączeniu się testami do tej instancji.
+Wręcz idealna rola dla <a href="https://www.testcontainers.org/"><strong>testcontainers</strong></a> - pomyślałem (po przygotowaniu konfiguracji pod testy, trafiłem na podobne rozwiązanie na stacku).
+Stworzyłem klasę umożliwiającą podniesienie potrzebnych kontenerów, aby skorzystać z nich podczas testów:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestContainers</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MONGO_PORT</span> <span class="o">=</span> <span class="mi">29019</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">AXON_HTTP_PORT</span> <span class="o">=</span> <span class="mi">8024</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">AXON_GRPC_PORT</span> <span class="o">=</span> <span class="mi">8124</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">startAxonServer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">GenericContainer</span> <span class="n">axonServer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">(</span><span class="s">"axoniq/axonserver:latest"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="no">AXON_HTTP_PORT</span><span class="o">,</span> <span class="no">AXON_GRPC_PORT</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">waitingFor</span><span class="o">(</span>
+                        <span class="nc">Wait</span><span class="o">.</span><span class="na">forLogMessage</span><span class="o">(</span><span class="s">".*Started AxonServer.*"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                <span class="o">);</span>
+        <span class="n">axonServer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span>
+                <span class="s">"ENV_AXON_GRPC_PORT"</span><span class="o">,</span> 
+                <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">axonServer</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="no">AXON_GRPC_PORT</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">startMongo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">GenericContainer</span> <span class="n">mongo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">(</span><span class="s">"mongo:latest"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="no">MONGO_PORT</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withEnv</span><span class="o">(</span><span class="s">"MONGO_INITDB_DATABASE"</span><span class="o">,</span> <span class="s">"moviekeeper"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withCommand</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"mongod --port %d"</span><span class="o">,</span> <span class="no">MONGO_PORT</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">waitingFor</span><span class="o">(</span>
+                        <span class="nc">Wait</span><span class="o">.</span><span class="na">forLogMessage</span><span class="o">(</span><span class="s">".*waiting for connections.*"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                <span class="o">);</span>
+        <span class="n">mongo</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span>
+                <span class="s">"ENV_MONGO_PORT"</span><span class="o">,</span> 
+                <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">mongo</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="no">MONGO_PORT</span><span class="o">)));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Należy tu jednak pamiętać o tym, że <strong>withExposedPorts</strong> wystawia porty tylko <strong>wewnątrz kontenera</strong>, potrzebny więc był sposób na pozyskanie portów, do których testy będą mogły się połączyć.
+Testcontainers przy każdym restarcie kontenera wystawia go na losowym wolnym porcie z danego zakresu, istnieje jednak metoda na pobranie tych portów w runtime.
+Robię to w ostatniej instrukcji każdej z metod, jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych <strong>ENV_AXON_GRPC_PORT</strong> oraz <strong>ENV_MONGO_PORT</strong>.
+Zmienne te używam w yamlu konfiguracyjnym pod testy:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">data</span><span class="pi">:</span>
+        <span class="na">mongodb</span><span class="pi">:</span>
+            <span class="na">uri</span><span class="pi">:</span> <span class="s">mongodb://localhost:${ENV_MONGO_PORT}/moviekeeper</span>
+<span class="na">axon</span><span class="pi">:</span>
+  <span class="na">axonserver</span><span class="pi">:</span>
+        <span class="na">servers</span><span class="pi">:</span> <span class="s">localhost:${ENV_AXON_GRPC_PORT}</span>
+</code></pre></div></div>
+<p>Metody <strong>startMongo</strong> i <strong>startAxonServer</strong> wykorzystałem w klasie, z której dziedziczą wszystkie testy integracyjne:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="o">(</span><span class="nc">SpringExtension</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@SpringBootTest</span><span class="o">(</span><span class="n">webEnvironment</span> <span class="o">=</span> <span class="nc">SpringBootTest</span><span class="o">.</span><span class="na">WebEnvironment</span><span class="o">.</span><span class="na">RANDOM_PORT</span><span class="o">)</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommonIntegrationSetup</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@BeforeAll</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">beforeAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">TestContainers</span><span class="o">.</span><span class="na">startAxonServer</span><span class="o">();</span>
+        <span class="nc">TestContainers</span><span class="o">.</span><span class="na">startMongo</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Po wszystkim nie musimy zatrzymywać kontenerów, zadzieje się to automatycznie (GenericContainer implementuje <code class="language-plaintext highlighter-rouge">AutoCloseable</code>).
+Należy jednak pamiętać o <strong>ustawieniu profilu</strong> i <strong>pliku konfiguracyjnym</strong> pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła “produkcyjnie” - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)</p>
+
+<h2 id="skonfigurowane-do-dzieła">Skonfigurowane. Do dzieła!</h2>
+<p>W mojej aplikacji w momencie, gdy znaleziony zostanie film o żądanym tytule, mają miejsce następujące kroki:</p>
+<ol>
+  <li>Zwracane są szczegóły znalezionego filmu.</li>
+  <li>Wysyłany jest command, który mówi <strong>znajdź trailery i obsadę dla tego filmu</strong>.</li>
+</ol>
+
+<p>Parę kroków później efektem tego commanda, są kolejne commandy, już skierowane do konkretnego mikroserwisu (odpowiedzialnego za pobranie obsady i trailerów).
+Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z <a href="/2020/06/09/microservices-on-axon.html">poprzedniego wpisu</a>).
+Oczywiście nie chcę, aby test był zależny od jakiegoś serwisu, więc konieczne jest stworzenie mocka:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Profile</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="nd">@Slf4j</span>
+<span class="nd">@Component</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MockProxyCommandHandler</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">EventGateway</span> <span class="n">eventGateway</span><span class="o">;</span>
+
+    <span class="nd">@CommandHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">FetchTrailersCommand</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"MOCK fetching..."</span><span class="o">);</span>
+        <span class="n">eventGateway</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="k">new</span> <span class="nc">TrailersDetailsEvent</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getProxyId</span><span class="o">(),</span> <span class="no">TRAILERS</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W teście chcę zasymulować sytuację, w której pojawia się command <strong>CreateTrailersCommand</strong>.
+W efekcie aplikacja powinna pobrać trailery dla wskazanego filmu i umieścić je w bazie:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrailersIntegrationTest</span> <span class="kd">extends</span> <span class="nc">CommonIntegrationSetup</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">CommandGateway</span> <span class="n">commandGateway</span><span class="o">;</span>
+    <span class="o">...</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">beforeEach</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">movieId</span> <span class="o">=</span> <span class="s">"123"</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">trailers</span> <span class="o">=</span> <span class="n">generateTrailers</span><span class="o">(</span><span class="n">movieId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldRetrieveTrailers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// given</span>
+        <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">CreateTrailersCommand</span><span class="o">(</span>
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">(),</span> 
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getExternalMovieId</span><span class="o">(),</span> 
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">()));</span>
+
+        <span class="n">await</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="no">FIVE_SECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">with</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">pollInterval</span><span class="o">(</span><span class="no">ONE_HUNDRED_MILLISECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">until</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">trailerRepository</span><span class="o">.</span><span class="na">findByMovieId</span><span class="o">(</span><span class="n">movieId</span><span class="o">).</span><span class="na">isPresent</span><span class="o">());</span>
+
+        <span class="c1">// when</span>
+        <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">TrailerDTO</span><span class="o">[]&gt;</span> <span class="n">trailerResponse</span> <span class="o">=</span> <span class="n">testRestTemplate</span>
+                <span class="o">.</span><span class="na">getForEntity</span><span class="o">(</span>
+                        <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GET_TRAILERS_URL</span><span class="o">,</span> <span class="n">randomServerPort</span><span class="o">,</span> <span class="n">movieId</span><span class="o">),</span>
+                        <span class="nc">TrailerDTO</span><span class="o">[].</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// then</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">TrailerDTO</span><span class="o">&gt;</span> <span class="n">trailerDTOS</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">());</span>
+
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerDTOS</span><span class="o">.</span><span class="na">size</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerDTOS</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">trailers</span><span class="o">.</span><span class="na">getTrailers</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Skorzystałem z <a href="https://github.com/awaitility/awaitility"><strong>awaitility</strong></a>, żeby poczekać chwilę na odpowiedź w razie małej czkawki.</p>
+
+<h1 id="testy-e2e">Testy E2E</h1>
+<p>Na samym szczycie piramidy testów są testy end-to-end, czyli sprawdzenie aplikacji w ten sposób, w jaki klient z niej korzysta.
+W moim przypadku klientem jest aplikacja frontendowa, która uderzając na konkretny endpoint, oczekuje konkretnej odpowiedzi.
+Przetestujmy wyszukanie filmu po tytule.</p>
+
+<p>Taki test powinien:</p>
+<ul>
+  <li>uderzyć na endpoint, za którym kryje się dana funkcjonalność,</li>
+  <li>sprawdzić status odpowiedzi od serwera,</li>
+  <li>sprawdzić zawartość odpowiedzi,</li>
+  <li>upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, który dostaliśmy w ciele odpowiedzi.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieE2ETest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldStoreMovie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// when</span>
+        <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">MovieDTO</span><span class="o">&gt;</span> <span class="n">storedMovieResponse</span> <span class="o">=</span> <span class="n">testRestTemplate</span><span class="o">.</span><span class="na">postForEntity</span><span class="o">(</span>
+                           <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GET_OR_POST_MOVIES</span><span class="o">,</span> <span class="n">randomServerPort</span><span class="o">),</span> 
+                           <span class="k">new</span> <span class="nf">TitleBody</span><span class="o">(</span><span class="no">SUPER_MOVIE</span><span class="o">),</span> 
+                           <span class="nc">MovieDTO</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">storedMovieResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CREATED</span><span class="o">);</span>
+
+        <span class="nc">MovieDTO</span> <span class="n">body</span> <span class="o">=</span> <span class="n">storedMovieResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">();</span>
+
+        <span class="n">await</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="no">FIVE_SECONDS</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">pollInterval</span><span class="o">(</span><span class="no">ONE_HUNDRED_MILLISECONDS</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">until</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">movieRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">()).</span><span class="na">isPresent</span><span class="o">());</span>
+
+        <span class="c1">// then</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">).</span><span class="na">isNotNull</span><span class="o">();</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">()).</span><span class="na">isNotEmpty</span><span class="o">();</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getTitle</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="no">SUPER_MOVIE</span><span class="o">);</span>
+
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">MovieDTO</span><span class="o">&gt;</span> <span class="n">persistedMovie</span> <span class="o">=</span> <span class="n">movieRepository</span>
+                    <span class="o">.</span><span class="na">findByExternalMovieId</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getExternalMovieId</span><span class="o">());</span>
+        <span class="n">persistedMovie</span><span class="o">.</span><span class="na">ifPresent</span><span class="o">(</span><span class="n">movie</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">.</span><span class="na">getCreationDate</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="no">NOW</span><span class="o">);</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">.</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isFalse</span><span class="o">();</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>W tym podejściu również wykorzystałem kontenery testowe, tak samo, jak przy testach integracyjnych, konfiguracja jest identyczna.
+Nie chcę uzależniać żadnych testów od połączenia z zewnętrznym serwisem, więc i w tym przypadku posłużyłem się mockiem, symulującym działanie proxy-service.</p>
+
+<h1 id="podsumowanie">Podsumowanie</h1>
+<p>Jak widać korzystanie z Axonowych <strong>fixture</strong> bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również istnieją rozwiązania.
+Uruchamianie takich testów można w łatwy sposób zautomatyzować, np. używając Travisa, dzięki czemu będziemy znali na bieżąco stan naszej aplikacji.</p>
+
+<h1 id="źródła">Źródła</h1>
+<ul>
+  <li><a href="https://github.com/matty-matt/movie-keeper-core">https://github.com/matty-matt/movie-keeper-core</a></li>
+</ul>
+:ET

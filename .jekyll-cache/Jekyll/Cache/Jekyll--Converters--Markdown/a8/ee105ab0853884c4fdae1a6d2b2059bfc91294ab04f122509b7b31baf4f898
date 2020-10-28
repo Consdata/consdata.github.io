@@ -1,0 +1,6 @@
+I"H<p>Bieżące informacje o stanie serwerów i działających na nich usług są ważne dla każdego dostawcy rozwiązań IT, z którego korzysta szersza rzesza użytkowników. Najważniejsze oczywiście jest zapewnienie, że wszystkie usługi działają. Jednak samo działanie to jeszcze nie wszystko. Ważny jest także czas odpowiedzi z tych usług. Jeśli czas odpowiedzi wzrósł, lub nawet usługa przestała odpowiadać, przydatna może okazać się znajomość stanu maszyny w zadanym czasie. W tym celu przydatne będą takie dane, jak obciążenie procesora w danym momencie, zużycie pamięci RAM oraz wolnej przestrzeni na dysku. Aby możliwie szybko zareagować, a być może także uniknąć sytuacji, w której usługa przestaje odpowiadać, istotne są ostrzeżenia, które pozwolą zareagować na czas. Niniejszy artykuł ma na celu zaprezentować rozwiązanie, które pozwoli w miarę szybko stworzyć system monitoringu oraz ostrzegania na systemach wyposażonych w system Linux, oparty o takie narzędzia jak “Grafana”, “Icinga2” oraz “InfluxDB”.</p>
+<div class="img-with-legend">
+<img src="/assets/img/posts/2017-12-01-monitoring-serwerow-i-uslug/1.png" />
+<span class="img-legend">Przykładowy dashboard prezentujący stan maszyny (obciążenie, zużycie ramu i dysku), jak i działających na nim usług</span>
+</div>
+:ET

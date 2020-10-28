@@ -1,0 +1,107 @@
+I"�L<p><strong>Gdy robimy zakupy w internecie, często zdarza się, że przez kolejne dni pokazują nam się propozycje produktów, podobnych do tych, które wcześniej oglądaliśmy. Atrakcyjne ceny powodują, iż czasem ulegamy presji reklamy, decydujemy się na zapoznanie się z ofertą i…dokonujemy zakupu. Jak to się dzieje, że przeglądarka wie, co chcemy kupić, zobaczyć czy posłuchać? Za to wszystko odpowiadają systemy rekomendacyjne.</strong></p>
+
+<p><strong>Systemy rekomendacyjne</strong> widzimy wszędzie tam, gdzie użytkownik ma styczność z ogromnymi katalogami danych, np. <strong>Amazon</strong> podpowiada nam, jakie produkty powinniśmy kupić, <strong>Netflix</strong> - jakie filmy oglądać, a <strong>Spotify</strong> - które utwory na pewno nam się spodobają. Wykorzystywane są przez coraz większą ilość usług, a ich popularność stale rośnie. Odpowiada za to koncepcja <strong>“Long Tail”</strong>.</p>
+
+<p>W 1988 roku brytyjski alpinista Joe Simpson napisał książkę pod tytułem „Touching the Void”, w której opisał swoje zmagania w peruwiańskich Alpach. Publikacja cieszyła się zainteresowaniem, wkrótce jednak zostałaby zapomniana, gdyby nie Jon Krakauer, który dekadę później napisał „Into Thin Air”, czyli kolejną pozycję o wspinaczkowych starciach. Po jej wydaniu książka Joe Simspona nagle wróciła do sprzedaży, nastąpiły dodruki, aby nadążyć za popytem. Co więcej, przez czternaście tygodni znajdowała się na liście bestsellerów NewYork Times i sprzedano jej dwukrotnie więcej niż dzieło Krakauera! Dlaczego tak się stało? Otóż Amazon zarekomendował książkę „Touching the Void” podczas zakupu „Into Thin Air”, jako książkę, która również może spodobać się kupującemu. Teoria Long Tail sugeruje, że na rynku internetowym sumaryczny dochód ze sprzedaży pojedynczych towarów niszowych, może generować wyższe zyski, niż oferowane masowo produkty popularne, tzw. bestsellery.</p>
+
+<p>Najciekawszym rodzajem rekomendacji są te bazujące na danych o konkretnych użytkownikach. Możemy tu wyróżnić dwa podejścia:</p>
+
+<ul>
+  <li><strong>Content Based Filtering</strong>, który opiera się na cechach, typach produktów, szukając podobnych do tych, które użytkownik już ocenił pozytywnie lub kupił,</li>
+</ul>
+
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/1.jpg" alt="Content Based Filtering" /></p>
+
+<ul>
+  <li><strong>Collaborative Filtering</strong>, czyli rekomendacje na podstawie ocen i zakupów użytkownika. Gdy dwóch użytkowników kupuje podobne produkty, możemy stwierdzić, że mają zbliżone upodobania i polecać im wzajemnie sprawdzone dla nich artykuły.</li>
+</ul>
+
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/2.jpg" alt="Collaborative Filtering" /></p>
+
+<h2 id="collaborative-filtering--przykład-implementacji">Collaborative Filtering – przykład implementacji</h2>
+<p>Collaborative Filtering dzieli się na jeszcze dwa rodzaje:</p>
+<ul>
+  <li><strong>Item-based</strong>, który bazując tylko na ocenach, wyszukuje podobne przedmioty i je rekomenduje,</li>
+  <li><strong>User-based</strong>, którego przykład implementacji szerzej omówimy.</li>
+</ul>
+
+<p>Zasada jest prosta. Wyobraźmy sobie, że mamy użytkownika X. Dla tego użytkownika znajdujemy grupę innych użytkowników, którzy są do siebie podobni, np. zgodnie oceniają te same filmy. Jest to tzw. sąsiedztwo użytkownika X. W tej grupie znajdujemy zbiór filmów, które również są przez nią wysoko oceniane, a użytkownik X ich nie oglądał i rekomendujemy mu je. Dane, z których skorzystałam, pochodzą ze strony MovieLens. W zbiorze danych znajduje się m.in. 100.000 ocen użytkowników w skali 1-5.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">ratings_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'user_id'</span><span class="p">,</span> <span class="s">'movie_id'</span><span class="p">,</span> <span class="s">'rating'</span><span class="p">,</span> <span class="s">'timestamp'</span><span class="p">]</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'u.data'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">ratings_columns</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'latin-1'</span><span class="p">)</span>
+<span class="n">ratings</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span> <span class="s">"timestamp"</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="k">print</span> <span class="n">ratings</span><span class="p">.</span><span class="n">shape</span>
+<span class="n">ratings</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/3.jpg" alt="Wynik działania" /></p>
+
+<p>Na podstawie tej tabelki utworzymy macierz ocen filmów userId x movieId.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user_movies</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">.</span><span class="n">pivot</span><span class="p">(</span> <span class="n">index</span><span class="o">=</span><span class="s">'user_id'</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s">'movie_id'</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="s">"rating"</span> <span class="p">).</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">user_movies</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+<span class="n">user_movies</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">user_movies</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">user_movies</span><span class="p">.</span><span class="n">shape</span>
+<span class="n">user_movies</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/4.jpg" alt="Wyniki" /></p>
+
+<p>Kolejnym krokiem jest wyznaczenie n-tego sąsiedztwa użytkownika X, czyli grupy najbardziej podobnych mu osób. Aby to zrobić, potrzebujemy miary podobieństwa między użytkownikami, których istnieje mnogość, m.in. miarę cosinusową, współczynnik Jaccarda. Ja użyję współczynnika korelacji Pearsona. Miara ta mieści się w przedziale zamkniętym [-1, 1], gdzie 1 będzie oznaczała stuprocentowe podobieństwo.</p>
+
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/5.jpg" alt="Wyniki" /></p>
+
+<p>Nie pokuszę się jednak o implementację tego wzoru, a wykorzystam gotową funkcję z biblioteki SciPy.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">pairwise_distances</span>
+<span class="n">users_similarity</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pairwise_distances</span><span class="p">(</span> <span class="n">user_movies</span><span class="p">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">metric</span><span class="o">=</span><span class="s">"correlation"</span> <span class="p">)</span>
+<span class="n">users_similarity_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">users_similarity</span> <span class="p">)</span>
+<span class="k">print</span> <span class="n">users_similarity</span><span class="p">.</span><span class="n">shape</span>
+<span class="n">users_similarity_df</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+<p><img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/6.jpg" alt="Wyniki" /></p>
+
+<p>Otrzymaliśmy macierz userId x userId z wyliczonymi wartościami podobieństwa między każdym użytkownikiem. Możemy też z niej zauważyć, że użytkownicy są najbardziej podobni do… samych siebie (wartość 1 po przekątnej macierzy). Do dalszych obliczeń wypełnilibyśmy przekątną macierzy zerami, aby nie zakłamywać wyników. Tak to wygląda krok po kroku. Tak naprawdę Python ułatwia nam obliczenia jeszcze bardziej, oferując metodę NearestNeighbors z biblioteki sklearn, w której to możemy podać np. wielkość szukanego sąsiedztwa, czy metodę obliczania podobieństwa.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+
+<span class="k">def</span> <span class="nf">find_neighborhood</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+
+    <span class="n">model_knn</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">metric</span> <span class="o">=</span> <span class="s">"correlation"</span><span class="p">,</span> <span class="n">algorithm</span> <span class="o">=</span> <span class="s">"brute"</span><span class="p">)</span>
+    <span class="n">model_knn</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">user_movies</span><span class="p">)</span>
+    <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">model_knn</span><span class="p">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">user_movies</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">user_id</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:].</span><span class="n">values</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">similarities</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">distances</span><span class="p">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s">'{0} most similar users for user with id {1}:</span><span class="se">\n</span><span class="s">'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">())):</span>
+        <span class="c1"># pomiń, jeśli ten sam użytkownik
+</span>        <span class="k">if</span> <span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">:</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">'{0}: User {1}, with similarity of {2}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">similarities</span><span class="p">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">similarities</span><span class="p">,</span><span class="n">indices</span>
+</code></pre></div></div>
+<p>Powyższa funkcja posłuży nam do wylistowania sąsiedztwa danego użytkownika. Przyjmuje ona id użytkownika, którego sąsiedztwa szukamy oraz jego rozmiar. Wykorzystując współczynnik korelacji Pearsona, na podstawie naszej pierwszej tabelki z ocenami użytkowników otrzymamy odległości między użytkownikiem „wejściowym” a każdym pozostałym oraz odpowiadające im id userów. Następnie w pętli możemy wylistować sąsiedztwo użytkownika, pomijając przy tym jego samego.
+<img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/7.jpg" alt="Wyniki" />
+Następnym krokiem będzie przywidywanie ocen użytkownika.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="k">def</span> <span class="nf">predict_rate</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">similarities</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">find_neighborhood</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">neighborhood_ratings</span> <span class="o">=</span><span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">())):</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">:</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">neighborhood_ratings</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">user_movies</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span><span class="n">item_id</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">indices</span><span class="p">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#delete weight for input user
+</span>    <span class="n">prediction</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">neighborhood_ratings</span> <span class="o">*</span> <span class="n">weights</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">weights</span><span class="p">.</span><span class="nb">sum</span><span class="p">())</span>
+
+    <span class="k">print</span> <span class="s">'</span><span class="se">\n</span><span class="s">Predicted rating for user {0} -&gt; item {1}: {2}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="n">item_id</span><span class="p">,</span><span class="n">prediction</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Za pomocą funkcji find_neighborhood znajdziemy dla niego sąsiedztwo n użytkowników, którzy ocenili film, którego ocenę będziemy przewidywać. Z taką wiedzą, w pętli tworzymy listę ocen danego filmu przez podobnych mu użytkowników. Jak teraz obliczyć prawdopodobną ocenę? Najprostszym z rozwiązań jest policzenie średniej ocen całego sąsiedztwa użytkownika dla tego filmu i zaprezentować to jako nasze przewidywanie. Niestety to rozwiązanie ignoruje wartość podobieństwa między użytkownikami, więc lepszym podejściem policzenie średniej ważonej. Jako wagi przyjmiemy „odległości” między użytkownikami, które zwróciła nam funkcja w zmiennej indices. Otrzymując spodziewany oceny użytkowników dla danych filmów, możemy zarekomendować mu listę filmów, które będą bliskie jego upodobaniom.
+<img src="/assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/8.jpg" alt="Wyniki" /></p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Powyższy przykład implementacji jest oczywiście bardzo podstawowym. Duże portale korzystają raczej z hybrydowych rozwiązań, próbując jak najbardziej trafnie oszacować nasze upodobania. Ich metody rekomendacji bazują na tak dużych danych i są tak czasochłonne, że rekomendacje nie są obliczane na bieżąco, po każdej ocenie użytkownika, czy po każdym zakupie, a są uaktualniane raz na kilka dni.</p>
+:ET
