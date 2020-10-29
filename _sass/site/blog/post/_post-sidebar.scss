@@ -38,7 +38,7 @@
   }
 }
 
-.consdata-tech-ad {
+.ad-container {
   @include flex-container;
   flex-direction: column;
   align-items: center;
@@ -47,14 +47,14 @@
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.signup-icons-container {
+.ad-icons-container {
   @include flex-container;
   justify-content: center;
   align-items: center;
   max-height: 66px;
 }
 
-.signup-link-icon {
+.ad-link-icon {
   &:hover {
     opacity: 0.85;
   }
@@ -62,7 +62,7 @@
   transition: 0.3s all ease;
 }
 
-.signup-modal-title {
+.ad-titile {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
@@ -71,7 +71,7 @@
   line-height: 1.2em;
 }
 
-.signup-modal-red-text {
+.ad-red-text {
   color: $color-logo-red-dark;
   font-weight: bold;
   font-size: 1.1em;
@@ -79,7 +79,7 @@
   margin-bottom: $small-padding;
 }
 
-.event-title {
+.ad-event-title {
   color: $color-dark-gray;
   font-size: 1.2em;
   font-weight: bold;
