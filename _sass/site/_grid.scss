@@ -24,11 +24,6 @@
   flex: 31%;
 }
 
-.col-10 {
-  @include flex-container;
-  flex: 66%;
-}
-
 .col-15 {
   @include flex-container;
   flex: 1 0 calc(60% - 25px);

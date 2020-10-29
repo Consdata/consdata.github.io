@@ -2,6 +2,7 @@
   display: block;
   letter-spacing: $general-letter-spacing;
   font-size: 1.2em;
+  border-top: $separator-border;
   @include tablet-and-desktop {
     display: none;
   }
