@@ -38,7 +38,7 @@ Pomóc może nam w tym również przetestowanie platformy, wdrożenie PoC oraz e
 
 **Rozważyć należy między innymi:**
 
-- porównanie wydajności i możliwości aktualnej bazy danych z usługami bazodanowymi w chmurze (np. [Cloud SQL, Cloud Firestore](https://cloud.google.com/products/databases)),
+- porównanie wydajności i możliwości aktualnej bazy danych z usługami bazodanowymi w chmurze (np. [Cloud SQL, Cloud Firestore, Cloud Spanner](https://cloud.google.com/products/databases)),
 - przetestowanie opóźnień sieciowych,
 - zastąpienie mechanizmów logowania oraz monitorowania aplikacji przez dedykowane usługi (np. [Operations/Stackdriver](https://cloud.google.com/products/operations)),
 - przetestowanie wydajności funkcji (np. [Cloud Functions](https://cloud.google.com/functions)) oraz ich problemu z tzw. zimnym startem (cold start), który może zdyskwalifikować wykorzystanie ich w systemie docelowym,
