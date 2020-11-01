@@ -49,7 +49,7 @@ Powinniśmy również ustalić kolejność migrowanych elementów, zaczynając o
 
 **Aplikacje będące dobrymi kandydatami:**
 
-- nie są krytyczne pod względem biznesowym,
+- nie są krytyczne pod względem biznesowym, co zmniejsza ryzyko migracji,
 - mogą być przydatne do zbudowania bazy wiedzy,
 - są wspierane przez zespół developerski, który jest zmotywowany do zdobycia kompetencji w pracy z chmurą,
 - są bezstanowe (stateless), czyli nie przechowują żadnych informacji pomiędzy interakcjami (np. sesji użytkownika) i mają małą liczbę zależności
