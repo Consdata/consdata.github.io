@@ -26,18 +26,19 @@
   font-weight: bold;
 }
 
-.post-content-container {
+.post-content {
   @include flex-container;
   flex-direction: column;
-  width: 100%;
-}
-
-.post-content {
-  display: block;
-  width: 100%;
+  flex: 66%;
+  text-align: justify;
   font-size: $post-font-size;
   line-height: $post-content-line-height;
   letter-spacing: $general-letter-spacing;
+
+  code {
+    font-size: 15px;
+    font-weight: 600;
+  }
 
   p:first-child {
     margin-top: $content-padding;
@@ -61,20 +62,11 @@
   margin-top: $double-content-padding;
 }
 
-.post-image-column {
-  // This is a fix for Safari - without flex-start the image is stretched vertically
-  align-items: flex-start;
-}
-
 .post-highlight-image {
   width: 100%;
   height: auto;
   animation: image-blur 3s;
-}
-
-.post-ending-line {
-  margin: 0;
-  border-bottom: $separator-border;
+  margin-bottom: 30px;
 }
 
 .modal {
@@ -115,6 +107,19 @@
 }
 
 @keyframes zoom {
-  from {transform:scale(0)}
-  to {transform:scale(1)}
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
+}
+
+.post-content-container {
+  @include flex-container;
+}
+
+.post-content-left-pane {
+  @include flex-container;
+  flex: 66%;
 }

@@ -1,16 +1,28 @@
+.sidebar {
+  position: sticky;
+  height: fit-content;
+  top: 80px;
+  width: 33%;
+  @include mobile {
+    display: none;
+  }
+}
+
 .sidebar-container {
   @include flex-container;
   flex-direction: column;
-  @include desktop {
-    padding-left: $content-padding;
+  box-sizing: border-box;
+  position: sticky;
+  @include tablet-and-desktop {
+    margin-left: $double-content-padding;
   }
 }
 
 .sidebar-title {
   font-weight: bold;
   font-size: 1.4em;
-  border-bottom: $separator-border;
   letter-spacing: $general-letter-spacing;
+  border-bottom: $separator-border;
 }
 
 .sidebar-post {
@@ -19,20 +31,67 @@
   margin-bottom: $content-padding;
 }
 
-.latest-posts-desktop,
-.recommended-posts-desktop {
-  @include mobile {
-    display: none;
-  }
-  @include tablet {
-    display: none;
-  }
-}
-
-.latest-posts-mobile,
-.recommended-posts-mobile {
+.post-post-section-mobile {
   margin-bottom: $content-padding;
   @include desktop {
     display: none;
   }
+}
+
+.ad-container {
+  @include flex-container;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.ad-icons-container {
+  @include flex-container;
+  justify-content: center;
+  align-items: center;
+  max-height: 66px;
+}
+
+.ad-link-icon {
+  &:hover {
+    opacity: 0.85;
+  }
+
+  transition: 0.3s all ease;
+}
+
+.ad-titile {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: $color-dark-gray;
+  margin: $small-padding;
+  line-height: 1.2em;
+}
+
+.ad-red-text {
+  color: $color-logo-red-dark;
+  font-weight: bold;
+  font-size: 1.1em;
+  text-align: center;
+  margin-bottom: $small-padding;
+}
+
+.ad-event-title {
+  color: $color-dark-gray;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: $small-padding;
+}
+
+.event-icon {
+  font-size: 3em;
+  margin: $very-small-padding;
+}
+
+.fa-meetup {
+  color: #ED1C40;
 }

@@ -1,6 +1,7 @@
 .author-bio {
   display: none;
   letter-spacing: $general-letter-spacing;
+  border-top: $separator-border;
   @include tablet-and-desktop {
     @include flex-container;
     align-items: center;
