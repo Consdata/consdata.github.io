@@ -26,7 +26,7 @@ Swoją wiedzę opierać będę na doświadczeniach z chmurą Google ([Google Clo
 
 # Szacowanie
 
-Pierwszym z etapów migracji jest etap szacowania, na którym przeprowadzona zostaje dokładna analiza istniejącego systemu oraz infrastruktury.
+Pierwszym z etapów migracji do chmury jest etap szacowania, na którym przeprowadzona zostaje dokładna analiza istniejącego systemu oraz infrastruktury.
 Podczas szacowania analizujemy wykorzystywane zasoby, zależności pomiędzy elementami systemu oraz wymagania.
 Wybieramy te elementy systemu, które chcemy przenieść do chmury, co pozwoli na obliczenie dokładnych kosztów utrzymania infrastruktury.
 W przypadku kiedy przenosimy maszyny wirtualne, szacujemy zasoby, które są nam potrzebne, aby określić np. typ maszyn [Compute Engine](https://cloud.google.com/compute) oraz ich parametry.
@@ -74,7 +74,7 @@ W wyniku takiej analizy może okazać się, że niektóre elementy nie mogą zos
 
 # Planowanie
 
-Drugim z etapów migracji jest etap planowania, na którym powstaje podstawowa infrastruktura w chmurze oraz planowane jest przeniesienie systemu.
+Drugim z etapów migracji do chmury jest etap planowania, na którym powstaje podstawowa infrastruktura w chmurze oraz planowane jest przeniesienie systemu.
 Planowanie obejmuje takie elementy jak zarządzanie tożsamością, struktura i organizacja projektu w GCP, infrastruktura sieci oraz komunikacja pomiędzy elementami systemu.
 Wybrana zostaje również strategia migracji, co zostało opisane w dalszej części.
 
@@ -179,7 +179,7 @@ Taka zmiana pozwoli wykorzystać natywne rozwiązania chmury, które zapewnią s
 
 # Wdrażanie
 
-Trzecim z etapów migracji jest etap wdrażania, na którym projektujemy, implementuje oraz wdrażamy system docelowy w chmurze.
+Trzecim z etapów migracji do chmury jest etap wdrażania, na którym projektujemy, implementuje oraz wdrażamy system docelowy w chmurze.
 Część elementów systemu może zostać przeniesiona bez większych zmian, inne zaś wymagać mogą gruntownej refaktoryzacji lub zastąpienia innym rozwiązaniem (np. usługami SaaS).
 Niezbędne są również takie elementy jak CI/CD, czyli proces budowania i wdrażania aplikacji (wykorzystujący na przykład [Terraform](https://www.terraform.io/) oraz usługę [Cloud Build](https://cloud.google.com/cloud-build)). Konieczne może okazać się również dopracowanie infrastruktury w chmurze, aby sprostać wymaganiom systemu.
 
@@ -199,11 +199,11 @@ który umożliwi wdrożenie nie tylko w chmurze Google.
 
 W przypadku migracji maszyn wirtualnych (VMware vSphere, Amazon AWS, Microsoft Azure) do GCP, możemy skorzystać z narzędzia [Migrate for Compute Engine](https://cloud.google.com/migrate/compute-engine), które zautomatyzuje ten proces.
 
-Efektem etapu wdrażania jest gotowy i działający system w architekturze chmurowej. Skonfigurowane są takie elementy, jak sieć, uprawnienia, skalowanie czy monitoring aplikacji.
+Efektem etapu wdrażania jest gotowy i działający system w architekturze chmurowej. Skonfigurowane są takie elementy jak sieć, uprawnienia, skalowanie czy monitoring aplikacji.
 
 # Optymalizacja
 
-Ostatnim i trzecim z etapów migracji jest etap optymalizacji, na którym monitoruje się działający system w celu optymalizacji jego działania.
+Ostatnim i czwartym z etapów migracji do chmury jest etap optymalizacji, na którym monitoruje się działający system w celu optymalizacji jego działania.
 Podczas optymalizacji wykonujemy testy wydajnościowe, które możemy porównać z testami systemu źródłowego oraz konfigurujemy wykorzystywane usługi i zasoby tak, aby system działał stabilnie, bezawaryjnie oraz wydajnie.
 
 Optymalizacja aplikacji w chmurze może być również efektem zmian usług platformy chmurowej - na przykład nowym API, nowymi funkcjami lub nowymi usługami.
