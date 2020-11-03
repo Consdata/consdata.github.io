@@ -218,7 +218,7 @@ zostaje automatyczne skalowanie.
 Przydatne mogą okazać się narzędzia z grupy [Operations/Stackdriver](https://cloud.google.com/products/operations), a także narzędzia i usługi przydatne w automatyzacji infrastruktury i procesu CI/CD (np. [Terraform](https://www.terraform.io/) i [Cloud Build](https://cloud.google.com/cloud-build)).
 
 Proces optymalizacji nie ma swojego końca, ponieważ działający system może wymagać okresowych zmian w konfiguracji, aby sprostać nowym wymaganiom i obciążeniu generowanemu przez
-użytkowników. Stale analizować powinniśmy miesięczne koszty utrzymania, trendy i produkty, które są wykorzystywane najczęściej.
+użytkowników. Powinniśmy stale analizować miesięczne koszty utrzymania, trendy i produkty, które są wykorzystywane najczęściej.
 Dzięki temu można zmniejszać koszty, na przykład podpisując umowy na korzystanie z [Compute Engine](https://cloud.google.com/compute) ([committed use discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts)), czy zmieniając model płatności za usługę BigQuery na [flat-rate](https://cloud.google.com/bigquery/pricing#flat_rate_pricing).
 
 # Migracja do chmury - podsumowanie
