@@ -2,7 +2,7 @@
 layout:    post
 title:     Testy e2e z Cypress
 published: true
-date:      2020-11-19 08:00:00 +0100
+date:      2020-11-12 08:00:00 +0100
 author:    amarszalek
 image:     /assets/img/posts/2020-11-19-testy-e2e-cypress/e2e-cypress.jpg
 tags:
@@ -16,7 +16,6 @@ Na rynku testów e2e, czyli takich, które sprawdzają funkcjonalność od pocz�
 Dziś na warsztat wezmę dość młody framework - Cypress, który może okazać się kuszącą alternatywą dla wcześniej wspomnianego narzędzia.
 
 # Kilka słów o Cypressie
-
 Należy zacząć od tego, że Cypress nie jest nakładką na Selenium - jest to całkowicie niezależny byt, w całości bazowany na JavaScripcie.
 Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześniej styczności z narzędziami służącymi do pisania testów jednostkowych: Chai oraz Mocha, to będzie czuł się z domu - Cypress zaadoptował i rozszerzył je na swoje potrzeby. Dzięki temu właściwie od pierwszej chwili jesteśmy wyposażeni we wszystko potrzebne do sprawnego tworzenia kodu.
 
@@ -32,9 +31,7 @@ Kolejną z rzeczy wartych wspomnienia jest łatwość użycia i konfiguracji - j
 </div>
 
 # Rozpoczynanie pracy
-
 W kwestii wymagań, Cypress nie potrzebuje wiele: wystarczy node.js oraz ulubione IDE.
- 
 Aby umożliwić rozpoczęcie pracy, wystarczy wykonać następujące polecenia w katalogu projektu:
 1. `npm init`, aby stworzyć projekt node'owy
 2. `npm install cypress --save-dev` dla instalacji Cypressa
@@ -50,10 +47,9 @@ Objaśnienia:
 - `plugins` - miejsce do załączania zewnętrznych rozszerzeń dla Cypressa,
 - `support` - tutaj znajdą się np. stałe powtarzające się w wielu scenariuszach czy też nowe, customowe polecenia do globalnego reużycia.
 
-Następnie przy pomocy komendy `npx cypress open` możemy uruchomić dashboard i uruchomić jeden z przykładowych testów.
+Następnie przy pomocy komendy `npx cypress open` możemy uruchomić dashboard i jeden z przykładowych testów.
 
 # Scenariusze testowe
-
 W ramach tego wpisu, na warsztat weźmiemy stronę główną bloga Consdata Tech -  [https://blog.consdata.tech/](blog.consdata.tech) i stworzymy dla niej dwa przypadki testowe.
 
 Pierwszy scenariusz będzie polegał na wejście na stronę, poczekaniu aż się załaduje i zweryfikowaniu kilku elementów, która potwierdzą nam, że portal jest w pełni działający.
@@ -121,7 +117,8 @@ it('search for a specific post', () => {
    });
 ```
 Podobnie jak poprzednio, idąc linijka po linijce jesteśmy w stanie łatwo rozczytać co tu się dzieje, nawet bez pomocy komentarzy.
-Gdy spojrzymy na podgląd w przeglądarce, okaże się, że w DOMie strony jest więcej elementów z klasą `post-title`, a mimo tego test przechodzi poprawnie. Jest to oczekiwane zachowanie - łańcuch komend `get().should()` znajduje wszystkie elementy i sprawdza czy w jakimkolwiek z nich znajduje się podana treść. Gdybyśmy chcieli sprawdzić czy pierwszy element zawiera konkretną wartość, możemy wykorzystać `first()`: 
+
+Gdy zajrzymy do źródła strony w przeglądarce, okaże się, że w DOMie jest więcej elementów z klasą `post-title`, a mimo tego test przechodzi poprawnie. Jest to oczekiwane zachowanie - łańcuch komend `get().should()` znajduje wszystkie elementy i sprawdza czy w jakimkolwiek z nich znajduje się podana treść. Gdybyśmy chcieli sprawdzić czy pierwszy element zawiera konkretną wartość, możemy wykorzystać `first()`: 
 ```javascript
   cy.first('.post-title').should('contain', 'Ansible - jak uporządkować chaos?');
 ```
