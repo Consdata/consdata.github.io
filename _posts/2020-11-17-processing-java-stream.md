@@ -155,7 +155,7 @@ public void parallelStream() {
 Jednostką pomiarową jest liczba operacji na sekundę, czyli innymi słowy, ile razy wywołano daną metodę w ciągu jednej sekundy.
 Jak widać na wykresie dla 1 elementu, pętla okazała się zdecydowanie szybsza niż strumienie. Test 100 elementów pokazał że strumienie powoli doganiają zwykłą pętlę, jednocześnie strumień równoległy okazał się zdecydowanie najwolniejszym rozwiązaniem.
 W kolejnych testach dla 10 000 i 1 000 000 elementów, widzimy siłę przetwarzania równoległego. Dodatkowo warto zauważyć, że dla testu największej kolekcji, przetwarzanie w pętli uzyskało delikatnie słabszy wynik niż w jednowątkowym strumieniu.
-![Java Stream Benchmark](/assets/img/posts/2020-09-01-java-stream-processing/java-stream-benchmark.png)
+![Java Stream Benchmark](/assets/img/posts/2020-11-17-java-stream-processing/java-stream-benchmark.png)
 
 ## Podsumowanie
 Niekiedy złożone warunki filtrowania i przetwarzania kolekcji sprawiają, że kod napisany przy użyciu pętli możeby być mało czytelny.
