@@ -17,9 +17,9 @@ Dziś na warsztat wezmę dość młody framework - Cypress, który może okazać
 
 # Kilka słów o Cypressie
 Należy zacząć od tego, że Cypress nie jest nakładką na Selenium - jest to całkowicie niezależny byt, w całości bazowany na JavaScripcie.
-Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześniej styczności z narzędziami służącymi do pisania testów jednostkowych: Chai oraz Mocha, to będzie czuł się z domu - Cypress zaadoptował i rozszerzył je na swoje potrzeby. Dzięki temu właściwie od pierwszej chwili jesteśmy wyposażeni we wszystko potrzebne do sprawnego tworzenia kodu.
+Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześniej styczności z narzędziami służącymi do pisania testów jednostkowych: Chai oraz Mocha, to będzie czuł się z domu - Cypress zaadoptował i dopasował do swoich potrzeb. Dzięki temu właściwie od pierwszej chwili jesteśmy wyposażenie we wszystko, co jest potrzebne do sprawnego tworzenia kodu.
 
-Wykonywane scenariusze testowe mogą być przez nas podglądane na żywo - są one uruchamiane na wybranej przez nas przeglądarce, może to być Edge, Chrome, Firefox lub wbudowany Electron. Podczas ich wykonywania każdy kolejny krok zapisywany jest pod postacią snapshotów - migawek, do których możemy zajrzeć w każdym momencie i zweryfikować stan aplikacji w danym momencie.
+Wykonywane scenariusze testowe mogą być przez nas podglądane na żywo - są one uruchamiane na wybranej przez nas przeglądarce, może to być Edge, Chrome, Firefox lub wbudowany Electron. Podczas ich wykonywania każdy kolejny krok zapisywany jest pod postacią snapshotów - migawek, do których możemy zajrzeć w każdym momencie i zweryfikować stan aplikacji.
    
 W Cypressie developer nie musi pamiętać aby pisać jawne nad oczekiwanie na zakończenie poleceń (_wait_ w Selenium). Jest to zrobione za nas przez twórców frameworka - wszystko dzieje się automatycznie i kolejne polecenia oraz asercje wykonują się w odpowiednim momencie.   
 
@@ -31,7 +31,7 @@ Kolejną z rzeczy wartych wspomnienia jest łatwość użycia i konfiguracji - j
 </div>
 
 # Rozpoczynanie pracy
-W kwestii wymagań, Cypress nie potrzebuje wiele: wystarczy node.js oraz ulubione IDE.
+W kwestii wymagań, Cypress nie potrzebuje wiele: wystarczy Node.js oraz ulubione IDE.
 Aby umożliwić rozpoczęcie pracy, wystarczy wykonać następujące polecenia w katalogu projektu:
 1. `npm init`, aby stworzyć projekt node'owy
 2. `npm install cypress --save-dev` dla instalacji Cypressa
@@ -54,7 +54,7 @@ W ramach tego wpisu, na warsztat weźmiemy stronę główną bloga Consdata Tech
 
 Pierwszy scenariusz będzie polegał na wejście na stronę, poczekaniu aż się załaduje i zweryfikowaniu kilku elementów, która potwierdzą nam, że portal jest w pełni działający.
 
-Natomiast drugi scenariusz, nieco bardziej rozbudowany, dokona kilku interakcji z blogiem.
+Drugi scenariusz, nieco bardziej rozbudowany, dokona kilku interakcji z blogiem.
 
 # Pierwszy test
 
@@ -84,7 +84,7 @@ cy.visit('https://blog.consdata.tech/').then(() =>{
     cy.get('footer').should('be.visible');
 });
 ```
-Jak widać, napisany kod jest właściwie samoopisujący się. W pierwszej linii odwiedzamy podany adres, następnie, gdy to się zadzieje, szukamy w DOM elementu o klasie `header-logo` i sprawdzamy czy jest widoczny. Operacje powtarzamy dla elementu `footer`. W przeglądarce powinien uświadczyć nas poniższy obrazek:
+Jak widać, napisany kod jest właściwie samoopisujący się. W pierwszej linii odwiedzamy podany adres, następnie, gdy to się zadzieje, szukamy w DOM elementu o klasie `header-logo` i sprawdzamy czy jest widoczny. Operacje powtarzamy dla elementu `footer`. W przeglądarce uświadczy nas poniższy obrazek:
 <div class="img-with-legend">
 <img alt="Dashboard Cypress" src="/assets/img/posts/2020-11-19-testy-e2e-cypress/sukces%20scenariusz%20pierwszy%20cypress.png" />
 <span class="img-legend">Rys. 4. Scenariusz testowy zakończony powodzeniem</span>
@@ -92,7 +92,7 @@ Jak widać, napisany kod jest właściwie samoopisujący się. W pierwszej linii
 
 # Interakcje
 
-Twórcy Cypressa przygotowali nam zestaw metod, które ułatwią nam dokonywani operacji na stronie. W skład tych poleceń wchodzi m.in. `click()`, `type()`, `select()` czy `check()`.
+Twórcy Cypressa przygotowali nam zestaw metod, które ułatwią nam wykonywanie operacji na stronie. W skład tych poleceń wchodzi m.in. `click()`, `type()`, `select()` czy `check()`.
 
 Jeszcze zanim przejdziemy do implementacji drugiego scenariusza, trzeba zauważyć, że każdy z nich będzie zaczynał się od tej samej akcji - otworzenia strony. Możemy wynieść ten kawałek kodu to do metody `beforeEach()`, która jest uruchamiana przed każdym testem:
 ```javascript
@@ -125,7 +125,7 @@ Gdy zajrzymy do źródła strony w przeglądarce, okaże się, że w DOMie jest 
 
 # Podsumowanie
 
-Przystępność Cypressa (szczególnie dla webdeveloperów, z związku z silnym zakorzenieniem w ekosystemie JavaScript) i minimum czasu potrzebnego na przygotowanie działającej konfiguracji, może okazać się kluczowa, aby wiele osób dało szansę automatyzacji testów. Być może również przekona do siebie osoby, które odbiły się od Selenium i dadzą testom E2E jeszcze jedną szansę.
+Przystępność Cypressa (szczególnie dla web developerów, w związku z silnym zakorzenieniem w ekosystemie JavaScript) i minimum czasu potrzebnego na przygotowanie działającej konfiguracji mogą okazać się kluczowe dla osób szukających nietrudnego sposobu na automatyzację testów. Być może będzie to również okazja dla zrażonych do Selenium, by dać testom E2E drugą szansę.
 
 # Źródła
 - <https://docs.cypress.io/>
