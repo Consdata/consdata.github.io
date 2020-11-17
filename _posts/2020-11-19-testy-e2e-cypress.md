@@ -21,7 +21,7 @@ Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześ
 
 Wykonywane scenariusze testowe mogą być przez nas podglądane na żywo - są one uruchamiane na wybranej przez nas przeglądarce, może to być Edge, Chrome, Firefox lub wbudowany Electron. Podczas ich wykonywania każdy kolejny krok zapisywany jest pod postacią snapshotów - migawek, do których możemy zajrzeć w każdym momencie i zweryfikować stan aplikacji.
    
-W Cypressie developer nie musi pamiętać aby pisać jawne nad oczekiwanie na zakończenie poleceń (_wait_ w Selenium). Jest to zrobione za nas przez twórców frameworka - wszystko dzieje się automatycznie i kolejne polecenia oraz asercje wykonują się w odpowiednim momencie.   
+W Cypressie developer nie musi pamiętać aby pisać jawne oczekiwanie na zakończenie poleceń (_wait_ znane z Selenium). Jest to zrobione za nas przez twórców frameworka - wszystko dzieje się automatycznie i kolejne polecenia oraz asercje wykonują się w odpowiednim momencie.   
 
 Kolejną z rzeczy wartych wspomnienia jest łatwość użycia i konfiguracji - jedno polecenie instaluje framework, a kolejne uruchamia dashboard, którym posługiwanie się jest intuicyjne.
 
