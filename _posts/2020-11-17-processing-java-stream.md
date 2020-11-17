@@ -1,10 +1,10 @@
 ---
 layout:    post
 title:     "Java Stream - przetwarzanie elementów"
-date:      2020-09-01 08:00:00 +0100
+date:      2020-11-17 08:00:00 +0100
 published: true
 author:    tdrag
-image:     /assets/img/posts/2020-09-01-java-stream-processing/waterfall-stream.jpg
+image:     /assets/img/posts/2020-11-17-java-stream-processing/waterfall-stream.jpg
 tags:
     - java
     - stream
