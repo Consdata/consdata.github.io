@@ -15,9 +15,9 @@ tags:
 Na rynku testów e2e, czyli takich, które sprawdzają funkcjonalność od początku do końca, symulując zachowanie użytkownika i weryfikując UI, stale dominuje Selenium - narzędzie wielu programistom znane, z historią sięgającą 2004 roku. 
 Dziś na warsztat wezmę dość młody framework - Cypress, który może okazać się kuszącą alternatywą dla wcześniej wspomnianego narzędzia.
 
-# Kilka słów o Cypress
+## Kilka słów o Cypress
 Należy zacząć od tego, że Cypress nie jest nakładką na Selenium - jest to całkowicie niezależny byt, w całości bazowany na JavaScripcie.
-Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześniej styczności z narzędziami służącymi do pisania testów jednostkowych: Chai oraz Mocha, to będzie czuł się jak w domu - Cypress zaadoptował i dopasował do swoich potrzeb. Dzięki temu właściwie od pierwszej chwili jesteśmy wyposażeni we wszystko, co jest potrzebne do sprawnego tworzenia kodu.
+Również pisanie testów odbywa się w tym języku, a jeśli ktoś miał wcześniej styczności z narzędziami takimi jak Chai, czy Mocha, to będzie czuł się jak w domu - Cypress zaadoptował i dopasował wykorzystywane przez nie rozwiązania do swoich potrzeb.
 
 Wykonywane scenariusze testowe mogą być przez nas podglądane na żywo - są one uruchamiane na wybranej przez nas przeglądarce, może to być Edge, Chrome, Firefox lub wbudowany Electron. Podczas ich wykonywania każdy kolejny krok zapisywany jest pod postacią snapshotów - migawek, do których możemy zajrzeć w każdym momencie i zweryfikować stan aplikacji.
    
@@ -30,7 +30,7 @@ Kolejną z rzeczy wartych wspomnienia jest łatwość użycia i konfiguracji —
 <span class="img-legend">Rys. 1. Dashboard Cypress</span>
 </div>
 
-# Rozpoczynanie pracy
+## Rozpoczynanie pracy
 W kwestii wymagań, Cypress nie potrzebuje wiele: wystarczy Node.js oraz ulubione IDE.
 Aby umożliwić rozpoczęcie pracy, wystarczy wykonać następujące polecenia w katalogu projektu:
 1. `npm init`, aby stworzyć projekt node'owy
@@ -49,14 +49,14 @@ Objaśnienia:
 
 Następnie przy pomocy komendy `npx cypress open` uruchamiamy dashboard i jeden z przykładowych testów.
 
-# Scenariusze testowe
+## Scenariusze testowe
 W ramach tego wpisu, na warsztat weźmiemy stronę główną bloga Consdata Tech -  [https://blog.consdata.tech/](blog.consdata.tech) i stworzymy dla niej dwa przypadki testowe.
 
 Pierwszy scenariusz będzie polegał na wejście na stronę, poczekaniu aż się załaduje i zweryfikowaniu kilku elementów, która potwierdzą nam, że portal jest w pełni działający.
 
 Drugi scenariusz, nieco bardziej rozbudowany, dokona kilku interakcji z blogiem.
 
-# Pierwszy test
+## Pierwszy test
 
 W katalogu `integration` tworzymy nowy plik o nazwie `blog.spec.js`, przechodzimy do jego edycji i uzupełniamy go o następującą treść:
 ```javascript
@@ -90,7 +90,7 @@ Jak widać, napisany kod jest właściwie samoopisujący się. W pierwszej linii
 <span class="img-legend">Rys. 4. Scenariusz testowy zakończony powodzeniem</span>
 </div>
 
-# Interakcje
+## Interakcje
 
 Twórcy Cypressa przygotowali zestaw metod, który ułatwi nam wykonywanie operacji na stronie. W skład tych poleceń wchodzi m.in. `click()`, `type()`, `select()` czy `check()`.
 
@@ -123,9 +123,9 @@ Gdy zajrzymy do źródła strony w przeglądarce, okaże się, że w DOMie jest 
   cy.first('.post-title').should('contain', 'Ansible - jak uporządkować chaos?');
 ```
 
-# Podsumowanie
+## Podsumowanie
 
 Przystępność Cypressa (szczególnie dla web developerów, w związku z silnym zakorzenieniem w ekosystemie JavaScript) i minimum czasu potrzebnego na przygotowanie działającej konfiguracji mogą okazać się kluczowe dla osób szukających nietrudnego sposobu na automatyzację testów. Być może będzie to również okazja dla zrażonych do Selenium, by dać testom E2E drugą szansę.
 
-# Źródła
+### Źródła
 - <https://docs.cypress.io/>
