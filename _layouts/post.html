@@ -62,11 +62,10 @@ layout: default
         .then(response => response.json())
         .then(store => {
             function displayResults(results) {
-                const container = document.getElementById("recommended-posts-desktop");
-                const containerMobile = document.getElementById("recommended-posts-mobile");
-                if (results.length) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
                     results
-                        .slice(1, 4)
                         .forEach(result => {
                             const item = store[result.ref];
                             const listElement = document.createElement('li');
@@ -80,6 +79,9 @@ layout: default
                             container.appendChild(listElement);
                             containerMobile.appendChild(listElement.cloneNode(true));
                         });
+                } else {
+                    document.getElementById("recommended-posts-sidebar").style.display = 'none';
+                    document.getElementById("recommended-posts-bottombar").style.display = 'none';
                 }
             }
 
@@ -95,7 +97,7 @@ layout: default
                     });
                 }
             });
-            const results = idx.search(tags);
+            const results = idx.search(tags).slice(1, 4);
             displayResults(results);
         })
 
