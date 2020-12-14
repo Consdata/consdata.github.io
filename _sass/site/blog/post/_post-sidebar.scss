@@ -21,6 +21,7 @@
 .sidebar-title {
   font-weight: bold;
   font-size: 1.4em;
+  margin-bottom: 1em;
   letter-spacing: $general-letter-spacing;
   border-bottom: $separator-border;
 }
@@ -40,6 +41,7 @@
 
 .ad-container {
   @include flex-container;
+  padding: $small-padding;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -69,7 +71,6 @@
   font-weight: bold;
   text-align: center;
   color: $color-dark-gray;
-  margin: $small-padding;
   line-height: 1.2em;
 }
 
