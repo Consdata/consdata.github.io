@@ -1,12 +1,14 @@
 ---
 layout:    post
 title:     "Wprowadzenie do pisania pluginów w intellij"
-date:      2020-08-01 08:00:00 +0100
+date:      2021-01-11 08:00:00 +0100
 published: true
 author:    bradlinski
 image:     
 tags:
     - intellij
+    - ide
+    - plugin
 ---
 
 Intellij IDEA to obecnie jedno z popularnijeszych jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów dostarczana przez samo JetBrains jak i społeczność. W tym artykule przedstawię podstawowe sposoby rozszerzania środowiska. Większoś z zebranych to informacji(poza elementami związanymi Javą) ma zastosowanie do dowolnego IDE ze stajni JestBrains.
