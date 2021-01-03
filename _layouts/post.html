@@ -1,5 +1,6 @@
 ---
 layout: default
+comments: true
 ---
 {% assign post = page %}
 {% assign author = site.authors | where: "short_name", post.author | first %}
@@ -20,63 +21,41 @@ layout: default
                 <div class="col-5"></div>
             </div>
         </header>
-        <div itemprop="articleBody">
-            <div class="row">
-                <div class="col-10 post-image-column">
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
                     <img class="post-highlight-image" src="{{post.image}}"
                          alt="postimage"/>
-                </div>
-                <div class="col-5 latest-posts-desktop">
-                    {% include latest_posts.html %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-10">
-                    <div class="post-content-container">
-                        <div class="social-media-sharing">
-                            {% include share_bar.html %}
-                        </div>
-                        <div class="post-content">
-                            {{ content }}
-                            <div id="myModal" class="modal">
-                                <i id="modal-close" class="fa fa-times close" aria-hidden="true"
-                                   onclick="closeModal()"></i>
-                                <img class="modal-content">
-                            </div>
-                        </div>
+                    <div class="social-media-sharing">
+                        {% include share_bar.html %}
                     </div>
-                </div>
-                <div class="col-5 recommended-posts-desktop">
-                    {% include recommended-posts-desktop.html %}
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    {{ content }}
                 </div>
             </div>
-
-        </div>
-        <div class="row latest-posts-mobile">
-            <div class="col-5">
+            <div class="sidebar">
                 {% include latest_posts.html %}
+                {% include recommended-posts-desktop.html %}
+                {% include consdata-tech-ad.html %}
             </div>
         </div>
-        <div class="row recommended-posts-mobile">
-            <div class="col-5">
-                {% include recommended-posts-mobile.html %}
-            </div>
+        <div class="post-post-section-mobile">
+            {% include latest_posts.html %}
         </div>
-        <div class="row post-ending-line">
+        <div class="post-post-section-mobile">
+            {% include recommended-posts-mobile.html %}
         </div>
-        <div class="row">
-            <div class="col-15">
-                {% include author_bio.html %}
-            </div>
+        <div class="post-post-section-mobile">
+            {% include consdata-tech-ad.html %}
         </div>
-        <div class="row">
-            <div class="col-15">
-                {%- if site.disqus.shortname -%}
-                {%- include disqus_comments.html -%}
-                {%- endif -%}
-                <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
-            </div>
-        </div>
+        {% include author_bio.html %}
+        {%- if site.disqus.shortname -%}
+        {%- include disqus_comments.html -%}
+        {%- endif -%}
     </article>
 </div>
 <script>
@@ -84,11 +63,10 @@ layout: default
         .then(response => response.json())
         .then(store => {
             function displayResults(results) {
-                const container = document.getElementById("recommended-posts-desktop");
-                const containerMobile = document.getElementById("recommended-posts-mobile");
-                if (results.length) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
                     results
-                        .slice(1, 6)
                         .forEach(result => {
                             const item = store[result.ref];
                             const listElement = document.createElement('li');
@@ -102,6 +80,9 @@ layout: default
                             container.appendChild(listElement);
                             containerMobile.appendChild(listElement.cloneNode(true));
                         });
+                } else {
+                    document.getElementById("recommended-posts-sidebar").style.display = 'none';
+                    document.getElementById("recommended-posts-bottombar").style.display = 'none';
                 }
             }
 
@@ -117,7 +98,7 @@ layout: default
                     });
                 }
             });
-            const results = idx.search(tags);
+            const results = idx.search(tags).slice(1, 4);
             displayResults(results);
         })
 

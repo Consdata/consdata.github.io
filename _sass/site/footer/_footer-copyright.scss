@@ -1,0 +1,12 @@
+.copyright {
+  @include flex-container;
+  background-color: $color-blackcurrant;
+  color: $color-stormgray;
+  width: 100%;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}

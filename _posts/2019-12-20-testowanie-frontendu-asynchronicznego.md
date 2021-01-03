@@ -4,7 +4,7 @@ title:     Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego as
 published: true
 date:      2019-12-19 08:00:00 +0100
 author:    amarszalek
-image:     /assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/testowanie-frontendu-asynch.png
+image:     /assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/testowanie-frontendu-asynch.jpg
 tags:
     - Jasmine
     - Angular

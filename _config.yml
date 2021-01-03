@@ -3,10 +3,7 @@ title: Consdata - blog techniczny
 baseurl: ""
 url: "https://blog.consdata.tech"
 
-google_analytics: UA-28387432-4
-
-paginate: 5
-paginate_path: "/blog/page:num/"
+google_analytics: UA-28387432-1
 
 sass:
   sass_dir: _sass
@@ -32,4 +29,3 @@ plugins:
   - jekyll-feed
   - jekyll-autoprefixer
   - jekyll-seo-tag
-  - jekyll-paginate

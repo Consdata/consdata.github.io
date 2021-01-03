@@ -1,24 +1,46 @@
 .social-buttons {
   @include flex-container;
-  $social-button-size: $mobile-footer-item-height;
-  justify-content: center;
-  align-items: center;
+  $social-button-size: 36px;
+
+  @include desktop {
+    margin-right: 2*$small-padding;
+  }
+
+  .social-buttons-container {
+    @include flex-container;
+    flex-direction: row;
+    margin-top: 20px;
+  }
 
   .social-btn {
+    @include flex-container;
+    align-items: center;
+    justify-content: center;
+
+
     width: $social-button-size;
     height: $social-button-size;
     border-radius: 50%;
-    background: $color-social-buttons;
-    display: inline-block;
-    color: $color-white;
+    border: 2px $color-stormgray solid;
+    color: $color-stormgray;
     line-height: 46px;
     text-align: center;
     font-size: 24px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 10px;
+
+    .fa {
+      font-size: 24px;
+      &.fa-linkedin {
+        margin-left: 2px;
+      }
+      &.fa-youtube {
+        margin-left: 2px;
+      }
+    }
 
     &:hover {
-      background-color: $color-logo-red;
+      color: $color-white;
+      border-color: $color-white;
     }
   }
 }

@@ -4,23 +4,31 @@ nav {
   @import "header-brand";
   @import "header-feed-subscribe";
 
+  div {
+    line-height: 1;
+  }
+
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: $color-russian-black;
   height: $navbar-height-mobile;
   z-index: $header-z-index;
+  box-shadow: 0 0 5px $color-gray-80;
+  background-color: $color-white;
 
   @include tablet-and-desktop {
     height: $navbar-height-desktop;
-    background-color: $color-transparent-black;
-    .header {
-      @include flex-container;
-      align-items: center;
+  }
+
+  .header {
+    @include flex-container;
+    align-items: center;
+    height: $navbar-height-mobile;
+    @include tablet-and-desktop {
       height: $navbar-height-desktop;
-      justify-content: space-between;
-      width: 100%;
     }
+    justify-content: space-between;
+    width: 100%;
   }
 
   .container {
@@ -32,12 +40,6 @@ nav {
     }
   }
 
-  .header-logo {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s linear 0s, opacity 300ms;
-  }
-
   .logo-invisible {
     visibility: hidden;
     opacity: 0;
@@ -45,9 +47,7 @@ nav {
   }
 
   .mobile-search {
-    @include tablet-and-desktop {
-      display: none;
-    }
+    display: none;
   }
 
 }
