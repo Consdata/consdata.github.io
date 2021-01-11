@@ -19,7 +19,7 @@ W platformie mamy do dyspozycji trzy podstawowe metody rozszerzenia IDE:
 - listeners - pozwalają nasłuchiwać na eventy generowane przez platformę lub inne pluginy,
 - extension points - interfejsy pozwalające na rozszerzenie konkretnych elementów platformy lub innych pluginów.
 
-Więcej informacji o tym, co i jak działa, możecie znaleźć w dokumentacji IDE. Ja natomiast przedstawię ujęcie praktyczne, w ramach którego stworzymy prosty plugin dla IntelliJ, który wykorzysta wszystkie opisane wyżej metody. Przykładowy plugin, na podstawie adnotacji, wygeneruje plik tekstowy z prostą dokumentacją dla klas Javy(do tego wykorzystane zostaną akcje i listenery) oraz pozwoli na wyświetlenie tej dokumentacji w ramach `Quick Documentation` (Extension point). Mając klasę:
+Więcej informacji o tym, co i jak działa, możecie znaleźć w dokumentacji IDE. Ja natomiast przedstawię ujęcie praktyczne, w ramach którego stworzymy prosty plugin dla IntelliJ, który wykorzysta wszystkie opisane wyżej metody. Przykładowy plugin, na podstawie adnotacji, wygeneruje plik tekstowy z prostą dokumentacją dla klas Javy (do tego wykorzystane zostaną akcje i listenery) oraz pozwoli na wyświetlenie tej dokumentacji w ramach `Quick Documentation` (Extension point). Mając klasę:
 
 ```java
 @Doc("To jest testowa klasa")
@@ -45,7 +45,7 @@ fieldWithExtraInfo: To jest testowe pole z dodatkowym opisem ze stałe
 Na githubie znajduje się [repozytorium z pluginem](https://github.com/m87/article-app) oraz [repozytorium z testową aplikacją](https://github.com/m87/article-test-app)
 
 ## Baza pluginu
-Przygodę z własnym pluginem rozpoczynamy od stworzenia nowego projektu typu `Intellij Platform Plugin`. Wygenerowana zostanie domyślna struktura katalogów oraz plik XML z manifestem (META-INF/plugin.xml). Zawiera on podstawowe informacje o pluginie tj. jego uniklany identyfikator, opis, dane autora itd. W tym pliku definiujemy również zależność pluginu, w naszym przypadku będą takie trzy:
+Przygodę z własnym pluginem rozpoczynamy od stworzenia nowego projektu typu `Intellij Platform Plugin`. Wygenerowana zostanie domyślna struktura katalogów oraz plik XML z manifestem (META-INF/plugin.xml). Zawiera on podstawowe informacje o pluginie tj. jego unikalny identyfikator, opis, dane autora itd. W tym pliku definiujemy również zależność pluginu, w naszym przypadku będą takie trzy:
 
 ```xml
 <depends>com.intellij.modules.platform</depends>
@@ -57,7 +57,7 @@ Przygodę z własnym pluginem rozpoczynamy od stworzenia nowego projektu typu `I
 - `*.java` - zawiera elementy ułatwiające prace z plikami Javy;
 
 ## Akcje
-Mając już gotowy projekt bazowy możemy przejść do implementacja akcji. Dodamy element do menu kontekstowego edytora oraz drzewa projektu - przycisk 'Generuj'. Na razie będzie wyświetlał tylko popup z informacją.
+Mając już gotowy projekt bazowy możemy przejść do implementacji akcji czyli dodamy element do menu kontekstowego edytora i do drzewa projektu - przycisk 'Generuj'. Na razie będzie wyświetlał tylko popup z informacją.
 Każda akcja w platformie musi rozszerzać abstrakcyjną klasę AnAction i implementować metodę actionPerformed. Tworzymy zatem naszą akcję, którą nazwiemy DocAction.
 Na razie implementacja actionPerformed sprowadzać będzie się do wyświetlenia okna dialogowego. Do tego celu wykorzystamy gotowego helpera w platformie - Messages:
 
@@ -81,8 +81,8 @@ Na koniec musimy jeszcze powiązać naszą akcję z jakimś elementem IDE, któ
         </action>
     </actions>
 ```
-Atrybut `id` to unikalny identyfikator naszej akcji (zwykle `Fully qualified name` klasy), w atrybucie `class` wskazujemy implementację akcji. W atrybucie `text` określamy tekst przycisku w menu. Wewnatrz węzła akcji definiujemy, do której grupy akcji chcemy ją 'przypiąć'. W naszym przypadku jest to `EditorPopupMenu` - menu kontekstowe edytora oraz `ProjectViewPopupMenu` - menu kontekstowe drzewa projektu. 
-Po uruchomieniu projektu i klknięciu prawym przyciskiem myszny na edytor pliku w menu kontekstowym pokaże nam się opcja 'Generuj'
+Atrybut `id` to unikalny identyfikator naszej akcji (zwykle `Fully qualified name` klasy), w atrybucie `class` wskazujemy implementację akcji. W atrybucie `text` określamy tekst przycisku w menu. Wewnątrz węzła akcji definiujemy, do której grupy akcji chcemy ją 'przypiąć'. W naszym przypadku jest to `EditorPopupMenu` - menu kontekstowe edytora oraz `ProjectViewPopupMenu` - menu kontekstowe drzewa projektu. 
+Po uruchomieniu projektu i klknięciu prawym przyciskiem myszy na edytor pliku w menu kontekstowym pokaże nam się opcja 'Generuj'
 
 ![menu](/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/menu.png)
 
@@ -208,7 +208,7 @@ Podobnie jak w innych systemach, IntelliJ udostępnia gotowe definicje okien dia
 Tym samym zaimplementowaliśmy w pełni działającą akcję naszego pluginu. Teraz przyszedł czas na kolejny element rozszerzający działanie IDE - listenery.
 
 ## Listenery
-Listenery pozwalaja pluginowi reagować na eventy w ramach platformy, emitowane czy to przez IDE, czy przez inne pluginy. W przykładzie plugin najpierw wyemituje event po zapisie dokumentacji. Jeśli plugin otrzyma event z szyny, to otworzy plik z dokumentacją w edytorze. Takie przechodzenie pomiędzy plikami jest, co prawda trochę przekombinowane, ale w prosty zposób zaprezentuje działanie całego mechanizmu. 
+Listenery pozwalaja pluginowi reagować na eventy w ramach platformy, emitowane czy to przez IDE, czy przez inne pluginy. W przykładzie plugin najpierw wyemituje event po zapisie dokumentacji. Jeśli plugin otrzyma event z szyny, to otworzy plik z dokumentacją w edytorze. Takie przechodzenie pomiędzy plikami jest, co prawda trochę przekombinowane, ale w prosty sposób zaprezentuje działanie całego mechanizmu. 
 
 W pierwszej kolejności musimy zdefiniować interfejs naszego listenera:
 
@@ -318,8 +318,8 @@ public class DocProvider implements DocumentationProvider, ExternalDocumentation
     }
 }
 ```
-W `fetchExternalDocumentation` generujemy dokumentację dla wskazanej klasy analogicznie jak w akcji, tylko dla jednej klasy. Dodatkowo wzbogacamy dokumentację o znacznik HTML(w oknie `QuickDocumentation` rednerowany jest HTML). W `hasDocumentationFor` decydujemy czy dla danego elementu powinniśmy wygenerować dodatkową dokumentację, podobnie jak w przypadku grupy, gdy decydowaliśmy o jej aktywności.
-Tak zdefiniowany provider możemy teraz zdefiniować w manifeście pluginu jak rozszerzenie dla `documentationProvider`:
+W `fetchExternalDocumentation` generujemy dokumentację dla wskazanej klasy analogicznie jak w akcji, tylko dla jednej klasy. Dodatkowo wzbogacamy dokumentację o znacznik HTML (w oknie `QuickDocumentation` rednerowany jest HTML). W `hasDocumentationFor` decydujemy czy dla danego elementu powinniśmy wygenerować dodatkową dokumentację, podobnie jak w przypadku grupy, gdy decydowaliśmy o jej aktywności.
+Tak zdefiniowany provider możemy teraz zdefiniować w manifeście pluginu jako rozszerzenie dla `documentationProvider`:
 
 
 ```xml
@@ -328,11 +328,11 @@ Tak zdefiniowany provider możemy teraz zdefiniować w manifeście pluginu jak r
     </extensions>
 ```
 
-Po uruchomieniu pluginu, przechodzimy do klasy `UseCase`. Najeżdżamy na typ `TestClass` i wybieramy Ctrl + Q. Po wywołaniu skrótu pojawi się popup z wygnerowaną dokumentacją:
+Po uruchomieniu pluginu, przechodzimy do klasy `UseCase`. Najeżdżamy na typ `TestClass` i wybieramy Ctrl + Q. Po wywołaniu skrótu pojawi się popup z wygenerowaną dokumentacją:
 
 ![message](/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/quickPopup.png)
 
-Po ponownym użyciu skrótu odtworzy się szuflada:
+Po ponownym użyciu skrótu otworzy się szuflada:
 
 ![message](/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/quickDrawer.png)
 
