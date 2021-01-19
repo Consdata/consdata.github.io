@@ -1,0 +1,24 @@
+<link rel="alternate" hreflang="{{post.lang}}" href="{{ site.base-url }}{{ post.url }}"/>
+{% if page.lang-ref %}
+{% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
+{% if posts.size == 0 %}
+{% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
+{% endif %}
+<div class="post-language-options">
+    <p>{{ site.data.translations['languageOptions'][page.lang]}}</p>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <a href="{{ site.base-url }}{{ post.url }}"title="View in {{post.lang}}">
+                <div class="flag {{ post.lang }}">
+                    <div class="overlay">
+                        <p class="lang-code">{{post.lang}}</p>
+                    </div>
+                </div>
+
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

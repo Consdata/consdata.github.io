@@ -1,0 +1,22 @@
+recommendedPosts:
+  en: "Similar posts"
+  pl: "Podobne wpisy"
+newestPosts:
+  en: "Newest posts"
+  pl: "Najnowsze wpisy"
+announcements:
+  en: "Announcements"
+  pl: "Ogłoszenia"
+languageOptions:
+  en: "This post is available in different languages"
+  pl: "Ten post jest dostępny w różnych językach"
+adTitle:
+  en: "Join the webinar <br /> Consdata Tech #5"
+  pl: "Dołącz do webinaru <br /> Consdata Tech #5"
+adDescription:
+  en: "Domain Driven Design <br /> based on Axon Framework"
+  pl: "Domain Driven Design <br /> w oparciu o Axon Framework"
+adDate:
+  en: "Thu, 28 Jan 2021, 6 - 7.30PM"
+  pl: "28.01.2021, czwartek, 18.00-19.30"
+
