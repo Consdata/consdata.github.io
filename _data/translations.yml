@@ -19,4 +19,15 @@ adDescription:
 adDate:
   en: "Thu, 28 Jan 2021, 6 - 7.30PM"
   pl: "28.01.2021, czwartek, 18.00-19.30"
-
+stayInTouch:
+  en: "STAY IN TOUCH"
+  pl: "POZOSTAŃ W KONTAKCIE"
+info:
+  en: "INFORMATION"
+  pl: "INFORMACJE"
+privacyPolicy:
+  en: "PRIVACY POLICY"
+  pl: "POLITYKA PRYWATNOŚCI"
+allPosts:
+  en: "All posts"
+  pl: "Wszystkie wpisy"
