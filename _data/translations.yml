@@ -31,3 +31,6 @@ privacyPolicy:
 allPosts:
   en: "All posts"
   pl: "Wszystkie wpisy"
+newsletterSignUp:
+  en: "Sign up for a tech newsletter"
+  pl: "Zapisz się na newsletter techniczny"
