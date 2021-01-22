@@ -6,6 +6,7 @@ lang:      en
 lang-ref:  keycloak-user-auth
 date:      2020-02-01 08:00:00 +0100
 author:    mhoja
+interpreter: Piotr Żurawski
 image:     /assets/img/posts/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular/Keycloak.png
 tags:
     - angular
@@ -358,7 +359,7 @@ It looks like the public route and API endpoint are working properly.
 
 If you now move to `Protected`, you will be redirected to Keycloak’s login page:
 
-http://localhost:8180/auth/realms/SpringBootAngular/protocol/openid-connect/auth?client_id=SpringBootAngularClient&redirect_uri=http%3A%2F%2Flocalhost%3A9082%2F%23%2F&state=3e007783-4772-48dd-8b31-4bfe3cc9c42c&response_mode=fragment&response_type=code&scope=openid&nonce=023ab545-32dc-4bdc-9cbf-12cad1d0c944
+http://localhost:8180/auth/realms/**SpringBootAngular**/protocol/**openid-connect**/auth?client_id=**SpringBootAngularClient**&redirect_uri=**http%3A%2F%2Flocalhost%3A9082%2F%23%2F**&state=3e007783-4772-48dd-8b31-4bfe3cc9c42c&response_mode=fragment&response_type=code&scope=openid&nonce=023ab545-32dc-4bdc-9cbf-12cad1d0c944
 
 ![Keycloak login](/assets/img/posts/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular/keycloak_login.png)
 

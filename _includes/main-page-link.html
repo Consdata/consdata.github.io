@@ -2,7 +2,11 @@
     <div class="col-15">
         <a href="/" class="main-page-link-container">
             <i class="fa fa-arrow-left"></i>
-            {{ site.data.translations['allPosts'][page.lang] }}
+            {% if page.lang %}
+                {{ site.data.translations['allPosts'][page.lang] }}
+            {% else %}
+                {{ site.data.translations['allPosts']['pl'] }}
+            {% endif %}
         </a>
     </div>
 </div>

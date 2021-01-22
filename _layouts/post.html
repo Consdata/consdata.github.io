@@ -37,6 +37,9 @@ comments: true
                         <img class="modal-content">
                     </div>
                     {{ content }}
+                    {% if post.interpreter %}
+                    {% include translation-details.html %}
+                    {% endif %}
                 </div>
             </div>
             <div class="sidebar">
@@ -77,6 +80,7 @@ comments: true
                             listElement.classList.add('sidebar-post');
                             listElement.classList.add('no-breaking-word');
                             anchor.setAttribute('href', item.url);
+                            anchor.setAttribute('lang', 'pl');
                             anchor.appendChild(postTitle);
                             listElement.appendChild(anchor);
                             container.appendChild(listElement);

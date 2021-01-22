@@ -1,4 +1,3 @@
-<link rel="alternate" hreflang="{{post.lang}}" href="{{ site.base-url }}{{ post.url }}"/>
 {% if page.lang-ref %}
 {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
 {% if posts.size == 0 %}
