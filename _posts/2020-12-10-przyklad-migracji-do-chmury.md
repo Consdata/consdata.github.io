@@ -477,7 +477,7 @@ Monitorowanie logów aplikacji w usłudze Cloud Monitoring pozwoliło na wykryci
 
 Podczas jednego z zapisów, w logach zabrakło informacji o pomyślnym zapisaniu danych w Cloud Firestore, nie było również żadnego błędu. W efekcie, po wykonaniu trzech zapisów, utrwalone zostały jedynie dane z dwóch ostatnich:
 
-```log
+```text
 2020-08-12T18:29:51 g8xx0fyvsqhl Function execution started
 2020-08-12T18:29:51 g8xx0fyvsqhl Save Pub/Sub message in db
 2020-08-12T18:29:51 g8xx0fyvsqhl Function execution took 217 ms, finished with status: 'ok'
@@ -517,7 +517,7 @@ exports.main = (event, context) => {
 
 Na etapie optymalizacji można również wykonywać zmiany, które są wynikiem dalszego zdobywania wiedzy po wdrożeniu lub pojawiania się nowych możliwości w Google Cloud. Jednym z nich jest na przykład możliwość utworzenia konfiguracji strony www w Cloud Storage.
 
-W dokumentacji usługi Cloud Storage można znaleźć informację o tym, że w przypadku nadania bucketowi nazwy będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www. Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny. Tak konfigurując Cloud Storage z domeną, nie ma potrzeby wykorzystywania **HTTP/S Load Balancera**, aby aplikacja internetowa wyświetlała się poprawnie po wejściu na adres www. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia między użytkownikiem a aplikacją internetową jest złą praktyką.
+W dokumentacji usługi Cloud Storage można znaleźć informację o tym, że w przypadku nadania bucketowi nazwy będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www. Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny [(pod tym adresem)](https://console.cloud.google.com/apis/credentials/domainverification). Tak konfigurując Cloud Storage z domeną, nie ma potrzeby wykorzystywania **HTTP/S Load Balancera**, aby aplikacja internetowa wyświetlała się poprawnie po wejściu na adres www. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia między użytkownikiem a aplikacją internetową jest złą praktyką.
 
 Zmiana ta została wykonana w przykładowym systemie, w celu zaprezentowania takiej możliwości. W tym celu, w konfiguracji domeny zamiast podawać adres IP w rekordzie typu **A**, należało podać adres **c.storage.googleapis.com** w rekordzie typu **CNAME**.
 
