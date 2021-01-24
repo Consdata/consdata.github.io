@@ -9,13 +9,12 @@ tags:
     - cloud
     - serverless
     - gcp
-    - aws
-    - azure
     - googlecloud
+    - cloud migration
+    - google cloud platform
 ---
 
-W poprzednim wpisie pt.  
-["Migracja do chmury - czyli od czego zacząć?"]({% post_url 2020-11-03-proces-migracji-do-chmury %})  
+W poprzednim wpisie pt. ["Migracja do chmury - czyli od czego zacząć?"]({% post_url 2020-11-03-proces-migracji-do-chmury %})  
 przedstawiłem etapy procesu migracji aplikacji do chmury, a także opisałem poszczególne strategie migracji.
 
 W tym wpisie chciałbym przedstawić migrację w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich. Tak jak poprzednio, przykład będzie oparty o Google Cloud Platform.
@@ -24,8 +23,8 @@ W tym wpisie chciałbym przedstawić migrację w praktyce. Na warsztat wezmę dz
 
 **Kody źródłowe apliakcji demo są dostępne na GitHubie:**
 
-- [aplikacja źródłowa (przed migracją)](https://github.com/Michuu93/TODO)
-- [aplikacja docelowa (po migracji)](https://github.com/Michuu93/TODO)
+- [aplikacja źródłowa (przed migracją)](https://github.com/Michuu93/before-migrate-to-google-cloud-app)
+- [aplikacja docelowa (po migracji)](https://github.com/Michuu93/after-migrate-to-google-cloud-app)
 
 Dla przypomnienia, 4 etapy procesu migracji opisane w poprzednim wpisie:
 ![Etapy migracji do chmury](/assets/img/posts/2020-12-10-przyklad-migracji-do-chmury/etapy_migracji.jpg)
@@ -109,7 +108,7 @@ Ponieważ złożoność systemu źródłowego jest niewielka i chciałbym w tym 
 - **kolejka RabbitMQ** zostanie zastąpiona całkowicie przez usługą Cloud Pub/Sub,
 - **baza danych MongoDB** zostanie zastąpiona całkowicie przez odpowiadającą jej usługą Cloud Firestore, która również jest bazą nierelacyjną, przechowującą dane w formie dokumentów JSON.
 
-W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, zaimplementowany zostanie mechanizm uwierzytelniania wykorzystujący [Google Sign-In](https://developers.google.com/identity). W tym celu zostanie skonfigurowany przykładowy użytkownik, który posiadać będzie uprawnienia do korzystania z aplikacji.
+W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, zaimplementowany zostanie mechanizm uwierzytelniania wykorzystujący [Google Sign-In](https://developers.google.com/identity). W tym celu musimy stworzyć **OAuth client ID** [(pod tym adresem)](https://console.developers.google.com/apis/credentials) i skonfigurować w **Cloud IAM** przykładowego użytkownika, który posiadać będzie uprawnienia do korzystania z aplikacji.
 
 Dzięki zastosowaniu Cloud Functions, zoptymalizowany zostanie koszt utrzymania systemu. Funkcje generują koszt wyłącznie kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku braku ruchu lub bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.
 
@@ -125,7 +124,7 @@ Wszystkie elementy będą wdrażane ręcznie, za pomocą [Cloud CLI](https://clo
 
 ## Aplikacja frontendowa
 
-Migracja aplikacji frontendowej wymaga drobnych zmian. Po pierwsze, zaimplementować musimy uwierzytelnianie wykorzystujące Google Sign-In. Po drugie, główne zmiany zajdą w serwisie odpowiedzialnym za zapis oraz odczyt danych. W systemie źródłowym, wszystko odbywało się przez aplikację backendową. Przykładowy zapis oraz odczyt w aplikacji frontendowej wyglądał następująco:
+Migracja aplikacji frontendowej wymaga drobnych zmian. Po pierwsze, zaimplementować musimy uwierzytelnianie wykorzystujące Google Sign-In, w tym celu w pliku `environment.ts` musimy skonfigurować **Client ID**, który został wcześniej wygenerowany. Po drugie, główne zmiany zajdą w serwisie odpowiedzialnym za zapis oraz odczyt danych. W systemie źródłowym, wszystko odbywało się przez aplikację backendową. Przykładowy zapis oraz odczyt w aplikacji frontendowej wyglądał następująco:
 
 ```typescript
 upsertData(data: Data): Observable<Object> {
@@ -191,9 +190,11 @@ Jednak aplikacja nie będzie działać poprawnie, ponieważ potrzebna do tego je
 Podczas konfiguracji usługi Cloud Load Balancing, jako **backend** musimy skonfigurować bucket zawierający pliki statyczne oraz musimy nadać statyczny adres IP. Dzięki temu aplikacja będzie działać poprawnie pod adresem IP:  
 [http://LOAD_BALANCER_IP/index.html](http://LOAD_BALANCER_IP/index.html)
 
-Do pełni szczęścia potrzebna jest jeszcze domena, która musi zostać skonfigurowana w usłudze Cloud Load Balancing. Google Sign-In, które zostało wykorzystane do uwierzytelniania, wymaga skonfigurowania adresu **Origin** dla wygenerowanego klucza **API Key** (umieszczonego w konfiguracji aplikacji frontendowej), czyli adresu pod którym będzie dostępna aplikacja internetowa. Nie może to być adres IP, ponieważ mimo możliwości wpisania w tym miejscu adresu IP, podczas próby zalogowania się otrzymamy błąd **redirect_uri_mismatch**:  
+Do pełni szczęścia potrzebna jest jeszcze domena, która musi zostać skonfigurowana w usłudze Cloud Load Balancing. Google Sign-In, które zostało wykorzystane do uwierzytelniania, wymaga skonfigurowania adresu **Origin** dla wygenerowanego **Client ID**, czyli adresu, pod którym będzie dostępna aplikacja internetowa. Nie może to być adres IP, ponieważ mimo możliwości wpisania w tym miejscu adresu IP, podczas próby zalogowania się otrzymamy błąd **redirect_uri_mismatch**:  
 **The JavaScript origin in the request, does not match the ones authorized for the OAuth client**,  
 czyli taki sam jak w przypadku braku adresu Origin.
+
+![Okno konfiguracji OAuth 2.0 Client ID](/assets/img/posts/2020-12-10-przyklad-migracji-do-chmury/google_oauth_configuration.png)
 
 ## Kolejka
 
