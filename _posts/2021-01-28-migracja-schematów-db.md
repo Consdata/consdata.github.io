@@ -4,7 +4,7 @@ title:     Migracja schematów DB
 date:      2021-01-28 08:00:00 +0100
 published: false
 author:    jgoszczurny
-image:
+image:     /assets/img/posts/2021-01-28-migracja-schematów-db/bird-migrations.jpg
 tags:
     - migration
     - database
