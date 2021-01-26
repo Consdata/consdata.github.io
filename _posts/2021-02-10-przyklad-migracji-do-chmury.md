@@ -21,7 +21,7 @@ W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w
 
 # Słowem wstępu
 
-**Kody źródłowe apliakcji demo są dostępne na GitHubie:**
+**Kody źródłowe aplikacji demo są dostępne na GitHubie:**
 
 - [aplikacja źródłowa (przed migracją)](https://github.com/Michuu93/before-migrate-to-google-cloud-app)
 - [aplikacja docelowa (po migracji)](https://github.com/Michuu93/after-migrate-to-google-cloud-app)
@@ -40,7 +40,7 @@ Zadaniem aplikacji jest przyjęcie danych od użytkownika za pomocą formularza,
 - **aplikacji frontendowej** - napisanej w języku TypeScript (framework Angular), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja,
 - **aplikacji backendowej** - napisanej w języku Java (framework Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie ich z bazy danych,
 - **kolejki** - opartej o RabbitMQ, której celem jest optymalizacja zapisu,
-- **bazdy danych** - w postaci nierelacyjnej bazy MongoDB, która przechowuje przesłane dane.
+- **bazy danych** - w postaci nierelacyjnej bazy MongoDB, która przechowuje przesłane dane.
 
 Wykorzystałem tutaj kolejkę, aby dane przesyłane przez użytkowników były od razu przyjmowane, a użytkownik otrzymywał potwierdzenie przyjęcia ich przez system. Przetwarzanie danych może być w teorii czasochłonnym procesem, dlatego dzięki wykorzystaniu kolejki, użytkownik nie musi czekać na przetworzenie danych, aby uzyskać odpowiedź.
 
@@ -48,7 +48,7 @@ Dane zdejmowane są z kolejki przez aplikację backendową, następnie przetwarz
 
 Infrastruktura systemu źródłowego może być oparta o maszyny fizyczne, wirtualne, kontenery (Docker, Kubernetes, OpenShift) lub o dowolne inne rozwiązanie. Na potrzeby wpisu wykorzystałem Docker Compose, co ułatwia uruchomienie całej aplikacji lokalnie, jednym poleceniem.
 
-Zakłądając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przechodzimy płynnie do kolejnego etapu.
+Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przechodzimy płynnie do kolejnego etapu.
 
 # Planowanie
 
@@ -67,7 +67,7 @@ Zanim podejmiemy ostateczną decyzją, zastanówmy się jaka będzie architektur
 
 Migracja strategią "Lift and shift" polega na wykorzystaniu maszyn wirtualnych (Compute Engine) na których uruchomione zostaną poszczególne elementy systemu. Wyjątek stanowi aplikacja frontendowa, której pliki statyczne będące wynikiem zbudowania aplikacji, umieszczone zostaną w buckecie (Cloud Storage).
 
-![Architektura aplikacji docelowej - "lift and shift"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/lift_and_shift.png)
+![Architektura aplikacji docelowej - "Lift and shift"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/lift_and_shift.png)
 
 **Plusy:**
 Proces migracji w tym wypadku jest nieskomplikowany, wymaga od nas minimalnej znajomości platformy i zajmie stosunkowo niewiele czasu. W przypadku, gdy infrastruktura źródłowa oparta jest o *VMware vSphere*, chmurę *AWS* lub *Azure*, możemy zautomatyzować cały proces, wykorzystując do tego celu narzędzie [Migrate for Compute Engine](https://cloud.google.com/migrate/compute-engine).
@@ -79,7 +79,7 @@ Nie wykorzystujemy praktycznie wcale potencjału chmury, odpowiedzialność za s
 
 Migracja strategią "Improve and move" polega na zastąpieniu bazy danych oraz kolejki usługami SaaS. Są to elementy, które najłatwiej jest zastąpić, przy jak najmniejszym nakładzie pracy. Bazę danych zastępuje w tym przypadku odpowiadająca jej usługa Cloud Firestore, a kolejkę usługa Cloud Pub/Sub.
 
-![Architektura aplikacji docelowej - "improve and move"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/improve_and_move.png)
+![Architektura aplikacji docelowej - "Improve and move"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/improve_and_move.png)
 
 **Plusy:**
 Eliminujemy problem braku skalowania horyzontalnego bazy danych i kolejki, przesuwając również odpowiedzialność za te elementy na usługodawcę.
@@ -91,24 +91,24 @@ Wymagana jest znajomość wykorzystywanych usług SaaS, a także ingerencja w ko
 
 Migracja strategią "Rip and replace" polega na całkowitym wykorzystaniu natywnych rozwiązań chmury. Oprócz usług SaaS, wykorzystujemy dodatkowo Cloud Functions, dzięki czemu eliminujemy minusy poprzednich dwóch strategii.
 
-![Architektura aplikacji docelowej - "rip and replace"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/rip_and_replace.png)
+![Architektura aplikacji docelowej - "Rip and replace"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/rip_and_replace.png)
 
 **Plusy:**
 Optymalizujemy architekturę systemu, przesuwając granicę odpowiedzialności prawie całkowicie na stronę usługodawcy. Cloud Functions umożliwia wywoływanie funkcji po pojawieniu się wiadomości w usłudze Cloud Pub/Sub, dzięki czemu aplikacja frontendowa może zapisywać dane przyjęte od użytkownika bezpośrednio do kolejki, bez pośrednictwa aplikacji backendowej. Przepisując aplikację backendową na funkcję można zrezygnować również z jej pośrednictwa w odczycie danych z Cloud Firestore, ponieważ usługa ta udostępnia REST API, które umożliwia odczyt danych bezpośrednio przez aplikację frontendową. Dzięki automatycznemu skalowaniu (również do zera), optymalizujemy koszty utrzymania infrastruktury, które w przypadku zerowego ruchu użytkowników można ograniczyć całkowicie do zera (w ramach [GCP Free Tier](https://cloud.google.com/free)).
 
 **Minusy:**
-Wykorzystanie natywnych rozwiązań wymaga od nas bardzo dobrej znajomości platformy, usług oraz komunikacji między nimi. Jak okaże się za chwilę, pojawiają się również nowe problemy, jak na przykład ograniczenia API usług, czy problem zimnego startu funkcji. Migracja z wykorzystaniem strategii "rip and replace" jest również najbardziej czasochłonna, ponieważ wymaga całkowitego przepisania części systemu.
+Wykorzystanie natywnych rozwiązań wymaga od nas bardzo dobrej znajomości platformy, usług oraz komunikacji między nimi. Jak okaże się za chwilę, pojawiają się również nowe problemy, jak na przykład ograniczenia API usług, czy problem zimnego startu funkcji. Migracja z wykorzystaniem strategii "Rip and replace" jest również najbardziej czasochłonna, ponieważ wymaga całkowitego przepisania części systemu.
 
 ## Architektura systemu docelowego
 
-Ponieważ złożoność systemu źródłowego jest niewielka i chciałbym w tym wpisie pokazać jak najwięcej, przeprowadzimy migrację z wykorzystaniem stragerii "rip and replace". Architektura systemu docelowego będzie więc wyglądać następująco:
+Ponieważ złożoność systemu źródłowego jest niewielka i chciałbym w tym wpisie pokazać jak najwięcej, przeprowadzimy migrację z wykorzystaniem strategii "Rip and replace". Architektura systemu docelowego będzie więc wyglądać następująco:
 
 - **aplikacja frontendowa** (pliki statyczne) zostanie umieszczona w Cloud Storage i udostępniona publicznie, wykorzystując [HTTP/S Load Balancer](https://cloud.google.com/load-balancing/docs/https). Alternatywą jest wykorzystanie platformy [Firebase](https://firebase.google.com/), w praktyce jednak, Firebase przechowuje pliki statyczne również w Cloud Storage, przykrywając wszystko własnym interfejsem graficznym,
 - **aplikacja backendowa**, z racji niskiej złożoności, zostanie przepisana całkowicie na Cloud Functions. Utracona zostanie walidacja danych wejściowych, ale dzięki temu użytkownik będzie mógł przesyłać dane do Cloud Pub/Sub bezpośrednio z aplikacji frontendowej. Dane te mogą być walidowane przez funkcję, która pobiera je z Cloud Pub/Sub, przetwarza i utrwala w Firestore. Gdyby walidacja była wymagana przed wrzuceniem danych do Cloud Pub/Sub, to pomiędzy aplikacją frontendową a Cloud Pub/Sub musiałaby znaleźć się dodatkowa funkcja, której zadaniem byłoby przyjęcie lub odrzucenie danych oraz przesłanie ich do Cloud Pub/Sub,
 - **kolejka RabbitMQ** zostanie zastąpiona całkowicie przez usługą Cloud Pub/Sub,
 - **baza danych MongoDB** zostanie zastąpiona całkowicie przez odpowiadającą jej usługą Cloud Firestore, która jest bazą nierelacyjną, przechowującą dane w formie dokumentów JSON.
 
-W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, musimy zaimplementować mechanizm uwierzytelniania (chyba, że nie obawiamy się rachunków od Google). W tym celu wykorzystamy [Google Sign-In](https://developers.google.com/identity). Aby to zrobić, musimy stworzyć **OAuth client ID** [(pod tym adresem)](https://console.developers.google.com/apis/credentials) i skonfigurować w Cloud IAM przykładowego użytkownika, który posiadać będzie uprawnienia do korzystania z aplikacji (może to być nasze główne konto, które posiada rolę właściciela).
+W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, musimy zaimplementować mechanizm uwierzytelniania (chyba, że nie obawiamy się rachunków od Google). W tym celu wykorzystamy [Google Sign-In](https://developers.google.com/identity). Aby to zrobić, musimy w [APIs & Services](https://console.cloud.google.com/apis/credentials) stworzyć credential **OAuth client ID** i skonfigurować w Cloud IAM przykładowego użytkownika, który posiadać będzie uprawnienia do korzystania z aplikacji (może to być nasze główne konto, które posiada rolę właściciela).
 
 Dzięki wykorzystaniu Cloud Functions, zoptymalizujemy koszt utrzymania systemu. Funkcje generują koszt wyłącznie kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku braku ruchu lub bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.
 
@@ -182,20 +182,18 @@ Cała logika odpowiedzialna za przemapowanie żądania/odpowiedzi, która do tej
 
 Aby uruchomić aplikację w chmurze, potrzebny jest bucket w Cloud Storage oraz usługa **HTTP(S) Load Balancer**. Po zbudowaniu aplikacji frontendowej, wygenerowane pliki statyczne (JS oraz CSS) umieszczamy w buckecie.
 
----------------TODO SCREEN PLIKÓW W BUCKECIE
+![Zawartość bucketu serwującego pliki statyczne](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/storage_bucket_files.png)
 
 Musimy pamiętać jeszcze o skonfigurowaniu go w taki sposób, aby pliki były dostępne publicznie. W tym celu, należy dodać w konfiguracji bucketu użytkownika o nazwie **allUsers** oraz nadać mu uprawnienie **Storage Object Viewer**.
 
----------------TODO SCREEN KONFIGURACJI BUCKETU
+![Konfiguracja bucketa publicznego](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/bucket_public_permission.png)
 
 Po umieszczeniu plików w Cloud Storage, będą one dostępne publicznie, np. plik **index.html** będzie dostępny pod adresem:  
 [https://storage.googleapis.com/BUCKET_NAME/index.html](https://storage.googleapis.com/BUCKET_NAME/index.html)
 
 Aplikacja nie będzie jednak działać, ponieważ potrzebna do tego jest jeszcze usługa **Cloud Load Balancing**. Bez niej, po wejściu na podany wyżej adres, zostanie wyświetlona jedynie zawartość pliku **index.html**, a zawarte w nim skrypty JavaScript nie zostaną w żaden sposób zinterpretowane przez przeglądarkę, w efekcie czego wyświetli się jedynie pusta strona.
 
-Podczas konfiguracji usługi Cloud Load Balancing, jako **backend** musimy skonfigurować bucket zawierający pliki statyczne oraz musimy nadać statyczny adres IP.
-
----------------TODO SCREEN KONFIGURACJI LOAD BALANCERA
+Podczas konfiguracji usługi Cloud Load Balancing, jako **backend** musimy skonfigurować bucket zawierający pliki statyczne oraz musimy nadać statyczny adres IP. Dodatkowo możemy wykorzystać usługę [Cloud CDN](https://cloud.google.com/cdn). Więcej na ten temat znajdziemy w dokumentacji: [Setting up a load balancer with backend buckets](https://cloud.google.com/load-balancing/docs/https/ext-load-balancer-backend-buckets).
 
 Dzięki temu, aplikacja będzie działać poprawnie pod adresem IP:  
 [http://LOAD_BALANCER_IP/index.html](http://LOAD_BALANCER_IP/index.html)
@@ -205,6 +203,7 @@ Do pełni szczęścia potrzebna jest jeszcze domena, która musi zostać skonfig
 czyli taki sam jak w przypadku braku adresu Origin.
 
 Po skonfigurowaniu domeny, możemy skonfigurować odpowiednio Client ID:
+
 ![Okno konfiguracji OAuth 2.0 Client ID](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/google_oauth_configuration.png)
 
 ## Kolejka
@@ -418,7 +417,7 @@ Składa się ona z jednej funkcji **main**, której zadaniem jest zdekodowanie w
 
 Funkcja wykorzystuje do komunikacji z usługą Cloud Firestore bibliotekę **@google-cloud/firestore**, a samo wywołanie funkcji wyzwalane jest przez usługę Cloud Pub/Sub, w momencie pojawienia się wiadomości w odpowiednim topicu.
 
-Ilość kodu została drastycznie zmniejszona. Aplikacja backendowa została całkowicie zastąpiona przez funkcję, składającą się z 21 linii kodu JavaScript. Dzięki migracji z wykorzystaniem strategii "rip and replace", udało się znacząco uprościć architekturę i zredukować tzw. boilerplate code, który często występuje w aplikacjach napisanych w języku Java.
+Ilość kodu została drastycznie zmniejszona. Aplikacja backendowa została całkowicie zastąpiona przez funkcję, składającą się z 21 linii kodu JavaScript. Dzięki migracji z wykorzystaniem strategii "Rip and replace", udało się znacząco uprościć architekturę i zredukować tzw. boilerplate code, który często występuje w aplikacjach napisanych w języku Java.
 
 Funkcję możemy wdrożyć z poziomu GUI (Cloud Console), lub za pomocą polecenia:
 
@@ -530,7 +529,7 @@ Na etapie optymalizacji można również wykonywać zmiany, które są wynikiem 
 
 W dokumentacji usługi Cloud Storage można znaleźć informację o tym, że w przypadku nadania bucketowi nazwy, będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu, można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www.
 
----------------TODO SCREEN KONFIGURACJI WWW BUCKETU
+![Konfiguracja www bucketa](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/bucket_website_configuration.png)
 
 Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny [(pod tym adresem)](https://console.cloud.google.com/apis/credentials/domainverification). Konfigurując w ten sposób bucket, nie potrzebujemy **HTTP/S Load Balancera** do działania aplikacji. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia między użytkownikiem a aplikacją internetową, jest złą praktyką.
 
@@ -540,15 +539,27 @@ Więcej informacji znajdziemy tutaj: [Hosting a static website](https://cloud.go
 
 ## Automatyzacja
 
-Innym elementem etapu optymalizacji mogą być usprawnienia w procesie wdrażania aplikacji. Stwórzmy zatem proste CI/CD, wykorzystując do tego celu repozytorium GitHub, usługę Cloud Build oraz infrastrukturę jako kod (IaC), opartą o Terraform. Jako alternatywę dla Terraform moglibyśmy wykorzystać GCP Deployment Manager, ale wtedy uzależnilibyśmy się od chmury Google (vendor lock).
+Innym elementem etapu optymalizacji mogą być usprawnienia w procesie wdrażania aplikacji. Stwórzmy zatem proste CI/CD, wykorzystując do tego celu repozytorium GitHub, usługę Cloud Build oraz infrastrukturę jako kod (IaC), opartą o Terraform. Jako alternatywę dla Terraform moglibyśmy wykorzystać [Cloud Deployment Manager](https://cloud.google.com/deployment-manager), ale wtedy uzależnilibyśmy się od chmury Google (vendor lock).
 
 Przed implementacją, musimy jeszcze:
 
-- utworzyć bucket w usłudze Cloud Storage, który przechowywać będzie stan infrastruktury, wykorzystywany przez Terraform,
-- połączyć repozytorium GitHub, zawierające kody aplikacji, z usługą Cloud Build. W celu integracji, w repozytorium GitHub należy zainstalować aplikację **Google Cloud Build**,
-- w Cloud IAM przydzielić uprawnienia do konta serwisowego, z którego korzysta Cloud Build: **Cloud Build Service Account, Pub/Sub Editor, Storage Admin, Cloud Functions Admin**,
-- w konfiguracji Cloud Build włączyć uprawnienia: **Service Accounts, Cloud Functions**,
-- nadać uprawnienie do zweryfikowanej domeny dla konta serwisowego Cloud Build.
+- utworzyć bucket w usłudze Cloud Storage, który przechowywać będzie stan infrastruktury, wykorzystywany przez Terraform:
+
+![Bucket zawierający stan Terraform](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/terraform_bucket.png)
+
+- połączyć repozytorium GitHub, zawierające kody aplikacji, z usługą Cloud Build. W celu integracji, w repozytorium GitHub należy zainstalować aplikację **Google Cloud Build**, a następnie połączyć repozytorium z usługą Cloud Build:
+
+![Konfiguracja aplikacji Cloud Build w GitHub](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/github_cloud_build_application.png)
+
+![Konfiguracja repozytorium w Cloud Build](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/cloud_build_repository.png)
+
+- w Cloud IAM przydzielić uprawnienia do konta serwisowego, z którego korzysta Cloud Build: **Cloud Build Service Account, Cloud Functions Admin, Cloud Functions Developer, Service Account User, Pub/Sub Editor, Storage Admin**:
+
+![Konfiguracja uprawnień konta serwisowego Cloud Build](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/cloud_build_service_account.png)
+
+- nadać uprawnienie do zweryfikowanej domeny dla konta serwisowego Cloud Build [(pod tym adresem)](https://www.google.com/webmasters/verification/home):
+
+![Konfiguracja dodatkowego właściciela domeny](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/additional_domain_owner.png)
 
 Konfiguracja automatyzująca tworzenie infrastruktury oraz wdrażanie aplikacji składa się z dwóch części:
 
@@ -635,7 +646,7 @@ Składa się ona z jednego kroku, który za pomocą powłoki systemu Linux (sh),
 - konfiguracji budowania i wdrażania aplikacji frontendowej (**frontend/deploy.cloudbuild.yml**),
 - konfiguracji wdrażania funkcji (**function/deploy.cloudbuild.yml**).
 
-### Cache zależności
+### Dependency cache
 
 Kopia podręczna zależności, wykorzystywanych przez aplikację frontendową oraz funkcję, przechowywana jest w przeznaczonym do tego celu buckecie.
 
@@ -861,10 +872,12 @@ Kolejne zmiany kodu infrastruktury będą uruchamiać zadanie w Cloud Build, dzi
 
 Utworzone triggery Cloud Build można również wyzwolić ręcznie, za pomocą Cloud Console. Można tam znaleźć historię wykonywanych zadań oraz logi zawierające ich przebieg.
 
----------------TODO SCREEN TRIGGERÓW CLOUD BUILD
+![Triggery Cloud Build](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/cloud_build_triggers.png)
 
-W przedstawionym rozwiązaniu, kody apliakcji przechowywane są w repozytorium GitHub i zawierają wrażliwe dane (konfigurację w plikach **frontend/src/environments/environment.ts** oraz **infrastructure/terraform.tfvars**). Jeśli chcemy wykorzystać takie rozwiązanie, powinniśmy utworzyć prywatne repozytorium GitHub, w przeciwnym wypadku, nasza konfiguracja wycieknie do sieci. Do przechowywania konfiguracji możemy wykorzystać np. usługę [Cloud Secret Manager](https://cloud.google.com/secret-manager) lub zaimplementować własne rozwiązanie, oparte chociażby o Cloud Storage.
+W przedstawionym rozwiązaniu, kody aplikacji przechowywane są w repozytorium GitHub i zawierają wrażliwe dane (konfigurację w plikach **frontend/src/environments/environment.ts** oraz **infrastructure/terraform.tfvars**). Jeśli chcemy wykorzystać takie rozwiązanie, powinniśmy utworzyć prywatne repozytorium GitHub, w przeciwnym wypadku, nasza konfiguracja wycieknie do sieci. Do przechowywania konfiguracji możemy wykorzystać np. usługę [Cloud Secret Manager](https://cloud.google.com/secret-manager) lub zaimplementować własne rozwiązanie, oparte chociażby o Cloud Storage.
 
 Zaletą IaC, oprócz automatyzacji tworzenia infrastruktury, jest również wersjonowanie. Każda zmiana infrastruktury wiąże się ze zmianą kodu Terraform i może wymagać np. pull requesta, lub napisania testów, sprawdzających poprawność konfiguracji. Dzięki temu, proces wdrażania infrastruktury jest powtarzalny oraz bardziej odporny na błędy, niż ręczne tworzenie zasobów z poziomu GUI, czy konsoli.
 
 # Migracja do chmury - podsumowanie
+
+TODO
