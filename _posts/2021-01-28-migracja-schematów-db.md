@@ -41,8 +41,8 @@ Dodatkowo zmiany wykonane na boku, mogą wpłynąć na późniejsze jego wykonan
   Jest to bardzo ważne, ponieważ inna kolejność uruchomienia migracji może całkowicie zmienić jej sens albo nawet uniemożliwić migrację.
 * Zalecane jest aby każda zmiana była jak najmniejsza i najlepiej możliwa do odwrócenia. 
   Przykładowo tworząc indeksy na istniejących tabelach, najlepiej rozbić ich tworzenie do osobnych wersji, 
-  np. tworząc indeks A który zajmuje 5 minut i drugi B który też zajmuje 5mint, to w idealnym przypadku wszystko będzie ok, ale w przypadku kiedy pojawi się błąd przy tworzeniu indeksu B, wtedy wycofamy również indeks A i ponownie poświęcimy dodatkowe 5minut, 
-  a gdyby były osobno, wtedy cofnięty byłby tylko indeks B. 
+  np. tworząc indeks A który zajmuje 5 minut i drugi B który też zajmuje 5mint, to w idealnym przypadku wszystko przebiegnie poprawnie, ale w przypadku kiedy pojawi się błąd przy tworzeniu indeksu B, wtedy wycofamy również indeks A i ponownie poświęcimy dodatkowe 5minut, 
+  które można byłoby zaoszczędzić gdyby migracja A była wykonana osobno. 
 * Wykonywane zmiany powinny być przyrostowe, czyli zmiana dla danej wersji powinna być uruchomiona tylko raz.
 
 #### Przykładowe biblioteki
@@ -79,22 +79,24 @@ Jeśli baza danych jest ściśle związana jedną z aplikacją, możemy ją uruc
 W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji, lub kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
 
 1. Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji)
-   wykonujemy merge z migracjami do master → Jenkins wykrywa zmianę na repo → Uruchamia migrację na bazie wskazanej w konfiguracji.
-2. Z wykorzystaniem mechanizmów dostarczonych przez platformę na której będzie to uruchamiane
+   wykonujemy merge z migracjami do master → Jenkins wykrywa zmianę na repo i uruchamia migrację na bazie wskazanej w konfiguracji.
+2. Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane
    * w Kubernetes
-     * wykorzystanie initContainers aby odpalić migrację przed uruchomieniem docelowego kontenera z aplikacją (w takim wypadku każda replika odpali migrację, i to mechanizm migracji musi zapewnić lock oraz to że raz wykonana migracja nie wykona się ponownie) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
-     * wykorzystanie do tego celu Jobów, które jednorazowo uruchomią migrację (a w przypadku problemów wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
+     * wykorzystanie initContainers aby odpalić migrację przed uruchomieniem docelowego kontenera z aplikacją (w takim wypadku każda replika odpali migrację, a to mechanizm migracji musi zapewnić lock oraz nie wykonanie ponownie tych samych migracji) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
+     * wykorzystanie do tego celu Jobów, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
      * wykorzystanie dwóch powyższych mechanizmów [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations) ,
-       uruchomienie job-a aby wykonał migrację 
-       wykorzystanie initContainers tak aby czekał na zakończenie migracji .
+       uruchomienie job-a aby wykonał migrację, 
+       oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji.
 
-### Teoria
-#### Kubernetes
- - przykłady ...
+### Teoria - Kubernetes
+* <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/liquibase" title="Example Liquibase migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> Liquibase</a>
+* <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/flyway" title="Example Flyway migration in GitHub project in consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> FlywayDB</a>
+* <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/mybatis-migration" title="Example MyBatis migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> MyBatis Migration</a>
+* <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/migrate-mongo" title="Example Migrate-Mongo migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> Migrate-mongo</a>
 
 ## Bibliografia
-1. https://www.martinfowler.com/articles/evodb.html
-2. https://en.wikipedia.org/wiki/Evolutionary_database_design
-3. https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2
-4. https://kubernetes.io/docs/concepts/workloads/controllers/job/
-5. https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/
+1. [https://www.martinfowler.com/articles/evodb.html](https://www.martinfowler.com/articles/evodb.html)
+2. [https://en.wikipedia.org/wiki/Evolutionary_database_design](https://en.wikipedia.org/wiki/Evolutionary_database_design)
+3. [https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2)
+4. [https://kubernetes.io/docs/concepts/workloads/controllers/job/](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
+5. [https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/)
