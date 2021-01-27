@@ -21,10 +21,10 @@ Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu baz
 Tak jak podczas rozwijania naszej aplikacji, stosujemy wzorce projektowe przy pisaniu kodu, tak w przypadku rozwijania schematów baz danych również powinniśmy stosować się do takich wytycznych, aby rozwijanie bazy danych było przyjemnością, a nie ostatecznością
 
 ## Ewolucyjny projekt bazy danych (eng. Evolutionary Database Design)
-Aby umożliwić proste rozwijanie naszej bazy danych, możemy skorzystać z przetestowanego już zbioru zaleceń [🔗¹](https://www.martinfowler.com/articles/evodb.html) [🔗²](https://en.wikipedia.org/wiki/Evolutionary_database_design) , dzięki którym zmiany będą mniej inwazyjne, a nawet bezprzerwowe (zero downtime deployment).
+Aby umożliwić proste rozwijanie naszej bazy danych, możemy skorzystać z przetestowanego już zbioru zaleceń [🔗¹](https://www.martinfowler.com/articles/evodb.html) [🔗²](https://en.wikipedia.org/wiki/Evolutionary_database_design), dzięki którym zmiany będą mniej inwazyjne, a nawet bezprzerwowe (zero downtime deployment).
 
 ### Przechowywanie zmian w repozytorium kodów
-Pod tym pojęciem nie kryje się tylko trzymanie zmian w repozytorium, ale powinno się trzymać wszystkie zmiany dotyczące tej bazy w jednym miejscu.
+Pod tym pojęciem kryje się nie tylko trzymanie zmian w repozytorium, ale to właśnie w repozytorium powinno się trzymać wszystkie zmiany dotyczące tej bazy w jednym miejscu.
 
 Jeśli kilka projektów korzysta z bazy, to wtedy nadal zmiany powinny być robione tylko na tym jednym głównym (może być nawet osobnym repozytorium).
 
@@ -73,20 +73,20 @@ Przykładowo nowa kolumna powinna mieć domyślną wartość lub przyjmować nul
 Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, tak aby jej prawdziwe usunięcie było wykonane nie w docelowej wersji, tylko np. w następnej iteracji, jak będziemy pewni, że żadna aplikacja z niej nie korzysta.
 
 ## Aplikowanie zmian
-Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych, jest już zależne od konkretnego przypadku.
+Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.
 
 Jeśli baza danych jest ściśle związana jedną z aplikacją, możemy ją uruchamiać bezpośrednio z kodu [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup) .
 
-W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji, lub kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
+W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji schematu lub kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
 
-1. Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji)
-   wykonujemy merge z migracjami do master, Jenkins wykrywa zmianę na repo i uruchamia migrację na bazie wskazanej w konfiguracji.
+1. Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji).
+   Na repozytorium wykonujemy merge z migracjami schematu bazy danych, Jenkins wykrywa zmianę na repozytorium i wykonuje ją na bazie wskazanej w konfiguracji.
 2. Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane,
    * w Kubernetes
-     * wykorzystanie initContainers, aby odpalić migrację przed uruchomieniem docelowego kontenera z aplikacją (w takim wypadku każda replika odpali migrację, a to mechanizm migracji musi zapewnić lock oraz niewykonanie ponownie tych samych migracji) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
+     * wykorzystanie initContainers, celem odpalenia migracji schematu bazy danych przed uruchomieniem docelowego kontenera z aplikacją (w takim wypadku każda replika odpali migrację, a to mechanizm migracji musi zapewnić lock oraz niewykonanie ponownie tych samych migracji) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
      * wykorzystanie do tego celu Jobów, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
      * wykorzystanie dwóch powyższych mechanizmów [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations) ,
-       uruchomienie job-a, aby wykonał migrację, oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji.
+       uruchomienie job-a, aby wykonał migrację schematu bazy danych, oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji.
 
 ### Teoria - Kubernetes
 * <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/liquibase" title="Example Liquibase migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> Liquibase</a>
