@@ -20,7 +20,7 @@ Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu baz
 
 Tak jak podczas rozwijania naszej aplikacji, stosujemy wzorce projektowe przy pisaniu kodu, tak w przypadku rozwijania schematów baz danych również powinniśmy stosować się do takich wytycznych, aby rozwijanie bazy danych było przyjemnością, a nie ostatecznością
 
-## Ewolucyjny projekt bazy danych (eng. Evolutionary Database Design)
+## Migracja schematu, czyli ewolucyjny projekt bazy danych (eng. Evolutionary Database Design)
 Aby umożliwić proste rozwijanie naszej bazy danych, możemy skorzystać z przetestowanego już zbioru zaleceń [🔗¹](https://www.martinfowler.com/articles/evodb.html) [🔗²](https://en.wikipedia.org/wiki/Evolutionary_database_design), dzięki którym zmiany będą mniej inwazyjne, a nawet bezprzerwowe (zero downtime deployment).
 
 ### Przechowywanie zmian w repozytorium kodów
