@@ -26,7 +26,7 @@ Aby umożliwić proste rozwijanie naszej bazy danych, możemy skorzystać z prze
 ### Przechowywanie zmian w repozytorium kodów
 Pod tym pojęciem kryje się nie tylko trzymanie zmian w repozytorium, ale to właśnie w repozytorium powinno się trzymać wszystkie zmiany dotyczące tej bazy w jednym miejscu.
 
-Jeśli kilka projektów korzysta z bazy, to wtedy nadal zmiany powinny być robione tylko na tym jednym głównym (może być nawet osobnym repozytorium).
+Jeśli kilka projektów korzysta z bazy, to mimo wszystko zmiany powinny odbywać się tylko na jednym głównym repozytorium (nawet na osobnym).
 
 Dzięki temu mamy możliwość zweryfikowania zmian i odtworzenia bazy (np. lokalnie), dodatkowo zmiany trzymane w jednym miejscu umożliwiają prostsze utrzymywanie kolejności. Dzięki temu uzyskamy zawsze dokładnie ten sam schemat bazy.
 
@@ -35,15 +35,19 @@ Każdorazowe modyfikowanie schematu, powinno odbywać się za pomocą migracji, 
 
 Dzięki temu nie będzie sytuacji, w której po odtworzeniu bazy, będzie się ona różnić od oryginału.
 
-Dodatkowo zmiany wykonane na boku, mogą wpłynąć na późniejsze jego wykonanie za pomocą migracji, np. wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację, która to robi, w takim wypadku dostaniemy błąd, że taka tabela już istnieje.
+Dodatkowo zmiany wykonane na boku, mogą wpłynąć na późniejsze jego wykonanie za pomocą migracji, np. wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to robi, w takim wypadku otrzymamy błąd, że taka tabela już istnieje.
 
 ### Wersjonowanie (rosnące) każdej zmiany
-* Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika z przodu pliku, lub dodając znacznik czasu.
-  Jest to bardzo ważne, ponieważ inna kolejność uruchomienia migracji może całkowicie zmienić jej sens albo nawet uniemożliwić migrację.
+* Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika lub dodania znacznika czasu z przodu pliku.
+  Jest to bardzo ważne, ponieważ inna kolejność uruchomienia migracji schematów bazy danych może całkowicie zmienić jej sens albo nawet całkowicie ją uniemożliwić.
 * Zalecane jest, aby każda zmiana była jak najmniejsza i najlepiej możliwa do odwrócenia. 
-  Przykładowo tworząc indeksy na istniejących tabelach, najlepiej rozbić ich tworzenie do osobnych wersji, 
-  np. tworząc indeks A, który zajmuje 5 minut i drugi B, który też zajmuje 5 minut, to w idealnym przypadku wszystko przebiegnie poprawnie, ale w przypadku kiedy pojawi się błąd przy tworzeniu indeksu B, wtedy wycofamy również indeks A i ponownie poświęcimy dodatkowe 5minut, 
-  które można byłoby zaoszczędzić, gdyby migracja A była wykonana osobno. 
+  Przykładowo tworząc indeksy na istniejących tabelach, najlepiej rozbić ich tworzenie do osobnych wersji.
+  Jeśli nie zostaną one wykonane w osobnych migracjach schematu, wtedy narażamy się na ryzyko takie jak opisane niżej:
+  * w tej samej migracji schematu bazy danych tworzymy indeks A oraz indeks B,
+  * stworzenie indeksu A zajmuje 5 minut i przebiega poprawnie,
+  * stworzenie indeksu B zajmuje ponad 5 minut i powoduje błąd TimeoutException,
+  * oba indeksy zostają wycofane i indeks A musi być ponownie założony,
+  * w przypadku, gdyby tworzenie indeksów było rozdzielone na osobne migracje, wtedy nie byłoby konieczności ponownego tworzenia indeksu A (i ponowne poświęcanie 5 minut na ten cel).
 * Wykonywane zmiany powinny być przyrostowe, czyli zmiana dla danej wersji powinna być uruchomiona tylko raz.
 
 #### Przykładowe biblioteki
@@ -70,7 +74,7 @@ Jest to szczególnie ważne, jeśli chcemy bezprzerwowo aktualizować naszą baz
 
 Przykładowo nowa kolumna powinna mieć domyślną wartość lub przyjmować null-e.
 
-Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, tak aby jej prawdziwe usunięcie było wykonane nie w docelowej wersji, tylko np. w następnej iteracji, jak będziemy pewni, że żadna aplikacja z niej nie korzysta.
+Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, tak aby jej prawdziwe usunięcie było wykonane nie w docelowej wersji, tylko np. w następnej iteracji, gdy będziemy pewni, że żadna aplikacja z niej nie korzysta.
 
 ## Aplikowanie zmian
 Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.
