@@ -11,5 +11,17 @@
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
   {%- endif -%}
+  {% if page.layout != 'index' and page.lang-ref %}
+    {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
+    {% if posts.size == 0 %}
+      {% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
+    {% endif %}
+    {% if posts.size > 1 %}
+      {% for post in posts %}
+        <link rel="alternate" hreflang="{{post.lang}}" href="{{ site.base-url }}{{ post.url }}"/>
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>

@@ -18,7 +18,9 @@ comments: true
                 <div class="col-15">
                     {% include post_metadata.html %}
                 </div>
-                <div class="col-5"></div>
+                <div class="col-5">
+                    {% include language_options.html %}
+                </div>
             </div>
         </header>
         <div itemprop="articleBody" class="post-content-container">
@@ -35,12 +37,15 @@ comments: true
                         <img class="modal-content">
                     </div>
                     {{ content }}
+                    {% if post.interpreter %}
+                    {% include translation-details.html %}
+                    {% endif %}
                 </div>
             </div>
             <div class="sidebar">
                 {% include latest_posts.html %}
                 {% include recommended-posts-desktop.html %}
-                {% include consdata-tech-ad.html %}
+                {% include announcements.html %}
             </div>
         </div>
         <div class="post-post-section-mobile">
@@ -50,7 +55,7 @@ comments: true
             {% include recommended-posts-mobile.html %}
         </div>
         <div class="post-post-section-mobile">
-            {% include consdata-tech-ad.html %}
+            {% include announcements.html %}
         </div>
         {% include author_bio.html %}
         {%- if site.disqus.shortname -%}
@@ -75,6 +80,7 @@ comments: true
                             listElement.classList.add('sidebar-post');
                             listElement.classList.add('no-breaking-word');
                             anchor.setAttribute('href', item.url);
+                            anchor.setAttribute('lang', 'pl');
                             anchor.appendChild(postTitle);
                             listElement.appendChild(anchor);
                             container.appendChild(listElement);

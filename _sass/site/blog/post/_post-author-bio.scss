@@ -2,6 +2,7 @@
   display: none;
   letter-spacing: $general-letter-spacing;
   border-top: $separator-border;
+  width: 100%;
   @include tablet-and-desktop {
     @include flex-container;
     align-items: center;
