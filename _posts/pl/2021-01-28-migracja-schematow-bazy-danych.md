@@ -1,11 +1,11 @@
 ---
 layout:    post
 title:     Migracja schematów bazy danych
-date:      2021-01-28 08:00:00 +0100
-published: false
+date:      2021-01-26 08:00:00 +0100
+published: true
 lang:      pl
 author:    jgoszczurny
-image:     /assets/img/posts/2021-01-28-migracja-schematów-db/bird-migrations.jpg
+image:     /assets/img/posts/2021-01-28-migracja-schematow-bazy-danych/bird-migrations.jpg
 tags:
     - migration
     - database
