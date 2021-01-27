@@ -1,8 +1,8 @@
 ---
 layout:    post
 title:     Migracja schematów bazy danych
-date:      2021-01-26 08:00:00 +0100
-published: true
+date:      2021-01-28 08:00:00 +0100
+published: false
 lang:      pl
 author:    jgoszczurny
 image:     /assets/img/posts/2021-01-28-migracja-schematow-bazy-danych/bird-migrations.jpg
@@ -88,10 +88,11 @@ W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich ins
 2. Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane,
    * w Kubernetes
      * wykorzystanie initContainers, celem odpalenia migracji schematu bazy danych przed uruchomieniem docelowego kontenera z aplikacją 
-       (w takim wypadku każda replika odpali migrację schematu, a to mechanizm migracji musi zapewnić, że zmiany zostaną wykonane tylko raz i wszystkie na jednym kontenerze) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
+       (w takim wypadku każda replika uruchomi migrację schematu, a to mechanizm migracji musi zapewnić, że zmiany zostaną wykonane wszystkie na jednym kontenerze i do tego jednorazowo) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
      * wykorzystanie do tego celu Jobów, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
      * wykorzystanie dwóch powyższych mechanizmów [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations) ,
-       uruchomienie joba, aby wykonał migrację schematu bazy danych, oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji.
+       uruchomienie joba, aby wykonał migrację schematu bazy danych, oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji schematu
+       (a jeśli wszystkie migracje schematu wymagane przez aplikację, są już zaaplikowane, to uruchomienie docelowego kontenera).
 
 ### Teoria - Kubernetes
 * <a href="https://github.com/Consdata/blog-database-migration-example/tree/master/liquibase" title="Example Liquibase migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> Liquibase</a>
