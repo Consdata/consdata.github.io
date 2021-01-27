@@ -1,8 +1,12 @@
 <div class="row back-link-row">
     <div class="col-15">
-        <a href="{{ site.url }}" class="main-page-link-container">
+        <a href="/" class="main-page-link-container">
             <i class="fa fa-arrow-left"></i>
-            Wszystkie wpisy
+            {% if page.lang %}
+                {{ site.data.translations['allPosts'][page.lang] }}
+            {% else %}
+                {{ site.data.translations['allPosts']['pl'] }}
+            {% endif %}
         </a>
     </div>
 </div>

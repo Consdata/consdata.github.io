@@ -42,6 +42,7 @@
 
   p {
     margin-bottom: 0.5em;
+    overflow-wrap: break-word;
   }
 
   p:first-child {
@@ -126,4 +127,10 @@
 .post-content-left-pane {
   @include flex-container;
   flex: 66%;
+}
+
+.translation-details {
+  margin: $small-padding 0;
+  text-align: end;
+  font-style: italic;
 }
