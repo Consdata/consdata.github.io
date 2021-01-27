@@ -3,6 +3,7 @@ layout:    post
 title:     Migracja schematów DB
 date:      2021-01-28 08:00:00 +0100
 published: false
+lang:      pl
 author:    jgoszczurny
 image:     /assets/img/posts/2021-01-28-migracja-schematów-db/bird-migrations.jpg
 tags:
@@ -15,7 +16,7 @@ tags:
     - initContainers
 ---
 
-Nie możliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych.
+Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych.
 
 Tak jak podczas rozwijania naszej aplikacji, stosujemy wzorce projektowe przy pisaniu kodu, tak w przypadku rozwijania schematów baz danych również powinniśmy stosować się do takich wytycznych, aby rozwijanie bazy danych było przyjemnością a nie ostatecznością
 
