@@ -59,18 +59,24 @@ Częstym błędem w odpowiedzi na żądania jest zwracanie nieprawidłowego (nie
 
 Zacznijmy od przykładu.
 
+```
 GET /films/1234
 Response: 404
+```
 
 Co będzie oznaczała odpowiedź z kodem błędu 404? Może nie ma takiego zasobu, może zasób istnieje, ale nie mamy uprawnień do niego, a może ścieżka jest niewłaściwa? Dlatego część osób uważa, że należy zwracać inny kod błędu w każdym z tych przypadków.
 
 Załóżmy więc, że będziemy zwracać 403, jeśli zasób istnieje, a użytkownik nie ma do niego dostępu. W ten sposób można łatwo poprzez enumerację i przekazywanie kolejnych id, dowiedzieć się, ile jest zasobów danego typu i poznać ich identyfikatory.
 
+```
 GET /films/1
 Response: 403
+```
 
+```
 GET /films/2
 Response: 404
+```
 
 ...
 
@@ -81,23 +87,28 @@ Dlatego też w zależności od tego, czy jest bezpieczne ujawnianie takich infor
 
 Przejdźmy do innego przykładu. Czy 404 oznacza, że zasób nie istnieje, czy że ścieżka jest niewłaściwa? Trudno powiedzieć, jeśli zwrócimy jedynie kod błędu 404.
 
+```
 GET /firms/100
 Response: 404
+```
 
-
+```
 GET /films/100
 Response: 404
+```
 W tym przypadku zalecane jest pozostanie przy kodzie 404, ale dodanie do odpowiedzi przyczyny błędu. Inny sposób - z dwoma różnymi kodami błędu, jest niezgodny ze standardem.
 
+```
 GET /firms/100
 Response: 404
 Invalid path: /firms
+```
 
-
+```
 GET /films/100
 Response: 404
 No film with id: 100
-
+```
 
 ### PATCH i blokowanie na WAF
 
