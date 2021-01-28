@@ -1,11 +1,12 @@
 ---
 layout:    post
 title:     "REST API - dobre praktyki w praktyce (tytuł roboczy)"
-date:
-published: false
+date:      2021-01-11 08:00:00 +0100
+published: true
 lang:      pl
 author:    bmitan
 image:
+tags:
     - rest
     - rest api
 ---
