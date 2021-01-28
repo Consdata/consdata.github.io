@@ -79,8 +79,9 @@ GET /films/2
 Response: 404
 ```
 
+```
 ...
-
+```
 
 Dlatego też w zależności od tego, czy jest bezpieczne ujawnianie takich informacji klientowi, możemy zwracać albo 403 i 404, żeby rozróżnić te 2 przypadki, albo zawsze 404, żeby nie było takiej możliwości. Jeśli wystawiamy serwisy wewnętrznie, to o wiele przydatniejsze będzie skorzystanie z kodu 403.  Warto pamiętać, że kod 404 to najlepszy kod błędu, kiedy nie chcemy ujawniać, czemu nie zwrócimy zasobu.
 
