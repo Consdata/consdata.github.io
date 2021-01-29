@@ -35,7 +35,7 @@ Każdorazowe modyfikowanie schematu, powinno odbywać się za pomocą migracji, 
 
 Dzięki temu nie będzie sytuacji, w której po odtworzeniu bazy, będzie się ona różnić od oryginału.
 
-Dodatkowo zmiany wykonane na boku, mogą wpłynąć na późniejsze jego wykonanie za pomocą migracji, np. wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to robi, w takim wypadku otrzymamy błąd, że taka tabela już istnieje.
+Dodatkowo zmiany wykonane na boku, mogą wpłynąć na jego późniejsze wykonanie za pomocą migracji, np. gdy wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to procesuje, to w takim wypadku otrzymamy błąd informujący o tym, że taka tabela już istnieje.
 
 ### Wersjonowanie (rosnące) każdej zmiany
 * Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika lub dodania znacznika czasu z przodu pliku.
@@ -47,7 +47,7 @@ Dodatkowo zmiany wykonane na boku, mogą wpłynąć na późniejsze jego wykonan
   * stworzenie indeksu A zajmuje 5 minut i przebiega poprawnie,
   * stworzenie indeksu B zajmuje ponad 5 minut i powoduje błąd TimeoutException,
   * oba indeksy zostają wycofane i indeks A musi być ponownie założony,
-  * w przypadku, gdyby tworzenie indeksów było rozdzielone na osobne migracje, wtedy nie byłoby konieczności ponownego tworzenia indeksu A (i ponowne poświęcanie 5 minut na ten cel).
+  * w przypadku, gdyby tworzenie indeksów było rozdzielone na osobne migracje, wtedy nie będzie konieczności ponownego tworzenia indeksu A (i ponownego poświęcania 5 minut na ten cel).
 * Wykonywane zmiany powinny być przyrostowe, czyli zmiana dla danej wersji powinna być uruchomiona tylko raz.
 
 #### Przykładowe biblioteki
@@ -81,7 +81,7 @@ Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne
 
 Jeśli baza danych jest ściśle związana jedną z aplikacją, możemy ją uruchamiać bezpośrednio z kodu [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup) .
 
-W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji schematu lub kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
+W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji schematu lub gdy kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
 
 1. Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji).
    Na repozytorium wykonujemy merge z migracjami schematu bazy danych, Jenkins wykrywa zmianę na repozytorium i wykonuje ją na bazie wskazanej w konfiguracji.
