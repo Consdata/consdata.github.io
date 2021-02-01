@@ -83,7 +83,7 @@ Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, t
 ## Aplikowanie zmian
 Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.
 
-Jeśli baza danych jest ściśle związana jedną z aplikacją, możemy ją uruchamiać bezpośrednio z kodu [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup) .
+Jeśli baza danych jest ściśle związana z jedną aplikacją, to możemy ją uruchamiać bezpośrednio z kodu [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup) .
 
 W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji schematu lub gdy kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
 W tym przypadku mamy następujące możliwości:
@@ -94,7 +94,7 @@ W tym przypadku mamy następujące możliwości:
     (w takim wypadku każda replika uruchomi migrację schematu, a to mechanizm migracji musi zapewnić, że zmiany zostaną wykonane wszystkie na jednym kontenerze i do tego jednorazowo) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
   * wykorzystać do tego celu Joby, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
   * wykorzystać dwa powyższe mechanizmy [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations),
-    uruchomienie joba, aby wykonał migrację schematu bazy danych, oraz initContainers tak, aby poczekał na zakończenie migracji schematu
+    uruchomić joba, aby wykonał migrację schematu bazy danych, oraz initContainers tak, aby poczekał na zakończenie migracji schematu
     (a jeśli wszystkie migracje schematu wymagane przez aplikację, są już zaaplikowane, to uruchomienie docelowego kontenera).
 
 ### Przykłady - Kubernetes
