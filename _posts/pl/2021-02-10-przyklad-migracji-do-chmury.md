@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Migracja aplikacji do Google Cloud w praktyce"
-date:      2021-01-10 08:00:00 +0100 # TODO przestawić datę
+date:      2021-02-10 08:00:00 +0100
 published: true
 lang:      pl
 author:    mhoja
@@ -18,7 +18,7 @@ tags:
 W poprzednim wpisie pt. ["Migracja do chmury - czyli od czego zacząć?"]({% post_url 2020-11-03-proces-migracji-do-chmury %})  
 przedstawiłem etapy procesu migracji aplikacji do chmury, a także opisałem poszczególne strategie migracji.
 
-W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w praktyce. Na warsztat weźmiemy działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.
+W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.
 
 # Słowem wstępu
 
@@ -38,18 +38,18 @@ Na etapie szacowania powinniśmy dokonać analizy istniejącego systemu/infrastr
 
 Zadaniem aplikacji jest przyjęcie danych od użytkownika za pomocą formularza, przetworzenie ich, utrwalenie w bazie danych oraz umożliwienie użytkownikowi odczytu tych danych. System składa się z kilku elementów:
 
-- **aplikacji frontendowej** - napisanej w języku TypeScript (framework Angular), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja,
-- **aplikacji backendowej** - napisanej w języku Java (framework Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie ich z bazy danych,
+- **aplikacji frontendowej** - napisanej w Angularze (TypeScript), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja,
+- **aplikacji backendowej** - napisanej w Javie (Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie z bazy danych,
 - **kolejki** - opartej o RabbitMQ, której celem jest optymalizacja zapisu,
 - **bazy danych** - w postaci nierelacyjnej bazy MongoDB, która przechowuje przesłane dane.
 
-Wykorzystałem tutaj kolejkę, aby dane przesyłane przez użytkowników były od razu przyjmowane, a użytkownik otrzymywał potwierdzenie przyjęcia ich przez system. Przetwarzanie danych może być w teorii czasochłonnym procesem, dlatego dzięki wykorzystaniu kolejki, użytkownik nie musi czekać na przetworzenie danych, aby uzyskać odpowiedź.
+Wykorzystałem kolejkę, aby dane przesyłane przez użytkowników były od razu przyjmowane, a użytkownik otrzymywał potwierdzenie przyjęcia ich przez system. Przetwarzanie danych może być w teorii czasochłonnym procesem, dlatego dzięki wykorzystaniu kolejki, użytkownik nie musi czekać na przetworzenie danych, aby uzyskać odpowiedź.
 
-Dane zdejmowane są z kolejki przez aplikację backendową, następnie przetwarzane (w przykładowej aplikacji pominąłem element przetwarzania - możemy wyobrazić sobie tutaj jakiś złożony i czasochłonny proces) i utrwalane w bazie danych. Odczyt danych z bazy wykonywany jest również przez aplikację backendową, za pośrednictwem sterownika bazy danych, a następnie dane te są przesyłane do aplikacji frontendowej w formacie JSON.
+Dane pobierane są z kolejki przez aplikację backendową, następnie przetwarzane (w przykładowej aplikacji pominąłem element przetwarzania - możemy wyobrazić sobie tutaj jakiś złożony i czasochłonny proces) i utrwalane w bazie danych. Odczyt danych z bazy wykonywany jest również przez aplikację backendową, za pośrednictwem sterownika bazy danych, a następnie dane te są przesyłane do aplikacji frontendowej w formacie JSON.
 
-Infrastruktura systemu źródłowego może być oparta o maszyny fizyczne, wirtualne, kontenery (Docker, Kubernetes, OpenShift) lub o dowolne inne rozwiązanie. Na potrzeby wpisu wykorzystałem Docker Compose, co ułatwia uruchomienie całej aplikacji lokalnie, jednym poleceniem.
+Infrastruktura systemu źródłowego może być oparta o maszyny fizyczne, wirtualne, kontenery (Docker, Kubernetes, OpenShift) lub o dowolne inne rozwiązanie. Na potrzeby wpisu wykorzystałem Docker Compose, co ułatwia uruchomienie całej aplikacji lokalnie.
 
-Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przechodzimy płynnie do kolejnego etapu.
+Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przejdźmy do kolejnego etapu migracji.
 
 # Planowanie
 
@@ -95,7 +95,7 @@ Migracja strategią "Rip and replace" polega na całkowitym wykorzystaniu natywn
 ![Architektura aplikacji docelowej - "Rip and replace"](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/rip_and_replace.png)
 
 **Plusy:**
-Optymalizujemy architekturę systemu, przesuwając granicę odpowiedzialności prawie całkowicie na stronę usługodawcy. Cloud Functions umożliwia wywoływanie funkcji po pojawieniu się wiadomości w usłudze Cloud Pub/Sub, dzięki czemu aplikacja frontendowa może zapisywać dane przyjęte od użytkownika bezpośrednio do kolejki, bez pośrednictwa aplikacji backendowej. Przepisując aplikację backendową na funkcję można zrezygnować również z jej pośrednictwa w odczycie danych z Cloud Firestore, ponieważ usługa ta udostępnia REST API, które umożliwia odczyt danych bezpośrednio przez aplikację frontendową. Dzięki automatycznemu skalowaniu (również do zera), optymalizujemy koszty utrzymania infrastruktury, które w przypadku zerowego ruchu użytkowników można ograniczyć całkowicie do zera (w ramach [GCP Free Tier](https://cloud.google.com/free)).
+Optymalizujemy architekturę systemu, przesuwając granicę odpowiedzialności prawie całkowicie na stronę usługodawcy. Cloud Functions umożliwia wywoływanie funkcji po pojawieniu się wiadomości w usłudze Cloud Pub/Sub, dzięki czemu aplikacja frontendowa może zapisywać dane przyjęte od użytkownika bezpośrednio do kolejki, bez pośrednictwa aplikacji backendowej. Przepisując aplikację backendową na funkcję można zrezygnować również z jej pośrednictwa w odczycie danych z Cloud Firestore, ponieważ usługa ta udostępnia REST API, które umożliwia odczyt danych bezpośrednio przez aplikację frontendową. Dzięki automatycznemu skalowaniu (również do zera), optymalizujemy koszty utrzymania infrastruktury, które w przypadku zerowego ruchu użytkowników, można ograniczyć całkowicie do zera (w ramach [GCP Free Tier](https://cloud.google.com/free)).
 
 **Minusy:**
 Wykorzystanie natywnych rozwiązań wymaga od nas bardzo dobrej znajomości platformy, usług oraz komunikacji między nimi. Jak okaże się za chwilę, pojawiają się również nowe problemy, jak na przykład ograniczenia API usług, czy problem zimnego startu funkcji. Migracja z wykorzystaniem strategii "Rip and replace" jest również najbardziej czasochłonna, ponieważ wymaga całkowitego przepisania części systemu.
@@ -532,7 +532,7 @@ W dokumentacji usługi Cloud Storage można znaleźć informację o tym, że w p
 
 ![Konfiguracja www bucketa](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/bucket_website_configuration.png)
 
-Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny [(pod tym adresem)](https://console.cloud.google.com/apis/credentials/domainverification). Konfigurując w ten sposób bucket, nie potrzebujemy **HTTP/S Load Balancera** do działania aplikacji. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia między użytkownikiem a aplikacją internetową, jest złą praktyką.
+Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny [(pod tym adresem)](https://console.cloud.google.com/apis/credentials/domainverification). Konfigurując w ten sposób bucket, nie potrzebujemy **HTTP/S Load Balancera** do działania aplikacji. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia pomiędzy użytkownikiem a aplikacją internetową, jest złą praktyką.
 
 Dodatkowo, w konfiguracji domeny, zamiast podawać adres IP w rekordzie typu **A**, należałoby podać adres **c.storage.googleapis.com**, w rekordzie typu **CNAME**.
 
@@ -881,4 +881,8 @@ Zaletą IaC, oprócz automatyzacji tworzenia infrastruktury, jest również wers
 
 # Migracja do chmury - podsumowanie
 
-TODO
+Opisany przeze mnie proces migracji aplikacji do chmury, jest jedynie przykładem, zawierającym minimalną ilość wiedzy, potrzebnej do rozpoczęcia przygody z chmurą Google. Nie powinniśmy podejmować się takiego procesu, nie posiadajac wcześniej wiedzy na temat usług GCP, ponieważ w najgorszym wypadku, może się to skończyć bardzo wysokimi rachunkami.
+
+Przed rozpoczęciem zabawy z GCP, proponuję zapoznać się z materiałami od Google, np. w formie kursów wideo, dostępnych na platformach Coursera czy Pluralsight. Bardzo dużo informacji znajdziemy również w oficjalnej dokumentacji GCP - od specyfikacji i API usług, po gotowe rozwiązania w formie "best practices" czy "how to".
+
+Warto pamiętać również o GCP Free Tier, w ramach którego otrzymujemy na start $300, które w połączeniu z darmowymi limitami, w zupełności wystarczą do zapoznania się z platformą. Kursy wideo zawierają również zadania techniczne (Qwiklabs), które wykonujemy na prawdziwej chmurze, wykorzystując do tego wygenerowane na potrzeby zadania konta - z tego również warto skorzystać.
