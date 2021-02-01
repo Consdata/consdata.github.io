@@ -1,5 +1,6 @@
 {% assign m = include.date | date: "%-m" %}
 {{ include.date | date: "%-d" }}
+{% unless include.lang == 'en' %}
 {% case m %}
 {% when '1' %}stycznia
 {% when '2' %}lutego
@@ -14,4 +15,21 @@
 {% when '11' %}listopada
 {% when '12' %}grudnia
 {% endcase %}
+{% endunless %}
+{% if include.lang == 'en' %}
+{% case m %}
+{% when '1' %}Jan
+{% when '2' %}Feb
+{% when '3' %}Mar
+{% when '4' %}Apr
+{% when '5' %}May
+{% when '6' %}Jun
+{% when '7' %}Jul
+{% when '8' %}Aug
+{% when '9' %}Sep
+{% when '10' %}Oct
+{% when '11' %}Nov
+{% when '12' %}Dec
+{% endcase %}
+{% endif %}
 {{ include.date | date: "%Y" }}
