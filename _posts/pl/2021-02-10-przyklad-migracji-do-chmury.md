@@ -3,6 +3,7 @@ layout:    post
 title:     "Migracja aplikacji do Google Cloud w praktyce"
 date:      2021-01-10 08:00:00 +0100 # TODO przestawić datę
 published: true
+lang:      pl
 author:    mhoja
 image:     /assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/clouds.jpg
 tags:
