@@ -89,12 +89,12 @@ W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich ins
 W tym przypadku mamy następujące możliwości:
 * Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji).
   Na repozytorium wykonujemy merge z migracjami schematu bazy danych, Jenkins wykrywa zmianę na repozytorium i wykonuje ją na bazie wskazanej w konfiguracji.
-* Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane. Przykładowo dla Kubernetesa mamy następujące możliwości:
-  * wykorzystanie initContainers, celem odpalenia migracji schematu bazy danych przed uruchomieniem docelowego kontenera z aplikacją 
+* Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane. Przykładowo dla Kubernetesa możemy:
+  * wykorzystać initContainers, celem odpalenia migracji schematu bazy danych przed uruchomieniem docelowego kontenera z aplikacją 
     (w takim wypadku każda replika uruchomi migrację schematu, a to mechanizm migracji musi zapewnić, że zmiany zostaną wykonane wszystkie na jednym kontenerze i do tego jednorazowo) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers) ,
-  * wykorzystanie do tego celu Jobów, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
-  * wykorzystanie dwóch powyższych mechanizmów [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations) ,
-    uruchomienie joba, aby wykonał migrację schematu bazy danych, oraz wykorzystanie initContainers tak, aby poczekał na zakończenie migracji schematu
+  * wykorzystać do tego celu Joby, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) [🔗³](https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2) [🔗⁴](https://kubernetes.io/docs/concepts/workloads/controllers/job/) [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs) ,
+  * wykorzystać dwa powyższe mechanizmy [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations),
+    uruchomienie joba, aby wykonał migrację schematu bazy danych, oraz initContainers tak, aby poczekał na zakończenie migracji schematu
     (a jeśli wszystkie migracje schematu wymagane przez aplikację, są już zaaplikowane, to uruchomienie docelowego kontenera).
 
 ### Przykłady - Kubernetes
