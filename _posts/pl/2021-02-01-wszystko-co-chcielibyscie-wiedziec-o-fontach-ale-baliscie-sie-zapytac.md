@@ -4,9 +4,14 @@ title:     Wszystko, co chcielibyście wiedzieć o fontach, ale baliście się z
 published: false
 date:      2021-01-01 09:00:00 +0100
 author:    pgrobelny
+lang:      pl
 image:     
 tags:
     - font
+    - czcionka
+    - rem
+    - woff
+    - font-face
 ---
 
 Większość osób, które pracowały na frontendzie na pewno miały do czynienia z fontami, czy to wrzucały je do projektu, 
@@ -15,18 +20,17 @@ Jest jednak kilka ważnych rzeczy, na które warto zwracać uwagę i być ich ś
 
 ## Sposoby określania wielkości fontów (EM, REM, PX)
 
-Zacznijmy od początku. Jak poprawnie zdefiniować wielkość fontów? W większość przypadków wybór mamy pomiędzy EM, REM, a PX. 
-Przejdźmy od tych pierwszych.
+Zacznijmy od początku. Jak poprawnie zdefiniować wielkość fontów? W większość przypadków wybór mamy pomiędzy PX, EM a REM. 
+Przejdźmy do tego pierwszego.
 
-EM i REM są jednostkami względnymi, co oznacza, że aby dowiedzieć się, jaka jest faktycznie ich wartość, należy spojrzeć, 
-gdzie dana deklaracja się znajduje. W Przypadku EM mamy dziedziczenie względem elementu nadrzędnego, a REM 
-dziedziczy po roocie aplikacji. Przy pracy nad większymi projektami często faworyzuje się REM nad EM ze względu 
-na prostotę w utrzymaniu. Przy pracy nad tymi jednostkami warto zwrócić uwagę na klika ważnych rzeczy.
+Pixele są wygodne do definiowania, ponieważ każdy intuicyjnie rozumie jak one działają i jaką przestrzeń zajmują na stronie. Tworzenie animacji, nadawanie ramek czy tworzenie różnych innych elementów graficznych często wydaje nam się prostsze w px. Schody zaczynają się, kiedy będziemy chcieli być przyjaznym dla użytkownika i umożliwić mu zmianę wielkości fontów w przeglądarce (i chodzi tutaj o ustawienia fontów w ustawieniach, a nie funkcjonalność przybliżania i oddalania strona, ona nadal będzie działać poprawnie). Używając pixeli nie jesteśmy w stanie tego obsłużyć i zawsze będziemy nadpisywać preferencje użytkownika. A więc jak można rozwiązać ten problem? Z pomocą przychodzą nam jednostki względne.
 
-Żeby wyliczyć na ile ustawić wartość REM, aby odpowiadała konkretnej wartości w pixelach, weźmy szybki przykład: 
-font-size domyślnie mamy 16px, a potrzebujemy nadać pewnemu elementowi wielkość dokładnie 10px. Możemy skorzystać
+Takimi jednostkami są właśnie EM i REM. Nazywamy je względnymi, ponieważ aby dowiedzieć się jaka jest faktycznie ich wartość, należy spojrzeć, gdzie dana deklaracja się znajduje. W Przypadku EM mamy dziedziczenie względem elementu nadrzędnego, a REM dziedziczy po roocie aplikacji. Przy pracy nad większymi projektami często faworyzuje się REM nad EM ze względu na prostotę w utrzymaniu. Przy pracy nad tymi jednostkami warto jednak zwrócić uwagę na klika rzeczy.
+
+Żeby wyliczyć na ile ustawić wartość REM, aby odpowiadała konkretnej wartości w pixelach, weźmy przykład: 
+font-size domyślnie mamy 16px, a potrzebujemy nadać pewnemu elementowi wielkość 10px. Możemy skorzystać
 z [internetowego kalkulatora](https://daniellamb.com/experiments/px-to-rem-calc/)
-albo w rozwiązać równanie, które 
+albo rozwiązać równanie, które 
 naprowadzi nas na poprawną wartość: 16px * x= 10px. Nie brzmi zachęcająco? Warto w takim razie zastanowić się, czy 
 faktycznie ważne jest, aby było to dokładnie 10px, ponieważ możemy przyjąć wartość 0.6rem, która może się okazać 
 dostatecznie bliska. Jeżeli nie godzimy się na takie przybliżanie i musimy trzymać się konkretnych wartości, 
@@ -34,10 +38,7 @@ a korzystamy z preprocessora do CSS, warto napisać metodę, która policzy to z
 wartość w px. Tworzenie zmiennych określających różne wartości REM zawierające w nazwie odniesienie do konkretnych wartość w PX nie jest dobrą 
 praktyką, ponieważ w przypadku zmiany wielości w root'cie aplikacji wszystkie te zmienne przestają mieć sens.
 
-Jak wcześniej wspomniałem, większość przeglądarek ma wartość domyślą 16px. Jeżeli chcemy ją nadpisać powinniśmy zmienić 
-font-size w elemencie html. Kiedy jednak nadpisujemy font-size używając pixeli musimy mieć świadomość, 
-że w ten sposób odbieramy użytkownikowi możliwość powiększania fontów na stronie (i nie chodzi tutaj o zoom na stronie, 
-tylko zmianę wielkości fontu w ustawieniach przeglądarki). Przyjrzyjmy się pewnemu przykładowi:
+Przejdźmy jednak do wcześniej przytoczonego problemu z nadpisywaniem preferencji użytkownika dotyczących  wielkości fontów. Tak jak wcześniej wspomniałem, większość przeglądarek ma wartość domyślną fontu ustawioną na 16px. Jeżeli nadpisalibyśmy ją używając px narzucamy własne style ponad ustawienia użytkownika, ale jeżeli będziemy używać jednostek względnych – takiego problemu nie będzie. Przyjrzyjmy się pewnemu przykładowi:
 
 ![Przykład 1](/assets/img/posts/2021-02-01-wszystko-co-chcielibyscie-wiedziec-o-fontach-ale-baliscie-sie-zapytac/example1.png)
 
@@ -46,10 +47,7 @@ która jest taka sama jak domyślna. Po zmianie wielkości fontu w ustawieniach 
 
 ![Przykład 2](/assets/img/posts/2021-02-01-wszystko-co-chcielibyscie-wiedziec-o-fontach-ale-baliscie-sie-zapytac/example2.png)
 
-Teraz czas na wszystkim znane i lubiane pixele. Są wygodne do definiowania, ponieważ każdy intuicyjnie rozumie jak one działają i jaką przestrzeń zajmą na stronie. Tworzenie animacji, nadawanie ramek czy tworzenie różnych innych elementów graficznych często wydaje nam się prostsze w px. Problem pojawia się przy wcześniej wspominanym zmienianiu wielkości fontu w przeglądarce, ponieważ nie powiększy to tekstów na naszej stronie. Pamiętajmy jednak, że standardowe powiększanie i pomniejszanie ekranu w przeglądarce (nie samego fontu) nadal poprawnie będzie działać.
-
-Przy okazji warto przywołać jedną uwagę dotyczącą używania pixeli. Na urządzeniach przenośnych pixele są innej wielkości, niż na standardowym monitorze. Mimo iż urządzenie ma większą rozdzielczość, przeglądarka traktują ją, gdyby była nawet kilkukrotnie mniejsza. Dzieje się tak, ponieważ ekran na telefonie mamy mały, a zagęszczenie pixeli wysokie. Powoduje to, że co na ekranie monitora jest czytelne, na ekranie komórki jest ledwo zauważalne.
-Na przykład, kiedy wejdziemy w przeglądarce Chrome w opcje developerskie i ustawimy, aby przeglądarka zmieniła wielkość okna i dopasowała się do iPhone'a X, wyświetli nam się rozdzielczość 375 x 812, gdy realna rozdzielczość urządzenia wynosi 1125 x 2436.
+Na koniec jedna uwaga  dotyczącą używania pixeli. Na urządzeniach przenośnych pixele są innej wielkości, niż na standardowym monitorze. Mimo iż urządzenie ma większą rozdzielczość, przeglądarka traktują ją, gdyby była nawet kilkukrotnie mniejsza. Dzieje się tak, ponieważ ekran na telefonie mamy mały, a zagęszczenie pixeli wysokie. Powoduje to, że co na ekranie monitora jest czytelne, na ekranie komórki jest ledwo zauważalne.Na przykład, kiedy wejdziemy w przeglądarce Chrome w opcje developerskie i ustawimy, aby przeglądarka zmieniła wielkość okna i dopasowała się do iPhone'a X, wyświetli nam się rozdzielczość 375 x 812, gdy realna rozdzielczość urządzenia wynosi 1125 x 2436.
 
 Więc jakie jest rozstrzygnięcie? Czy jesteśmy w stanie wybrać i pozostać przy tylko jednym sposobie określania wielkości? Nie, wszystko zależy od projektu w jakim pracujemy, doboru narzędzi i makiet dostarczonych przez klienta. Racjonalnym wyborem często stają się jednostki względne dzięki łatwiejszym możliwością ich skalowania. W ten sposób szanujemy również użytkownika i pozwalamy mu na dostosowywanie fontów według jego potrzeb. Z kolei kiedy wiemy, że w naszym projekcie będzie dużo elementów graficznych, związanych z animacjami, gdzie wielkość, czytelność fontów i możliwość ich powiększania schodzi na drugi plan – sensowniejszym wyborem staje się użycie px.
 
