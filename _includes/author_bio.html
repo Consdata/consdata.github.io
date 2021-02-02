@@ -28,7 +28,12 @@
         </div>
         <div class="content">
             {% if author.bio %}
-            <div class="bio">{{author.bio}}</div>
+                {% if page.lang == "en" %}
+                    <div class="bio">{{author.bio_en}}</div>
+                {% endif %}
+                {% unless page.lang == "en"%}
+                    <div class="bio">{{author.bio}}</div>
+                {% endunless %}
             {% endif %}
         </div>
     </div>
@@ -60,7 +65,12 @@
     </div>
     <div class="content">
         {% if author.bio %}
-        <div class="bio">{{author.bio}}</div>
+            {% if page.lang == "en" %}
+                <div class="bio">{{author.bio_en}}</div>
+            {% endif %}
+            {% unless page.lang == "en"%}
+                <div class="bio">{{author.bio}}</div>
+            {% endunless %}
         {% endif %}
     </div>
 </div>
