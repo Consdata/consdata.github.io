@@ -38,10 +38,10 @@ Każdorazowe modyfikowanie schematu, powinno odbywać się za pomocą migracji, 
 
 Dzięki temu nie będzie sytuacji, w której po odtworzeniu bazy, będzie się ona różnić od oryginału.
 
-Dodatkowo zmiany wykonane na boku, mogą wpłynąć na jego późniejsze wykonanie za pomocą migracji, np. gdy wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to procesuje, to w takim wypadku otrzymamy błąd informujący o tym, że taka tabela już istnieje.
+Dodatkowo zmiany wykonane ręcznie (z pominięciem migracji), mogą wpłynąć na jego późniejsze wykonanie za pomocą migracji, np. gdy wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to procesuje, to w takim wypadku otrzymamy błąd informujący o tym, że taka tabela już istnieje.
 
 ### Wersjonowanie (rosnące) każdej zmiany
-* Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika lub dodania znacznika czasu z przodu pliku.
+* Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika lub dodania znacznika czasu do nazwy pliku.
   Jest to bardzo ważne, ponieważ inna kolejność uruchomienia migracji schematów bazy danych może całkowicie zmienić jej sens albo nawet całkowicie ją uniemożliwić.
 * Zalecane jest, aby każda zmiana była jak najmniejsza i najlepiej możliwa do odwrócenia. 
   Przykładowo tworząc indeksy na istniejących tabelach, najlepiej rozbić ich tworzenie do osobnych wersji.
@@ -81,7 +81,7 @@ Przykładowo nowa kolumna powinna mieć domyślną wartość lub przyjmować nul
 Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, tak aby jej prawdziwe usunięcie było wykonane nie w docelowej wersji, tylko np. w następnej iteracji, gdy będziemy pewni, że żadna aplikacja z niej nie korzysta.
 
 ## Aplikowanie zmian
-Aplikowania zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.
+Aplikowanie zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.
 
 Jeśli baza danych jest ściśle związana z jedną aplikacją, to możemy ją uruchamiać bezpośrednio z kodu [🔗⁵](https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup) .
 
