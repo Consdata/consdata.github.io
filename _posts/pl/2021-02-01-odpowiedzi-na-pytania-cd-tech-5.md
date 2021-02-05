@@ -107,8 +107,7 @@ Pojawienie się filmu o takim statusie jest obsługiwane wyżej i skutkuje zwró
 Tak jak wspominałem wyżej, nie mamy doświadczeń z produkcyjnym wykorzystaniem Event Stormingu.
 
 ## Co dalej?
-Jeśli ktoś z Was ma jeszcze jakieś pytania, które chciałby mi zadać, a nie zdążył (i nie spisał namiarów na mnie) to śmiało, można się odzywać na mój służbowy adres: 
-  - mkociszewski@consdata.com
+Jeśli ktoś z Was ma jeszcze jakieś pytania, które chciałby mi zadać, a nie zdążył (i nie spisał namiarów na mnie) to śmiało, można się odzywać na mój służbowy adres, który podałem na prezentacji (relacja jest już na youtube).
 
 Jeśli chodzi o projekty związane z tematem DDD i Axona, to zerknijcie tu:
   - [Repozytorium, które omawiałem na Consdata Tech](https://github.com/matty-matt/ddd-helpdesk)
