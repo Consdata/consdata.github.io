@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Migracja aplikacji do Google Cloud w praktyce"
+title:     "Migracja aplikacji do chmury Google Cloud Platform w praktyce"
 date:      2021-02-10 08:00:00 +0100
 published: true
 lang:      pl
@@ -27,7 +27,7 @@ W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w
 - [aplikacja źródłowa (przed migracją)](https://github.com/Michuu93/before-migrate-to-google-cloud-app)
 - [aplikacja docelowa (po migracji)](https://github.com/Michuu93/after-migrate-to-google-cloud-app)
 
-Dla przypomnienia, 4 etapy procesu migracji opisane w poprzednim wpisie:
+Dla przypomnienia, 4 etapy procesu migracji do chmury, opisane w poprzednim wpisie:
 ![Etapy migracji do chmury](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/etapy_migracji.jpg)
 
 # Szacowanie
@@ -38,9 +38,9 @@ Na etapie szacowania powinniśmy dokonać analizy istniejącego systemu/infrastr
 
 Zadaniem aplikacji jest przyjęcie danych od użytkownika za pomocą formularza, przetworzenie ich, utrwalenie w bazie danych oraz umożliwienie użytkownikowi odczytu tych danych. System składa się z kilku elementów:
 
-- **aplikacji frontendowej** - napisanej w Angularze (TypeScript), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja,
-- **aplikacji backendowej** - napisanej w Javie (Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie z bazy danych,
-- **kolejki** - opartej o RabbitMQ, której celem jest optymalizacja zapisu,
+- **aplikacji frontendowej** - napisanej w Angularze (TypeScript), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja;
+- **aplikacji backendowej** - napisanej w Javie (Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie z bazy danych;
+- **kolejki** - opartej o RabbitMQ, której celem jest optymalizacja zapisu;
 - **bazy danych** - w postaci nierelacyjnej bazy MongoDB, która przechowuje przesłane dane.
 
 Wykorzystałem kolejkę, aby dane przesyłane przez użytkowników były od razu przyjmowane, a użytkownik otrzymywał potwierdzenie przyjęcia ich przez system. Przetwarzanie danych może być w teorii czasochłonnym procesem, dlatego dzięki wykorzystaniu kolejki, użytkownik nie musi czekać na przetworzenie danych, aby uzyskać odpowiedź.
@@ -53,16 +53,16 @@ Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Plat
 
 # Planowanie
 
-Planując architekturę systemu w chmurze, pierwszą czynnością jaką należy wykonać, jest wybór strategii migracji. Od niej zależeć będzie to, jak będzie wyglądał system docelowy oraz jakie narzędzia i usługi zostaną wykorzystane.
+Planując architekturę systemu w chmurze, pierwszą czynnością, jaką należy wykonać, jest wybór strategii migracji. Od niej zależeć będzie to, jak będzie wyglądał system docelowy oraz jakie narzędzia i usługi zostaną wykorzystane.
 
 **Wybierając strategię migracji, przyjąłem kilka założeń:**
 
-- nie ma żadnych ograniczeń budżetowych oraz czasowych na wykonanie migracji,
-- system musi być gotowy obsłużyć każdy ruch użytkowników (automatyczne skalowanie),
-- utrzymanie infrastruktury powinno wymagać jak najmniejszego udziału człowieka (automatyzacja),
+- nie ma żadnych ograniczeń budżetowych oraz czasowych na wykonanie migracji;
+- system musi być gotowy obsłużyć każdy ruch użytkowników (automatyczne skalowanie);
+- utrzymanie infrastruktury powinno wymagać jak najmniejszego udziału człowieka (automatyzacja);
 - koszt utrzymania powinien być możliwie jak najniższy, szczególnie w przypadku braku ruchu użytkowników.
 
-Zanim podejmiemy ostateczną decyzją, zastanówmy się jaka będzie architektura systemu docelowego, w zależności od wykorzystanej strategii. Zalety oraz wady każdej ze strategii opisałem już w poprzednim wpisie, a podane tutaj rozwiązania mają jedynie charakter przykładowy. To jak zaplanujemy architekturę docelową, zależy od wielu czynników, a strategie mają jedynie pomóc nam w podjęciu decyzji.
+Zanim podejmiemy ostateczną decyzją, zastanówmy się, jaka będzie architektura systemu docelowego, w zależności od wykorzystanej strategii. Zalety oraz wady każdej ze strategii opisałem już w poprzednim wpisie, a podane tutaj rozwiązania mają jedynie charakter przykładowy. To jak zaplanujemy architekturę docelową, zależy od wielu czynników, a strategie mają jedynie pomóc nam w podjęciu decyzji.
 
 ## Strategia "Lift and shift"
 
@@ -104,14 +104,14 @@ Wykorzystanie natywnych rozwiązań wymaga od nas bardzo dobrej znajomości plat
 
 Ponieważ złożoność systemu źródłowego jest niewielka i chciałbym w tym wpisie pokazać jak najwięcej, przeprowadzimy migrację z wykorzystaniem strategii "Rip and replace". Architektura systemu docelowego będzie więc wyglądać następująco:
 
-- **aplikacja frontendowa** (pliki statyczne) zostanie umieszczona w Cloud Storage i udostępniona publicznie, wykorzystując [HTTP/S Load Balancer](https://cloud.google.com/load-balancing/docs/https). Alternatywą jest wykorzystanie platformy [Firebase](https://firebase.google.com/), w praktyce jednak, Firebase przechowuje pliki statyczne również w Cloud Storage, przykrywając wszystko własnym interfejsem graficznym,
-- **aplikacja backendowa**, z racji niskiej złożoności, zostanie przepisana całkowicie na Cloud Functions. Utracona zostanie walidacja danych wejściowych, ale dzięki temu użytkownik będzie mógł przesyłać dane do Cloud Pub/Sub bezpośrednio z aplikacji frontendowej. Dane te mogą być walidowane przez funkcję, która pobiera je z Cloud Pub/Sub, przetwarza i utrwala w Firestore. Gdyby walidacja była wymagana przed wrzuceniem danych do Cloud Pub/Sub, to pomiędzy aplikacją frontendową a Cloud Pub/Sub musiałaby znaleźć się dodatkowa funkcja, której zadaniem byłoby przyjęcie lub odrzucenie danych oraz przesłanie ich do Cloud Pub/Sub,
-- **kolejka RabbitMQ** zostanie zastąpiona całkowicie przez usługą Cloud Pub/Sub,
-- **baza danych MongoDB** zostanie zastąpiona całkowicie przez odpowiadającą jej usługą Cloud Firestore, która jest bazą nierelacyjną, przechowującą dane w formie dokumentów JSON.
+- **aplikacja frontendowa** (pliki statyczne) zostanie umieszczona w Cloud Storage i udostępniona publicznie, wykorzystując [HTTP/S Load Balancer](https://cloud.google.com/load-balancing/docs/https). Alternatywą jest wykorzystanie platformy [Firebase](https://firebase.google.com/), w praktyce jednak, Firebase przechowuje pliki statyczne również w Cloud Storage, przykrywając wszystko własnym interfejsem graficznym;
+- **aplikacja backendowa**, z racji niskiej złożoności, zostanie przepisana całkowicie na Cloud Functions. Utracona zostanie walidacja danych wejściowych, ale dzięki temu użytkownik będzie mógł przesyłać dane do Cloud Pub/Sub bezpośrednio z aplikacji frontendowej. Dane te mogą być walidowane przez funkcję, która pobiera je z Cloud Pub/Sub, przetwarza i utrwala w Firestore. Gdyby walidacja była wymagana przed wrzuceniem danych do Cloud Pub/Sub, to pomiędzy aplikacją frontendową a Cloud Pub/Sub musiałaby znaleźć się dodatkowa funkcja, której zadaniem byłoby przyjęcie lub odrzucenie danych oraz przesłanie ich do Cloud Pub/Sub;
+- **kolejka RabbitMQ** zostanie zastąpiona całkowicie przez usługę Cloud Pub/Sub;
+- **baza danych MongoDB** zostanie zastąpiona całkowicie przez odpowiadającą jej usługę Cloud Firestore, która jest bazą nierelacyjną, przechowującą dane w formie dokumentów JSON.
 
 W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, musimy zaimplementować mechanizm uwierzytelniania (chyba, że nie obawiamy się rachunków od Google). W tym celu wykorzystamy [Google Sign-In](https://developers.google.com/identity). Aby to zrobić, musimy w [APIs & Services](https://console.cloud.google.com/apis/credentials) stworzyć credential **OAuth client ID** i skonfigurować w Cloud IAM przykładowego użytkownika, który posiadać będzie uprawnienia do korzystania z aplikacji (może to być nasze główne konto, które posiada rolę właściciela).
 
-Dzięki wykorzystaniu Cloud Functions, zoptymalizujemy koszt utrzymania systemu. Funkcje generują koszt wyłącznie kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku braku ruchu lub bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.
+Dzięki wykorzystaniu Cloud Functions, zoptymalizujemy koszt utrzymania systemu. Funkcje generują koszt wyłącznie wtedy, kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), lub jego braku, opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.
 
 Usługa Cloud Pub/Sub działa na zasadzie kolejki, więc idealnie zastąpi RabbitMQ. Zazwyczaj Cloud Pub/Sub dostarcza każdą wiadomość raz oraz w takiej kolejności, w jakiej została opublikowana. Google w dokumentacji usługi informuje, że mogą zdarzyć się sytuacje, w których wiadomość zostanie dostarczona poza kolejnością lub więcej niż jeden raz. Wiedząc o tym, należy zaimplementować odbiorcę wiadomości w sposób idempotentny, czyli odporny na wielokrotne dostarczenie tej samej wiadomości. W przypadku naszej aplikacji demo nie stanowi to problemu, ponieważ każda wiadomość posiadać będzie unikalny identyfikator, a wielokrotne zapisanie tej samej wiadomości do Cloud Firestore spowoduje jej nadpisanie.
 
@@ -437,14 +437,14 @@ gcloud functions deploy demo-function \
 
 Niezależnie od sposobu wdrażania, musimy odpowiednio skonfigurować funkcję:
 
-- **entry-point** - nazwa metody (w języku JavaScript zwanej funkcją), która jest wywoływana przy triggerowaniu funkcji,
-- **runtime** - środowisko uruchomieniowe,
-- **trigger-topic** - topic w Cloud Pub/Sub, w którym pojawienie się wiadomości triggeruje wywołanie funkcji,
-- **region** - region, w który funkcja fizycznie będzie uruchamiana,
-- **timeout** - maksymalny czas wykonywania funkcji, po przekroczeniu którego funkcja jest automatycznie zakańczana błędem,
-- **memory** - rozmiar pamięci, jaka będzie przydzielona funkcji w trakcie wywołania,
-- **max-instances** - maksymalna liczba instancji, które mogą zostać utworzone (automatyczne skalowanie),
-- **set-env-vars** - zmienne środowiskowe, które będą wykorzystane w funkcji, w naszym wypadku jest to nazwa kolejki w Cloud Firestore, do której będą zapisywane dane,
+- **entry-point** - nazwa metody (w języku JavaScript zwanej funkcją), która jest wywoływana przy triggerowaniu funkcji;
+- **runtime** - środowisko uruchomieniowe;
+- **trigger-topic** - topic w Cloud Pub/Sub, w którym pojawienie się wiadomości triggeruje wywołanie funkcji;
+- **region** - region, w który funkcja fizycznie będzie uruchamiana;
+- **timeout** - maksymalny czas wykonywania funkcji, po przekroczeniu którego funkcja jest automatycznie zakańczana błędem;
+- **memory** - rozmiar pamięci, jaka będzie przydzielona funkcji w trakcie wywołania;
+- **max-instances** - maksymalna liczba instancji, które mogą zostać utworzone (automatyczne skalowanie);
+- **set-env-vars** - zmienne środowiskowe, które będą wykorzystane w funkcji, w naszym wypadku jest to nazwa kolejki w Cloud Firestore, do której będą zapisywane dane;
 - **project** - id projektu.
 
 Dodatkowo moglibyśmy skonfigurować ponawianie przetwarzania wiadomości, w przypadku błędu wywołania funkcji, ale nie będziemy tego robić.
@@ -540,7 +540,7 @@ Więcej informacji znajdziemy tutaj: [Hosting a static website](https://cloud.go
 
 ## Automatyzacja
 
-Innym elementem etapu optymalizacji mogą być usprawnienia w procesie wdrażania aplikacji. Stwórzmy zatem proste CI/CD, wykorzystując do tego celu repozytorium GitHub, usługę Cloud Build oraz infrastrukturę jako kod (IaC), opartą o Terraform. Jako alternatywę dla Terraform moglibyśmy wykorzystać [Cloud Deployment Manager](https://cloud.google.com/deployment-manager), ale wtedy uzależnilibyśmy się od chmury Google (vendor lock).
+Innym elementem etapu optymalizacji mogą być na przykład usprawnienia w procesie wdrażania aplikacji. Stwórzmy zatem proste CI/CD, wykorzystując do tego celu repozytorium GitHub, usługę Cloud Build oraz infrastrukturę jako kod (IaC), opartą o Terraform. Jako alternatywę dla Terraform moglibyśmy wykorzystać [Cloud Deployment Manager](https://cloud.google.com/deployment-manager), ale wtedy uzależnilibyśmy się od chmury Google (vendor lock).
 
 Przed implementacją, musimy jeszcze:
 
@@ -564,7 +564,7 @@ Przed implementacją, musimy jeszcze:
 
 Konfiguracja automatyzująca tworzenie infrastruktury oraz wdrażanie aplikacji składa się z dwóch części:
 
-- konfiguracji Terraform, definiującej infrastrukturę, np. trigger w Cloud Build, który na podstawie zmian kodu w repozytorium uruchamia zadanie,
+- konfiguracji Terraform, definiującej infrastrukturę, np. trigger w Cloud Build, który na podstawie zmian kodu w repozytorium uruchamia zadanie;
 - konfiguracji Cloud Build, czyli definicji zadań do wykonania, które są uruchamiane przez triggery utworzone przez Terraform.
 
 ### Konfiguracja Terraform
@@ -596,7 +596,7 @@ provider "google-beta" {
 
 Terraform udostępnia dwóch dostawców dla Google Cloud: **google**, **google-beta**. W pierwszej linii definiujemy dostawcę **google-beta**, który umożliwia wykorzystywanie API, które w GCP jest w wersji beta. W kolejnych liniach definiujemy projekt, region oraz strefę, które w tym przypadku są pobierane ze zmiennych,
 
-- definicji zmiennych, wykorzystywanych przez konfigurację Terraform (**infrastructure/variables.tf** i **infrastructure/terraform.tfvars**). Niektóre ze zmiennych są również przekazywane przez Terraform do Cloud Build.
+- definicji zmiennych, wykorzystywanych przez konfigurację Terraform (**infrastructure/variables.tf** i **infrastructure/terraform.tfvars**) (niektóre ze zmiennych są również przekazywane przez Terraform do Cloud Build);
 
 - konfiguracji triggera Cloud Build, który na podstawie zmian kodów konfiguracji infrastruktury w repozytorium (folder **infrastructure**), uruchamia zdefiniowane zadanie w Cloud Build:
 
@@ -621,8 +621,8 @@ resource "google_cloudbuild_trigger" "deploy-demo-infrastructure" {
 
 W pierwszej linii określamy rodzaj tworzonego zasobu (**google_cloudbuild_trigger** - trigger w usłudze Cloud Build). W kolejnych liniach definiujemy providera, nazwę triggera, jego opis, ścieżkę pod którą znajduje się definicja zadań do wykonania przez Cloud Build, ścieżkę w której zmiana plików spowoduje uruchomienie zadania oraz konfigurację repozytorium GitHub. W konfiguracji repozytorium definiujemy jego położenie (parametr **owner** i **name**) oraz sposób triggerowania zadania Cloud Build, w tym przypadku jest to wypushowanie zmian kodów do brancha **main** (dostępne są m.in. opcje triggerowania na push taga lub utworzenie pull requesta w aplikacji GitHub),
 
-- konfiguracji tworzącej buckety w Cloud Storage (**infrastructure/frontend-bucket.tf** i **infrastructure/yarn-cache.storage.tf**), które wykorzystywane są m.in. do przechowywania plików statycznych aplikacji frontendowej oraz kopii podręcznej zależności, wykorzystywanych przez aplikację frontendową i funkcję (w dalszej części wyjaśnię o co chodzi),
-- konfiguracji topicu w usłudze Cloud Pub/Sub (**infrastructure/pubsub.tf**),
+- konfiguracji tworzącej buckety w Cloud Storage (**infrastructure/frontend-bucket.tf** i **infrastructure/yarn-cache.storage.tf**), które wykorzystywane są m.in. do przechowywania plików statycznych aplikacji frontendowej oraz kopii podręcznej zależności, wykorzystywanych przez aplikację frontendową i funkcję (w dalszej części wyjaśnię o co chodzi);
+- konfiguracji topicu w usłudze Cloud Pub/Sub (**infrastructure/pubsub.tf**);
 - konfiguracji triggerów w usłudze Cloud Build, które na podstawie zmian w repozytorium GitHub, uruchamiają zdefiniowane zadania (o tym też za chwilę).
 
 ### Konfiguracja Cloud Build
@@ -644,7 +644,7 @@ steps:
 
 Składa się ona z jednego kroku, który za pomocą powłoki systemu Linux (sh), wykonuje w folderze **infrastructure** następujące polecenia: **terraform init** (inicjalizujące Terraform), **terraform apply -auto-approve** (tworzące infrastrukturę za pomocą konfiguracji Terraform),
 
-- konfiguracji budowania i wdrażania aplikacji frontendowej (**frontend/deploy.cloudbuild.yml**),
+- konfiguracji budowania i wdrażania aplikacji frontendowej (**frontend/deploy.cloudbuild.yml**);
 - konfiguracji wdrażania funkcji (**function/deploy.cloudbuild.yml**).
 
 ### Dependency cache
@@ -653,7 +653,7 @@ Kopia podręczna zależności, wykorzystywanych przez aplikację frontendową or
 
 Aplikacje JavaScript (a więc te oparte o framework Angular, jak i funkcje napisane w czystym JavaScript) wykorzystują zewnętrzne zależności (biblioteki, moduły), które przechowują w folderze **node_modules**. Za każdym razem, kiedy aplikacja lub funkcja są budowane, muszą one pobrać wszystkie zależności z których korzystają. Bardzo często, zależności liczone są w dziesiątkach, a nawet setkach, a pobranie wszystkich za każdym razem, powoduje niepotrzebne wykorzystywanie łącza internetowego oraz dłuższy czas wykonywania zadania w usłudze Cloud Build (która posiada darmowy limit w postaci 120 minut, za które w ciągu dnia nie trzeba dodatkowo płacić).
 
-Chcąc zoptymalizować czas budowania i wdrażania, a także koszty z tym związane, utworzone zostały skrypty (w folderze **yarn-cache-builder**), które przed pobraniem zależności z Internetu, sprawdzają najpierw, czy nie istnieje już paczka (plik .zip), zawierające te zależności w Cloud Storage. Jeśli tak, to zależności te pobierane są z bucketu i wypakowywane, co zajmuje o wiele mniej czasu, niż pobieranie ich ponownie.
+Chcąc zoptymalizować czas budowania i wdrażania, a także koszty z tym związane, utworzone zostały skrypty (w folderze **yarn-cache-builder**), które przed pobraniem zależności z Internetu, sprawdzają najpierw, czy nie istnieje już paczka (plik .zip), zawierająca te zależności w Cloud Storage. Jeśli tak, to zależności te pobierane są z bucketu i wypakowywane, co zajmuje o wiele mniej czasu, niż pobieranie ich ponownie.
 
 Kopia podręczna tworzona jest na podstawie sumy kontrolnej **MD5** pliku **yarn.lock**, który zawiera listę wymaganych zależności. Jeśli zależności te się nie zmieniły (np. nie dodano nowych lub nie zmieniono wersji którejś z nich), to można wykorzystać zależności przechowywane w buckecie. Jeśli jednak coś się zmieniło, to zostaną one pobrane z Internetu, a następnie spakowane do archiwum .zip, zawierającego w nazwie sumę kontrolną i umieszczone w buckecie.
 
@@ -865,8 +865,8 @@ Konfiguracja Cloud Build składa się z kolejnych kroków, których efektem będ
 
 Ponieważ triggery uruchamiające Cloud Build po zmianach konfiguracji infrastruktury (w folderze **infrastructure**) są tworzone przez ten sam kod, to za pierwszym razem trzeba utworzyć je ręcznie. W tym celu, w folderze **infrastructure** należy wykonać polecenia:
 
-- **terraform init** - inicjalizuje Terraform, tworząc folder **.terraform** zawierający stan i wykorzystywane wtyczki,
-- **terraform plan** - wykonuje plan działania Terraform, dzięki czemu można zweryfikować konfigurację pod kątem błędów, jeszcze przed uruchomieniem narzędzia,
+- **terraform init** - inicjalizuje Terraform, tworząc folder **.terraform** zawierający stan i wykorzystywane wtyczki;
+- **terraform plan** - wykonuje plan działania Terraform, dzięki czemu można zweryfikować konfigurację pod kątem błędów, jeszcze przed uruchomieniem narzędzia;
 - **terraform apply** - akceptuje zmiany wynikające ze stanu aktualnego oraz wynikającego z konfiguracji, czyli wdraża infrastrukturę do chmury. W efekcie tego polecenia, utworzone zostaną wszystkie zasoby (triggery Cloud Build, buckety Cloud Storage, topic Cloud Pub/Sub).
 
 Kolejne zmiany kodu infrastruktury będą uruchamiać zadanie w Cloud Build, dzięki czemu zmiany infrastruktury będą automatycznie nanoszone w chmurze.
@@ -881,7 +881,7 @@ Zaletą IaC, oprócz automatyzacji tworzenia infrastruktury, jest również wers
 
 # Migracja do chmury - podsumowanie
 
-Opisany przeze mnie proces migracji aplikacji do chmury, jest jedynie przykładem, zawierającym minimalną ilość wiedzy, potrzebnej do rozpoczęcia przygody z chmurą Google. Nie powinniśmy podejmować się takiego procesu, nie posiadajac wcześniej wiedzy na temat usług GCP, ponieważ w najgorszym wypadku, może się to skończyć bardzo wysokimi rachunkami.
+Opisany przeze mnie proces migracji do chmury Google Cloud Platform, jest jedynie przykładem, zawierającym minimalną ilość wiedzy, potrzebnej do rozpoczęcia przygody z chmurą Google. Nie powinniśmy podejmować się takiego procesu, nie posiadajac wcześniej wiedzy na temat usług GCP, ponieważ w najgorszym wypadku, może się to skończyć bardzo wysokimi rachunkami.
 
 Przed rozpoczęciem zabawy z GCP, proponuję zapoznać się z materiałami od Google, np. w formie kursów wideo, dostępnych na platformach Coursera czy Pluralsight. Bardzo dużo informacji znajdziemy również w oficjalnej dokumentacji GCP - od specyfikacji i API usług, po gotowe rozwiązania w formie "best practices" czy "how to".
 
