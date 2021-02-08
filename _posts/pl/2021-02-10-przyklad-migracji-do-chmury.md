@@ -113,7 +113,7 @@ W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny
 
 Dzięki wykorzystaniu Cloud Functions, zoptymalizujemy koszt utrzymania systemu. Funkcje generują koszt wyłącznie wtedy, kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), lub jego braku, opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.
 
-Usługa Cloud Pub/Sub działa na zasadzie kolejki, więc idealnie zastąpi RabbitMQ. Zazwyczaj Cloud Pub/Sub dostarcza każdą wiadomość raz oraz w takiej kolejności, w jakiej została opublikowana. Google w dokumentacji usługi informuje, że mogą zdarzyć się sytuacje, w których wiadomość zostanie dostarczona poza kolejnością lub więcej niż jeden raz. Wiedząc o tym, należy zaimplementować odbiorcę wiadomości w sposób idempotentny, czyli odporny na wielokrotne dostarczenie tej samej wiadomości. W przypadku naszej aplikacji demo nie stanowi to problemu, ponieważ każda wiadomość posiadać będzie unikalny identyfikator, a wielokrotne zapisanie tej samej wiadomości do Cloud Firestore spowoduje jej nadpisanie.
+Usługa Cloud Pub/Sub działa na zasadzie kolejki, więc idealnie zastąpi RabbitMQ. Zazwyczaj Cloud Pub/Sub dostarcza każdą wiadomość jeden raz oraz w takiej kolejności, w jakiej została opublikowana. Google w dokumentacji usługi informuje, że mogą zdarzyć się sytuacje, w których wiadomość zostanie dostarczona poza kolejnością lub więcej niż jeden raz. Wiedząc o tym, należy zaimplementować odbiorcę wiadomości w sposób idempotentny, czyli odporny na wielokrotne dostarczenie tej samej wiadomości. W przypadku naszej aplikacji demo nie stanowi to problemu, ponieważ każda wiadomość posiadać będzie unikalny identyfikator, a wielokrotne zapisanie tej samej wiadomości do Cloud Firestore spowoduje jej nadpisanie.
 
 Pojawienie się wiadomości w Cloud Pub/Sub triggerować będzie wywołanie funkcji odpowiedzialnej za przetworzenie wiadomości i utrwalenie jej w Cloud Firestore. Zrezygnujemy z funkcji pomiędzy aplikacją frontendową a Cloud Pub/Sub, ponieważ zakładamy, że nie ma potrzeby walidacji danych przed wysłaniem ich do Cloud Pub/Sub. W aplikacji źródłowej taka walidacja była wykonywana przez aplikację backendową, zanim wiadomość została wysłana do kolejki RabbitMQ. Dzięki temu, podczas migracji zoptymalizujemy system, upraszczając jego architekturę. Oczywiście taka optymalizacja byłaby możliwa również w systemie źródłowym, ponieważ RabbitMQ umożliwia dostarczanie wiadomości poprzez REST API, wykorzystując w tym celu dodatkową wtyczkę.
 
@@ -121,11 +121,11 @@ Odpowiednikiem bazy MongoDB jest usługa Cloud Firestore. Umożliwia ona zapis i
 
 # Wdrażanie
 
-Wszystkie elementy będą wdrażane ręcznie, za pomocą [Cloud CLI](https://cloud.google.com/sdk) (które umożliwia wykonywanie poleceń GCP w lokalnym terminalu) oraz Cloud Console.
+Wszystkie elementy zostaną wdrożone ręcznie, za pomocą [Cloud CLI](https://cloud.google.com/sdk) (które umożliwia wykonywanie poleceń GCP w lokalnym terminalu) oraz Cloud Console.
 
 ## Aplikacja frontendowa
 
-Migracja aplikacji frontendowej wymaga drobnych zmian. Po pierwsze, musimy zaimplementować uwierzytelnianie, wykorzystujące Google Sign-In. W tym celu, w pliku `environment.ts` musimy skonfigurować **Client ID**, który wygenerowaliśmy wcześniej. Po drugie, główne zmiany zajdą w serwisie odpowiedzialnym za zapis oraz odczyt danych. W systemie źródłowym, wszystko odbywało się przez aplikację backendową. Przykładowy zapis oraz odczyt w aplikacji frontendowej wyglądał następująco:
+Migracja aplikacji frontendowej wymaga drobnych zmian. Po pierwsze, musimy zaimplementować uwierzytelnianie, wykorzystujące Google Sign-In. W tym celu, w pliku `environment.ts` musimy skonfigurować **Client ID**, który wygenerowaliśmy wcześniej. Po drugie, główne zmiany zajdą w serwisie odpowiedzialnym za zapis oraz odczyt danych (w systemie źródłowym, wszystko odbywa się przez aplikację backendową). Przykładowy zapis oraz odczyt w aplikacji frontendowej (w systemie źródłowym), wygląda następująco:
 
 ```typescript
 upsertData(data: Data): Observable<Object> {
@@ -139,7 +139,7 @@ findByUuid(uuid: string): Observable<Object> {
 }
 ```
 
-Funkcja **upsertdata** przesyłała dane do aplikacji backendowej, za pomocą żądania HTTP POST. Odczyt danych za pośrednictwem aplikacji backendowej był wykonywane przez funkcję **findByUuid**, za pomocą żądania HTTP GET.
+Funkcja **upsertdata** przesyła dane do aplikacji backendowej, za pomocą żądania HTTP POST. Odczyt danych za pośrednictwem aplikacji backendowej wykonywany jest przez funkcję **findByUuid**, za pomocą żądania HTTP GET.
 
 W systemie docelowym, zapis wykonywany jest bezpośrednio z aplikacji frontendowej do usługi Cloud Pub/Sub, a odczyt bezpośrednio z Cloud Firestore:
 
@@ -177,7 +177,7 @@ Funkcja **findByUuid** pobiera dane z usługi Cloud Firestore i mapuje je na odp
 
 Główna różnica w zapisie, to nadanie unikalnego identyfikatora UUID, który wcześniej był nadawany przez aplikację backendową, przygotowanie wiadomości Cloud Pub/Sub oraz przemapowanie odpowiedzi.
 
-Odczyt różni się natomiast tym, że z odpowiedzi usługi Cloud Firestore, wyciągane są jedynie potrzebne dane, ponieważ oryginalna odpowiedź zawiera wiele dodatkowych informacji, takich jak znaczniki czasowe zapisu/aktualizacji itp., które nie są prezentowane użytkownikowi.
+Odczyt różni się natomiast tym, że z odpowiedzi usługi Cloud Firestore, wyciągane są jedynie potrzebne dane (oryginalna odpowiedź zawiera wiele dodatkowych informacji, takich jak znaczniki czasowe zapisu/aktualizacji itp., które nie są prezentowane użytkownikowi).
 
 Cała logika odpowiedzialna za przemapowanie żądania/odpowiedzi, która do tej pory była zaimplementowana w aplikacji backendowej, musi zostać zaimplementowana po stronie aplikacji frontendowej. Dzięki temu architektura znacząco się upraszcza.
 
@@ -192,7 +192,7 @@ Musimy pamiętać jeszcze o skonfigurowaniu go w taki sposób, aby pliki były d
 Po umieszczeniu plików w Cloud Storage, będą one dostępne publicznie, np. plik **index.html** będzie dostępny pod adresem:  
 [https://storage.googleapis.com/BUCKET_NAME/index.html](https://storage.googleapis.com/BUCKET_NAME/index.html)
 
-Aplikacja nie będzie jednak działać, ponieważ potrzebna do tego jest jeszcze usługa **Cloud Load Balancing**. Bez niej, po wejściu na podany wyżej adres, zostanie wyświetlona jedynie zawartość pliku **index.html**, a zawarte w nim skrypty JavaScript nie zostaną w żaden sposób zinterpretowane przez przeglądarkę, w efekcie czego wyświetli się jedynie pusta strona.
+Aplikacja nie będzie jednak działać, gdyż do jej uruchomienia potrzebna będzie jeszcze usługa **Cloud Load Balancing**. Bez niej, po wejściu na podany wyżej adres, zostanie wyświetlona jedynie zawartość pliku **index.html**, a zawarte w nim skrypty JavaScript nie zostaną w żaden sposób zinterpretowane przez przeglądarkę, w efekcie czego wyświetli się jedynie pusta strona.
 
 Podczas konfiguracji usługi Cloud Load Balancing, jako **backend** musimy skonfigurować bucket zawierający pliki statyczne oraz musimy nadać statyczny adres IP. Dodatkowo możemy wykorzystać usługę [Cloud CDN](https://cloud.google.com/cdn). Więcej na ten temat znajdziemy w dokumentacji: [Setting up a load balancer with backend buckets](https://cloud.google.com/load-balancing/docs/https/ext-load-balancer-backend-buckets).
 
@@ -201,7 +201,7 @@ Dzięki temu, aplikacja będzie działać poprawnie pod adresem IP:
 
 Do pełni szczęścia potrzebna jest jeszcze domena, która musi zostać skonfigurowana w usłudze Cloud Load Balancing. Google Sign-In, które zostało wykorzystane do uwierzytelniania, wymaga skonfigurowania adresu **Origin** dla wygenerowanego **Client ID**, czyli adresu, pod którym będzie dostępna aplikacja internetowa. Nie może to być adres IP, ponieważ mimo możliwości wpisania w tym miejscu adresu IP, podczas próby zalogowania się otrzymamy błąd **redirect_uri_mismatch**:  
 **The JavaScript origin in the request, does not match the ones authorized for the OAuth client**,  
-czyli taki sam jak w przypadku braku adresu Origin.
+czyli taki sam, jak w przypadku braku adresu Origin.
 
 Po skonfigurowaniu domeny, możemy skonfigurować odpowiednio Client ID:
 
@@ -209,7 +209,7 @@ Po skonfigurowaniu domeny, możemy skonfigurować odpowiednio Client ID:
 
 ## Kolejka
 
-W konsoli usługi Cloud Pub/Sub skonfigurować musimy nowy topic, którego identyfikator zostanie skonfigurowany w aplikacji frontendowej, ponieważ adres na który są wysyłane wiadomości (**environment.pubSubUrl**) musi wskazywać na jaki topic wiadomość jest wysyłana (a także musi zawierać id projektu):  
+W konsoli usługi Cloud Pub/Sub musimy skonfigurować nowy topic, którego identyfikator zostanie przekazany do aplikacji frontendowej, ponieważ adres na który są wysyłane wiadomości (**environment.pubSubUrl**) musi wskazywać, na jaki topic wiadomość jest wysyłana (a także musi zawierać id projektu):  
 [https://pubsub.googleapis.com/v1/projects/PROJECT_ID/topics/TOPIC_NAME:publish](https://pubsub.googleapis.com/v1/projects/PROJECT_ID/topics/TOPIC_NAME:publish)
 
 Konfiguracja kolejki w zasadzie na tym się kończy, ponieważ usługa Cloud Pub/Sub nie wymaga żadnych dodatkowych konfiguracji.
@@ -474,9 +474,9 @@ Gdybyśmy chcieli jednak zaimplementować taką operację, moglibyśmy na przyk�
 
 ## Uprawnienia
 
-Aby umożliwić komunikację z usługami (zapis danych do usługi Cloud Pub/Sub oraz odczyt z usługi Cloud Firestore), skonfigurować należy uprawnienie dla użytkownika w usłudze Cloud IAM. Komunikacja z usługami odbywa się bezpośrednio z aplikacji frontendowej, dlatego do uwierzytelnienia wykorzystywane jest konto zalogowanego użytkownika. W przypadku, kiedy operacje te byłyby wykonywane przez inną usługę GCP, np. Compute Engine, to musielibyśmy utworzyć odpowiednie konto serwisowe (service account) i nadać mu odpowiednie uprawnienia. Konta serwisowe są wykorzystywane przez usługi GCP, w celu uwierzytelniania przed innymi usługami.
+Aby umożliwić komunikację z usługami (zapis danych do usługi Cloud Pub/Sub oraz odczyt z usługi Cloud Firestore), należy skonfigurować uprawnienie dla użytkownika w usłudze Cloud IAM. Komunikacja z usługami odbywa się bezpośrednio z aplikacji frontendowej, dlatego do uwierzytelnienia wykorzystywane jest konto zalogowanego użytkownika. W przypadku, kiedy operacje te byłyby wykonywane przez inną usługę GCP, np. Compute Engine, to musielibyśmy utworzyć odpowiednie konto serwisowe (service account) i nadać mu odpowiednie uprawnienia. Konta serwisowe są wykorzystywane przez usługi GCP, w celu uwierzytelniania przed innymi usługami.
 
-W celach demonstracyjnych, możemy wykorzystać nasze konto, które posiada uprawnienie właściciela projektu. Gdybyśmy chcieli umożliwić korzystanie z systemu innym użytkownikom, powinniśmy utworzyć odpowiednią rolę, posiadającą wymagane uprawnienia oraz nadać tę rolę każdemu użytkownikowi. Sposobów na zarządzanie użytkownikami w Google Cloud jest wiele. Można zaimportować ich z pliku CSV, utworzyć ręcznie, wykorzystać rozwiązania zewnętrzne takie jak [Okta](https://www.okta.com/) czy [Ping](https://www.pingidentity.com/) lub skorzystać z zalecanego rozwiązania, czyli narzędzia [Google Cloud Directory Sync](https://seqred.pl/google-cloud-directory-sync-gcds-do-czego-sluzy-jak-skonfigurowac/).
+W celach demonstracyjnych, możemy wykorzystać nasze konto, które posiada uprawnienie właściciela projektu. Gdybyśmy chcieli umożliwić korzystanie z systemu innym użytkownikom, powinniśmy utworzyć odpowiednią rolę, posiadającą wymagane uprawnienia oraz nadać tę rolę każdemu użytkownikowi. Jest wiele sposobów na zarządzanie użytkownikami w Google Cloud. Można zaimportować ich z pliku CSV, utworzyć ręcznie, wykorzystać rozwiązania zewnętrzne takie jak [Okta](https://www.okta.com/) czy [Ping](https://www.pingidentity.com/) lub skorzystać z zalecanego rozwiązania, czyli narzędzia [Google Cloud Directory Sync](https://seqred.pl/google-cloud-directory-sync-gcds-do-czego-sluzy-jak-skonfigurowac/).
 
 # Optymalizacja
 
@@ -528,13 +528,13 @@ exports.main = (event, context) => {
 
 Na etapie optymalizacji można również wykonywać zmiany, które są wynikiem dalszego zdobywania wiedzy po wdrożeniu lub pojawiania się nowych możliwości w Google Cloud. Jednym z nich jest na przykład możliwość utworzenia konfiguracji strony www w Cloud Storage.
 
-W dokumentacji usługi Cloud Storage można znaleźć informację o tym, że w przypadku nadania bucketowi nazwy, będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu, można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www.
+W dokumentacji usługi Cloud Storage znajduje się informacja o tym, że w przypadku nadania bucketowi nazwy, będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu, można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www.
 
 ![Konfiguracja www bucketa](/assets/img/posts/2021-02-10-przyklad-migracji-do-chmury/bucket_website_configuration.png)
 
 Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny [(pod tym adresem)](https://console.cloud.google.com/apis/credentials/domainverification). Konfigurując w ten sposób bucket, nie potrzebujemy **HTTP/S Load Balancera** do działania aplikacji. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia pomiędzy użytkownikiem a aplikacją internetową, jest złą praktyką.
 
-Dodatkowo, w konfiguracji domeny, zamiast podawać adres IP w rekordzie typu **A**, należałoby podać adres **c.storage.googleapis.com**, w rekordzie typu **CNAME**.
+Dodatkowo, w konfiguracji domeny, zamiast podawać adres IP w rekordzie typu **A**, należy podać adres **c.storage.googleapis.com**, w rekordzie typu **CNAME**.
 
 Więcej informacji znajdziemy tutaj: [Hosting a static website](https://cloud.google.com/storage/docs/hosting-static-website), [Static website examples and tips](https://cloud.google.com/storage/docs/static-website).
 
