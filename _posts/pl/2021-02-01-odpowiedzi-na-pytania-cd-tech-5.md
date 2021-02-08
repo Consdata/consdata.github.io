@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Consdata Tech #5 - odpowiedzi na pytania!"
+title:     "Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!"
 date:      2021-02-01 08:00:00 +0100
 published: true
 lang:      pl
@@ -14,6 +14,7 @@ tags:
 ---
 
 Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech.
+{% include youtube.html movie="-b626JY4d20" %}
 Nie przedłużając więc, przejdę do części właściwej. ;)
 
 ## Jeśli replayEvents jest wyłączony, to czy framework przy starcie aplikacji potrafi odczytać stan np. Issue z bazy danych i dalej na nim operować?
