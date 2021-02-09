@@ -104,9 +104,6 @@ public class MovieProjection {
 W tym przypadku wywołanie notifySubscribers powoduje wyemitowanie (przy użyciu queryUpdateEmittera) nowego filmu z ustawionym statusem ALREADY_ADDED.
 Pojawienie się filmu o takim statusie jest obsługiwane wyżej i skutkuje zwróceniem kodu błędu 409, mówiącym o konflikcie.
 
-## Jak radzicie sobie z nowymi funkcjonalnościami od biznesu, które wymagają większej analizy? Wracacie do wcześniejszych sesji Event Stormingu i ją wzbogacacie?
-Tak jak wspominałem wyżej, nie mamy doświadczeń z produkcyjnym wykorzystaniem Event Stormingu.
-
 ## Co dalej?
 Jeśli szukacie projektów związanych z tematem DDD i Axona, to zerknijcie tu:
   - [Repozytorium, które omawiałem na Consdata Tech](https://github.com/matty-matt/ddd-helpdesk)
