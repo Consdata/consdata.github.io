@@ -75,7 +75,7 @@ Uwaga! Jeśli wskażecie package za wysoko, to nie zadziała - musi to być nazw
 Namiary na projekt podane są na końcu, jest to ten sam projekt, który omawiałem we wcześniejszych [**wpisach**](https://blog.consdata.tech/authors/mkociszewski.html).
 
 ## Jak sobie radzicie w Consdacie z organizacją Event Stormingów w czasach pracy zdalnej?
-Domain Driven Design i Event Storming w Consdacie wciąż jest w fazie R&D, ale z pełnym spokojem mogę polecić [**miro**](https://miro.com) - świetne narzędzie z mnóstwem możliwości.
+Z pełnym spokojem mogę polecić [**miro**](https://miro.com) - świetne narzędzie z mnóstwem możliwości.
 Na koncie bezpłatnym można naprawdę wiele zdziałać. 
 Oczywiście to wciąż nie to samo, co 'realne' spotkanie w grupie projektującej, ale większość zalet Event Stormingu wyciągniemy nawet w remote. 
 
