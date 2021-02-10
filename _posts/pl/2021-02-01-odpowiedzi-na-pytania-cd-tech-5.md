@@ -108,3 +108,4 @@ Pojawienie się filmu o takim statusie jest obsługiwane wyżej i skutkuje zwró
 Jeśli szukacie projektów związanych z tematem DDD i Axona, to zerknijcie tu:
   - [Repozytorium, które omawiałem na Consdata Tech](https://github.com/matty-matt/ddd-helpdesk)
   - [Repozytorium, które cytuję tutaj](https://github.com/matty-matt/movie-keeper-core)
+
