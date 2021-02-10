@@ -1,11 +1,11 @@
 ---
 layout:    post
 title:     "Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!"
-date:      2021-02-01 08:00:00 +0100
+date:      2021-02-10 08:00:00 +0100
 published: true
 lang:      pl
 author:    mkociszewski
-image:     /assets/img/posts/2021-02-01-odpowiedzi-na-pytania-cd-tech-5/lightboard.png
+image:     /assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.png
 tags:
 - ddd
 - axon
