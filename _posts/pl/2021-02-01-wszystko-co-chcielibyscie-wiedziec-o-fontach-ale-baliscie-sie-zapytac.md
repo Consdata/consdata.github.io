@@ -5,7 +5,7 @@ published: true
 date:      2021-02-19 09:00:00 +0100
 author:    pgrobelny
 lang:      pl
-image:     
+image:     /assets/img/posts/2021-02-01-wszystko-co-chcielibyscie-wiedziec-o-fontach-ale-baliscie-sie-zapytac/thumbnail.jpg
 tags:
     - font
     - czcionka
