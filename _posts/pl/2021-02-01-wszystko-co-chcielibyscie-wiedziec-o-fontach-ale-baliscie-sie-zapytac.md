@@ -14,8 +14,9 @@ tags:
     - font-face
 ---
 
-Większość osób, która pracowała na frontendzie na pewno miała do czynienia z fontami, czy to wrzucała je do projektu,
-czy po prostu zmieniała sposób, w jaki tekst wyświetla się na stronie. Na pierwszy rzut oka może się wydawać, że to bajecznie proste.
+
+Osoby pracujące na frontendzie często mają do czynienia z fontami, czy to wrzucają je do projektu, czy po prostu zmieniają sposób, w jaki tekst wyświetla się na stronie.
+Na pierwszy rzut oka może się wydawać, że to bajecznie proste.
 Jest jednak kilka ważnych rzeczy, na które warto zwracać uwagę i być ich świadomym.
 
 ## Sposoby określania wielkości fontów (EM, REM, PX)
