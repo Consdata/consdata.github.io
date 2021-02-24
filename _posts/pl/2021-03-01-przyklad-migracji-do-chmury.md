@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Migracja aplikacji do chmury Google Cloud Platform w praktyce"
-date:      2021-02-01 08:00:00 +0100
+date:      2021-03-01 08:00:00 +0100
 published: true
 lang:      pl
 author:    mhoja
