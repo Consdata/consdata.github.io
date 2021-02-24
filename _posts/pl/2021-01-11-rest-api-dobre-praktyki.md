@@ -14,7 +14,7 @@ tags:
 
 
 ## HTTP i REST - czy zawsze dobrze je stosujemy?
-Jakie są częste błędy przy doborze metod HTTP?  Kiedy trzymać się standardu, a kiedy może to być problemem? O czym pamiętać projektując swoje REST API? Choć ani standard HTTP, ani REST nie są nowością w świecie IT, to pewne twierdzenia ich dotyczące są błędnie powielane przez wiele osób. Czasem znów okazuje się, że deweloperzy z powszechnie znanych firm podchodzą do tego samego problemu w inny sposób. Zapraszam na podróż w znane, ale wciąż jeszcze nie zawsze przestrzegane standardy HTTP i REST. 
+Jakie są częste błędy przy doborze metod HTTP?  Kiedy trzymać się standardu, a kiedy może to być problemem? O czym pamiętać projektując swoje REST API? Choć ani standard HTTP, ani REST nie są nowością w świecie IT, to pewne twierdzenia ich dotyczące są błędnie powielane przez wiele osób. Czasem znów okazuje się, że deweloperzy z powszechnie znanych firm podchodzą do tego samego problemu w inny sposób. Zapraszam na podróż w znane, ale wciąż jeszcze nie zawsze przestrzegane, standardy HTTP i REST. 
 
 ## Kiedy POST, a kiedy PUT? 
 
@@ -29,11 +29,11 @@ Na razie więc widzimy, że choć POST i PUT mają ze sobą dużo wspólnego, PO
 Termin ten, wywodzący się z matematyki, oznacza tutaj, że operacja idempotentna wykonana wielokrotnie nie doprowadzi do błędu, a jej wynik będzie za każdym razem taki sam. PUT jest idempotentny, natomiast POST nie. Przy okazji warto zauważyć, że dwie inne popularne metody HTTP — GET i DELETE — są również idempotentne.
 
 Parokrotne wywołanie metody PUT spełnia te zasady (o ile nasza implementacja jest zgodna ze standardem).
-```
+```yaml
 PUT /messages/1234
 {
-"title": "Hello!",
-"text": "Do you know that PUT is indempotent?"
+  "title": "Hello!",
+  "text": "Do you know that PUT is indempotent?"
 }
 ```
 
@@ -46,7 +46,7 @@ O ile standard nie określa ograniczenia na rozmiar URI, to poszczególne implem
 
 Przykładowy GET:
 
-```
+```yaml
 GET /locations/?country=France,Italy,Greece,......,Brazil&minimum_population=250000&type=city,village&max_height=1300&min_area=100000&.......
 ```
 
@@ -60,25 +60,27 @@ Pierwszy pomysł rozwiązania tego problemu to przekazanie parametrów w ciele m
 - Tracimy łatwe wsparcie dla cache'owania, ponieważ działa one na podstawie URL-a, a nie ciała metody.
 - Rozwiązanie może stworzyć problemy związane z konfiguracją blokującą takie żądania na WAF-ie (Web application firewall), jeśli osoby odpowiedzialne za konfigurację WAF-a uznały, że żądania GET nie powinny mieć ciała.
 
-```
+```yaml
 GET /locations
 {
-    "country": "France,Italy,Greece,......,Brazil",
-    "minimum_population": 250000,
-    "type": "city, village",
-    "max_height": 1300,
-    "min_area": 100000,
-    ....
+  "country": "France,Italy,Greece,......,Brazil",
+  "minimum_population": 250000,
+  "type": "city, village",
+  "max_height": 1300,
+  "min_area": 100000,
+  ....
 }
 ```
 
 
-```
-"locations": [
-"id": "2443", "name": "Rome",
-"id": "6789", "name": "Paris",
-...
-]
+```yaml
+{
+  "locations": [
+    {"id": "2443", "name": "Rome"},
+    {"id": "6789", "name": "Paris"},
+    ...
+  ]
+}
 ```
 
 Czy takie rozwiązania są spotykane w praktyce? Tak, warto przeczytać, że twórcy Elasticsearch są zwolennikami stosowania GETa w ten sposób, argumentując to tutaj. W swoim Search API umożliwiają zarówno skorzystanie z metody GET, jak i z metody POST, którą omówimy za chwilę.
@@ -90,24 +92,26 @@ Drugi pomysł, będący obejściem na problemy poprzedniego rozwiązania, to sko
 - Tracimy wsparcie dla ponawiania żądania przez kliencką bibliotekę HTTP przy błędzie sieciowym.
 - Tracimy zgodność ze standardem. Można też spierać się o to, jak bardzo to rozwiązanie jest nieeleganckie lub czy nie wprowadzi osób korzystających z naszego API w błąd.
 
-```
+```yaml
 POST /locations/search
 {
-    "country": "France,Italy,Greece,......,Brazil",
-    "minimum_population": 2500000,
-    "type": "city, village",
-    "max_height": 1300,
-    "min_area": 100000,
-    ....
+  "country": "France,Italy,Greece,......,Brazil",
+  "minimum_population": 2500000,
+  "type": "city, village",
+  "max_height": 1300,
+  "min_area": 100000,
+  ....
 }
 ```
 
-```
-"locations": [
-"id": "2443", "name": "Rome",
-"id": "6789", "name": "Paris",
-...
-]
+```yaml
+{
+  "locations": [
+    {"id": "2443", "name": "Rome"},
+    {"id": "6789", "name": "Paris"},
+    ...
+  ]
+}
 ```
 
 Czy takie rozwiązanie są spotykane w praktyce? Tak, np. zdecydowali się na to twórcy Dropboxa, argumentując swoją decyzję tutaj.
@@ -119,45 +123,49 @@ Trzeci pomysł to próba połączenia dwóch poprzednich rozwiązań w taki spos
 - Można w tej koncepcji wprowadzić cache'owanie.
 - Jesteśmy zgodni ze standardem.
 
-```
+```yaml
 POST /locations/search
 {
-    "country": "France,Italy,Greece,......,Brazil",
-    "minimum_population": 2500000,
-    "type": "city, village",
-    "max_height": 1300,
-    "min_area": 100000,
-    ....
+  "country": "France,Italy,Greece,......,Brazil",
+  "minimum_population": 2500000,
+  "type": "city, village",
+  "max_height": 1300,
+  "min_area": 100000,
+  ....
 }
 ```
 
-```
-"id": "1297612456456"
+```yaml
+{
+  "id": "1297612456456"
+}
 ```
 
-```
+```yaml
 GET /locations/search?id=1297612456456
 ```
 
-```
-"locations": [
-"id": "2443", "name": "Rome",
-"id": "6789", "name": "Paris",
-...
-]
+```yaml
+{
+  "locations": [
+    {"id": "2443", "name": "Rome"},
+    {"id": "6789", "name": "Paris"},
+    ...
+  ]
+}
 ```
 
 Na pewno nie jest to popularne rozwiązanie, jest najbardziej kosztowne i ryzykowne, a zyskujemy zgodność ze standardem.
 
 
-## Obsługa błędów
+## Jak poprawnie odpowiadać na żądania
 ### Rozróżnianie między niewłaściwą ścieżką, nieistniejącym zasobem, brakiem uprawnień...
 
 Częstym błędem w odpowiedzi na żądania jest zwracanie nieprawidłowego (niezgodnego ze standardem) kodu błędu.  Należy pamiętać, że odpowiedź musi być zrozumiała i łatwa w interpretacji dla użytkownika naszego API, a z drugiej strony nie można zapomnieć o kwestiach związanych z bezpieczeństwem.
 
 Zacznijmy od przykładu.
 
-```
+```yaml
 GET /films/1234
 Response: 404
 ```
@@ -166,17 +174,17 @@ Co będzie oznaczała odpowiedź z kodem błędu 404? Może nie ma takiego zasob
 
 Załóżmy więc, że będziemy zwracać 403, jeśli zasób istnieje, a użytkownik nie ma do niego dostępu. W ten sposób można łatwo poprzez enumerację i przekazywanie kolejnych id, dowiedzieć się, ile jest zasobów danego typu i poznać ich identyfikatory.
 
-```
+```yaml
 GET /films/1
 Response: 403
 ```
 
-```
+```yaml
 GET /films/2
 Response: 404
 ```
 
-```
+```yaml
 ...
 ```
 
@@ -186,24 +194,24 @@ Dlatego też w zależności od tego, czy jest bezpieczne ujawnianie takich infor
 
 Przejdźmy do innego przykładu. Czy 404 oznacza, że zasób nie istnieje, czy że ścieżka jest niewłaściwa? Trudno powiedzieć, jeśli zwrócimy jedynie kod błędu 404.
 
-```
+```yaml
 GET /firms/100
 Response: 404
 ```
 
-```
+```yaml
 GET /films/100
 Response: 404
 ```
 W tym przypadku zalecane jest pozostanie przy kodzie 404, ale dodanie do odpowiedzi przyczyny błędu. Inny sposób — z dwoma różnymi kodami błędu, jest niezgodny ze standardem.
 
-```
+```yaml
 GET /firms/100
 Response: 404
 Invalid path: /firms
 ```
 
-```
+```yaml
 GET /films/100
 Response: 404
 No film with id: 100
@@ -212,7 +220,7 @@ No film with id: 100
 ### Szczegóły błędu
 Jeśli wystawiamy puliczne API, z którego korzystać będzie wielu deweloperów, możemy chcieć podzielić się bardzo dokładnym szczegółem błędu. W innym przypadku możemy ze względów bezpieczeństwa nie przekazywać w wersji produkcyjnej tak szczegółowych informacji na temat błędu. W ogólności poza obowiązkowym kodem błędu można zaproponować dodatkowe pola, przedstawione w poniższym przykładzie.
 
-```
+```yaml
 Response: 400
 {
   "errorCode" : "12355",
@@ -224,19 +232,52 @@ Response: 400
 
 ### Poprawne odpowiedzi
 Poza kodem odpowiedzi często zwracamy dane. Warto trzymać się następujących zasad:
-- nie zwracamy kluczy i wartości związanych z wewnętrzną ,
-- nie zw
+- nie zwracamy kluczy i wartości związanych z wewnętrzną serwerową reprezentacją i implementacją,
+- nie zwracamy wartości jako klucze.
 
-### PATCH i blokowanie na WAF
+Przykład zgodny z zasadami
+```yaml
+{
+  "locations": [
+    {"id": "2443", "name": "Rome"},
+    {"id": "6789", "name": "Paris"}
+  ]
+}
+```
 
-Metoda PATCH została wprowadzona do standardu w RFC 5789 w 2010 roku, nie był to jednak wówczas nowy pomysł. Koncepcja opiera się na tym, że w przeciwieństwie do metody PUT, nie przekażemy całego zasobu, a jedynie zmiany. W związku z tym metoda nie jest idempotentna w przeciwieństwie do metody PUT, to znaczy, że metoda PUT wywołana dowolną liczbę razy da w efekcie zawsze taki sam stan zasobu. W przypadku PATCH-a nie zawsze tak będzie.
+Przykład łamiący pierwszą zasadę
+```yaml
+{
+  "locations": [
+    {"id": "2443", "name": "Rome", "internalId": "345345", "node": "1"},
+    {"id": "6789", "name": "Paris", "internalId": "235435345", "node": 2}
+  ]
+}
+```
+
+Przykład łamiący drugą zasadę
+```yaml
+{
+  "locations": [
+    {"2443": "Rome"},
+    {"6789": "Paris"}
+  ]
+}
+```
+
+## Metoda PATCH
+### PATCH a PUT
+Metoda PATCH została wprowadzona do standardu w RFC 5789 w 2010 roku, nie był to jednak wówczas nowy pomysł. Koncepcja opiera się na tym, że w przeciwieństwie do metody PUT, nie przekażemy całego zasobu, a jedynie zmiany. W związku z tym metoda nie jest idempotentna w przeciwieństwie do metody PUT.
 
 // TODO przykład PUT i PATCH
 
-Chcąc więc być spójni ze standardem i stosując tę metodę HTTP w odpowiednim przypadku, mamy poprawne rozwiązanie, przetestowane na środowisku deweloperskim. Dopiero na kolejnym etapie okazuje się, że żądania PATCH trafiające na nasz serwer są po drodze wycinane — blokowane przez WAF. WAF, którego celem jest zapewnienie bezpieczeństwa, jest konfigurowany zazwyczaj przez inny zespół, czasem z innej firmy lub przez klienta, dla którego dostarczamy rozwiązanie. Dlatego tego typu problemy są dosyć częste. Konfiguracja WAF jest oparta na blokowaniu niedozwolonych żądań i odpowiedzi lub akceptowaniu tylko dozwolonych.
+Czy w praktyce PATCH jest często stosowany? Czy faktycznie deweloperzy stosują PUT tylko zgodnie z zasadą, że należy przekazać cały zasób? W wielu przypadkach stosowanie jest obejście w postaci użycia POSTa.
+
+### Przykład z blokowaniem na WAF
+Chcąc jednak być spójni ze standardem i stosując metodę PATCH w odpowiednim przypadku, możemy zorientować się, że żądania PATCH trafiające na nasz serwer są po drodze wycinane — blokowane przez WAF. WAF, którego celem jest zapewnienie bezpieczeństwa, jest konfigurowany zazwyczaj przez inny zespół, czasem z innej firmy lub przez klienta, dla którego dostarczamy rozwiązanie. Dlatego tego typu problemy są dosyć częste. Konfiguracja WAF jest oparta na blokowaniu niedozwolonych żądań i odpowiedzi lub akceptowaniu tylko dozwolonych.
 
 Czy w opisanym przypadku blokowanie żądań, które korzystają z metody PATCH, było uzasadnione? Zapewne wynikało z tego, że konfiguracja była zawężona najbardziej, jak się dało. W tym przypadku można oczywiście zmienić konfigurację WAF, ale nierzadko w tego typu sytuacjach w praktyce dostosowujemy się do infrastruktury klienta, któremu dostarczamy oprogramowanie i decydujemy się na zmianę np. na PUT. W ten sposób nie jesteśmy już zgodni ze standardem. Widać tu wyraźnie różnicę między sytuacją, gdy wystawiamy API dla potencjalnie wielu klientów i trzymanie się standardów ułatwi innym zrozumienie naszego API a sytuacją, gdy tworzymy rozwiązanie dla jednego klienta, które działa na jego infrastrukturze i staramy się być elastyczni. W drugim przypadku jakość naszego API będzie dużo niższa. Nie można jednak zapominać, że zazwyczaj reguły na WAFie służą poprawie bezpieczeństwa i zabezpieczeniem przed znanymi i dobrze opisanymi atakami. Dlatego często to właśnie brak trzymania się standardów doprowadzi do problemów na WAF-ie.
 
-## POST i cache'owanie ?
+## POST i cache'owanie ???
 
 // TODO
