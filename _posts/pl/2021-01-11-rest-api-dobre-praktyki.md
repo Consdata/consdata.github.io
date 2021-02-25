@@ -83,7 +83,7 @@ GET /locations
 }
 ```
 
-Czy takie rozwiązania są spotykane w praktyce? Warto wiedzieć, że twórcy Elasticsearch są zwolennikami stosowania GETa w ten sposób, argumentując to tutaj. W swoim Search API umożliwiają zarówno skorzystanie z metody GET, jak i z metody POST, którą omówimy za chwilę.
+Czy takie rozwiązania są spotykane w praktyce? Warto wiedzieć, że twórcy Elasticsearch są zwolennikami stosowania GETa w ten sposób, argumentując to tutaj //TODO dodać link. W swoim Search API umożliwiają zarówno skorzystanie z metody GET, jak i z metody POST, którą omówimy za chwilę.
 
 ### POST
 Drugi pomysł, będący obejściem na problemy poprzedniego rozwiązania, to skorzystanie z innej metody HTTP — POST. Jest to dosyć pragmatyczne podejście, przy którym jednak tracimy zalety, które dawał nam GET z parametrami w URLu, czyli:
