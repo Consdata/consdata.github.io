@@ -3,7 +3,7 @@ layout:    post
 title:     "Współdzielona biblioteka w jenkins pipeline"
 published: true
 lang:      pl
-date:      2021-02-xx 08:00:00 +0100
+date:      2021-03-xx 08:00:00 +0100
 author:    dkubiak
 image:     /assets/img/posts/2021-03-xx-xx/xx.jpg
 tags:
@@ -19,7 +19,7 @@ zależność do szeroko stosowanej wtyczki jenkinsowej pipelines (https://www.je
 Każdy z nas podczas modelowania procesów CI/CD spotkał się z pewnymi podobieństwami pomiędzy projektami. Niewątpliwie
 jednym z takich procesów może być release projektu. W naszej firmie prawie każdy projekt budowany jest przy użyciu
 mavena. Tym samym release takich projektów jest procesem bardzo zunifikowanym. W związku z tym jest to idealnym
-kandydat, do zamknąć go w bibliotekę, ustawić na półkę i używać jak zajdzie taka potrzeba.
+kandydat, by zamknąć go w bibliotekę, ustawić na półkę i używać jak zajdzie taka potrzeba.
 
 Zakładając, że każdy projekt w procesie wydawniczym (pipeline) ma krok pod tytułem release. Wystarczy, że zbudujemy
 współdzieloną bibliotekę, którą użyjemy w kroku bez wchodzenia w sposób działania.
@@ -43,8 +43,7 @@ W nowo utworzonym repozytorium kodu tworzymy strukturę katalogów. W naszym prz
 |   +- release.groovy # zasadnicza definicja zmiennej ‘release’ dostępna z poziomu pipelinu
 ```
 
-W ten sposób stworzyliśmy zmienną globalną o nazwie release, aby była ona dostępna z poziomu kroku w pipeline, musi
-zaimplementować metodę call.
+W ten sposób stworzyliśmy zmienną globalną o nazwie release. Aby można było ją wywołać bezpośrednio po nazwie definiujemy metodę `call`.
 
 ```groovy
 //vars/release.groovy
@@ -52,32 +51,31 @@ import com.consdata.shared.library.VersionBumper
 
 def call(String branchName, String gitCredentialId, String versionToBump) {
 
-    script {
-        def current_version = readMavenPom().getVersion()
+    def currentVersion = readMavenPom().getVersion()
+    def bumper = new VersionBumper(currentVersion)
 
-        def bumper = new VersionBumper(current_version)
-
-        releaseVersion = current_version.minus("-SNAPSHOT");
-        snapshotVersion = bumper.bump(versionToBump)
-    }
+    releaseVersion = currentVersion.minus("-SNAPSHOT");
+    snapshotVersion = bumper.bump(versionToBump)
 
     sh "mvn clean versions:set -DnewVersion=\"$releaseVersion\" -DgenerateBackupPoms=false"
+
     sshagent(credentials: [gitCredentialId]) {
         sh("git commit -a -m 'Release $releaseVersion'")
     }
-    script {
-        releaseShaCommit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
-    }
+
+    releaseShaCommit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
     echo "SHA Commit $releaseShaCommit"
+
     sh "mvn clean versions:set -DnewVersion=\"$snapshotVersion\"-SNAPSHOT -DgenerateBackupPoms=false"
+
     sshagent(credentials: [gitCredentialId]) {
         sh("git commit -a -m 'Snapshot $snapshotVersion'-SNAPSHOT")
         sh("git push origin HEAD:$branchName")
         sh("git checkout $releaseShaCommit")
     }
-    script {
-        sh "mvn clean deploy"
-    }
+
+    sh "mvn clean deploy"
+
     sshagent(credentials: [gitCredentialId]) {
         sh("git tag $releaseVersion")
         sh("git push --tags")
@@ -112,8 +110,8 @@ pipeline {
     stages {
         stage('Release') {
             steps {
-                release("master", "$GIT_CREDENTIAL_ID", "MINOR")
-                //nazwa 'release' wynika z konwencji, jest to nazwa pliki w repozytorium biblioteki /vars/release.grovy
+                release("master", env.GIT_CREDENTIAL_ID, "MINOR")
+                //nazwa 'release' wynika z konwencji, jest to nazwa pliki w repozytorium biblioteki /vars/release.groovy
             }
         }
     }
