@@ -38,11 +38,11 @@ PUT /messages/1234
 ```
 
 ## POST bez ciała (body)?
-Biorąc pod uwagę to, że metoda POST ma bardzo szerokie zastosowanie i nie jest idempotentna, w skrajnym przypadku możemy nie chcieć przekazywać żadnych danych. Nasze żądanie może być np. jedynie wyzwalaczem (trigger) jakiegoś procesu i nie potrzebujemy przekazywać nić więcej. W innym przypadku możemy przekazać potrzebne informacje w nagłówkach HTTP, a ponieważ reprezentacja to połączenie nagłówków z danymi, to reprezentacja interpretowana przez serwer nie będzie wcale pusta. Nie będzie to sprzeczne ze standardem HTTP. Należy jedynie pamiętać o poprawnej interpretacji w zależności od technologii, z której korzystamy, zarówno po stronie serwera, jak i klienta. Jeśli np. standardowo posługujemy się formatem application/json i tu też posłużymy się takimi nagłówkami, puste żądanie może być uznane za niepoprawne w przeciwieństwie do przekazania {}. Problem może wystąpić również na innym poziomie infrastruktury, przykładowo tak spreparowane żądanie może zostać zablokowane na WAF-ie (Web application firewall), jeśli została ustalona reguła, którą będzie ono łamać.
+Biorąc pod uwagę to, że metoda POST ma bardzo szerokie zastosowanie i nie jest idempotentna, w skrajnym przypadku możemy nie chcieć przekazywać żadnych danych. Nasze żądanie może być np. jedynie wyzwalaczem (trigger) jakiegoś procesu i nie potrzebujemy przekazywać nic więcej. W innym przypadku możemy przekazać potrzebne informacje w nagłówkach HTTP, a ponieważ reprezentacja to połączenie nagłówków z danymi, to reprezentacja interpretowana przez serwer nie będzie wcale pusta. Nie będzie to sprzeczne ze standardem HTTP. Należy jedynie pamiętać o poprawnej interpretacji w zależności od technologii, z której korzystamy, zarówno po stronie serwera, jak i klienta. Jeśli np. standardowo posługujemy się formatem application/json i tu też posłużymy się takimi nagłówkami, puste żądanie może być uznane za niepoprawne w przeciwieństwie do przekazania {}. Problem może wystąpić również na innym poziomie infrastruktury, przykładowo tak spreparowane żądanie może zostać zablokowane na WAF-ie (Web application firewall), jeśli została ustalona reguła, którą będzie ono łamać.
 
 ## GET z dużą liczbą parametrów
 ### Opis problemu
-Standard nie określa ograniczenia na rozmiar URI, jednakże poszczególne implementacje już je mają (zazwyczaj mieszczący się między 2 KB, a 8 KB. Co ważne, w zależności od stosowanych technologii musimy mieć nad nimi kontrolę od strony serwerowej. Z kolei same przeglądarki mają różne ograniczenia. Bezpiecznie jest więc trzymać się dolnej granicy leżącej poniżej 2048 znaków (możemy też spotkać się z zaleceniami, by utrzymywać się poniżej 2000 znaków). Czy w ogóle tak długie URLe są potrzebne, czytelne i wskazane? Odpowiadając na pierwszą wątpliwość, mogą być dosyć częste przy wyszukiwaniach po wielu kryteriach, dodatkowo z paginacją i sortowaniem. Niewątpliwie czytelność parametrów w URI jest dużo mniejsza niż przy przekazaniu parametrów w ciele żądania w formacie json czy XML. Wyszukiwanie nie zmienia stanu zasobów, czyli powinniśmy skorzystać i zazwyczaj korzystamy z GETa do pobierania danych. Metoda ta jest idempotentna, możemy korzystać z gotowych mechanizmów zapewniających nam cache'owanie lub powtórne wywołanie GETa w przypadku błędu sieciowego. I jak najbardziej wydaje się odpowiednia, skoro chcemy pobrać dane.
+Standard nie określa ograniczenia na rozmiar URI, jednakże poszczególne implementacje już je mają (zazwyczaj mieszczący się między 2 KB, a 8 KB). Co ważne, w zależności od stosowanych technologii musimy mieć nad nimi kontrolę od strony serwerowej. Z kolei same przeglądarki mają różne ograniczenia. Bezpiecznie jest więc trzymać się dolnej granicy leżącej poniżej 2048 znaków (możemy też spotkać się z zaleceniami, by utrzymywać rozmiar URI poniżej 2000 znaków). Czy w ogóle tak długie URLe są potrzebne, czytelne i wskazane? Odpowiadając na pierwszą wątpliwość, mogą być dosyć częste przy wyszukiwaniach po wielu kryteriach, dodatkowo z paginacją i sortowaniem. Niewątpliwie czytelność parametrów w URI jest dużo mniejsza niż przy przekazaniu parametrów w ciele żądania w formacie json czy XML. Wyszukiwanie nie zmienia stanu zasobów, czyli powinniśmy skorzystać i zazwyczaj korzystamy z GETa do pobierania danych. Metoda ta jest idempotentna, możemy korzystać z gotowych mechanizmów zapewniających nam cache'owanie lub powtórne wywołanie GETa w przypadku błędu sieciowego. I jak najbardziej wydaje się odpowiednia, skoro chcemy pobrać dane.
 
 Przykładowy GET:
 
@@ -50,14 +50,14 @@ Przykładowy GET:
 GET /locations/?country=France,Italy,Greece,......,Brazil&minimum_population=250000&type=city,village&max_height=1300&min_area=100000&.......
 ```
 
-Całym sednem problemu jest jednak to, że standard zakłada, że parametry będą przekazane w URL-u, a nie w ciele metody. Co więc w przypadku, gdy naszych parametrów jest za dużo, żeby trzymać się tego standardu? Rozwiązań jest kilka i każde ma swoje wady i zalety.
+Sednem problemu jest jednak to, że standard zakłada, że parametry będą przekazane w URL-u, a nie w ciele metody. Co więc w przypadku, gdy naszych parametrów jest za dużo, żeby trzymać się tego standardu? Rozwiązań jest kilka i każde ma swoje wady i zalety.
 
 ### GET i parametry przekazywanie nie w URI, a w ciele żądania
 Pierwszy pomysł rozwiązania tego problemu to przekazanie parametrów w ciele metody GET. Każda metoda HTTP może mieć ciało, ale w przypadku GETa pojawia się kilka wątpliwości.
 
 - Nie jest to zgodne z założeniami i praktyką. Co prawda standard pozwala na to, żeby dowolna metoda HTTP miała ciało, ale przez wiele lat i w wielu implementacjach założono, że ciało metody GET będzie ignorowane przez serwer. Znajdziemy się więc w dosyć nietypowej sytuacji, w której, chociaż nie jesteśmy niezgodni ze standardem, to jednak ów standard pomija kwestię, jak powinno być traktowane ciało metody GET. W związku z tym również konkretne implementacje nie będą wspierać tego rozwiązania.
 - Wiele implementacji po stronie frontu i serwera nie wspiera GET-a z ciałem. Część bibliotek HTTP (np. JavaScript) nie wspiera wysyłania żądań GET z ciałem. Różne serwery i proxy mogą ignorować dane przekazane w ten sposób.
-- Tracimy łatwe wsparcie dla cache'owania, ponieważ działa one na podstawie URL-a, a nie ciała metody.
+- Tracimy łatwe wsparcie dla cache'owania, ponieważ działa ono na podstawie URL-a, a nie ciała metody.
 - Rozwiązanie może stworzyć problemy związane z konfiguracją blokującą takie żądania na WAF-ie (Web application firewall), jeśli osoby odpowiedzialne za konfigurację WAF-a uznały, że żądania GET nie powinny mieć ciała.
 
 ```yaml
@@ -83,7 +83,7 @@ GET /locations
 }
 ```
 
-Czy takie rozwiązania są spotykane w praktyce? Warto wiedzieć, że twórcy Elasticsearch są zwolennikami stosowania GETa w ten sposób, argumentując to tutaj //TODO dodać link. W swoim Search API umożliwiają zarówno skorzystanie z metody GET, jak i z metody POST, którą omówimy za chwilę.
+Czy takie rozwiązania są spotykane w praktyce? Warto wiedzieć, że twórcy Elasticsearch są zwolennikami stosowania GETa w ten sposób, argumentując to [tutaj](https://www.elastic.co/guide/en/elasticsearch/guide/current/_empty_search.html#get_vs_post). W swoim Search API umożliwiają zarówno skorzystanie z metody GET, jak i z metody POST, którą omówimy za chwilę.
 
 ### POST
 Drugi pomysł, będący obejściem na problemy poprzedniego rozwiązania, to skorzystanie z innej metody HTTP — POST. Jest to dosyć pragmatyczne podejście, przy którym jednak tracimy zalety, które dawał nam GET z parametrami w URLu, czyli:
@@ -113,7 +113,7 @@ POST /locations/search
 }
 ```
 
-Czy takie rozwiązanie są spotykane w praktyce? Tak, np. zdecydowali się na to twórcy Dropboxa, argumentując swoją decyzję tutaj.
+Czy takie rozwiązanie są spotykane w praktyce? Tak, np. zdecydowali się na to twórcy Dropboxa, argumentując swoją decyzję [tutaj](https://dropbox.tech/developers/limitations-of-the-get-method-in-http).
 
 ### GET i POST
 Trzeci pomysł to próba połączenia dwóch poprzednich rozwiązań w taki sposób, żebyśmy byli zgodni ze standardem i intuicyjnym rozumieniem metod (czyli do pobierania danych ma służyć GET, a nie POST). Najpierw tworzymy zapytanie wyszukiwania, przekazując w ciele POST-a parametry wyszukiwania. W odpowiedzi otrzymujemy id naszego wyszukiwania. Korzystamy z GETa i ze zwróconego wcześniej id, aby otrzymać nasz wynik.
@@ -266,7 +266,58 @@ Przykład łamiący drugą zasadę
 ### PATCH a PUT
 Metoda PATCH została wprowadzona do standardu w RFC 5789 w 2010 roku, nie był to jednak wówczas nowy pomysł. Koncepcja opiera się na tym, że w przeciwieństwie do metody PUT, nie przekażemy całego zasobu, a jedynie zmiany. W związku z tym metoda nie jest idempotentna w przeciwieństwie do metody PUT.
 
-// TODO przykład PUT i PATCH
+Załóżmy, że chcemy zaktualizować liczbę ludności miasta, przechowywaną w polu  ```population``` i dodać wartość, która dotychczas nie była zdefiniowana, dla gęstości zaludnienia ```density```. Wówczas oczywiście PUT z pełnymi danymi tylko po to, żeby zaktualizować dwie wartości z wielu, nie ma sensu.
+
+```yaml
+PUT /locations/6789
+{
+  "name" : "Paris",
+  "country": "France",
+  "population": 2206488,
+  "density": 20000,
+  "type": "city",
+  "height_a": 1300,
+  "min_area": 105.4,
+  "time_zone": "UTC+01:00",
+  "amsl": 35,
+  ....
+}
+```
+
+Zazwyczaj czytając o metodzie PATCH, zetkniemy się z następującym przykładem, który jednak nie jest zgodny ze standardem.
+
+```yaml
+PATCH /locations/6789
+{
+  "population": 2206488,
+  "density": 20000
+}
+```
+
+
+Na postawie dokumentu [RFC 7396](https://tools.ietf.org/html/rfc7396) można zaproponować drobną modyfikację tego przykładu.
+
+```yaml
+PATCH /locations/6789
+Content-Type: application/merge-patch+json
+{
+  "population": 2206488,
+  "density": 20000
+}
+```
+
+Innym podejściem, opisanym w [RFC 6902](https://tools.ietf.org/html/rfc6902#section-3) jest zapis stosujący operacje. Taki obiekt składa się z jednego operatora, określającego, jaką akcję należy wykonać. Są to ```add, remove, replace, move, copy, test```. W żądaniu możemy przekazać kilka operacji. W przypadku metody PATCH serwer musi zaaplikować nasze żądanie atomowo, czyli mamy pewność, że albo wszystkie pola zostaną zmodyfikowane w żądany sposób, albo żadne (w przypadku błędu).
+
+```yaml
+ PATCH /localtions/6789
+Content-Type: application/json-patch+json
+   [
+     { "op": "test", "path": "/population", "value": 2175601 },
+     { "op": "replace", "path": "/population", "value": 2206488 },
+     { "op", "add", "path": "/density", "value": 20000},
+   ]
+```
+
 
 Czy w praktyce PATCH jest często stosowany? Czy faktycznie deweloperzy stosują PUT tylko zgodnie z zasadą, że należy przekazać cały zasób? W wielu przypadkach stosowanie jest obejście w postaci użycia POSTa.
 
@@ -275,6 +326,4 @@ Chcąc jednak być spójni ze standardem i stosując metodę PATCH w odpowiednim
 
 Czy w opisanym przypadku blokowanie żądań, które korzystają z metody PATCH, było uzasadnione? Zapewne wynikało z tego, że konfiguracja była zawężona najbardziej, jak to było możliwe. W tym przypadku można oczywiście zmienić konfigurację WAF, ale nierzadko w tego typu sytuacjach w praktyce dostosowujemy się do infrastruktury klienta, któremu dostarczamy oprogramowanie i decydujemy się na zmianę np. na PUT. W ten sposób nie jesteśmy już zgodni ze standardem. Widać tu wyraźnie różnicę między sytuacją, gdy wystawiamy API dla potencjalnie wielu klientów i trzymanie się standardów ułatwi innym zrozumienie naszego API a sytuacją, gdy tworzymy rozwiązanie dla jednego klienta, które działa na jego infrastrukturze i staramy się być elastyczni. W drugim przypadku jakość naszego API będzie dużo niższa. Nie można jednak zapominać, że zazwyczaj reguły na WAFie służą poprawie bezpieczeństwa i zabezpieczeniem przed znanymi i dobrze opisanymi atakami. Dlatego często to właśnie brak trzymania się standardów doprowadzi do problemów na WAF-ie.
 
-## POST i cache'owanie ???
-
-// TODO
+## Jak 
