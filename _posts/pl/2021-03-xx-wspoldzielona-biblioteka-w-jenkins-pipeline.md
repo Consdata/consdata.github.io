@@ -10,7 +10,7 @@ tags:
 - jenkins
 - devops
 - pipeline
-- shard library
+- shared library
 
 ---
 W tym artykule zapoznamy się z mechanizmem bibliotek współdzielonych (Pipeline: Shared Groovy Libraries), które stanowią
@@ -103,7 +103,7 @@ jenkins Pipeline: Shared Groovy Libraries - https://plugins.jenkins.io/workflow-
 Przechodzimy do ostatniego etapu wykorzystania biblioteki wewnątrz pliku Jenkinsfile.
 
 ```groovy
-@Library(['consdata-shared-lib']) _ //Adontacja określająca nazwę biblioteki
+@Library(['consdata-shared-lib']) _ //Adnotacja określająca nazwę biblioteki
 
 pipeline {
     agent any
