@@ -228,7 +228,7 @@ Response: 400
 ```
 
 ### Poprawne odpowiedzi
-Poza kodem odpowiedzi często zwracamy dane. Warto trzymać się następujących zasad:
+Poza kodem odpowiedzi często zwracamy dane — warto trzymać się następujących zasad:
 - nie zwracamy kluczy i wartości związanych z wewnętrzną serwerową reprezentacją i implementacją,
 - nie zwracamy wartości jako klucze.
 
