@@ -2,7 +2,7 @@
 {% assign author = site.authors | where: "short_name", include.post.author | first %}
 <div class="col-5 post-tile">
     <a href="{{ include.post.url }}">
-        <img class="highlight-image" src="{{ include.post.image }}" alt="post-image"/>
+        <img class="highlight-image small-post-image" src="{{ include.post.image }}" alt="post-image"/>
     </a>
     <div class="post-tile-content">
         <a href="{{ include.post.url }}">
