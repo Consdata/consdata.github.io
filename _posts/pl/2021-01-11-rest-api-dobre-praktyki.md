@@ -50,7 +50,12 @@ Przykładowy GET:
 GET /locations/?country=France,Italy,Greece,......,Brazil&minimum_population=250000&type=city,village&max_height=1300&min_area=100000&.......
 ```
 
-Sednem problemu jest jednak to, że standard zakłada, że parametry będą przekazane w URL-u, a nie w ciele metody. Co więc w przypadku, gdy naszych parametrów jest za dużo, żeby trzymać się tego standardu? Rozwiązań jest kilka i każde ma swoje wady i zalety.
+
+Czasami parametrów nie chcemy przekazywać w ten sposób jeszcze z innego powodu. Serwery często logują całą treść zapytania, co może od razu wykluczać pewne zastosowania, np. przesyłanie wrażliwych danych. Dodatkowo taki url będzie dostępny w historii, może zostać udostępniony przez nieświadomego użytkownika komuś innemu, będzie widoczny przez dostawcę usług internetowych. Taka podatność pozwoli atakującym uzyskać dostęp do wrażliwych danych.
+
+Sednem problemu jest jednak to, że standard zakłada, że parametry będą przekazane w URL-u, a nie w ciele metody. Co więc w przypadku, gdy naszych parametrów jest za dużo, żeby trzymać się tego standardu lub gdy są to dane wrażliwe? 
+
+Rozwiązań jest kilka i każde ma swoje wady i zalety.
 
 ### GET i parametry przekazywanie nie w URI, a w ciele żądania
 Pierwszy pomysł rozwiązania tego problemu to przekazanie parametrów w ciele metody GET. Każda metoda HTTP może mieć ciało, ale w przypadku GETa pojawia się kilka wątpliwości.
