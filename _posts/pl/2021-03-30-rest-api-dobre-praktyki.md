@@ -1,11 +1,11 @@
 ---
 layout:    post
 title:     "Standard HTTP i REST - dobre i złe praktyki"
-date:      2021-01-11 08:00:00 +0100
+date:      2021-03-30 08:00:00 +0100
 published: true
 lang:      pl
 author:    bmitan
-image:
+image:     /assets/img/posts/2021-04-02-rest-api-dobre-praktyki/RESTApi.png
 tags:
     - http
     - rest
@@ -314,7 +314,7 @@ Content-Type: application/merge-patch+json
 Innym podejściem, opisanym w [RFC 6902](https://tools.ietf.org/html/rfc6902#section-3) jest zapis stosujący operacje. Taki obiekt składa się z jednego operatora, określającego, jaką akcję należy wykonać. Są to ```add, remove, replace, move, copy, test```. W żądaniu możemy przekazać kilka operacji. W przypadku metody PATCH serwer musi zaaplikować nasze żądanie atomowo, czyli mamy pewność, że albo wszystkie pola zostaną zmodyfikowane w żądany sposób, albo żadne (w przypadku błędu).
 
 ```yaml
- PATCH /localtions/6789
+ PATCH /locations/6789
 Content-Type: application/json-patch+json
    [
      { "op": "test", "path": "/population", "value": 2175601 },
@@ -331,4 +331,5 @@ Chcąc jednak być spójni ze standardem i stosując metodę PATCH w odpowiednim
 
 Czy w opisanym przypadku blokowanie żądań, które korzystają z metody PATCH, było uzasadnione? Zapewne wynikało z tego, że konfiguracja była zawężona najbardziej, jak to było możliwe. W tym przypadku można oczywiście zmienić konfigurację WAF, ale nierzadko w tego typu sytuacjach w praktyce dostosowujemy się do infrastruktury klienta, któremu dostarczamy oprogramowanie i decydujemy się na zmianę np. na PUT. W ten sposób nie jesteśmy już zgodni ze standardem. Widać tu wyraźnie różnicę między sytuacją, gdy wystawiamy API dla potencjalnie wielu klientów i wówczas trzymanie się standardów ułatwi innym zrozumienie naszego API, a sytuacją, gdy tworzymy rozwiązanie dla jednego klienta, które działa na jego infrastrukturze, a my staramy się być elastyczni. W drugim przypadku jakość naszego API będzie dużo niższa. Nie można jednak zapominać, że zazwyczaj reguły na WAFie służą poprawie bezpieczeństwa i zabezpieczeniem przed znanymi i dobrze opisanymi atakami. Dlatego często to właśnie brak trzymania się standardów doprowadzi do problemów na WAF-ie.
 
-## Jak 
+## Podsumowanie
+Krótka podróż po polecanych i odradzanych praktykach w obszarze REST i HTTP dobiegła końca, a jest to jedynie wycinek tych zagadnień. Te konkretne przypadki to próba rozprawienia się z często spotykanymi błędami. Ale najważniejszy być może wniosek to: uczmy się standardów, by albo je stosować, albo — w uzasadnionych przypadkach — świadomie łamać.
