@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Standard HTTP i REST - dobre i złe praktyki"
-date:      2021-03-30 08:00:00 +0100
+date:      2021-03-31 08:00:00 +0100
 published: true
 lang:      pl
 author:    bmitan
