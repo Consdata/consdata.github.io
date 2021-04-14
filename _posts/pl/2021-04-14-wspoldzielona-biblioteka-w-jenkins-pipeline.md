@@ -93,9 +93,9 @@ projektu. Tym samym zdefiniujemy ją na najwyższym poziomie.
 `Zarządzaj Jenkinsem → Skonfiguruj system → Global Pipeline Libraries` (Uwaga: Należy zweryfikować, czy plugin
 Jenkins pipeline: Shared Groovy Libraries - https://plugins.jenkins.io/workflow-cps-global-lib jest aktywny.)
 
-![Główne okno konfiguracji Jenkins](/assets/img/posts/2021-03-xx-wspoldzielona-biblioteka-w-jenkins-pipeline/mainConfigJenkins.png)
+![Główne okno konfiguracji Jenkins](/assets/img/posts/2021-04-14-wspoldzielona-biblioteka-w-jenkins-pipeline/mainConfigJenkins.png)
 
-![Sekcja konfiguracji pipeline-shard](/assets/img/posts/2021-03-xx-wspoldzielona-biblioteka-w-jenkins-pipeline/globalPipelineShardJenkins.png)
+![Sekcja konfiguracji pipeline-shard](/assets/img/posts/2021-04-14-wspoldzielona-biblioteka-w-jenkins-pipeline/globalPipelineShardJenkins.png)
 
 ## Użycie w pipeline
 
