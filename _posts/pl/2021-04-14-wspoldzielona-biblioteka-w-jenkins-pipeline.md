@@ -5,7 +5,7 @@ published: true
 lang:      pl
 date:      2021-04-14 08:00:00 +0100
 author:    dkubiak
-image:     /assets/img/posts/2021-04-14/jenkins-shard-pipeline.jpg
+image:     /assets/img/posts/2021-04-14-wspoldzielona-biblioteka-w-jenkins-pipeline/jenkins-shard-pipeline.jpg
 tags:
 - jenkins
 - devops
