@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Współdzielona biblioteka w jenkins pipeline"
+title:     "Współdzielona biblioteka w Jenkins pipeline"
 published: true
 lang:      pl
 date:      2021-03-xx 08:00:00 +0100
@@ -29,7 +29,7 @@ Biblioteka ma zapewnić nam:
 - upload artefaktów (binarki) do repozytorium,
 - ustalenie nowej wersji developerskiej + commit do głównej gałęzi.
 
-## Tworzenie biblioteki w jenkins pipeline
+## Tworzenie biblioteki w Jenkins pipeline
 
 W nowo utworzonym repozytorium kodu tworzymy strukturę katalogów. W naszym przykładzie git@git.consdata/consdata-shared-lib
 
@@ -42,7 +42,7 @@ W nowo utworzonym repozytorium kodu tworzymy strukturę katalogów. W naszym prz
 |  +- release.groovy # Definicja zmiennej ‘release’ dostępna z pipelinu
 ```
 
-W ten sposób stworzyliśmy zmienną globalną o nazwie release. Aby można było ją wywołać bezpośrednio po nazwie wewnątrz jenkins pipeline, definiujemy funkcję `call`.
+W ten sposób stworzyliśmy zmienną globalną o nazwie release. Aby można było ją wywołać bezpośrednio po nazwie wewnątrz Jenkins pipeline, definiujemy funkcję `call`.
 
 ```groovy
 //vars/release.groovy
@@ -91,9 +91,9 @@ Tak przygotowaną bibliotekę musimy dodać do Jenkinsa. Ponieważ biblioteka b�
 projektu. Tym samym zdefiniujemy ją na najwyższym poziomie.
 
 `Zarządzaj Jenkinsem → Skonfiguruj system → Global Pipeline Libraries` (Uwaga: Należy zweryfikować, czy plugin
-jenkins pipeline: Shared Groovy Libraries - https://plugins.jenkins.io/workflow-cps-global-lib jest aktywny.)
+Jenkins pipeline: Shared Groovy Libraries - https://plugins.jenkins.io/workflow-cps-global-lib jest aktywny.)
 
-![Główne okno konfiguracji jenkins](/assets/img/posts/2021-03-xx-wspoldzielona-biblioteka-w-jenkins-pipeline/mainConfigJenkins.png)
+![Główne okno konfiguracji Jenkins](/assets/img/posts/2021-03-xx-wspoldzielona-biblioteka-w-jenkins-pipeline/mainConfigJenkins.png)
 
 ![Sekcja konfiguracji pipeline-shard](/assets/img/posts/2021-03-xx-wspoldzielona-biblioteka-w-jenkins-pipeline/globalPipelineShardJenkins.png)
 
@@ -120,5 +120,5 @@ pipeline {
 
 ## Podsumowanie
 
-W artykule zastosowaliśmy tylko niewielki wycinek mechanizmu współdzielonych bibliotek i wykorzystaliśmy go w jenkins pipeline. Szerszy kontekst dostępny jest
+W artykule zastosowaliśmy tylko niewielki wycinek mechanizmu współdzielonych bibliotek i wykorzystaliśmy go w Jenkins pipeline. Szerszy kontekst dostępny jest
 bezpośrednio w [dokumentacji](https://www.jenkins.io/doc/book/pipeline/shared-libraries).
