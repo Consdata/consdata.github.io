@@ -3,9 +3,9 @@ layout:    post
 title:     "Współdzielona biblioteka w Jenkins pipeline"
 published: true
 lang:      pl
-date:      2021-03-xx 08:00:00 +0100
+date:      2021-04-14 08:00:00 +0100
 author:    dkubiak
-image:     /assets/img/posts/2021-03-xx-xx/xx.jpg
+image:     /assets/img/posts/2021-04-14/xx.jpg
 tags:
 - jenkins
 - devops
