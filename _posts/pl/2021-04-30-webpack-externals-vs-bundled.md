@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Microfrontends: czy współdzielić zależności?"
+title:     "Micro frontends: czy współdzielić zależności?"
 date:      2021-04-30 08:00:00 +0100
 published: true
 lang:      pl
@@ -10,17 +10,17 @@ tags:
     - frontend
     - angular
     - webpack
-    - microfrontends
+    - micro-frontends
 ---
 
 
-## Microfrontends: czy współdzielić zależności?
+## Micro frontends: czy współdzielić zależności?
 
 _**tl;dr** To współdzielić zależności czy nie? Nie zawsze! Jeżeli nie natrafiłeś na problemy z rozmiarem bundli, to nie rozwiązuj teoretycznych problemów. Zanim zabierzesz się za optymalizację - oceń, co jest problemem, określ, co chcesz osiągnąć i zastanów się, jakimi krokami możesz tam dotrzeć. Bieżące narzędzia stosują zaawansowane mechanizmy optymalizacji, które mogą zachwiać Twoje intuicyjne rozumienie problemu ;-)_
 
 Zarysujmy prosty przykład biznesowo sensownej aplikacji, która posłuży nam do zobrazowania omawianego problemu. Załóżmy, że budujemy system wewnętrznej komunikacji z klientami. Każdy klient ma dostęp do panelu poczty, z którego może przeglądać listę dotychczasowych wątków, prowadzić konwersację oraz przeglądać szczegóły dowolnego wątku i wysłać nową wiadomość, żeby rozpocząć nowy wątek.
 
-Poniższy diagram przedstawia przykładowy system zbudowany w podejściu microfrontends. System składa się z czterech niezależnie rozwijanych i osadzanych webcomponentów:
+Poniższy diagram przedstawia przykładowy system zbudowany w podejściu micro frontends. System składa się z czterech niezależnie rozwijanych i osadzanych webcomponentów:
 
 - mailbox-webcomponent - Aplikacja hosta odpowiedzialna za uwierzytelnianie użytkownika, layout oraz routing komponentów funkcjonalnych.
 - thread-webcomponent - Aplikacja prezentująca szczegóły konkretnego wątku.
@@ -51,7 +51,7 @@ _Oczywiście, powinna do tego dojść jeszcze kompresja serwer-przeglądarka, al
 
 _Inne pytanie, czemu angular czasem zajmuje więcej, a czasem mniej? Wrócimy do tego w dalszej części wpisu._
 
-Czy możemy coś z tym zrobić? Oczywiście! Z pomocą przychodzi webpack i konfiguracja _externals_ (https://webpack.js.org/configuration/externals/#externals). Bez większych trudności możemy określić nie tylko które moduły trafiają do którego bundle (main, polyfills czy vendor), ale wprost wskazać, że część zależności w ogóle ma nie trafić do wynikowych skryptów i obiecać webpackowi: "jakoś to będzie, nie martw się, przyjdą z zewnątrz".
+Czy możemy coś z tym zrobić? Oczywiście! Z pomocą przychodzi webpack i konfiguracja _externals_ (https://webpack.js.org/configuration/externals/#externals). Bez większych trudności możemy określić nie tylko, które moduły trafiają do którego bundle (main, polyfills czy vendor), ale wprost wskazać, że część zależności w ogóle ma nie trafić do wynikowych skryptów i obiecać webpackowi: "jakoś to będzie, nie martw się, przyjdą z zewnątrz".
 
 ### Konfiguracja współdzielenia zależności pomiędzy aplikacjami
 
@@ -84,7 +84,7 @@ W aplikacji hosta dodajemy wymagane skrypty do skryptów globalnie dołączanych
 
 ### Korzyści ze współdzielenia zależności
 
-Zobaczmy zatem ile faktycznie ugraliśmy wyrzucając Angular i rx.js poza aplikacje.
+Zobaczmy zatem, ile faktycznie ugraliśmy wyrzucając Angular i rx.js poza aplikacje.
 
 | Aplikacja               | main.js (bundled) | main.js (externals) | diff  | scripts |
 | ----------------------- |:-----------------:|:-------------------:|:-----:|:-------:|
@@ -99,7 +99,7 @@ Co się właściwie stało?
 
 ### Bundler, Tree Shaking, minification, AoT i inni
 
-Na początek zastanówmy się, z czego wynikają różnice w wielkości dołączanych bibliotek pomiędzy aplikacjami? W tym celu porównajmy co trafia do wynikowego kodu przed i po zastosowania optymalizacji na zależnościach i bundle.
+Na początek zastanówmy się, z czego wynikają różnice w wielkości dołączanych bibliotek pomiędzy aplikacjami? W tym celu porównajmy, co trafia do wynikowego kodu przed i po zastosowania optymalizacji na zależnościach i bundle.
 
 Poniższe obrazy przedstawiają wizualizację analizy wynikowego bundle webpacka:
 - vendor.js - reprezentuje aplikację bez optymalizacji,
@@ -154,4 +154,4 @@ Zawsze, gdy jest ku temu przesłanka! ;) Jest kilka dodatkowych czynników suger
 - gdy liczba aplikacji sprawia, że oszczędność będzie większa niż narzut,
 - gdy stosowana zależność nie lubi być w wielu instancjach w DOM (np. różnego rodzaju globalne zależności).
 
-To, co chcieliśmy pokazać, to że współdzielenie nie jest oczywistą rzeczą, którą "należy zawsze robić". Za każdym razem należy przeanalizować obecne problemy i metody ich rozwiązania. Nie warto wprowadzać rozwiązań problemów których się nie ma ;)
+To, co chcieliśmy pokazać, to że współdzielenie nie jest oczywistą rzeczą, którą "należy zawsze robić". Za każdym razem należy przeanalizować obecne problemy i metody ich rozwiązania. Nie warto wprowadzać rozwiązań problemów, których się nie ma ;)
