@@ -80,7 +80,7 @@ W komponentach threads, thread i new-message oznaczamy zależności jako zewnęt
 }
 ```
 
-W aplikacji hosta dodajemy wymagany skrypty do skryptów globalnie dołączanych do aplikacji.
+W aplikacji hosta dodajemy wymagane skrypty do skryptów globalnie dołączanych do aplikacji.
 
 ### Korzyści ze współdzielenia zależności
 
@@ -152,6 +152,6 @@ Zawsze, gdy jest ku temu przesłanka! ;) Jest kilka dodatkowych czynników suger
 - wykorzystywane zależności nie poddają się łatwo optymalizacji,
 - zależności nie poddają się łatwo tree shaking,
 - gdy liczba aplikacji sprawia, że oszczędność będzie większa niż narzut,
-- gdy stosowana zależności nie lubi być w wielu instancjach w DOM (np. różnego rodzaju globalne zależności).
+- gdy stosowana zależność nie lubi być w wielu instancjach w DOM (np. różnego rodzaju globalne zależności).
 
 To, co chcieliśmy pokazać, to że współdzielenie nie jest oczywistą rzeczą, którą "należy zawsze robić". Za każdym razem należy przeanalizować obecne problemy i metody ich rozwiązania. Nie warto wprowadzać rozwiązań problemów których się nie ma ;)
