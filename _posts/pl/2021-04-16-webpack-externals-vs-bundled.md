@@ -1,11 +1,11 @@
 ---
 layout:    post
 title:     "Micro frontends: czy współdzielić zależności?"
-date:      2021-04-30 08:00:00 +0100
+date:      2021-04-16 08:00:00 +0100
 published: true
 lang:      pl
 author:    glipecki
-image:     /assets/img/posts/2021-04-30-webpack-externals-vs-bundled/scale.jpg
+image:     /assets/img/posts/2021-04-16-webpack-externals-vs-bundled/scale.jpg
 tags:
     - frontend
     - angular
@@ -27,7 +27,7 @@ Poniższy diagram przedstawia przykładowy system zbudowany w podejściu micro f
 - threads-webcomponent - Aplikacja prezentująca listę dostępnych wątków.
 - new-message-webcomponent - Aplikacja pozwalająca wysłać nową wiadomość.
 
-![Architektura przykładowej aplikacji](/assets/img/posts/2021-04-30-webpack-externals-vs-bundled/sample-app-arch.jpg)
+![Architektura przykładowej aplikacji](/assets/img/posts/2021-04-16-webpack-externals-vs-bundled/sample-app-arch.jpg)
 
 Poszczególne aplikacje są wczytywane lazy, gdy są potrzebne, a konkretna nawigacja i konfiguracja jest realizowana na poziomie aplikacji hosta. Wszystkie aplikacje są zbudowane z wykorzystaniem Angular + Angular Elements oraz korzystają z NgRx i rx.js.
 
@@ -106,9 +106,9 @@ Poniższe obrazy przedstawiają wizualizację analizy wynikowego bundle webpacka
 - vendor.43b31...js - reprezentuje aplikację z włączonymi optymalizacjami,
 - na różowo oznaczone są rozmiary zależności widziane przez webpack, gdzie stat size to rozmiar początkowy, a gzipped size to rozmiar w wynikowym bundle.
 
-![Aplikacja bez optymalizacji](/assets/img/posts/2021-04-30-webpack-externals-vs-bundled/unoptimized.jpg)
+![Aplikacja bez optymalizacji](/assets/img/posts/2021-04-16-webpack-externals-vs-bundled/unoptimized.jpg)
 
-![Aplikacja z optymalizacjami](/assets/img/posts/2021-04-30-webpack-externals-vs-bundled/optimized.jpg)
+![Aplikacja z optymalizacjami](/assets/img/posts/2021-04-16-webpack-externals-vs-bundled/optimized.jpg)
 
 Dla uproszczenia, rozmiary części zależności umieścimy w tabeli:
 
@@ -133,7 +133,7 @@ Bundler (np. webpack) w trakcie budowania aplikacji ma okazję skorzystać z wie
 
 Możliwe optymalizacje dobrze widać na przykładzie biblioteki _rxjs_ gdzie większość jej operatorów została pominięta, a sam rozmiar biblioteki został zredukowany o ~80%!
 
-![Rx.js po optymalizacji](/assets/img/posts/2021-04-30-webpack-externals-vs-bundled/rxjs-operators.jpg)
+![Rx.js po optymalizacji](/assets/img/posts/2021-04-16-webpack-externals-vs-bundled/rxjs-operators.jpg)
 
 Sam proces optymalizacji kodu i jego zależności to zupełnie osobny, rozbudowany temat, któremu nie możemy przyjrzeć się po prostu "przy okazji". Jednak na nasze potrzeby sama świadomość procesu optymalizacji i jej wpływu na wynikowy rozmiar jest wystarczająca.
 
