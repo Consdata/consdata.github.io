@@ -13,9 +13,6 @@ tags:
     - micro-frontends
 ---
 
-
-## Micro frontends: czy współdzielić zależności?
-
 _**tl;dr** To współdzielić zależności czy nie? Nie zawsze! Jeżeli nie natrafiłeś na problemy z rozmiarem bundli, to nie rozwiązuj teoretycznych problemów. Zanim zabierzesz się za optymalizację - oceń, co jest problemem, określ, co chcesz osiągnąć i zastanów się, jakimi krokami możesz tam dotrzeć. Bieżące narzędzia stosują zaawansowane mechanizmy optymalizacji, które mogą zachwiać Twoje intuicyjne rozumienie problemu ;-)_
 
 Zarysujmy prosty przykład biznesowo sensownej aplikacji, która posłuży nam do zobrazowania omawianego problemu. Załóżmy, że budujemy system wewnętrznej komunikacji z klientami. Każdy klient ma dostęp do panelu poczty, z którego może przeglądać listę dotychczasowych wątków, prowadzić konwersację oraz przeglądać szczegóły dowolnego wątku i wysłać nową wiadomość, żeby rozpocząć nowy wątek.
