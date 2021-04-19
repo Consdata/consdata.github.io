@@ -96,7 +96,7 @@ Co się właściwie stało?
 
 ### Bundler, Tree Shaking, minification, AoT i inni
 
-Na początek zastanówmy się, z czego wynikają różnice w wielkości dołączanych bibliotek pomiędzy aplikacjami? W tym celu porównajmy, co trafia do wynikowego kodu przed i po zastosowania optymalizacji na zależnościach i bundle.
+Na początek zastanówmy się, z czego wynikają różnice w wielkości dołączanych bibliotek pomiędzy aplikacjami? W tym celu porównajmy, co trafia do wynikowego kodu przed i po zastosowaniu optymalizacji na zależnościach i bundle.
 
 Poniższe obrazy przedstawiają wizualizację analizy wynikowego bundle webpacka:
 - vendor.js - reprezentuje aplikację bez optymalizacji,
