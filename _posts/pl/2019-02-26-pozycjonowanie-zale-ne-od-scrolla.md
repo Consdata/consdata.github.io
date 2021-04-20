@@ -89,7 +89,7 @@ Po wprowadzeniu zmian nasz rozwiązanie prezentuje się znacznie lepiej:
 {% include youtube.html movie="GqopRJ1vuC8" %}
 
 ## Sukces?
-Samodzielna obsługa scrollowania może być kusząca przy realizacji niestandardowych przepływów ekranów, animacji, czy skomplikowanych interfejsów użytkownika. Zawsze jednak należy pamiętać, że przerzucamy na własną implementację ciężar obsługi czegoś, co jest robione dobrze przez każdą przeglądarkę. Czasem lepszym rozwiązaniem będzie znalezienie uproszczeń w wymaganiach, a czasem będziemy mogli wziąć na siebie takie trade-off 🙂
+Samodzielna obsługa scrollowania może być kusząca przy realizacji niestandardowych przepływów ekranów, animacji, czy skomplikowanych interfejsów użytkownika. Zawsze jednak należy pamiętać, że przerzucamy na siebie ciężar obsługi czegoś, co jest robione dobrze przez każdą przeglądarkę. Czasem lepszym rozwiązaniem będzie znalezienie uproszczeń w wymaganiach, a czasem będziemy mogli wziąć na siebie taki trade-off 🙂
 
 Czy ktoś stosuje takie podejścia? Tak, przykładem niech będzie apple.com, gdzie przewijane początkowo jest pionowe, następnie poziome i na końcu znowu pionowe 😉
 {% include youtube.html movie="wMdNDHM2wrc" %}
