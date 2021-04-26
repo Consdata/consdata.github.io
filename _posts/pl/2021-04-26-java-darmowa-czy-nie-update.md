@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Java darmowa, czy nie? - aktualizacja"
-date:      2021-04-25 10:00:00 +0100
+date:      2021-04-26 10:00:00 +0100
 published: true
 lang: pl
 author:    jwilczewski
