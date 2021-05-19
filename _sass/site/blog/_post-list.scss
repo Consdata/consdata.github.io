@@ -89,3 +89,20 @@
   min-height: 238px;
   max-height: 238px;
 }
+
+.post-tile-did-you-know {
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    display: block;
+    content: "Czy wiesz, że?";
+    width: 100%;
+    position: absolute;
+    height: 43px;
+    font-size: 28px;
+    background-color: $color-logo-red;
+    color: $color-white;
+    text-align: center;
+  }
+}

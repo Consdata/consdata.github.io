@@ -26,8 +26,10 @@ comments: true
         <div itemprop="articleBody" class="post-content-container">
             <div class="post-content-left-pane">
                 <div class="post-content">
-                    <img class="post-highlight-image" src="{{post.image}}"
-                         alt="postimage"/>
+                    <div class="{% if post.didyouknow == true %} post-tile-did-you-know {% endif %} post-highlight-image">
+                        <img src="{{post.image}}"
+                             alt="postimage"/>
+                    </div>
                     <div class="social-media-sharing">
                         {% include share_bar.html %}
                     </div>
@@ -45,7 +47,7 @@ comments: true
             <div class="sidebar">
                 {% include latest_posts.html %}
                 {% include recommended-posts-desktop.html %}
-<!--                {% include announcements.html %}-->
+                <!--                {% include announcements.html %}-->
             </div>
         </div>
         <div class="post-post-section-mobile">
@@ -55,7 +57,7 @@ comments: true
             {% include recommended-posts-mobile.html %}
         </div>
         <div class="post-post-section-mobile">
-<!--            {% include announcements.html %}-->
+            <!--            {% include announcements.html %}-->
         </div>
         {% include author_bio.html %}
         {%- if site.disqus.shortname -%}
