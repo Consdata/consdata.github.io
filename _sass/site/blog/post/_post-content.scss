@@ -134,3 +134,17 @@
   text-align: end;
   font-style: italic;
 }
+
+.did-you-know-box {
+  background-color: $color-logo-red;
+  padding: $content-padding;
+  margin-top: $content-padding;
+  margin-bottom: $content-padding;
+  line-height: 2;
+}
+
+.did-you-know-description {
+  color: white;
+  font-weight: $font-weight-bold;
+  margin: 0;
+}

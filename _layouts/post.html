@@ -26,7 +26,7 @@ comments: true
         <div itemprop="articleBody" class="post-content-container">
             <div class="post-content-left-pane">
                 <div class="post-content">
-                    <div class="{% if post.didyouknow == true %} post-tile-did-you-know {% endif %} post-highlight-image">
+                    <div class="{% if post.didyouknow %} big-post-tile-did-you-know {% endif %} post-highlight-image">
                         <img src="{{post.image}}"
                              alt="postimage"/>
                     </div>
@@ -41,6 +41,9 @@ comments: true
                     {{ content }}
                     {% if post.interpreter %}
                     {% include translation-details.html %}
+                    {% endif %}
+                    {% if post.didyouknow %}
+                    {% include did-you-know-box.html %}
                     {% endif %}
                 </div>
             </div>

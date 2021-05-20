@@ -1,6 +1,6 @@
 {% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
 {% assign author = site.authors | where: "short_name", include.post.author | first %}
-<div class="col-5 post-tile {% if include.post.didyouknow == true %} post-tile-did-you-know {% endif %}">
+<div class="col-5 post-tile {% if include.post.didyouknow %} post-tile-did-you-know {% endif %}">
     <a href="{{ include.post.url }}">
         <img class="highlight-image small-post-image" src="{{ include.post.image }}" alt="post-image"/>
     </a>
