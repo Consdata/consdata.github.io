@@ -115,7 +115,7 @@
     transform: translateX(-115px) translateY(40px) rotate(-45deg);
     display: block;
     content: "Czy wiesz, że?";
-    width: 100%;
+    width: 200px;
     position: absolute;
     height: 30px;
     font-size: 20px;
@@ -128,6 +128,6 @@
 
 .big-post-tile-did-you-know {
   &:before {
-    transform: translateX(-295px) translateY(40px) rotate(-45deg);
+    transform: translateX(-45px) translateY(40px) rotate(-45deg);
   }
 }
