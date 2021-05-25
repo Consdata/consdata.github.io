@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2021-04-25-java-darmowa-czy-nie-update/java-darmowa.png
+image:     /assets/img/posts/2021-05-25-slowo-kluczowe-volatile/volatile.png
 tags:
 - java
 ---
