@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Volatile nie należy się bać"
-date:      2021-05-24 10:00:00 +0100
+date:      2021-05-31 10:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2021-05-25-slowo-kluczowe-volatile/volatile.png
+image:     /assets/img/posts/2021-05-31-slowo-kluczowe-volatile/volatile.png
 tags:
 - java
 ---
