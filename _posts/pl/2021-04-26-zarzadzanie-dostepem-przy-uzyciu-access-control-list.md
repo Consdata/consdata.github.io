@@ -313,7 +313,7 @@ Wejście pod adres:
 http://localhost:8080/tasks/list-without-acl
 ```
 
-dowolonym użytkownikiem spowoduje wyświetlenie wszystkich zadań, gdyż dla tego adresu został określony dostęp na poziomie wywołania metody, w tym przypadku, dla użytkowników z rolą *TASK*.
+dowolnym użytkownikiem spowoduje wyświetlenie wszystkich zadań, gdyż dla tego adresu został określony dostęp na poziomie wywołania metody, w tym przypadku, dla użytkowników z rolą *TASK*.
 
 # Podsumowanie
 
@@ -321,4 +321,4 @@ Czy potrzebujmy Spring Security ACL? To zależy od wymagań:
 - Tak, jeśli potrzebujemy określać dostęp na poziomie obiektów.
 - Nie, jeśli potrzebujemy określać dostęp na poziomie żądania HTTP lub wywołania metody.
 
-Tym artykułem dodatkowo chciałbym uświadomić obecność gotowej implementacji ACL oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.
+Tym artykułem chciałbym uświadomić obecność gotowej implementacji ACL oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.
