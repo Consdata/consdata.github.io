@@ -171,7 +171,7 @@ public class AclSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 c) Struktura schematu dla poszczególnych baz danych jest dostępna w kodach źródłowych Spring Security [tutaj](https://github.com/spring-projects/spring-security/tree/main/acl/src/main/resources). W naszym przypadku DDL jest dla bazy danych H2:
 
-```plaintext
+```sql
 -- App schemas
 
 CREATE TABLE IF NOT EXISTS tasks (
@@ -246,7 +246,7 @@ Utworzony schemat należy wypełnić odpowiednimi danymi. W naszej aplikacji mam
 
 W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML. Kwestią otwartą i nieporuszną w tym artykule jest zaimplementowanie serwisu, który jest w stanie programowo zarządzać uprawnieniami.
 
-```plaintext
+```sql
 -- Kilka przykładowych zadań
 
 INSERT INTO tasks (id, chapter, title, description, creation_date) VALUES (1, 'Security', 'tytuł 1', 'opis zadania 1', current_timestamp);
@@ -289,7 +289,7 @@ INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, 
 (8, 8, 1, 3, 1, 1, 1, 0);
 ```
 
-Opis poszczególnych tabel został opisany [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
+Opis poszczególnych tabel został przedstawiony [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
 
 # ACL w akcji
 
