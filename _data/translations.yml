@@ -34,3 +34,10 @@ allPosts:
 newsletterSignUp:
   en: "Sign up for a tech newsletter"
   pl: "Zapisz się na newsletter techniczny"
+cookieConsent:
+  en: "We would like to use third party cookies and scripts to improve the functionality of this website."
+  pl: "Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony"
+cookieConsentApprove:
+  en: "Approve"
+  pl: "Zgadzam się"
+

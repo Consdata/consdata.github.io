@@ -8,12 +8,6 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
   {%- feed_meta -%}
-  {%- if jekyll.environment == 'production' -%}
-    {%- include facebook-pixel.html -%}
-    {%- if site.google_analytics -%}
-      {%- include google-analytics.html -%}
-    {%- endif -%}
-  {%- endif -%}
   {% if page.layout != 'index' and page.lang-ref %}
     {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
     {% if posts.size == 0 %}

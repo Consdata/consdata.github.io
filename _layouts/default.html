@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+<html lang="{{ page.lang | default: site.lang | default: 'pl' }}">
 <script src="/js/lunr.min.js"></script>
 {%- include head.html -%}
 
@@ -13,6 +13,6 @@
 </main>
 
 {%- include footer.html -%}
-
+{% include cookie-consent.html %}
 </body>
 </html>
