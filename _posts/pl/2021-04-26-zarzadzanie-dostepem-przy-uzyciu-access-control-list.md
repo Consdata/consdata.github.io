@@ -21,7 +21,7 @@ W tym artykule wyjaśnię, dlaczego Spring Security jest niewystarczający do zr
 
 Pełny kod jest dostępny pod adresem [**https://github.com/pawelwalaszek/spring-security-acl**](https://github.com/pawelwalaszek/spring-security-acl).
 
-# Czym właściwie jest Access Control List?
+## Czym właściwie jest Access Control List?
 
 Krótka definicja brzmi:
 
@@ -31,7 +31,7 @@ Access Control List (ACL) jest listą uprawnień skojarzonych z obiektem.
 
 W naszym przypadku obiektem jest zadanie. Natomiast lista uprawnień jest przechowywana w bazie danych, w specjalnych strukturach tabelarycznych, w której są zdefiniowane relacje między obiektem, a użytkownikiem.
 
-# Dlaczego Spring Security jest niewystarczający?
+## Dlaczego Spring Security jest niewystarczający?
 
 **Spring Security** pozwala określić *dostęp na poziomie żądania HTTP lub wywołania metody*.
 
@@ -66,7 +66,7 @@ W powyższym przykładzie użytkownik z rolą *TASK* otrzyma listę obiektów *T
 
 Kombinacja adnotacji **@PreAuthorize** i **@PostFilter** jest bardzo wygodna, ale żeby taka była, należy odpowiednio przygotować konfigurację w naszej aplikacji zarówno dla Spring Security jak i dla Spring Security ACL.
 
-# Konfiguracja
+## Konfiguracja
 
 a) Konfiguracja dla Spring Security:
 
@@ -240,7 +240,7 @@ ALTER TABLE acl_object_identity
 ADD FOREIGN KEY (owner_sid) REFERENCES acl_sid (id);
 ```
 
-# Przykładowe dane
+## Przykładowe dane
 
 Utworzony schemat należy wypełnić odpowiednimi danymi. W naszej aplikacji mamy dwóch predefiniowanych użytkowników *user1* i *user2* z taką samą rolą *TASK*. Dla tych użytkowników utworzymy 8 zadań i odpowiednio przypiszemy ich do poszczególnych zadań. Użytkownik *user1* będzie mieć prawo odczytu do zadań z kategorii *Security*, natomiast użytkownik *user2* będzie mieć prawo odczytu do pozostałych zadań. W naszym przykładzie ograniczamy się jedynie do prawa odczytu, jednak ACL umożliwia nadawanie uprawnień dla odczytu, zapisu, tworzenia oraz usuwania.
 
@@ -291,7 +291,7 @@ INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, 
 
 Opis poszczególnych tabel został przedstawiony [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
 
-# ACL w akcji
+## ACL w akcji
 
 Omówiliśmy już wszystkie niezbędne kwestie. Jesteśmy gotowi uruchomić aplikację i ją przetestować. Pełny kod znajduję się pod adresem [**https://github.com/pawelwalaszek/spring-security-acl**](https://github.com/pawelwalaszek/spring-security-acl).
 
@@ -315,7 +315,7 @@ http://localhost:8080/tasks/list-without-acl
 
 dowolnym użytkownikiem spowoduje wyświetlenie wszystkich zadań, gdyż dla tego adresu został określony dostęp na poziomie wywołania metody, w tym przypadku, dla użytkowników z rolą *TASK*.
 
-# Podsumowanie
+## Podsumowanie
 
 Czy potrzebujmy Spring Security ACL? To zależy od wymagań:
 - Tak, jeśli potrzebujemy określać dostęp na poziomie obiektów.
