@@ -13,6 +13,10 @@
     color: $color-gray-80;
     font-weight: $font-weight-bold;
   }
+
+  @include mobile {
+    justify-content: space-between;
+  }
 }
 
 .cookie-notice a {
@@ -31,6 +35,10 @@
   border-radius: 0.25rem;
   padding: .35rem .75rem;
   margin-left: .5rem;
+
+  @include mobile {
+    margin-right: 20px;
+  }
 }
 
 .close-consent {
@@ -46,15 +54,3 @@
   }
 }
 
-@media (max-width: 767px) {
-  .cookie-notice span {
-    display: block;
-    padding-top: 3px;
-    margin-bottom: 1rem;
-  }
-
-  .cookie-notice a {
-    position: relative;
-    bottom: 4px;
-  }
-}
