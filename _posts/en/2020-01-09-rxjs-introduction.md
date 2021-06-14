@@ -88,7 +88,7 @@ subject$.next(5);
 
 The stream you’ve just created is infinite, so you need to remember to unsubscribe once you finish listening to it. You can also close the stream with the _complete()_ command.
 
-In this example, a numerical value ‘5’ was emitted and received by a single observer. If no observers exist at the time of emitting a new value, it is lost. However, if this value is important to you and you don’t want to lose, you can use specific subject-type extending objects.
+In this example, a numerical value '5' was emitted and received by a single observer. If no observers exist at the time of emitting a new value, it is lost. However, if this value is important to you and you don’t want to lose, you can use specific subject-type extending objects.
 
 ### ReplaySubject
 

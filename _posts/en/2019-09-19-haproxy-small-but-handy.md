@@ -45,7 +45,7 @@ backend my-application-servers
 ```
 As a result of the above configuration, the connection on endpoint 172.19.0.1:81 will be redirected to one of the servers on a round-robin basis.
 
-###Ensuring High Availability
+### Ensuring High Availability
 HAProxy can monitor the state of the servers declared in the backend section and halt directing traffic to the servers that have stopped working correctly.
 The server can be configured to determine how often HAProxy is supposed to check the server’s status, how many times the verification has to fail in order for the server to be considered faulty, and how many times the verification has to succeed for the excluded server to be regarded as healthy again.
 For example:
@@ -56,7 +56,7 @@ means that:
 * server status will be checked every 5 seconds (inter 5s),
 * server will be excluded if three consecutive verifications fail (fall 3),
 * excluded server will be checked every minute (downinter 1m),
-* server will be considered operational again if three consecutive verifications are successful (raise 5).
+* server will be considered operational again if three consecutive verifications are successful (raise&nbsp;5).
 
 ### TLS/SSL
 For managing encrypted TLS/SSL connections, HAProxy can work in one of the following modes:
