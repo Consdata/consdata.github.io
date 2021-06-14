@@ -53,7 +53,7 @@
     margin-top: $content-padding;
   }
 
-  :not(.modal) img {
+  .post-highlight-image, .post-tile-did-you-know {
     cursor: pointer;
     transition: 0.3s;
 
@@ -133,4 +133,18 @@
   margin: $small-padding 0;
   text-align: end;
   font-style: italic;
+}
+
+.did-you-know-box {
+  background-color: $color-logo-red;
+  padding: $content-padding;
+  margin-top: $content-padding;
+  margin-bottom: $content-padding;
+  line-height: 2;
+}
+
+.did-you-know-description {
+  color: white;
+  font-weight: $font-weight-bold;
+  margin: 0;
 }

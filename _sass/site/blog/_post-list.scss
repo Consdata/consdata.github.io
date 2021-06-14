@@ -89,3 +89,45 @@
   min-height: 238px;
   max-height: 238px;
 }
+
+.post-tile-did-you-know {
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    display: block;
+    content: "Czy wiesz, że?";
+    width: 100%;
+    position: absolute;
+    height: 43px;
+    font-size: 28px;
+    background-color: $color-logo-red;
+    color: $color-white;
+    text-align: center;
+  }
+}
+
+.post-tile-did-you-know, .big-post-tile-did-you-know {
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    transform: translateX(-115px) translateY(40px) rotate(-45deg);
+    display: block;
+    content: "Czy wiesz, że?";
+    width: 200px;
+    position: absolute;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: $color-logo-red;
+    color: $color-white;
+    text-align: center;
+  }
+}
+
+.big-post-tile-did-you-know {
+  &:before {
+    transform: translateX(-45px) translateY(40px) rotate(-45deg);
+  }
+}
