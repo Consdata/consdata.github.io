@@ -1,0 +1,56 @@
+.cookie-notice {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: calc(100% - 2rem);
+  background: $color-blackcurrant;
+
+  span {
+    color: $color-gray-80;
+    font-weight: $font-weight-bold;
+  }
+
+  @include mobile {
+    justify-content: space-between;
+  }
+}
+
+.cookie-notice a {
+  display: inline-block;
+  cursor: pointer;
+  font-weight: $font-weight-bold;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.consent-button {
+  background: $color-logo-red-dark;
+  color: white;
+  border-radius: 0.25rem;
+  padding: .35rem .75rem;
+  margin-left: .5rem;
+
+  @include mobile {
+    margin-right: 20px;
+  }
+}
+
+.close-consent {
+  position: absolute;
+  font-size: 18px;
+  cursor: pointer;
+  right: 15px;
+  top: 5px;
+  color: white;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
