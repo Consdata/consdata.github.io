@@ -42,7 +42,8 @@
 
     if (readCookie('cookie-notice-dismissed') === 'true') {
         {%- if jekyll.environment == 'production' -%}
-            {%- include facebook-pixel.js -%}
+        {%- include disqus.js -%}
+        {%- include facebook-pixel.js -%}
             {%- if site.google_analytics -%}
                 {%- include google-analytics.js -%}
             {%- endif -%}
