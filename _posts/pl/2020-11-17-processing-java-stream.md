@@ -5,7 +5,7 @@ date:      2020-11-17 08:00:00 +0100
 published: true
 lang: pl
 author:    tdrag
-image:     /assets/img/posts/2020-11-17-java-stream-processing/waterfall-stream.jpg
+image:     /assets/img/posts/2020-11-17-java-stream-processing/waterfall-stream.webp
 tags:
     - java
     - stream

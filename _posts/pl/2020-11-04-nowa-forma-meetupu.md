@@ -5,7 +5,7 @@ date:      2020-11-04 08:00:00 +0100
 published: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2020-11-04-nowa-forma-meetupu/consdata_tech_webinar.jpg
+image:     /assets/img/posts/2020-11-04-nowa-forma-meetupu/consdata_tech_webinar.webp
 tags:
     - consdatatech
     - meetup
@@ -21,7 +21,7 @@ Dodatkowo, zdalna forma organizacji meetupów nie jest dla nas całkowitą nowo�
 
 Ostatnim powodem, który ostatecznie przekonał nas do tej formy, jest ogólna zmiana podejścia do pracy oraz komunikacji przez internet. To co dla wielu z nas jeszcze niedawno było marzeniem - w pełni zdalna praca - dzisiaj jest rzeczywistością, nie tylko w branży IT. Odcisnęło to swoje piętno nie tylko na sposobie pracy, ale też na inicjatywach pokroju Consdata Tech. Meetupy, spotkania i konferencje organizowane w formie online'owej są dzisiaj dla uczestników równie naturalne, co jeszcze niedawno stacjonarne. Z tą może różnicą, że ciężej jest się obłowić w siatkę pełną gadżetów 😉
 
-![ConsdataTech2019](/assets/img/posts/2020-11-04-nowa-forma-meetupu/2019-consdata-consdata.tech-2.jpg)
+![ConsdataTech2019](/assets/img/posts/2020-11-04-nowa-forma-meetupu/2019-consdata-consdata.tech-2.webp)
 
 ### Jakie będą największe zmiany względem poprzednich edycji. Już wiemy, że na pewno forma - ale na co jeszcze powinni się nastawiać dotychczasowi uczestnicy?
 
@@ -33,7 +33,7 @@ Myślę, że nie. Ostatnie pół roku dobitnie pokazało, że komunikując się 
 
 Oczywiście stacjonarne meetupy mają swoje niezaprzeczalne zalety - inne nawet niż darmowa pizza 😉 Zdalnie ciężko jest zadbać choćby o networking, i to faktycznie jest cena, którą ponosimy za zmianę formy organizacji eventu.
 
-![ConsdataTech2019](/assets/img/posts/2020-11-04-nowa-forma-meetupu/2019-consdata-consdata.tech-listopad-male-1.jpg)
+![ConsdataTech2019](/assets/img/posts/2020-11-04-nowa-forma-meetupu/2019-consdata-consdata.tech-listopad-male-1.webp)
 
 ### Pomówmy trochę o tematyce Consdata Tech. Czy poszczególne webinary będą ze sobą tematycznie powiązane?
 
