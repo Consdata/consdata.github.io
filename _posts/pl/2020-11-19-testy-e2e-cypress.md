@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2020-11-24 09:00:00 +0100
 author:    amarszalek
-image:     /assets/img/posts/2020-11-24-testy-e2e-cypress/e2e-cypress.jpg
+image:     /assets/img/posts/2020-11-24-testy-e2e-cypress/e2e-cypress.webp
 tags:
     - Cypress
     - e2e
@@ -88,7 +88,7 @@ cy.visit('https://blog.consdata.tech/').then(() =>{
 ```
 Jak widać, napisany kod jest właściwie samoopisujący się. W pierwszej linii odwiedzamy podany adres, następnie, gdy to się odbędzie, szukamy w DOM elementu o klasie `header-logo` i sprawdzamy czy jest widoczny. Operacje powtarzamy dla elementu `footer`. W przeglądarce uświadczy nas poniższy obrazek:
 <div class="img-with-legend">
-<img alt="Dashboard Cypress" src="/assets/img/posts/2020-11-24-testy-e2e-cypress/sukces%20scenariusz%20pierwszy%20cypress.png" />
+<img alt="Dashboard Cypress" src="/assets/img/posts/2020-11-24-testy-e2e-cypress/sukces%20scenariusz%20pierwszy%20cypress.webp" />
 <span class="img-legend">Rys. 4. Scenariusz testowy zakończony powodzeniem</span>
 </div>
 

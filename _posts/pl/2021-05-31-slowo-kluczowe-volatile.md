@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2021-05-31-slowo-kluczowe-volatile/volatile.png
+image:     /assets/img/posts/2021-05-31-slowo-kluczowe-volatile/volatile.webp
 tags:
 - java
 ---

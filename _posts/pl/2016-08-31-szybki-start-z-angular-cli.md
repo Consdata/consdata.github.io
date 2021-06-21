@@ -3,8 +3,6 @@ layout:    post
 title:     "Szybki start z Angular CLI"
 date:      2016-08-31 08:00:00 +0100
 published: true
-lang:      pl
-lang-ref:  quick-start-angular-cli
 author:    glipecki
 image:     /assets/img/posts/2016-08-31-szybki-start-z-angular-cli/start_z_angularem.jpg
 tags:
