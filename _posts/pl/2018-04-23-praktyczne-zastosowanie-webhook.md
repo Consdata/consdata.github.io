@@ -105,7 +105,8 @@ Całość konfiguracji przedstawia się następująco:
             "type": "CRON",
             "definition": "0 */1 * * * *"
         },
-        {
+        "callbacks": [
+          {
             "type": "POST",
             "url": "https://hooks.slack.com/services/*/*",
             "body" : {
@@ -113,7 +114,8 @@ Całość konfiguracji przedstawia się następująco:
                 "improvement": "{ 'text': 'http://gph.is/1a7RlDR Poprawiono ${diff}'",
                 "clean": "{ 'text': 'https://gph.is/1IH3RW6 Czysto'}"
             }
-        }
+          }
+        ]
     }
 ]
 ```

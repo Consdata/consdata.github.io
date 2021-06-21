@@ -72,7 +72,7 @@ The next step is to define an action trigger. In our example, for simplicity, we
 "trigger": {
     "type": "CRON",
     "definition": "0 */1 * * * *"
-},
+}
 ```
 
 Finally, you need to define the actual integration with the messenger. To do that, define a POST-type callback, including the URL obtained from the "Webhook URL" field of Slack’s configuration panel.
@@ -105,7 +105,7 @@ The whole configuration looks as follows:
             "type": "CRON",
             "definition": "0 */1 * * * *"
         },
-        {
+        "callbacks": [{
             "type": "POST",
             "url": "https://hooks.slack.com/services/*/*",
             "body" : {
@@ -113,7 +113,7 @@ The whole configuration looks as follows:
                 "improvement": "{ 'text': 'http://gph.is/1a7RlDR Poprawiono ${diff}'",
                 "clean": "{ 'text': 'https://gph.is/1IH3RW6 Czysto'}"
             }
-        }
+        }]
     }
 ]
 ```
