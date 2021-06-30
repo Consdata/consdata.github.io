@@ -9,6 +9,7 @@ image:     /assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.w
 tags:
     - angular
     - frontend
+description: "Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian."
 ---
 Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian.
 

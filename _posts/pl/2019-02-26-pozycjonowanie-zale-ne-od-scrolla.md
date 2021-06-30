@@ -9,6 +9,7 @@ image:     /assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/pozycj
 tags:
     - frontend
     - javascript
+description: "Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM."
 ---
 
 Czasem zachodzi potrzeba uzależnienia pozycji elementu od scrolla okna, czy to na potrzeby przyklejenia w widocznym obszarze, czy też stworzenia efektu paralaksy lub niestandardowego flow nawigacji. Temat wydawałby się oczywisty, gdyby nie to, że celowo wprowadzimy sobie dodatkowe ograniczenia (co wcale nie jest takie niecodziennie, uwzględniając fantazję działów UI/UX ;-)).

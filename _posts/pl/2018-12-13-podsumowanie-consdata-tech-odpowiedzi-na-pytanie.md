@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na
 tags:
     - consdata.tech
     - event sourcing
+description: "Czy używacie platformy Kafka Connect? Jeśli tak, czy pozwalacie connectorowi na sterowanie schematem bazy danych? Jeśli nie, jakie macie podejście do ewolucji schematów?"
 ---
 
 ## Czy używacie platformy Kafka Connect? Jeśli tak, czy pozwalacie connectorowi na sterowanie schematem bazy danych? Jeśli nie, jakie macie podejście do ewolucji schematów?

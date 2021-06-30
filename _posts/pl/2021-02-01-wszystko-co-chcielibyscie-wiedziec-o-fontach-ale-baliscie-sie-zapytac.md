@@ -12,6 +12,7 @@ tags:
     - rem
     - woff
     - font-face
+description: "Zacznijmy od początku. Jak poprawnie zdefiniować wielkość fontów? W większości przypadków wyboru dokonujemy pomiędzy PX, EM a REM. Przejdźmy do tego pierwszego."
 ---
 
 

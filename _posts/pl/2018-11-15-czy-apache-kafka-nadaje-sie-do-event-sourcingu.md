@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sou
 tags:
     - event sourcing
     - apache kafka
+description: "Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę."
 ---
 
 Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing [1]. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę.

@@ -14,6 +14,7 @@ tags:
     - DI
     - Dependency Injection
     - ApplicationInitStatus
+description: "APP_INITIALIZER to wbudowany w Angulara InjectionToken. Pod InjectionToken można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu."
 ---
 
 `APP_INITIALIZER` to wbudowany w Angulara `InjectionToken`.

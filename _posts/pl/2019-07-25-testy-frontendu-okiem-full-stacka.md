@@ -10,6 +10,7 @@ tags:
     - unit test
     - jasmine
     - angular
+description: "Co testować na frontendzie? Niezależnie od tego jaki framework został użyty w danym projekcie, zawsze możemy z niego wydzielić komponenty. W tym artykule jako przykład użyty został Angular."
 ---
 
 Niełatwo znaleźć wymówkę, żeby nie pisać testów jednostkowych. Obecność frameworków ułatwiających tę czynność w projektach, z którymi stykamy się na co dzień, nie powinna na żadnym chociaż trochę doświadczonym programiście robić wrażenia i nie trzeba go przekonywać, że **jedne z wielu zalet pisania testów jednostkowych**, to:

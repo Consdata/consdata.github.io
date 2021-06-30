@@ -10,6 +10,7 @@ tags:
   - cookies
   - security
   - same-site
+description: "Same site cookies (First-Part-Only) to stworzony kilka lat temu mechanizm, który pozwala na zmniejszenie ryzyka ataków typu CSRF. Zapewnia on, że dane ciasteczko może być wysyłane wyłącznie z żądaniami zainicjowanymi z domeny, dla której zostało zarejestrowane."
 ---
 
 Same site cookies (*First-Part-Only*) to stworzony kilka lat temu mechanizm, który pozwala na zmniejszenie ryzyka ataków typu CSRF.

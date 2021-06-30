@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-03-26-terraform-czyli-o-tym-jak-okielznac-chmu
 tags:
     - terraform
     - aws
+description: "W przypadku pracy z kodem, potrzebujemy narzędzi automatyzujących proces tworzenia a także niszczenia zasobów AWS. Wykorzystam zatem Terraform, aby pokazać, jak można to zrobić."
 ---
 <blockquote>“Get your clouds right.” <span>Dwight Schrute, The Office</span></blockquote>
 

@@ -13,6 +13,7 @@ tags:
   - ha
   - server
   - network
+description: "HAProxy to pakiet wolnego oprogramowania, który najczęściej pełni rolę reverse-proxy, zapewniając load-balancing i high-availability serwerów aplikacji."
 ---
 
 HAProxy to pakiet wolnego oprogramowania, który najczęściej pełni rolę reverse-proxy, zapewniając load-balancing i high-availability serwerów aplikacji. 

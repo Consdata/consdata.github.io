@@ -41,13 +41,7 @@
     }
 
     if (readCookie('cookie-notice-dismissed') === 'true') {
-        {%- if jekyll.environment == 'production' -%}
-        {%- include disqus.js -%}
-        {%- include facebook-pixel.js -%}
-            {%- if site.google_analytics -%}
-                {%- include google-analytics.js -%}
-            {%- endif -%}
-        {%- endif -%}
+            {%- include facebook-pixel.js -%}
     } else {
         document.getElementById('cookie-notice').style.display = 'flex';
     }

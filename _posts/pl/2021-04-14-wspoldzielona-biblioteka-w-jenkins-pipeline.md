@@ -11,7 +11,7 @@ tags:
 - devops
 - pipeline
 - shared library
-
+description: "W tym artykule zapoznamy się z mechanizmem bibliotek współdzielonych (Pipeline: Shared Groovy Libraries), które stanowią zależność do szeroko stosowanej wtyczki jenkins pipeline"
 ---
 W tym artykule zapoznamy się z mechanizmem bibliotek współdzielonych (Pipeline: Shared Groovy Libraries), które stanowią
 zależność do szeroko stosowanej wtyczki jenkinsowej pipelines (https://www.jenkins.io/doc/book/pipeline/).

@@ -11,6 +11,7 @@ tags:
     - oauth 2
     - keycloak
     - uwierzytelnianie użytkownika
+description: "Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji są OAuth 2.0, OpenID Connect oraz SAML. O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać OAuth 2.0 oraz JWT."
 ---
 
 W nawiązaniu do mojego poprzedniego wpisu pt.:  

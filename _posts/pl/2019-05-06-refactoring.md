@@ -9,6 +9,7 @@ image:     /assets/img/posts/2019-05-06-refactoring/refactoring.jpg
 tags:
     - refaktoryzacja
     - javascript
+description: "Książka 'Refactoring' Martina Fowlera i Kenta Becka została po raz pierwszy wydana w 1999 roku i często określana jest jako pozycja wybitna, ponadczasowa, jako must read każdego programisty. Dodatkowo w tym roku wyszła jej druga edycja. Po co?"
 ---
 
 Książka "Refactoring" Martina Fowlera i Kenta Becka została po raz pierwszy wydana w 1999 roku i często określana jest jako pozycja wybitna, ponadczasowa, jako must read każdego programisty. 

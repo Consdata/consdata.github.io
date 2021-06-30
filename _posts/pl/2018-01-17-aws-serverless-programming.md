@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-01-17-aws-serverless-programming/aws.jpg
 tags:
     - aws
     - serverless
+description: "W kwestii AWS architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe."
 ---
 
 Trudno dziś wyobrazić sobie branżę IT bez chmury obliczeniowej. Przeniesienie naszych serwerów do clouda i zastosowanie Infrastructure as Code (IaC) pozwala często na zoptymalizowanie kosztów, a także na zapewnienie lepszej dostępności i skalowalności rozwiązania. Architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe. Wymusza ona również pewną zmianę mentalną w środowisku inżynierów IT - praca z arkuszem kalkulacyjnym i liczenie kosztów przygotowywanego rozwiązania staje się nieodłączną częścią procesu produkcji. Wraz z wprowadzeniem przez Amazon usługi AWS Lambda w 2014 roku programowanie w architekturze serverless stało się jeszcze prostsze. W artykule przedstawię przykład serwisu do przechowywania notatek, przygotowany w oparciu o architekturę serverless, dostarczaną przez AWS. Pokażę również koszty takiego rozwiązania.

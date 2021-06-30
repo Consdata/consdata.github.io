@@ -8,6 +8,7 @@ author:    glipecki
 image:     /assets/img/posts/2017-02-03-dynamiczne-dodawanie-komponentow-w-angular-2/angular-2.jpg
 tags:
     - angular
+description: "Od pewnego czasu pracuję nad świeżym projektem opartym o Angular 2. Częścią projektu jest prezentowanie użytkownikowi dynamicznie generowanych elementów interfejsu. Nie jesteśmy w stanie zaprojektować z wyprzedzeniem ekranów, nie znając ani ich struktury, ani konkretnych kontrolek."
 ---
 Od pewnego czasu pracuję nad świeżym projektem opartym o Angular 2. Częścią projektu jest prezentowanie użytkownikowi dynamicznie generowanych elementów interfejsu. Nie jesteśmy w stanie zaprojektować z wyprzedzeniem ekranów, nie znając ani ich struktury, ani konkretnych kontrolek.
 

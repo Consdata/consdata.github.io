@@ -10,6 +10,7 @@ tags:
     - java
     - stream
     - benchmarking
+description: "Java Stream API definiuje dwa rodzaje operacji, jakie możemy wykonać w trakcie przetwarzania strumieni, operacje pośrednie – intermediate, oraz operacje końcowe - terminal."
 ---
 
 ## Java Stream

@@ -11,6 +11,7 @@ tags:
     - angular
     - webpack
     - micro-frontends
+description: "tl;dr To współdzielić zależności w microfrontends czy nie? Nie zawsze! Jeżeli nie natrafiłeś na problemy z rozmiarem bundli, to nie rozwiązuj teoretycznych problemów. Zanim zabierzesz się za optymalizację - oceń, co jest problemem, określ, co chcesz osiągnąć i zastanów się, jakimi krokami możesz tam dotrzeć. Bieżące narzędzia stosują zaawansowane mechanizmy optymalizacji, które mogą zachwiać Twoje intuicyjne rozumienie problemu"
 ---
 
 _**tl;dr** To współdzielić zależności czy nie? Nie zawsze! Jeżeli nie natrafiłeś na problemy z rozmiarem bundli, to nie rozwiązuj teoretycznych problemów. Zanim zabierzesz się za optymalizację - oceń, co jest problemem, określ, co chcesz osiągnąć i zastanów się, jakimi krokami możesz tam dotrzeć. Bieżące narzędzia stosują zaawansowane mechanizmy optymalizacji, które mogą zachwiać Twoje intuicyjne rozumienie problemu ;-)_
