@@ -10,6 +10,7 @@ tags:
     - ansible
     - automation
     - devops
+description: "Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (KISS – Keep it simple, stupid). Doskonale w ten trend wpasowuje się Ansible. To kupione przez firmę Red Hat opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka YAML, w prosty sposób pozwala opisać wzajemne relacje między systemami."
 ---
 
 Czy istnieje możliwość usprawnienia istniejących procesów instalacji aplikacji lub nawet całych systemów mimo, że te sprawdzają się już od wielu lat? Okazuje się, że tak. Można dzięki temu zaoszczędzić trochę czasu na analizę występujących problemów, a także zwiększyć czytelność skryptów wykorzystywanych do instalacji. Ponadto można z administratora zdjąć obowiązek orientowania się w konfiguracji dziesiątek serwerów. 

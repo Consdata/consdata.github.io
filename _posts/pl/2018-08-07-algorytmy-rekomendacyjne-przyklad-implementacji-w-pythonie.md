@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implem
 tags:
     - algorytmy rekomendacyjne
     - python
+description: "Systemy rekomendacyjne widzimy wszędzie tam, gdzie użytkownik ma styczność z ogromnymi katalogami danych, np. Amazon podpowiada nam, jakie produkty powinniśmy kupić, Netflix - jakie filmy oglądać, a Spotify - które utwory na pewno nam się spodobają. Wykorzystywane są przez coraz większą ilość usług, a ich popularność stale rośnie. Odpowiada za to koncepcja “Long Tail”."
 ---
 **Gdy robimy zakupy w internecie, często zdarza się, że przez kolejne dni pokazują nam się propozycje produktów, podobnych do tych, które wcześniej oglądaliśmy. Atrakcyjne ceny powodują, iż czasem ulegamy presji reklamy, decydujemy się na zapoznanie się z ofertą i...dokonujemy zakupu. Jak to się dzieje, że przeglądarka wie, co chcemy kupić, zobaczyć czy posłuchać? Za to wszystko odpowiadają systemy rekomendacyjne.**
 

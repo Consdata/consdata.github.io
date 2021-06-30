@@ -11,6 +11,7 @@ tags:
   - hibernate
   - persistence
   - jpa
+description: "W tym poście powiemy o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate’a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa. Skupimy się na aspektach konfiguracyjnym i diagnostycznym systemu."
 ---
 
 W tym poście powiemy o przykładowej ścieżce optymalizacji wstawiania grup rekordów do bazy danych za pomocą Hibernate'a i SpringBoota z założeniem użycia spring-boot-starter-data-jpa.

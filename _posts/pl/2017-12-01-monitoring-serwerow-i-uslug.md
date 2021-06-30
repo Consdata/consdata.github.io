@@ -11,6 +11,7 @@ tags:
     - icinga2
     - grafana
     - influxdb
+description: "Połączenie Grafany, jako warstwy prezentacji i ostrzegania, oraz Icingi, jako narzędzia do zbierania metryk, jest dosyć łatwym i szybkim w zestawieniu systemem do monitorowania serwerów."
 ---
 
 Bieżące informacje o stanie serwerów i działających na nich usług są ważne dla każdego dostawcy rozwiązań IT, z którego korzysta szersza rzesza użytkowników. Najważniejsze oczywiście jest zapewnienie, że wszystkie usługi działają. Jednak samo działanie to jeszcze nie wszystko. Ważny jest także czas odpowiedzi z tych usług. Jeśli czas odpowiedzi wzrósł, lub nawet usługa przestała odpowiadać, przydatna może okazać się znajomość stanu maszyny w zadanym czasie. W tym celu przydatne będą takie dane, jak obciążenie procesora w danym momencie, zużycie pamięci RAM oraz wolnej przestrzeni na dysku. Aby możliwie szybko zareagować, a być może także uniknąć sytuacji, w której usługa przestaje odpowiadać, istotne są ostrzeżenia, które pozwolą zareagować na czas. Niniejszy artykuł ma na celu zaprezentować rozwiązanie, które pozwoli w miarę szybko stworzyć system monitoringu oraz ostrzegania na systemach wyposażonych w system Linux, oparty o takie narzędzia jak “Grafana”, “Icinga2” oraz “InfluxDB”.

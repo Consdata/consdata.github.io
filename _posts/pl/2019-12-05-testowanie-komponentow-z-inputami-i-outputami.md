@@ -11,6 +11,7 @@ tags:
     - Angular
     - unit test
     - komponent
+description: "Czas na dawkę informacji dotyczących testowania przy użyciu Jasmine. Pora skupić się na testowaniu komponentów angularowych, a w szczególności ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się z kilku drobnych wzajemnie się ze sobą komunikujących elementów."
 ---
 Czas na kolejną dawkę informacji dotyczących testowania przy użyciu Jasmine. Po przeczytaniu wcześniejszych wpisów ([Cz. 1]({% post_url pl/2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}) i [Cz. 2]({% post_url pl/2019-11-20-testowanie-komponentow-i-serwisow %})) pora skupić się na testowaniu komponentów angularowych, a w szczególności ich wejść i wyjść. Przykłady oprzemy o aplikację, która będzie składała się z kilku drobnych wzajemnie się ze sobą komunikujących elementów.
 

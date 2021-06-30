@@ -10,6 +10,7 @@ tags:
     - ux
     - ui
     - design
+description: "W latach 80. Dieter Rams zagubiony w chaosie form i kolorów postanowił coś z tym zrobić i opracował 10 reguł dobrego designu, które w branży zdążyły urosnąć do rangi dziesięciu przykazań, a on sam uchodzi dziś za jednego z najlepszych i najbardziej wpływowych projektantów XX wieku."
 ---
 
 W latach 80. Dieter Rams zagubiony w chaosie form i kolorów postanowił coś z tym zrobić. Doszedł do wniosku, że dobry design nie może trzymać się sztywnych ram, ale opierając się na pewnych regułach, można stworzyć dobry produkt. Idąc tym tokiem rozumowania opracował 10 reguł dobrego designu, które w branży zdążyły urosnąć do rangi dziesięciu przykazań, a on sam uchodzi dziś za jednego z najlepszych i najbardziej wpływowych projektantów XX wieku.

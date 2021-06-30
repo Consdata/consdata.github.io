@@ -11,6 +11,7 @@ tags:
     - tomcat
     - nio
     - connector
+description: "Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji."
 ---
 
 Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji. Kiedy projekt dojrzewa do wdrożenia produkcyjnego i musi zmierzyć się z obsługą dużego ruchu, często konieczne okazuje się dostrojenie tej konfiguracji. W tym artykule skupię się na konfiguracji connectorów na przykładzie pewnego problemu produkcyjnego. Opis konfiguracji Tomcata bazuje na wersji 7.x, ale jest w zasadzie aktualny również dla wyższych wersji.

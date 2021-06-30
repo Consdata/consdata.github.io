@@ -9,6 +9,7 @@ image:     /assets/img/posts/2016-12-08-sonarqube-wprowadzenie-do-statycznej-ana
 tags:
     - sonarqube
     - jakość kodu
+description: "SonarQube, powstał jako system do integracji raportów z różnych bibliotek i wizualizacji wyników. Twórcy byli rozczarowani tempem zmian w popularnych bibliotekach statycznej analizy kodu, dlatego zaczęli na własną rękę przygotowywać zestaw reguł, które ich zdaniem powinien spełniać dobry kod."
 ---
 
 <blockquote>“It is not enough for code to work.” <span>Robert C. Martin, Clean Code</span></blockquote>

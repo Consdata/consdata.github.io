@@ -9,7 +9,9 @@ image:     /assets/img/posts/2019-03-27-custom-elements/custom-elements.png
 tags:
     - frontend
     - custom elements
-    - web components
+    - web
+description: "Custom element, co to takiego? Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM."
+
 ---
 ## Custom element, co to takiego?
 Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.

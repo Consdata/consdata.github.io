@@ -11,6 +11,7 @@ tags:
     - e2e
     - e2e testing
     - JavaScript
+description: "W kwestii testów e2e, czyli takich, które sprawdzają funkcjonalność od początku do końca wezmę na warsztat całkiem młody framework - Cypress mimo że nadal dominuje Selenium."
 ---
 Łamy bloga Consdata Tech gościły już wiele wpisów dotyczących testowania aplikacji - jednak żaden z nich nie zajmował się tematem testów e2e (end-to-end).
 Na rynku testów e2e, czyli takich, które sprawdzają funkcjonalność od początku do końca, symulując zachowanie użytkownika i weryfikując UI, stale dominuje Selenium - narzędzie wielu programistom znane, z historią sięgającą 2004 roku.

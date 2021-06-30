@@ -12,6 +12,7 @@ tags:
     - devops
     - jenkins-job-builder
     - jenkins-jobs
+descrption: "W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. W tym artykule zajmiemy się automatyzacją buildów w Jenkinsie. Do budowania projektów starajmy się używać jednego narzędzia. W tym artykule będziemy posługiwać się mavenem."
 ---
 
 W ogarniającym nas świecie mikroserwisów skala projektów do utrzymania staje się ogromna. Każdy z tych projektów musimy przecież: zbudować, przetesować, zdeployować itd. Przy dużej liczbie projektów przestaje to być trywialne. W tym artykule zajmiemy się pierwszym zagadnieniem - automatyzacją buildów, jednak opisany tutaj sposób bez problemu można zastosować do innych aspektów.

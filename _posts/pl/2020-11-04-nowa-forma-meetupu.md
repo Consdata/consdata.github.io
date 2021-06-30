@@ -9,6 +9,7 @@ image:     /assets/img/posts/2020-11-04-nowa-forma-meetupu/consdata_tech_webinar
 tags:
     - consdatatech
     - meetup
+description: "Consdata Tech to inicjatywa, której założeniem od początku było dzielenie się wiedzą i doświadczeniem w formie cyklicznych meetupów oraz integracja lokalnej społeczności zafascynoweanej światem Java."
 ---
 
 Consdata Tech to inicjatywa, której założeniem od początku było dzielenie się wiedzą i doświadczeniem w formie cyklicznych meetupów oraz integracja lokalnej społeczności zafascynoweanej światem Java. Wszystkie dotychczasowe edycje odbywały się w Poznaniu, w przestrzeni +Jeden, jednakże trwająca pandemia uniemożliwia zachowanie takiej formuły eventu. Ta sytuacja stała się motywatorem do tego, by kolejne edycje Consdata Tech zorganizować w postaci webinarowej i tym samym przenieść je z przestrzeni biurowej wprost do domów swoich uczestników. O nowej formie i oczekiwaniach względem niej oraz przede wszystkim, czy warto dołączać do webinaru, rozmawiamy z Marcinem Mergo - pomysłodawcą cyklu eventów. 

@@ -15,6 +15,7 @@ tags:
     - gcp
     - aws
     - azure
+description: "Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!"
 ---
 
 Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!

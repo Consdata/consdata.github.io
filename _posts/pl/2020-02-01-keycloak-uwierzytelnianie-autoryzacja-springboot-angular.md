@@ -15,6 +15,7 @@ tags:
     - keycloak-spring-boot-2-adapter
     - keycloak-angular
     - uwierzytelnianie użytkownika
+description: "Jak wykorzystać serwer Keycloak do logowania w aplikacji? Omówimy to na przykładzie gotowego projektu, który umożliwia użytkownikowi zalogowanie się do aplikacji z poziomu przeglądarki internetowej."
 ---
 
 Jak wykorzystać serwer Keycloak do logowania w aplikacji?

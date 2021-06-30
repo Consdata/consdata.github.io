@@ -9,6 +9,7 @@ image:     /assets/img/posts/2017-01-19-wireshark-czy-to-gryzie/wireshark.png
 tags:
     - wireshark
     - networks
+description: "Z programem Wireshark pierwszy raz zetknąłem się w czasie studiów na zajęciach z sieci komputerowych (dla niewtajemniczonych: Wireshark to aplikacja która umożliwia przechwytywanie i nagrywanie pakietów danych, a także ich dekodowanie i analizowanie). Wówczas odniosłem wrażenie że jest to narzędzie stricte dla administratorów sieci i nie ma większego zastosowania w obszarze wytwarzania i utrzymywania oprogramowania."
 ---
 
 Z programem Wireshark pierwszy raz zetknąłem się w czasie studiów na zajęciach z sieci komputerowych (dla niewtajemniczonych: Wireshark to aplikacja która umożliwia przechwytywanie i nagrywanie pakietów danych, a także ich dekodowanie i analizowanie). Wówczas odniosłem wrażenie że jest to narzędzie stricte dla administratorów sieci i nie ma większego zastosowania w obszarze wytwarzania i utrzymywania oprogramowania.

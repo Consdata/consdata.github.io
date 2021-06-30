@@ -14,7 +14,7 @@ tags:
     - event-sourcing
     - spring-boot
     - tests
-description: Axon to ...
+description: "Niniejszy artykuł jest poświęcony w pełni testom aplikacji opartej o Axona. Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu."
 ---
 
 Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.

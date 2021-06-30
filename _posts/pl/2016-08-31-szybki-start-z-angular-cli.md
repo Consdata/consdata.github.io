@@ -3,10 +3,12 @@ layout:    post
 title:     "Szybki start z Angular CLI"
 date:      2016-08-31 08:00:00 +0100
 published: true
+lang: pl
 author:    glipecki
 image:     /assets/img/posts/2016-08-31-szybki-start-z-angular-cli/start_z_angularem.jpg
 tags:
     - angular
+description: "Wydanie stabilnej wersji Angular 2 to idealny moment, żeby zacząć swoją przygodę z tym frameworkiem. Nie ma lepszego sposobu na poznanie nowej technologii niż skok na głęboką wodę i rozpoczęcie zabawy z kodem 😉"
 ---
 
 Wydanie stabilnej wersji Angular 2 to idealny moment, żeby zacząć swoją przygodę z tym frameworkiem. Nie ma lepszego sposobu na poznanie nowej technologii niż skok na głęboką wodę i rozpoczęcie zabawy z kodem 😉

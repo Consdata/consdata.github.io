@@ -10,6 +10,7 @@ tags:
     - Jasmine
     - Angular
     - unit test
+description: "Jeśli zastanawialiście się, jak rozpocząć testy komponentów i serwisu w przypadku kwestii dotyczącej testowania frontendu, to znak że ten wpis jest dla Was."
 ---
 
 2 tygodnie temu [Marcin Mendlik pisał o konfiguracji Karmy i Jasmine w projekcie]({% post_url pl/2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}).
