@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Zarządzanie dostępem przy użyciu Access Control List"
+title:     "Zarządzanie dostępem przy użyciu ACL (Access Control List)"
 date:      2021-04-26 08:00:00 +0100
 published: true
 lang:      pl
@@ -13,9 +13,9 @@ tags:
     - authorization
 ---
 
-W świecie programistów Java, od wielu lat prym wiedzie **Spring Framework**, który błyskawicznie dostosowuje się do panujących trendów. Trudno sobie wyobrazić programistę Java, szczególnie aplikacji internetowych, który nie znałby tego projektu, lub precyzyjniej, zbioru projektów. Jednym z popularnych i bardzo dojrzałych projektów, jest **Spring Security**, który dostarcza gotowe rozwiązania dla różnych zawiłych zagadnień w zakresie bezpieczeństwa.
+W świecie programistów Java, od wielu lat prym wiedzie **Spring Framework**, który błyskawicznie dostosowuje się do panujących trendów. Trudno sobie wyobrazić programistę Java, szczególnie aplikacji internetowych, który nie znałby tego projektu, lub precyzyjniej, zbioru projektów. Jednym z popularnych i bardzo dojrzałych elementów ekosystemu, jest **Spring Security**, który dostarcza gotowe rozwiązania dla różnych zawiłych zagadnień w zakresie bezpieczeństwa.
 
-Kilka lat temu, kiedy zaczynałem przygodę z programowaniem, moim pierwszym komercyjnym projektem do wykonania, było zaimplementowanie aplikacji internetowej, która miała służyć do zarządzania zadaniami. Zadania te były przypisane do konkretnych użytkowników, którzy nie mogli sobie nawzajem przeglądać zadań. Problem wydawał się być powszechny. Po krótkim poszukiwaniu, natknąłem się na koncepcję znaną jako **Access Control List** oraz jego realizacją w **Spring Security ACL**, która jest rozszerzeniem Spring Security. To było to, czego szukałem!
+Kilka lat temu, kiedy zaczynałem przygodę z programowaniem, moim pierwszym komercyjnym projektem do wykonania, było zaimplementowanie aplikacji internetowej, która miała służyć do zarządzania zadaniami. Zadania te były przypisane do konkretnych użytkowników, którzy nie mogli sobie ich nawzajem przeglądać. Problem wydawał się być powszechny. Po krótkim poszukiwaniu, natknąłem się na koncepcję znaną jako **Access Control List** oraz jego realizacją w **Spring Security ACL**, która jest rozszerzeniem Spring Security. To było to, czego szukałem!
 
 W tym artykule wyjaśnię, dlaczego Spring Security jest niewystarczający do zrealizowania wspomnianego wymagania, i dlaczego potrzebujemy rozszerzenia Spring Security ACL. Dodatkowo przedstawię fragmenty kodu, które są istotne w naszym projekcie.
 
@@ -29,7 +29,7 @@ Krótka definicja brzmi:
 Access Control List (ACL) jest listą uprawnień skojarzonych z obiektem.
 ```
 
-W naszym przypadku obiektem jest zadanie. Natomiast lista uprawnień jest przechowywana w bazie danych, w specjalnych strukturach tabelarycznych, w której są zdefiniowane relacje między obiektem, a użytkownikiem.
+W naszym przypadku obiektem jest zadanie. Natomiast lista uprawnień jest przechowywana w specjalnych strukturach tabelarycznych znajdujących się w bazie danych, w której są zdefiniowane relacje między obiektem, a użytkownikiem.
 
 ## Dlaczego Spring Security jest niewystarczający?
 
@@ -44,7 +44,7 @@ public List<Task> getTasksWithoutAcl() {
 }
 ```
 
-W powyższym przykładzie użytkownik z rolą *TASK* otrzyma pełną listę obiektów *Task*. Nie jest to zgodne z naszym wymaganiem, ponieważ chcemy, aby użytkownik otrzymał wyselekcjonwaną listę obiektów *Task*, dokładniej, listę obiektów do których został przypisany.
+W powyższym przykładzie użytkownik z rolą *TASK* otrzyma pełną listę obiektów *Task*. Nie jest to zgodne z naszym wymaganiem, ponieważ chcemy, aby użytkownik otrzymał wyselekcjonowaną listę obiektów *Task*, dokładniej, listę obiektów do których został przypisany.
 
 **Spring Security ACL** pozwala określić *dostęp na poziomie obiektów*.
 
@@ -58,9 +58,9 @@ public List<Task> getTasksWithAcl() {
 }
 ```
 
-W powyższym przykładzie użytkownik z rolą *TASK* otrzyma listę obiektów *Task*, ale tylko do tych, do których otrzymał uprawnienie odczytu.
+W powyższym przykładzie użytkownik z rolą *TASK* otrzyma listę obiektów *Task*, ale tylko tych, do których otrzymał uprawnienie odczytu.
 
-**@PreAuthorize** – sprawdza, czy użytkownik posiada rolę *TASK*. Jeśli nie posiada, to generuje wyjątek, który tworzy odpowiedź HTTP ze statusem 403.
+**@PreAuthorize** – sprawdza, czy użytkownik posiada rolę *TASK*, a w przypadku jej braku generuje wyjątek, który tworzy odpowiedź HTTP ze statusem 403.
 
 **@PostFilter** – usuwa obiekty z kolekcji, do których użytkownik nie ma uprawnień.
 
@@ -244,7 +244,7 @@ ADD FOREIGN KEY (owner_sid) REFERENCES acl_sid (id);
 
 Utworzony schemat należy wypełnić odpowiednimi danymi. W naszej aplikacji mamy dwóch predefiniowanych użytkowników *user1* i *user2* z taką samą rolą *TASK*. Dla tych użytkowników utworzymy 8 zadań i odpowiednio przypiszemy ich do poszczególnych zadań. Użytkownik *user1* będzie mieć prawo odczytu do zadań z kategorii *Security*, natomiast użytkownik *user2* będzie mieć prawo odczytu do pozostałych zadań. W naszym przykładzie ograniczamy się jedynie do prawa odczytu, jednak ACL umożliwia nadawanie uprawnień dla odczytu, zapisu, tworzenia oraz usuwania.
 
-W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML. Kwestią otwartą i nieporuszną w tym artykule jest zaimplementowanie serwisu, który jest w stanie programowo zarządzać uprawnieniami.
+W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML. Kwestią otwartą i nieporuszoną w tym artykule jest zaimplementowanie serwisu, który jest w stanie programowo zarządzać uprawnieniami.
 
 ```sql
 -- Kilka przykładowych zadań
@@ -291,27 +291,25 @@ INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, 
 
 Opis poszczególnych tabel został przedstawiony [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
 
-## ACL w akcji
+## Access Control List w akcji
 
-Omówiliśmy już wszystkie niezbędne kwestie. Jesteśmy gotowi uruchomić aplikację i ją przetestować. Pełny kod znajduję się pod adresem [**https://github.com/pawelwalaszek/spring-security-acl**](https://github.com/pawelwalaszek/spring-security-acl).
+Omówiliśmy już wszystkie niezbędne kwestie. Jesteśmy gotowi uruchomić aplikację i ją przetestować. Pełny kod znajduje się pod adresem [**https://github.com/pawelwalaszek/spring-security-acl**](https://github.com/pawelwalaszek/spring-security-acl).
 
 ```
 mvn spring-boot:run
 ```
 
+Uwaga! Dla każdego użytkownika należy zalogować się w osobnym trybie incognito, gdyż pozwoli nam uniknąć problemów z cachowaniem danych dostępowych w przeglądarce internetowej.
+
 Wejście pod adres:
 
-```
-http://localhost:8080/tasks/list-with-acl
-```
+[**http://localhost:8080/tasks/list-with-acl**](http://localhost:8080/tasks/list-with-acl)
 
 i zalogowanie się jako *user1* z hasłem *user1* spowoduje wyświetlenie zadań tylko z kategorii *Security*. Natomiast dla użytkownika *user2* z hasłem *user2* zostaną wyświetlone zadania z pozostałych kategorii.
 
 Wejście pod adres:
 
-```
-http://localhost:8080/tasks/list-without-acl
-```
+[**http://localhost:8080/tasks/list-without-acl**](http://localhost:8080/tasks/list-without-acl)
 
 dowolnym użytkownikiem spowoduje wyświetlenie wszystkich zadań, gdyż dla tego adresu został określony dostęp na poziomie wywołania metody, w tym przypadku, dla użytkowników z rolą *TASK*.
 
@@ -321,4 +319,4 @@ Czy potrzebujmy Spring Security ACL? To zależy od wymagań:
 - Tak, jeśli potrzebujemy określać dostęp na poziomie obiektów.
 - Nie, jeśli potrzebujemy określać dostęp na poziomie żądania HTTP lub wywołania metody.
 
-Tym artykułem chciałbym uświadomić obecność gotowej implementacji ACL oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.
+Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.
