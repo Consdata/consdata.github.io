@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz co się dzieje, kiedy nie stawiasz średników w JS?"
-date:      2021-07-19 10:00:00 +0100
+date:      2021-07-19 8:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
