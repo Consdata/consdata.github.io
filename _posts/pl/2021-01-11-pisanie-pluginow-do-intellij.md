@@ -10,6 +10,7 @@ tags:
     - intellij
     - ide
     - plugin
+description: "IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność."
 ---
 
 IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność. W tym artykule przedstawię podstawy tworzenia pluginów dla tej platformy. Większość z zebranych tu informacji (poza elementami związanymi z Javą) ma zastosowanie do dowolnego IDE ze stajni JetBrains.

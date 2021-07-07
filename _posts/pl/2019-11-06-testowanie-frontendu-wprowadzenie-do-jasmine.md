@@ -10,6 +10,7 @@ tags:
   - javascript
   - test
   - jasmine
+description: "Framework Jasmine jest frameworkiem służącym do testowania napisanym w duchu behaviour-driven development, nie ma dodatkowych zależności oraz, jak twierdzą twórcy, dostajemy go z bateriami, czyli powinien zawierać wszystko, co jest potrzebne do pisania testów jednostkowych w naszym projekcie."
 ---
 
 Mój poprzedni wpis był o tym [**co** testować w projektach frontendowych]({% post_url pl/2019-07-25-testy-frontendu-okiem-full-stacka %}), teraz przyszedł czas aby wybrać odpowiednie narzędzia, zakasać rękawy i przejść do praktyki. Pokażę jak zainstalować i używać frameworka Jasmine w projekcie Node'owym.

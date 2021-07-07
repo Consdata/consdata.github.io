@@ -10,6 +10,7 @@ tags:
     - tech
     - mongodb
     - index
+description: "Tworzenie oraz usuwanie indeksów, nie jest operacją trudną. MongoDB jest dokumentową bazą danych oferującą bogatą funkcjonalność i jednocześnie na tyle elastyczną, że pozwala przeprowadzać zadania administracyjne bez przerwy w działaniu."
 ---
 
 Rankingi baz danych pokazują, że już dobrych kilka lat wśród baz typu NoSQL króluje MongoDB i nic nie wskazuje na to, aby miało się to szybko zmienić. Trudno się temu dziwić - MongoDB jest dokumentową bazą danych, ale oferuje dużo więcej poza funkcjonalnościami dodawania i pobierania dokumentów.

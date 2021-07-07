@@ -9,6 +9,7 @@ image:     /assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breake
 tags:
     - hystrix
     - circuit breaker
+description: "Aby dodać circuit breakera do naszej aplikacji należy dodać klasę opakowującą klienta serwisu zewnętrznego komendą hystrixową (adnotacje dostarczane są przez bibliotekę javanica)."
 ---
 
 ## Awaria:

@@ -9,6 +9,7 @@ image:     /assets/img/posts/2019-05-09-node-version-menager/Node-Version-Manage
 tags:
     - nvm
     - node
+description: "JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JSa jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim."
 ---
 
 JavaScript i cały ekosystem z nim związany jest bardzo rozbudowany i wydaje się, że wcale nie zamierza przestać się rozrastać. Można czasem usłyszeć, że tydzień, w którym nie powstał nowy framework do JSa jest tygodniem straconym. Masa bibliotek w różnych wersjach, kolejne języki rozbudowujące możliwości JavaScriptu zmieniające to, jak go postrzegamy np.: TypeScript czy CoffeeScript, do tego jeszcze Node.js oraz różne silniki w przeglądarkach. W rezultacie mamy całkiem sporą listę i coraz więcej pracy związanej z zarządzaniem tym wszystkim.

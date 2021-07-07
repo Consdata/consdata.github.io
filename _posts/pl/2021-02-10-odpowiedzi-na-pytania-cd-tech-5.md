@@ -11,6 +11,7 @@ tags:
 - axon
 - consdata tech
 - cdtech#5
+description: "Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech."
 ---
 
 Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech.

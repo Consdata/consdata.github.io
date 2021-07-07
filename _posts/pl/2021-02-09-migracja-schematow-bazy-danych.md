@@ -14,6 +14,7 @@ tags:
     - kubernetes
     - job
     - initContainers
+descripion: "Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych."
 ---
 
 Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych.

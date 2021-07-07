@@ -10,6 +10,7 @@ tags:
     - angular
     - view encapsulation
     - kapsułkowanie
+description: "Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem (enkapsulacją) stylów - czyli tym jak style z jednego komponentu wpływają na inne komponenty. Zanim omówimy kapsułkowanie, wyjaśnijmy w kilku słowach czym jest Shadow DOM."
 ---
 
 Tworząc komponenty w Angularze mamy możliwość zarządzania kapsułkowaniem (enkapsulacją) stylów - czyli tym jak style z jednego komponentu wpływają na inne komponenty.  

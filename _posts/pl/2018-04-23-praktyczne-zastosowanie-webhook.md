@@ -9,6 +9,7 @@ image:     /assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/webhook.
 tags:
     - sonarqube
     - webhook
+description: "Każdy programista prędzej czy później ma do czynienia z jakąś formą API (ang. application programming interface). API to określony interfejs, którym dwie niezależne aplikacje mogą porozumiewać się między sobą. W tym artykule chciałbym przedstawić Wam nieco inne podejść do takiej komunikacji między aplikacjami."
 ---
 
 Każdy programista prędzej czy później ma do czynienia z jakąś formą API (ang. application programming interface). API to określony interfejs, którym dwie niezależne aplikacje mogą porozumiewać się między sobą. W tym artykule chciałbym przedstawić Wam nieco inne podejść do takiej komunikacji między aplikacjami.

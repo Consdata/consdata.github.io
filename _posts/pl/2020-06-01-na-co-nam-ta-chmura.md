@@ -11,6 +11,7 @@ tags:
     - google cloud platform
     - gcp
     - serverless
+description: "W ostatnich latach bardzo dużo się dzieje w świecie Cloud Computing. Coraz częściej rezygnujemy z rozwiązań on-premise na rzecz platform chmurowych, migrujemy swoje infrastruktury do takich gigantów jak AWS, Microsoft Azure, czy Google Cloud. Ale dlaczego?"
 ---
 
 Chmury obliczeniowe prężnie się rozwijają i zyskują coraz większą popularność. Wiele firm decyduje się na skorzystanie z produktów oferowanych przez Google, Amazon czy Microsoft.

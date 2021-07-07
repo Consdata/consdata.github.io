@@ -12,6 +12,7 @@ tags:
   - Productivity
   - To-Do Lists
   - Planning Your Day
+description: "Większość z nas ma coś do zrobienia. Na początku owe coś jest dość ogólnie zdefiniowane, np.: “napisać wpis na bloga” czy “zaprojektować mechanizm ładowania modułów aplikacji”. Dość szybko zaczynamy rozbijać temat na mniejsze elementy. Te mniejsze elementy zostają doprecyzowane lub dalej podzielone, aby w końcu stać się zadaniami:"
 ---
 
 ## Czy warto świadomie zarządzać zadaniami?

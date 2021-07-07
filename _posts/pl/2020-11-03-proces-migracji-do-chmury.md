@@ -13,6 +13,7 @@ tags:
     - aws
     - azure
     - googlecloud
+description: "Pierwszym z etapów migracji do chmury Google jest etap szacowania, na którym przeprowadzona zostaje dokładna analiza istniejącego systemu oraz infrastruktury."
 ---
 
 Planując migrację systemu informatycznego do chmury, zastanawiamy się *od czego zacząć*? Proces migracji składa się z kilku etapów, które pomogą nam przejść z punktu A (systemu źródłowego), do punktu B (systemu docelowego).

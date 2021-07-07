@@ -12,6 +12,7 @@ tags:
     - axon
     - event-sourcing
     - spring-boot
+description: "Axon to framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie. Axon bierze na barki zarządzanie przepływem wszystkich informacji między komponentami np. kierowanie commandów do odpowiednich agregatów, czy zapisywanie eventów w event store. Jeżeli chodzi o kwestie event store’a, to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli. Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna, co moim zdaniem czyni Axona mocnym graczem."
 ---
 
 Znając definicję Event Sourcingu oraz korzyści, jakie nam zapewnia (dla przypomnienia polecam [**wpis Marcina poświęcony częściowo tej tematyce**]({% post_url pl/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu %})) warto rozważyć zastosowanie tego wzorca w swoim projekcie (oczywiście nie wszędzie się on nada).

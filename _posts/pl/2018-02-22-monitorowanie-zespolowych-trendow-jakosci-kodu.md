@@ -10,6 +10,7 @@ tags:
     - sonarqube
     - sonarqube companion
     - jakość kodu
+description: "W jednym z wcześniejszych wpisów omawialiśmy już zalety i zasadność statycznej analizy kodu z pomocą SonarQube"
 ---
 
 W jednym z wcześniejszych wpisów omawialiśmy już zalety i zasadność statycznej analizy kodu z pomocą SonarQube ([tutaj]({% post_url pl/2016-12-08-sonarqube-wprowadzenie-do-statycznej-analizy-kodu %})).

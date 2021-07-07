@@ -13,6 +13,7 @@ tags:
   - tool
   - OWASP
   - security
+description: "ZAP (Zed Attack Proxy) jest opensourcowym narzędziem tworzonym przez organizację OWASP wspomagającym testy penetracyjne, które służy do znajdowania podatności bezpieczeństwa w aplikacjach webowych. Działa na zasadzie proxy, dzięki czemu pozwala nie tylko na podglądanie żądań wysyłanych do serwera aplikacji i odpowiedzi z serwera otrzymywanych, ale daje również możliwość debugowania, modyfikowania oraz wysyłania własnych żądań. Jest narzędziem dostosowanym do obsługi HTTP, oferuje prosty sposób na rozszyfrowanie HTTPS poprzez dodanie własnego certyfikatu do przeglądarki. Dostarcza automatyczne skanery, jak również narzędzia pomagające manualnie testować aplikację."
 ---
 
 ZAP (Zed Attack Proxy) jest opensourcowym narzędziem tworzonym przez organizację OWASP wspomagającym testy penetracyjne, które służy do znajdowania podatności bezpieczeństwa w aplikacjach

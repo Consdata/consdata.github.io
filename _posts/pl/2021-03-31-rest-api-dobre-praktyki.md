@@ -10,6 +10,7 @@ tags:
     - http
     - rest
     - rest api
+description: "Jakie są częste błędy przy doborze metod HTTP? Kiedy trzymać się standardu, a kiedy może to być problemem? O czym pamiętać projektując swoje REST API"
 ---
 
 
