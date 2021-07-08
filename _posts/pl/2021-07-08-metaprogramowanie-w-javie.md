@@ -7,12 +7,13 @@ didyouknow: true
 lang: pl
 author:    dsurdyk
 image:     /assets/img/posts/2021-07-06-metaprogramowanie-w-javie/metaprogramowanie.jpg
+description: "@Target określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu."
 tags:
 - java
 ---
 W tym artykule dowiemy się jak używać adnotacji @Target przy tworzeniu własnej adnotacji.
 
-`@Target` określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu.
+`@Target` określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w jakich miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu.
 
 ### Podstawowa składnia adnotacji
 Adnotacje tworzy się używając deklaracji interface ze znakiem `@` na początku. Taka adnotacja nic nie robi, lecz program nie wyrzuci błędu przy kompilacji.
