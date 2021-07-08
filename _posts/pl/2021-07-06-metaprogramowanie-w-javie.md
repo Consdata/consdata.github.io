@@ -10,7 +10,7 @@ image:     /assets/img/posts/2021-07-06-metaprogramowanie-w-javie/metaprogramowa
 tags:
 - java
 ---
-W tym artykule dowiemy się jak przy tworzeniu własnej adnotacji, używać adnotacji `@Target`.
+W tym artykule dowiemy się jak używać adnotacji @Target przy tworzeniu własnej adnotacji.
 
 `@Target` określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu.
 
