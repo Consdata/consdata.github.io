@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    dsurdyk
-image:     /assets/img/posts/2021-07-08-metaprogramowanie-w-javie/metaprogramowanie.jpg
+image:     /assets/img/posts/2021-07-06-metaprogramowanie-w-javie/metaprogramowanie.jpg
 tags:
 - java
 ---
