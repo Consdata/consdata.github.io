@@ -21,7 +21,7 @@ Adnotacje tworzy się używając deklaracji interface ze znakiem `@` na początk
 public @interface MyAnnotation {
 }
 ```
-Powyższa adnotacja nie ma zdefiniowanego miejsca w którym możemy jej użyć. Aby to zrobić, należy dodać adnotację @Target, wraz z parametrami.
+Powyższa adnotacja nie ma zdefiniowanego miejsca, w którym możemy jej użyć. Aby to zrobić, należy dodać adnotację @Target, wraz z parametrami.
 
 Parametry do adnotacji `@Target` możemy przekazać na 4 różne sposoby. W trzecim i czwartym przykładzie możliwe jest zdefiniowanie jednej lub większej liczby typów:
 
