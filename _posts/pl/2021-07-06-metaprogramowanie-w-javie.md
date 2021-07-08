@@ -15,7 +15,7 @@ W tym artykule dowiemy się jak przy tworzeniu własnej adnotacji, używać adno
 `@Target` określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu.
 
 ### Podstawowa składnia adnotacji
-Adnotacje tworzy się w następujący sposób. Używa się deklaracji interface ze znakiem `@` na początku. Taka adnotacja nic nie robi, lecz program nie wyrzuci błędu przy kompilacji.
+Adnotacje tworzy się używając deklaracji interface ze znakiem `@` na początku. Taka adnotacja nic nie robi, lecz program nie wyrzuci błędu przy kompilacji.
 
 ```java
 public @interface MyAnnotation {
