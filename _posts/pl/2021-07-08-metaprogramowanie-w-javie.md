@@ -7,7 +7,7 @@ didyouknow: true
 lang: pl
 author:    dsurdyk
 image:     /assets/img/posts/2021-07-06-metaprogramowanie-w-javie/metaprogramowanie.jpg
-description: "@target określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu."
+description: "@Target określa, w których miejscach konstruowana przez nas adnotacja może zostać użyta. Gdy zadeklarujemy, w których miejscach kodu jest możliwe użycie adnotacji, błędne jej umiejscowienie nie pozwoli na skompilowanie kodu."
 tags:
 - java
 ---
