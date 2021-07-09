@@ -144,7 +144,7 @@ public LookupStrategy lookupStrategy(DataSource dataSource) {
 ```
 
 Klasa **AclAuthorizationStrategyImpl** definiuję strategię, która określa, w jakich warunkach jest przydzielane uprawnienie.
-Jeśli jesteśmy właścicielem obiektu lub mamy uprawnienie administracyjne, wtedy jest przydzielane uprawnienie.
+Jeśli jesteśmy właścicielem obiektu lub mamy uprawnienie administracyjne, wtedy otrzymujemy dostęp do obiektu.
 
 ```java
 @Bean
@@ -153,7 +153,7 @@ public AclAuthorizationStrategy aclAuthorizationStrategy() {
 }
 ```
 
-Klasa **DefaultPermissionGrantingStrategy** definuję dodatkową startegię, która określa, czy jest przydzielane uprawnienie. Jeśli nie jesteśmy
+Klasa **DefaultPermissionGrantingStrategy** definuję dodatkową strategię, która określa, czy jest przydzielane uprawnienie. Jeśli nie jesteśmy
 właścicielem obiektu i nie mamy uprawnienia administracyjnego, ale posiadamy wpisy w bazie definiujące uprawnienie do obiektu,
 to otrzymujemy dostęp do obiektu.
 
@@ -242,7 +242,9 @@ ADD FOREIGN KEY (owner_sid) REFERENCES acl_sid (id);
 
 Utworzony schemat należy wypełnić odpowiednimi danymi. W naszej aplikacji mamy dwóch predefiniowanych użytkowników *user1* i *user2* z taką samą rolą *TASK*. Dla tych użytkowników utworzymy 8 zadań i odpowiednio przypiszemy ich do poszczególnych zadań. Użytkownik *user1* będzie mieć prawo odczytu do zadań z kategorii *Security*, natomiast użytkownik *user2* będzie mieć prawo odczytu do pozostałych zadań. W naszym przykładzie ograniczamy się jedynie do prawa odczytu, jednak ACL umożliwia nadawanie uprawnień dla odczytu, zapisu, tworzenia oraz usuwania.
 
-W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML. Kwestią otwartą i nieporuszoną w tym artykule jest zaimplementowanie serwisu, który jest w stanie programowo zarządzać uprawnieniami.
+Warto podkreślić, że model aplikacji nie jest bezpośrednio powiązany z tabelami, w których są trzymane informacje o uprawnieniach. Pośrednim powiązaniem między modelem aplikacji, a zdefiniowanymi uprawnieniami, są adnotacje.
+
+W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML.
 
 ```sql
 -- Kilka przykładowych zadań
@@ -289,6 +291,30 @@ INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, 
 
 Opis poszczególnych tabel został przedstawiony [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
 
+Możemy również programowo dodawać uprawnienia do użytkowników. Przykład klasy, która to realizuje:
+
+```java
+@RequiredArgsConstructor
+@Service
+public class PermissionService {
+
+    private final MutableAclService aclService;
+
+    public void addPermission(String username, Class<?> type, Long id, Permission permission) {
+        ObjectIdentity objectIdentity = new ObjectIdentityImpl(type, id);
+        Sid sid = new PrincipalSid(username);
+        MutableAcl acl;
+        try {
+            acl = (MutableAcl) aclService.readAclById(objectIdentity);
+        } catch (NotFoundException exception) {
+            acl = aclService.createAcl(objectIdentity);
+        }
+        acl.insertAce(acl.getEntries().size(), permission, sid, true);
+        aclService.updateAcl(acl);
+    }
+}
+```
+
 ## Access Control List w akcji
 
 Omówiliśmy już wszystkie niezbędne kwestie. Jesteśmy gotowi uruchomić aplikację i ją przetestować. Pełny kod znajduje się pod adresem [**https://github.com/pawelwalaszek/spring-security-acl**](https://github.com/pawelwalaszek/spring-security-acl).
@@ -304,6 +330,18 @@ Wejście pod adres:
 [**http://localhost:8080/tasks/list-with-acl**](http://localhost:8080/tasks/list-with-acl)
 
 i zalogowanie się jako *user1* z hasłem *user1* spowoduje wyświetlenie zadań tylko z kategorii *Security*. Natomiast dla użytkownika *user2* z hasłem *user2* zostaną wyświetlone zadania z pozostałych kategorii.
+
+Spróbujmy przypisać użytkownikowi *user1* uprawnienie do odczytywania zadania z identyfikatorem nr 8. Dla tej sytuacji został przygotowany endpoint, który potrafi zrealizować taką operację.
+
+```
+curl -X PUT -u admin:admin http://localhost:8080/permissions/READ/tasks/8/users/user1/add
+```
+
+Ponowne wejście pod adres:
+
+[**http://localhost:8080/tasks/list-with-acl**](http://localhost:8080/tasks/list-with-acl)
+
+i zalogowanie się jako *user1* z hasłem *user1* spowoduje wyświetlenie zadań z kategorii *Security* oraz jedno zadanie z identyfikatorem nr 8, czyli zadanie z kategorii *Storage*.
 
 Wejście pod adres:
 
