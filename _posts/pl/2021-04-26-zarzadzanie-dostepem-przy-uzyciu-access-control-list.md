@@ -94,6 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
+                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMINISTRATION")
+                .and()
                 .withUser("user1").password(passwordEncoder().encode("user1")).roles("TASK")
                 .and()
                 .withUser("user2").password(passwordEncoder().encode("user2")).roles("TASK");
@@ -262,8 +264,9 @@ INSERT INTO tasks (id, chapter, title, description, creation_date) VALUES (8, 'S
 
 INSERT INTO acl_sid (id, principal, sid) VALUES
 (1, 0, 'ROLE_TASK'),
-(2, 1, 'user1'),
-(3, 1, 'user2');
+(2, 1, 'admin'),
+(3, 1, 'user1'),
+(4, 1, 'user2');
 
 INSERT INTO acl_class (id, class) VALUES
 (1, 'com.consdata.task.model.Task');
@@ -272,21 +275,21 @@ INSERT INTO acl_object_identity (id, object_id_class, object_id_identity, parent
 (1, 1, 1, NULL, 2, 0),
 (2, 1, 3, NULL, 2, 0),
 (3, 1, 6, NULL, 2, 0),
-(4, 1, 2, NULL, 3, 0),
-(5, 1, 4, NULL, 3, 0),
-(6, 1, 5, NULL, 3, 0),
-(7, 1, 7, NULL, 3, 0),
-(8, 1, 8, NULL, 3, 0);
+(4, 1, 2, NULL, 2, 0),
+(5, 1, 4, NULL, 2, 0),
+(6, 1, 5, NULL, 2, 0),
+(7, 1, 7, NULL, 2, 0),
+(8, 1, 8, NULL, 2, 0);
 
 INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
-(1, 1, 1, 2, 1, 1, 1, 0),
-(2, 2, 1, 2, 1, 1, 1, 0),
-(3, 3, 1, 2, 1, 1, 1, 0),
-(4, 4, 1, 3, 1, 1, 1, 0),
-(5, 5, 1, 3, 1, 1, 1, 0),
-(6, 6, 1, 3, 1, 1, 1, 0),
-(7, 7, 1, 3, 1, 1, 1, 0),
-(8, 8, 1, 3, 1, 1, 1, 0);
+(1, 1, 1, 3, 1, 1, 1, 0),
+(2, 2, 1, 3, 1, 1, 1, 0),
+(3, 3, 1, 3, 1, 1, 1, 0),
+(4, 4, 1, 4, 1, 1, 1, 0),
+(5, 5, 1, 4, 1, 1, 1, 0),
+(6, 6, 1, 4, 1, 1, 1, 0),
+(7, 7, 1, 4, 1, 1, 1, 0),
+(8, 8, 1, 4, 1, 1, 1, 0);
 ```
 
 Opis poszczególnych tabel został przedstawiony [tutaj](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts).
