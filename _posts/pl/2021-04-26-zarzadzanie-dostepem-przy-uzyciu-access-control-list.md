@@ -106,68 +106,66 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-b) Konfiguracja dla Spring Security ACL:
+b) Konfiguracja dla Spring Security ACL. W tym punkcie dokładniej przyjrzyjmy się konfiguracji.
+
+Pierwszym istotnym krokiem jest dodanie klasy **DefaultMethodSecurityExpressionHandler**, która jest wzbogacona o obsługę wyrażeń ACL.
+W tym miejscu dochodzi do załadowania przydzielonych uprawnień oraz skonfrontowanie ich z zabezpieczonymi obiektami. Na potrzeby wspomnianej
+klasy należy dodać klasę **JdbcMutableAclService**, która wchodzi w interakcję z bazą danych. To w tej klasie są zdefiniowane zapytania SQL.
+Dodatkowa klasa **BasicLookupStrategy** określa strategię, która optymalizuje zapytania. W naszym przypadku optymalizacja jest wykonana
+przy założeniu, że użyta baza danych jest zgodna z ANSI SQL.
+
 
 ```java
-@Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class AclSecurityConfig extends GlobalMethodSecurityConfiguration {
+@Autowired
+private MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler;
 
-    @Autowired
-    private MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler;
+@Override
+protected MethodSecurityExpressionHandler createExpressionHandler() {
+    return defaultMethodSecurityExpressionHandler;
+}
 
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return defaultMethodSecurityExpressionHandler;
-    }
+@Bean
+public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler(DataSource dataSource) {
+    DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+    AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService(dataSource));
+    expressionHandler.setPermissionEvaluator(permissionEvaluator);
+    return expressionHandler;
+}
 
-    @Bean
-    public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler(DataSource dataSource) {
-        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-        AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService(dataSource));
-        expressionHandler.setPermissionEvaluator(permissionEvaluator);
-        return expressionHandler;
-    }
+@Bean
+public JdbcMutableAclService aclService(DataSource dataSource) {
+    return new JdbcMutableAclService(dataSource, lookupStrategy(dataSource), aclCache());
+}
 
-    @Bean
-    public JdbcMutableAclService aclService(DataSource dataSource) {
-        return new JdbcMutableAclService(dataSource, lookupStrategy(dataSource), aclCache());
-    }
-
-    @Bean
-    public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_TASK"));
-    }
-
-    @Bean
-    public PermissionGrantingStrategy permissionGrantingStrategy() {
-        return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
-    }
-
-    @Bean
-    public EhCacheBasedAclCache aclCache() {
-        return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(), aclAuthorizationStrategy());
-    }
-
-    @Bean
-    public EhCacheFactoryBean aclEhCacheFactoryBean() {
-        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
-        ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
-        ehCacheFactoryBean.setCacheName("aclCache");
-        return ehCacheFactoryBean;
-    }
-
-    @Bean
-    public EhCacheManagerFactoryBean aclCacheManager() {
-        return new EhCacheManagerFactoryBean();
-    }
-
-    @Bean
-    public LookupStrategy lookupStrategy(DataSource dataSource) {
-        return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
-    }
+@Bean
+public LookupStrategy lookupStrategy(DataSource dataSource) {
+    return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
 }
 ```
+
+Klasa **AclAuthorizationStrategyImpl** definiuję strategię, która określa, w jakich warunkach jest przydzielane uprawnienie.
+Jeśli jesteśmy właścicielem obiektu lub mamy uprawnienie administracyjne, wtedy jest przydzielane uprawnienie.
+
+```java
+@Bean
+public AclAuthorizationStrategy aclAuthorizationStrategy() {
+    return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_TASK"));
+}
+```
+
+Klasa **DefaultPermissionGrantingStrategy** definuję dodatkową startegię, która określa, czy jest przydzielane uprawnienie. Jeśli nie jesteśmy
+właścicielem obiektu i nie mamy uprawnienia administracyjnego, ale posiadamy wpisy w bazie definiujące uprawnienie do obiektu,
+to otrzymujemy dostęp do obiektu.
+
+```java
+@Bean
+public PermissionGrantingStrategy permissionGrantingStrategy() {
+    return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
+}
+```
+
+W repozytorium, w konfiguracji ACL znajdują się dodatkowe klasy odpowiedzialne za cache, który zmniejsza ilość zapytań do bazy danych.
+
 
 c) Struktura schematu dla poszczególnych baz danych jest dostępna w kodach źródłowych Spring Security [tutaj](https://github.com/spring-projects/spring-security/tree/main/acl/src/main/resources). W naszym przypadku DDL jest dla bazy danych H2:
 
