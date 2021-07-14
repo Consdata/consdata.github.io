@@ -19,7 +19,7 @@ Let’s assume you have written some application A and you want it to be able to
 
 Webhooks enable a different approach to communication between applications. The webhook mechanism is often called Reverse API because it usually does not require interaction from the client side (in our example, application A). In simpler terms, webhooks allow the client application to be notified when certain events occur.
 
-Webhooks are easy to implement because they actually consist in sending a request with  a defined structure, to a defined address, as a result of some event. Integrating the client application comes down to defining the address to which the request is to be sent.
+Webhooks are easy to implement because they actually consist in sending a request with a defined structure, to a defined address, as a result of some event. Integrating the client application comes down to defining the address to which the request is to be sent.
 
 Summing up, webhooks are very useful in situations when you expect information from an external application in the case of an event as they allow you to avoid active waiting on your application’s side.
 
