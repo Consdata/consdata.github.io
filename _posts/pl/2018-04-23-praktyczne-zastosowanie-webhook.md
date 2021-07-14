@@ -4,6 +4,7 @@ title:     "Praktyczne zastosowanie webhook"
 date:      2018-04-23 08:00:00 +0100
 published: true
 lang: pl
+lang-ref:  practical-applications-of-webhooks
 author:    bradlinski
 image:     /assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/webhook.png
 tags:
@@ -105,7 +106,8 @@ Całość konfiguracji przedstawia się następująco:
             "type": "CRON",
             "definition": "0 */1 * * * *"
         },
-        {
+        "callbacks": [
+          {
             "type": "POST",
             "url": "https://hooks.slack.com/services/*/*",
             "body" : {
@@ -113,7 +115,8 @@ Całość konfiguracji przedstawia się następująco:
                 "improvement": "{ 'text': 'http://gph.is/1a7RlDR Poprawiono ${diff}'",
                 "clean": "{ 'text': 'https://gph.is/1IH3RW6 Czysto'}"
             }
-        }
+          }
+        ]
     }
 ]
 ```
