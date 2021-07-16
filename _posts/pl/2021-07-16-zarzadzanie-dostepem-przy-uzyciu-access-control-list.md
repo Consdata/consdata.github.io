@@ -5,7 +5,7 @@ date:      2021-07-16 08:00:00 +0100
 published: true
 lang:      pl
 author:    pwalaszek
-image:     /assets/img/posts/2021-07-16-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.png
+image:     /assets/img/posts/2021-04-26-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.jpg
 description: "Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji."
 tags:
     - acl
