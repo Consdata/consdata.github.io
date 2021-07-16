@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Zarządzanie dostępem przy użyciu ACL (Access Control List)"
-date:      2021-04-26 08:00:00 +0100
+date:      2021-07-15 08:00:00 +0100
 published: true
 lang:      pl
 author:    pwalaszek
