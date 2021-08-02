@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz co się dzieje, kiedy nie stawiasz średników w JS?"
-date:      2021-07-19 8:00:00 +0100
-published: false
+date:      2021-08-02 8:00:00 +0100
+published: true
 didyouknow: true
 lang: pl
 author:    pgrobelny
-image:     /assets/img/posts/2021-07-19-sredniki-w-js/semicolon.jpg
+image:     /assets/img/posts/2021-08-02-sredniki-w-js/semicolon.jpg
 tags:
 - javascript
 ---
