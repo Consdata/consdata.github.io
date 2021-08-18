@@ -40,4 +40,12 @@ cookieConsent:
 cookieConsentApprove:
   en: "Approve"
   pl: "Zgadzam się"
-
+joinUs:
+  en: "Join us"
+  pl: "Dołącz do nas"
+whyConsdata:
+  en: "Why Consdata?"
+  pl: "Dlaczego Consdata?"
+allJobs:
+  en: "Explore open roles"
+  pl: "Trwające rekrutacje"
