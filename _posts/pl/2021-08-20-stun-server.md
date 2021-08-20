@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    jgoszczurny
-image:     /assets/img/posts/2021-08-20-stun-server/handshake.png
+image:     /assets/img/posts/2021-08-20-stun-server/handshake.webp
 tags:
 - webrtc
 - stun
@@ -16,11 +16,11 @@ Czy wiesz że WebRTC korzysta z serwera STUN, aby umożliwić połączenie P2P, 
 
 Ponieważ rzadko kiedy zwykły użytkownik posiada na swoim komputerze publiczne IP, więc z tego powodu przekazanie informacji drugiej osobie "moje ip to 192.168.0.X" nie umożliwi połączenia P2P,
 
-![Nieudane połączenie P2P](/assets/img/posts/2021-08-20-stun-server/p2p.png)
+![Nieudane połączenie P2P](/assets/img/posts/2021-08-20-stun-server/p2p.webp)
 
 Dopiero wykorzystanie serwera STUN, do określenia publicznego IP oraz ewentualnych ograniczeń, może w większości przypadków pomóc przy zestawieniu połączenia P2P.
 
-![Wykorzystanie serwera STUN](/assets/img/posts/2021-08-20-stun-server/stun.png)
+![Wykorzystanie serwera STUN](/assets/img/posts/2021-08-20-stun-server/stun.webp)
 
 Dzięki temu użytkownik A i B mogą przesłać do siebie adresy przez serwer pośredniczący (tzw. signaling) i ustanowić połączenie P2P.
 
@@ -31,7 +31,7 @@ Wtedy możliwe jest wykorzystanie serwera TURN, który będzie działał jak pro
 Niestety wiąże się to z większym wykorzystaniem zasobów oraz łącza sieciowego przy przesyłaniu pakietów przez dostawcę usługi WebRTC.
 
 
-![Wykorzystanie serwera TURN](/assets/img/posts/2021-08-20-stun-server/turn.png)
+![Wykorzystanie serwera TURN](/assets/img/posts/2021-08-20-stun-server/turn.webp)
 
 W tym wariancie, połączenie bezpośrednie nie było możliwe, ale przesyłanie pakietów przez TURN pozwala użytkownikom nadal się połączyć z przez WebRTC.
 
