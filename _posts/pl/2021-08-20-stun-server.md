@@ -19,7 +19,8 @@ Rzadko kiedy zwykły użytkownik posiada na swoim komputerze publiczne IP, przez
 ![Nieudane połączenie P2P](/assets/img/posts/2021-08-20-stun-server/p2p.webp)
 <span class="img-legend">Nieudane połączenie P2P<br />źródło: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">MDN</a> - dostęp: 2020-08-20</span>
 
-Dopiero wykorzystanie serwera STUN, do określenia publicznego IP oraz ewentualnych ograniczeń, może w większości przypadków pomóc przy zestawieniu połączenia P2P.
+Dopiero wykorzystanie serwera STUN do określenia publicznego IP oraz ewentualnych ograniczeń może, w większości przypadków, pomóc przy zestawieniu połączenia P2P.
+
 
 ![Wykorzystanie serwera STUN](/assets/img/posts/2021-08-20-stun-server/stun.webp)
 <span class="img-legend">Wykorzystanie serwera STUN<br />źródło: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">MDN</a> - dostęp: 2020-08-20</span>
@@ -27,6 +28,7 @@ Dopiero wykorzystanie serwera STUN, do określenia publicznego IP oraz ewentualn
 Dzięki temu użytkownik A i B mogą przesłać do siebie adresy przez serwer pośredniczący (tzw. signaling) i ustanowić połączenie P2P.
 
 Niestety w niektórych przypadkach samo wykorzystanie STUN nie umożliwia połączenia P2P (np. kiedy użytkownik jest za symetrycznym NATem).
+
 
 Wtedy możliwe jest wykorzystanie serwera TURN, który będzie działał jak proxy dla przesyłanych pakietów.
 
