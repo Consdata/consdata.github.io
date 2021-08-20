@@ -14,7 +14,7 @@ tags:
 ---
 Czy wiesz że WebRTC korzysta z serwera STUN, aby umożliwić połączenie P2P, a w ostateczności z serwera TURN aby przepuścić ruch przez niego i umożliwić połączenie?
 
-Ponieważ rzadko kiedy zwykły użytkownik posiada na swoim komputerze publiczne IP, więc z tego powodu przekazanie informacji drugiej osobie "moje ip to 192.168.0.X" nie umożliwi połączenia P2P,
+Rzadko kiedy zwykły użytkownik posiada na swoim komputerze publiczne IP, przez co przekazanie informacji drugiej osobie "moje ip to 192.168.0.X" nie umożliwi połączenia P2P.
 
 ![Nieudane połączenie P2P](/assets/img/posts/2021-08-20-stun-server/p2p.webp)
 <span class="img-legend">Nieudane połączenie P2P<br />źródło: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">MDN</a> - dostęp: 2020-08-20</span>
