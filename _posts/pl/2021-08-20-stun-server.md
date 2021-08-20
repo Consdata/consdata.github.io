@@ -26,7 +26,7 @@ Dopiero wykorzystanie serwera STUN, do określenia publicznego IP oraz ewentualn
 
 Dzięki temu użytkownik A i B mogą przesłać do siebie adresy przez serwer pośredniczący (tzw. signaling) i ustanowić połączenie P2P.
 
-Niestety w niektórych przypadkach, samo wykorzystanie STUN nie umożliwia połączenia P2P (np. kiedy użytkownik jest za symetrycznym NATem).
+Niestety w niektórych przypadkach samo wykorzystanie STUN nie umożliwia połączenia P2P (np. kiedy użytkownik jest za symetrycznym NATem).
 
 Wtedy możliwe jest wykorzystanie serwera TURN, który będzie działał jak proxy dla przesyłanych pakietów.
 
