@@ -36,7 +36,7 @@ Niestety wiąże się to z większym wykorzystaniem zasobów oraz łącza siecio
 ![Wykorzystanie serwera TURN](/assets/img/posts/2021-08-20-stun-server/turn.webp)
 <span class="img-legend">Wykorzystanie serwera TURN<br />źródło: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">MDN</a> - dostęp: 2020-08-20</span>
 
-W tym wariancie, połączenie bezpośrednie nie było możliwe, ale przesyłanie pakietów przez TURN pozwala użytkownikom nadal się połączyć z przez WebRTC.
+W tym wariancie połączenie bezpośrednie nie było możliwe, ale przesyłanie pakietów przez TURN pozwala użytkownikom nadal się połączyć z przez WebRTC.
 
 Połączenie w tym wypadku nadal będzie bezpieczne, ponieważ pakiety są szyfrowane i TURN nie ma możliwości ich odczytania, służy tylko jako pośrednik.
 
