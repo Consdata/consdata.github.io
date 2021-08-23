@@ -10,10 +10,10 @@ image:     /assets/img/posts/2021-09-01-shadow-dom/shadow.webp
 tags:
 - javascript
 ---
-Pewnie czytając o WebComponentach usłyszałeś o **Shadow DOM**. Pozwala on na przyczepienie się do istniejących elementów DOM (które stają się Shadow Hostem) i wyjście z nich z nowym drzewem DOM.
+Pewnie czytając o Web Componentach usłyszałeś o **Shadow DOM**. Pozwala on na przyczepienie się do istniejących elementów DOM (które stają się Shadow Hostem) i wyjście z nich z nowym drzewem DOM.
 
 ### Jak korzystać z Shadow DOM
-Aby to zrobić potrzebujemy utworzyć uchwyt do elementu z DOM, np.:
+Aby to zrobić, potrzebujemy utworzyć uchwyt do elementu z DOM, np.:
 
 ```javascript
 var host = document.getElementById("host");
@@ -44,4 +44,7 @@ Całość można zobaczyć na przykładzie:
 
 Przykład ten pokazuje również, że z Shadow DOM można korzystać jako z samodzielnego feature, bez udziału Web Componentu.
 
-Ale co nam to wszystko daje? Umożliwia nam to pisać Web Componenty (lub jak na przykładzie widać - niezależne dodatkowe struktury DOM), które **ukrywają swoją strukturę**, aby ułatwić czytanie html utworzonej strony. Dzięki nim możemy też **enkapsulować stylizację**: style dla naszej aplikacji nie będą wpływać na nasze Shadow DOM-y, a style zadeklarowane w ich wnętrzu nie zmienią wyglądu tego, co znajduje się na zewnątrz.
+### Co nam to wszystko daje? 
+Umożliwia nam to pisać Web Componenty (lub jak widać na przykładzie - niezależne dodatkowe struktury DOM), które **ukrywają swoją strukturę**, aby ułatwić czytanie html utworzonej strony. 
+
+Dzięki nim możemy też **enkapsulować stylizację**: style dla naszej aplikacji nie będą wpływać na nasze Shadow DOM-y, a style zadeklarowane w ich wnętrzu nie zmienią wyglądu tego, co znajduje się na zewnątrz.
