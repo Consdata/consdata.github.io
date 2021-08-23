@@ -10,7 +10,7 @@ image:     /assets/img/posts/2021-09-01-shadow-dom/shadow.webp
 tags:
 - javascript
 ---
-Pewnie czytając o Web Componentach usłyszałeś o **Shadow DOM**. Pozwala on na przyczepienie się do istniejących elementów DOM (które stają się Shadow Hostem) i wyjście z nich z nowym drzewem DOM.
+Pewnie czytając o Web Componentach dane było Ci słyszeń o **Shadow DOM**. Pozwala on na przyczepienie się do istniejących elementów DOM (które stają się Shadow Hostem) i wyjście z nich z nowym drzewem DOM.
 
 ### Jak korzystać z Shadow DOM
 Aby to zrobić, potrzebujemy utworzyć uchwyt do elementu z DOM, np.:
