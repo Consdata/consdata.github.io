@@ -1,8 +1,6 @@
 #header-links {
-
-
   @include flex-container;
-
+  align-items: center;
 
   .nav {
     @include flex-container;
@@ -12,6 +10,12 @@
       width: 100%;
       margin-left: $content-padding;
     }
+  }
+
+  .language-switch {
+    display: inline-block;
+    font-size: 18px;
+    margin-left: $small-padding;
   }
 
   .nav-link {

@@ -26,7 +26,7 @@ defaults:
 
 languages: ["en", "pl"]
 default_lang: "pl"
-exclude_from_localization: ["assets/*", "_sass/*", "js/*", "json/*"]
+exclude_from_localization: ["assets/*", "_sass/*", "js/*"]
 parallel_localization: true
 
   # Build settings

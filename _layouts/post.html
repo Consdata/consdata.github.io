@@ -70,7 +70,9 @@ comments: true
     </article>
 </div>
 <script>
-    fetch("/json/posts.json")
+    const language = '{{site.active_lang}}';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
         .then(response => response.json())
         .then(store => {
             function displayResults(results) {
@@ -80,22 +82,27 @@ comments: true
                     results
                         .forEach(result => {
                             const item = store[result.ref];
-                            const listElement = document.createElement('li');
-                            const anchor = document.createElement('a');
-                            const postTitle = document.createTextNode(item.title);
-                            listElement.classList.add('sidebar-post');
-                            listElement.classList.add('no-breaking-word');
-                            anchor.setAttribute('href', item.url);
-                            anchor.setAttribute('lang', 'pl');
-                            anchor.appendChild(postTitle);
-                            listElement.appendChild(anchor);
-                            container.appendChild(listElement);
-                            containerMobile.appendChild(listElement.cloneNode(true));
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
                         });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
                 } else {
-                    document.getElementById("recommended-posts-sidebar").style.display = 'none';
-                    document.getElementById("recommended-posts-bottombar").style.display = 'none';
+                    hideRecommendedPosts();
                 }
+
             }
 
             const tags = "{{ post.tags | join: ' ' }}";
@@ -122,6 +129,11 @@ comments: true
 
     function closeModal() {
         document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
     }
 
     const postImages = document.querySelectorAll('.post-content img');

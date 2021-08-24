@@ -10,11 +10,12 @@ layout: default
     {{ content }}
     <div class="blog">
         <div class="row first-row">
-            {% include big-post-tile.html post=site.posts.first %}
+            {% assign firstPost=site.posts | where: "lang", site.active_lang | first %}
+            {% include big-post-tile.html post=firstPost %}
         </div>
         {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
         <div class="row">
-            {% assign postsWithoutFirst = site.posts | where:"lang", "pl" | shift %}
+            {% assign postsWithoutFirst = site.posts | where:"lang", site.active_lang | shift %}
             {% for forPost in postsWithoutFirst%}
             {% include small-post-tile.html post=forPost %}
             {% endfor %}

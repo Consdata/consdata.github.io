@@ -21,6 +21,13 @@
                     </svg>
                     </a>
                 </div>
+                {% if page.layout != "post" %}
+                    {% if site.active_lang == "en" %}
+                        <a class="language-switch" href=" {{ page.url }}">PL</a>
+                    {% else %}
+                        <a class="language-switch" href="/en{{ page.url }}">EN</a>
+                    {% endif %}
+                {% endif %}
             </div>
 
         </div>

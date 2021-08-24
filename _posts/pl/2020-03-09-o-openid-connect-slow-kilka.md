@@ -15,7 +15,7 @@ description: "Najpopularniejszymi standardami wykorzystywanymi do uwierzytelnian
 ---
 
 W nawiązaniu do mojego poprzedniego wpisu pt.:  
-[**"Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"** 🔗]({% post_url pl/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular %})  
+[**"Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot"** 🔗]({% post_url pl/2020-02-01-keycloak-user-authentication-authorization-springboot-angular %})  
 chciałbym krótko opisać standard [OpenID Connect](https://openid.net/connect/), który został wykorzystany podczas logowania do aplikacji przy użyciu serwera uwierzytelniania [Keycloak](https://www.keycloak.org/).
 
 ## Wstęp
@@ -97,7 +97,7 @@ Więcej informacji na ten temat znajdziemy w [oficjalnej dokumentacji 🔗](http
 Dzięki wykorzystaniu `ID Token`, OpenID Connect nadaje się do uwierzytelniania użytkownika, w przeciwieństwie do OAuth 2.0, który najlepiej sprawdzi się podczas autoryzacji dwóch aplikacji komunikujących się między sobą przez API.
 
 Wiemy już, że Federated Authentication ma zastosowanie, kiedy użytkownik loguje się do serwisu przy użyciu wspólnego konta.  
-OpenID Connect wydaje się więc być naturalnym kandydatem do uwierzytelniania użytkowników w różnego rodzaju serwisach społecznościowych czy aplikacjach internetowych ([jak w przykładzie logowania do aplikacji za pośrednictwem Keycloaka]({% post_url pl/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular %})).
+OpenID Connect wydaje się więc być naturalnym kandydatem do uwierzytelniania użytkowników w różnego rodzaju serwisach społecznościowych czy aplikacjach internetowych ([jak w przykładzie logowania do aplikacji za pośrednictwem Keycloaka]({% post_url pl/2020-02-01-keycloak-user-authentication-authorization-springboot-angular %})).
 
 Delegated Authorization natomiast ma zastosowanie, kiedy klient (aplikacja) próbuje uzyskać dostęp do zasobów innej aplikacji. Użytkownik musi jedynie zaakceptować uprawnienia przyznawane aplikacji klienckiej, czyli np. odczyt listy znajomych na Facebooku, o który ubiega się Spotify.  
 Tutaj do autoryzacji Spotify w Facebooku najlepiej spisze się OAuth 2.0.
