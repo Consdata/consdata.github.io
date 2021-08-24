@@ -1,13 +1,14 @@
 title: Consdata - blog techniczny
 # the subpath of your site, e.g. /blog
 baseurl: ""
-url: "https://blog.consdata.tech"
+url: "https://test.blog.consdata.tech"
 
 google_analytics: UA-28387432-1
 
 sass:
   sass_dir: _sass
   style: compressed
+  sourcemap: never
 
 disqus:
   shortname: consdata-tech
@@ -23,9 +24,15 @@ defaults:
     values:
       layout: "author"
 
+languages: ["en", "pl"]
+default_lang: "pl"
+exclude_from_localization: ["assets/*", "_sass/*", "js/*", "json/*"]
+parallel_localization: true
+
   # Build settings
 markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-autoprefixer
   - jekyll-seo-tag
+  - jekyll-polyglot
