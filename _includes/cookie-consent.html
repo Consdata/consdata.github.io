@@ -5,9 +5,6 @@
     </span>
     <a id="cookie-notice-accept" class="consent-button">{{ site.data.translations['cookieConsentApprove'][lang] }}</a>
     <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
-    <noscript><img height="1" width="1" style="display:none"
-                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
-    /></noscript>
 </div>
 
 <script>
@@ -40,13 +37,6 @@
         document.getElementById('cookie-notice').style.display = 'none';
     }
 
-    if (readCookie('cookie-notice-dismissed') === 'true') {
-        {%- if jekyll.environment == 'production' -%}
-            {%- include facebook-pixel.js -%}
-        {%- endif -%}
-    } else {
-        document.getElementById('cookie-notice').style.display = 'flex';
-    }
     document.getElementById('cookie-notice-accept').addEventListener("click", function () {
         createCookie('cookie-notice-dismissed', 'true', 31);
         hideConsent();
