@@ -1,7 +1,7 @@
 {% assign posts = site.posts | where:"lang", site.active_lang %}
 <div class="sidebar-container">
     <div class="sidebar-title">
-        {{ site.data.translations['newestPosts'][page.lang] }}
+        {{ site.data.translations['newestPosts'][site.active_lang] }}
     </div>
     <div class="sidebar-latest-posts-container">
         <ul class="sidebar-posts">

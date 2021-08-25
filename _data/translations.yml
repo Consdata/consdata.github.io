@@ -49,3 +49,6 @@ whyConsdata:
 allJobs:
   en: "Explore open roles"
   pl: "Trwające rekrutacje"
+search:
+  en: "Search..."
+  pl: "Szukaj..."
