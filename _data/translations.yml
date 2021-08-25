@@ -52,3 +52,6 @@ allJobs:
 search:
   en: "Search..."
   pl: "Szukaj..."
+noResults:
+  en: "No results :("
+  pl: "Brak wyników wyszukiwania :("

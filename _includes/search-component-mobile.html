@@ -3,7 +3,6 @@
 {% else %}
 <form action="/search.html" method="get">
 {% endif %}
-    {{site.active_lang | inspect}}
     <div class="search-input-container">
         <input type="text" placeholder="{{ site.data.translations['search'][site.active_lang] }}" id="search-box-mobile" name="query" class="search-input" autocomplete="off">
         <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>

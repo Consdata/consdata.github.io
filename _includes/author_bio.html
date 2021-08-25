@@ -28,12 +28,11 @@
         </div>
         <div class="content">
             {% if author.bio %}
-                {% if page.lang == "en" %}
+                {% if site.active_lang == "en" %}
                     <div class="bio">{{author.bio_en}}</div>
-                {% endif %}
-                {% unless page.lang == "en"%}
+                {% else %}
                     <div class="bio">{{author.bio}}</div>
-                {% endunless %}
+                {% endif %}
             {% endif %}
         </div>
     </div>
