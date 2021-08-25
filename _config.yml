@@ -3,8 +3,6 @@ title: Consdata - blog techniczny
 url: "https://chrrapek.github.io"
 baseurl: ""
 
-google_analytics: UA-28387432-1
-
 sass:
   sass_dir: _sass
   style: compressed
