@@ -25,7 +25,7 @@ Weźmy za przykład system do wysyłania notyfikacji do użytkowników. Zanim da
 Jak wobec tego namierzyć drogę konkretnego procesu pośród milionów innych?
 
 ## Gdzieś już to widziałem
-W istocie, problem nie jest nowy i sięga co najmniej mikroserwisów. Jeśli w obsługę danego żądania HTTP  zaangażowany jest więcej niż jeden mikroserwis, to potrzebujemy łatwego sposobu na prześledzenie logów związanych z obsługą tego żądania, niezależnie od tego, ile mikroserwisów w tym procesie uczestniczyło. Rozwiązanie tego problemu jest dobrze znane - kiedy żądanie pojawia się w systemie, np. kiedy trafia na API Gateway, wystarczy wygenerować losowy ciąg znaków, umieścić go w nagłówku HTTP, a następnie zadbać o przekazywanie tego nagłówka pomiędzy mikroserwisami, oraz wstrzyknięcie jego wartości do kontekstu logowania.
+W istocie, problem nie jest nowy i sięga co najmniej mikroserwisów. Jeśli w obsługę danego żądania HTTP  zaangażowany jest więcej niż jeden mikroserwis, to potrzebujemy łatwego sposobu na prześledzenie logów związanych z obsługą tego żądania, niezależnie od tego, ile mikroserwisów w tym procesie uczestniczyło. Rozwiązanie tego problemu jest dobrze znane - kiedy żądanie pojawia się w systemie, np. kiedy trafia na API Gateway, wystarczy wygenerować losowy ciąg znaków, umieścić go w nagłówku HTTP, a następnie zadbać o przekazywanie tego nagłówka pomiędzy mikroserwisami, oraz wstrzyknięcie jego wartości do kontekstu logowania (MDC).
 
 ![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_microservices_with_headers.png)
 <span class="img-legend">Śledzenie logów pomiędzy mikroserwisami</span>
@@ -36,7 +36,7 @@ Ale co to ma wspólnego z Kafką?
 
 ## Nagłówki na ratunek
 
-Okazuje się, że doświadczenia z korelacji logów ze świata mikroserwisów możemy wykorzystać do event trackingu na Kafce. Z rekordami na Kafce, podobnie jak z wiadomościami HTTP, mogą być związane nagłówki, a więc metadane postaci klucz-wartość.
+Okazuje się, że doświadczenia z korelacji logów ze świata mikroserwisów możemy wykorzystać do event trackingu na Kafce. Z rekordami na Kafce, podobnie jak z wiadomościami HTTP, mogą być związane nagłówki, a więc metadane w postaci klucz-wartość.
 
 Wykorzystując znany z mikroserwisów wzorzec, kiedy rekord pojawia się pierwszy raz w systemie, generujemy unikalny identyfikator oraz umieszczamy go w nagłówku. Następnie, analogicznie jak w przypadku mikroserwisów, kiedy event wędruje z jednego topika na inny, przekazujemy również powiązany z nim nagłówek korelacji. Idealnie, jeśli wartość tego nagłówka wstrzykujemy również do kontekstu logowania.
 
