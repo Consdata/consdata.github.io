@@ -6,7 +6,7 @@ published: false
 didyouknow: false
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2021-09-08-kouncil-event-tracking/route.webp
+image:     /assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/route.webp
 tags:
 - kouncil
 - kafka
@@ -18,7 +18,7 @@ Event tracking pozwala na prześledzenie oraz wizualizację drogi danego eventu,
 
 Weźmy za przykład system do wysyłania notyfikacji do użytkowników. Zanim dane powiadomienie będzie gotowe do wysyłki, potencjalnie będzie musiało przejść przez kilka topików, gdzie uzupełnione zostaną np. treść notyfikacji, czy kanał, którym powiadomienie zostanie przesłane.
 
-![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_kafka_flow.png)
+![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_kafka_flow.png)
 <span class="img-legend">Przykładowy przepływ na Kafce</span>
 
 Jak wobec tego namierzyć drogę konkretnego procesu pośród milionów innych?
@@ -26,7 +26,7 @@ Jak wobec tego namierzyć drogę konkretnego procesu pośród milionów innych?
 ## Gdzieś już to widziałem
 W istocie, problem nie jest nowy, i sięga co najmniej mikroserwisów. Jeśli w obsługę danego żądania HTTP  zaangażowany jest więcej niż jeden mikroserwis, to potrzebujemy łatwego sposobu na prześledzenie logów związanych z obsługą tego żądania, niezależnie od tego, ile mikroserwisów w tym procesie uczestniczyło. Rozwiązanie tego problemu jest dobrze znane - kiedy żądanie pojawia się w systemie, np. kiedy trafia na API Gateway, wystarczy wygenerować losowy ciąg znaków, umieścić go w nagłówku HTTP, a następnie zadbać o przekazywanie tego nagłówka pomiędzy mikroserwisami, oraz wstrzyknięcie jego wartości do kontekstu logowania.
 
-![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_microservices_with_headers.png)
+![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_microservices_with_headers.png)
 <span class="img-legend">Śledzenie logów pomiędzy mikroserwisami</span>
 
 Dzięki temu, wszystkie logi związane z danym żądaniem będą powiązane wygenerowanym na początku identyfikatorem. Wystarczy wyszukać ten identyfikator w jednym z popularnych agregatorów logów, np. Splunk (zakładając oczywiście, że tego rodzaju narzędzie jest dostępne), i w rezultacie otrzymamy logi powiązane z szukanym żądaniem.
@@ -39,7 +39,7 @@ Okazuje się, że doświadczenia z korelacji logów ze świata mikroserwisów mo
 
 Wykorzystując znany z mikroserwisów wzorzec, kiedy rekord pojawia się pierwszy raz w systemie, generujemy unikalny identyfikator oraz umieszczamy go w nagłówku. Następnie, analogicznie jak w przypadku mikroserwisów, kiedy event wędruje z jednego topika na inny, przekazujemy również powiązany z nim nagłówek korelacji. Idealnie, jeśli wartość tego nagłówka wstrzykujemy również do kontekstu logowania.
 
-![Event tracking](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_kafka_headers.png)
+![Event tracking](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_kafka_headers.png)
 <span class="img-legend">Przekazywanie nagłówka pomiędzy topikami na Kafce</span>
 
 Nie da się jednak nie zauważyć, że samo przekazywanie nagłówków pomiędzy topikami nie stanowi nawet połowy sukcesu. 
@@ -63,7 +63,7 @@ Tak się jednak składa, że stworzone przez nas narzędzie, [Kouncil](https://k
 * Po drugie, istnieje możliwość określenia zbioru przeszukiwanych topików - w przypadku, kiedy na klastrze znajdują się setki lub tysiące topików nie ma potrzeby ręcznie wyszukiwać ich na liście - komponent wyboru topika obsługuje filtrowanie.
 * Po trzecie, mamy możliwość podania przedziału czasowego, który nas interesuje.
 
-![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_track_filter.png)
+![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_track_filter.png)
 <span class="img-legend">Filtry zakładki Track</span>
 
 Jednak każdorazowe wypełnianie tych pól ręcznie w końcu okaże się być co najmniej niewygodne. 
@@ -72,22 +72,22 @@ Wróćmy więc do przykładu wysyłki powiadomień z początku tego artykułu. P
 
 Zajrzyjmy do topika notification-input:
 
-![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_notification_input.png)
+![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_notification_input.png)
 <span class="img-legend">Topic notification-input</span>
 
 Załóżmy, że chcemy prześledzić drogę rekordu o kluczu **vFeYAx**. Wystarczy, że klikniemy w rekord, aby podejrzeć jego szczegóły, a następnie na interesujący nas nagłówek.
 
-![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_event_header.png)
+![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_event_header.png)
 <span class="img-legend">Wybór nagłówka</span>
 
 Zostaniemy automatycznie przeniesieni na zakładkę Event Trackingu, gdzie pola filtra będą już za nas wypełnione na podstawie wybranego rekordu! Jedyne co musimy zrobić, to dodać interesujące nas topiki, gdyż domyślnie wybrany będzie jedynie ten, na którym znajduje się event, którego drogę chcemy prześledzić.
 
-![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_track_filter_filled.png)
+![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_track_filter_filled.png)
 <span class="img-legend">Automatycznie wypełniony filtr Event Trackingu</span>
 
 Teraz pozostało nam już tylko kliknąć **Track events** i obserwować jak w czasie rzeczywistym Kouncil odnajduje rekordy o podanym nagłówku. Sortując wyniki po czasie widzimy nie tylko kiedy oraz przez jakie topiki przeszedł dany proces, ale możemy też podejrzeć rekord na każdym etapie procesu.
 
-![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking/kouncil_event_tracking_result.png)
+![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_event_tracking_result.png)
 <span class="img-legend">Wynik Event Trackingu</span>
 
 Taki sposób analizy przepływu procesów na Kafce pozwala zaoszczędzić sporo czasu, zwłaszcza w bardziej zawiłych procesach, kiedy rekordy mogą powtórnie trafić na topic, na którym znajdowały się wcześniej, lub podczas analizy błędnych sytuacji, kiedy proces mógł trafić na topiki służące do obsługi błędów. Wyszukanie analogicznych informacji w logach aplikacji, choć możliwe, z reguły okazuje się być bardziej czasochłonne, szczególnie, jeśli konsumentami danego procesu są moduły należące do różnych systemów i nie istnieje prosta możliwość zbiorczego przeszukania ich logów.
