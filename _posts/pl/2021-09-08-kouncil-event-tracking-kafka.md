@@ -14,8 +14,7 @@ tags:
 - event tracking
 ---
 
-Systemy zbudowane na bazie Apache Kafka korzystają na ogół z więcej niż jednego topika. Często też eventy w ramach 
-pojedynczego procesu pokonują drogę pomiędzy różnymi topikami - w niektórych przypadkach ogranicza się to jedynie do przepływu pomiędzy topikami w niezmienionej formie, ale równie często rekordy na kolejnych topikach ulegają modyfikacji, np. dodawane są dane, które będą potrzebne w kolejnych krokach procesu.
+Systemy zbudowane na bazie Apache Kafka korzystają na ogół z więcej niż jednego topika. Często też eventy w ramach pojedynczego procesu pokonują drogę pomiędzy różnymi topikami - w niektórych przypadkach ogranicza się to jedynie do przepływu pomiędzy topikami w niezmienionej formie, ale równie często rekordy na kolejnych topikach ulegają modyfikacji, np. dodawane są dane, które będą potrzebne w kolejnych krokach procesu.
 Event tracking pozwala na prześledzenie oraz wizualizację drogi danego eventu, czy też procesu, przez topiki na Kafce.
 
 Weźmy za przykład system do wysyłania notyfikacji do użytkowników. Zanim dane powiadomienie będzie gotowe do wysyłki, potencjalnie będzie musiało przejść przez kilka topików, gdzie uzupełnione zostaną np. treść notyfikacji, czy kanał, którym powiadomienie zostanie przesłane.
