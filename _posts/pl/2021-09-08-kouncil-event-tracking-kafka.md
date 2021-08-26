@@ -7,13 +7,15 @@ didyouknow: false
 lang: pl
 author:    mmergo
 image:     /assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/route.webp
+description: "Event tracking pozwala na prześledzenie oraz wizualizację drogi danego eventu, czy też procesu, przez topiki na Kafce."
 tags:
 - kouncil
 - kafka
 - event tracking
 ---
 
-Systemy zbudowane na bazie Kafki korzystają na ogół z więcej niż jednego topika. Często też eventy w ramach pojedynczego procesu pokonują drogę pomiędzy różnymi topikami - w niektórych przypadkach ogranicza się to jedynie do przepływu pomiędzy topikami w niezmienionej formie, ale równie często rekordy na kolejnych topikach ulegają modyfikacji, np. dodawane są dane, które będą potrzebne w kolejnych krokach procesu.
+Systemy zbudowane na bazie Apache Kafka korzystają na ogół z więcej niż jednego topika. Często też eventy w ramach 
+pojedynczego procesu pokonują drogę pomiędzy różnymi topikami - w niektórych przypadkach ogranicza się to jedynie do przepływu pomiędzy topikami w niezmienionej formie, ale równie często rekordy na kolejnych topikach ulegają modyfikacji, np. dodawane są dane, które będą potrzebne w kolejnych krokach procesu.
 Event tracking pozwala na prześledzenie oraz wizualizację drogi danego eventu, czy też procesu, przez topiki na Kafce.
 
 Weźmy za przykład system do wysyłania notyfikacji do użytkowników. Zanim dane powiadomienie będzie gotowe do wysyłki, potencjalnie będzie musiało przejść przez kilka topików, gdzie uzupełnione zostaną np. treść notyfikacji, czy kanał, którym powiadomienie zostanie przesłane.
@@ -49,11 +51,11 @@ Jak więc się za to zabrać? Trzeba zacząć od zadania sobie trzech pytań:
 
 * **Co?** - czego tak naprawdę szukamy? Jakich nagłówków, z jakimi wartościami?
 * **Gdzie?** - które topiki weźmiemy pod uwagę? przeszukiwanie wszystkich topików często będzie nadmiarowe, na ogół można ograniczyć się jedynie do tych związanych z pewną funkcjonalnością lub przepływem.
-* **Kiedy?** - w przypadku kiedy na Kafce znajdują się miliardy rekordów, przeszukanie ich wszystkich zajęłoby wieki. W wielu jednak przypadkach procesy potrzebują kilku sekund, lub maksymalnie kilku minut aby w pełni przejść przez Kafkę, co oznacza, że na ogół można zawęzić zakres wyszukiwania do 5, 15 minut lub np. godziny.
+* **Kiedy?** - w przypadku kiedy na Kafce znajdują się miliardy rekordów, przeszukanie ich wszystkich zajęłoby wieki. W wielu jednak przypadkach procesy potrzebują kilku sekund lub maksymalnie kilku minut aby w pełni przejść przez Kafkę, co oznacza, że na ogół można zawęzić zakres wyszukiwania do 5, 15 minut lub np. godziny.
 
 Co oczywiste, im mniejszy zakres poszukiwań, tym sprawniej ono pójdzie.
 
-Jak zatem wziąć te trzy pytania, i faktycznie prześledzić drogę procesu przez Kafkę? Out of the box, nie istnieją na Kafce mechanizmy, które pozwoliłby to prosto zrealizować.
+Jak zatem wziąć te trzy pytania i faktycznie prześledzić drogę procesu przez Kafkę? Out of the box, nie istnieją na Kafce mechanizmy, które pozwoliłby to prosto zrealizować.
 
 ## Event Tracking w praktyce
 
