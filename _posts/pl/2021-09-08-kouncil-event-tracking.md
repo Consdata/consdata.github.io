@@ -2,7 +2,7 @@
 layout:    post
 title:     "Event Tracking, czyli jak znaleźć igłę w stogu siana"
 date:      2021-09-08 6:00:00 +0100
-published: true
+published: false
 didyouknow: false
 lang: pl
 author:    mmergo
