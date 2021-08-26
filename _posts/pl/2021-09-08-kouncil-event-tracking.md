@@ -53,7 +53,7 @@ Jak więc się za to zabrać? Trzeba zacząć od zadania sobie trzech pytań:
 
 Co oczywiste, im mniejszy zakres poszukiwań, tym sprawniej ono pójdzie.
 
-Jak zatem wziąć te trzy pytania, i faktycznie prześledzić drogę procesu przez Kafkę? Out of the box nie istnieją na Kafce mechanizmy, które pozwoliłby to prosto zrealizować.
+Jak zatem wziąć te trzy pytania, i faktycznie prześledzić drogę procesu przez Kafkę? Out of the box, nie istnieją na Kafce mechanizmy, które pozwoliłby to prosto zrealizować.
 
 ## Event Tracking w praktyce
 
@@ -68,7 +68,7 @@ Tak się jednak składa, że stworzone przez nas narzędzie, [Kouncil](https://k
 
 Jednak każdorazowe wypełnianie tych pól ręcznie w końcu okaże się być co najmniej niewygodne. 
 
-Wróćmy więc do przykładu wysyłki powiadomień z początku tego artykułu. Przyjmijmy, że istnieją na klastrze topiki odpowiedzialne za przetwarzanie wysyłki powiadomień: *notification-input*, gdzie powiadomienia zaczynają swoje życie, oraz inne, przez które eventy przepływają w zależności od przypadku użycia, jak *notification-content*, *-channel*, *-template*, *-delivery* itp., na których eventy mogą być uzupełniane o potrzebne dane, np. na topic *notification-channel* wpadną eventy, dla których trzeba wyznaczyć kanał powiadomienia.
+Wróćmy więc do przykładu wysyłki powiadomień z początku tego artykułu. Przyjmijmy, że istnieją na klastrze topiki odpowiedzialne za przetwarzanie wysyłki powiadomień: *notification-input*, gdzie powiadomienia zaczynają swoje życie, oraz inne, przez które eventy przepływają w zależności od przypadku użycia. Tymi topikami mogą być *notification-content*, *-channel*, *-template*, *-delivery* itp., na których eventy mogą być uzupełniane o potrzebne dane. Na przykład na topic *notification-channel* wpadną eventy, dla których trzeba wyznaczyć kanał powiadomienia.
 
 Zajrzyjmy do topika notification-input:
 
