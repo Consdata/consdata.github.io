@@ -8,14 +8,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      JEKYLL_VERSION: 4.2.0
     steps:
     - uses: actions/checkout@v2
     - name: Build the site in the jekyll/builder container
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+        jekyll/builder:${{ env.JEKYLL_VERSION }} /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
     - name: Push the site to the master branch
       if: ${{ github.event_name == 'push' }}
       run: |
