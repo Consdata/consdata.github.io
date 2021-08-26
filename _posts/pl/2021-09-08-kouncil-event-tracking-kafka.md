@@ -25,12 +25,12 @@ Weźmy za przykład system do wysyłania notyfikacji do użytkowników. Zanim da
 Jak wobec tego namierzyć drogę konkretnego procesu pośród milionów innych?
 
 ## Gdzieś już to widziałem
-W istocie, problem nie jest nowy, i sięga co najmniej mikroserwisów. Jeśli w obsługę danego żądania HTTP  zaangażowany jest więcej niż jeden mikroserwis, to potrzebujemy łatwego sposobu na prześledzenie logów związanych z obsługą tego żądania, niezależnie od tego, ile mikroserwisów w tym procesie uczestniczyło. Rozwiązanie tego problemu jest dobrze znane - kiedy żądanie pojawia się w systemie, np. kiedy trafia na API Gateway, wystarczy wygenerować losowy ciąg znaków, umieścić go w nagłówku HTTP, a następnie zadbać o przekazywanie tego nagłówka pomiędzy mikroserwisami, oraz wstrzyknięcie jego wartości do kontekstu logowania.
+W istocie, problem nie jest nowy i sięga co najmniej mikroserwisów. Jeśli w obsługę danego żądania HTTP  zaangażowany jest więcej niż jeden mikroserwis, to potrzebujemy łatwego sposobu na prześledzenie logów związanych z obsługą tego żądania, niezależnie od tego, ile mikroserwisów w tym procesie uczestniczyło. Rozwiązanie tego problemu jest dobrze znane - kiedy żądanie pojawia się w systemie, np. kiedy trafia na API Gateway, wystarczy wygenerować losowy ciąg znaków, umieścić go w nagłówku HTTP, a następnie zadbać o przekazywanie tego nagłówka pomiędzy mikroserwisami, oraz wstrzyknięcie jego wartości do kontekstu logowania.
 
 ![Log tracing](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_microservices_with_headers.png)
 <span class="img-legend">Śledzenie logów pomiędzy mikroserwisami</span>
 
-Dzięki temu, wszystkie logi związane z danym żądaniem będą powiązane wygenerowanym na początku identyfikatorem. Wystarczy wyszukać ten identyfikator w jednym z popularnych agregatorów logów, np. Splunk (zakładając oczywiście, że tego rodzaju narzędzie jest dostępne), i w rezultacie otrzymamy logi powiązane z szukanym żądaniem.
+Dzięki temu, wszystkie logi związane z danym żądaniem będą powiązane wygenerowanym na początku identyfikatorem. Wystarczy wyszukać ten identyfikator w jednym z popularnych agregatorów logów, np. Splunk (zakładając oczywiście, że tego rodzaju narzędzie jest dostępne) i w rezultacie otrzymamy logi powiązane z szukanym żądaniem.
 
 Ale co to ma wspólnego z Kafką?
 
@@ -91,10 +91,10 @@ Teraz pozostało nam już tylko kliknąć **Track events** i obserwować jak w c
 ![Track filter](/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/kouncil_event_tracking_result.png)
 <span class="img-legend">Wynik Event Trackingu</span>
 
-Taki sposób analizy przepływu procesów na Kafce pozwala zaoszczędzić sporo czasu, zwłaszcza w bardziej zawiłych procesach, kiedy rekordy mogą powtórnie trafić na topic, na którym znajdowały się wcześniej, lub podczas analizy błędnych sytuacji, kiedy proces mógł trafić na topiki służące do obsługi błędów. Wyszukanie analogicznych informacji w logach aplikacji, choć możliwe, z reguły okazuje się być bardziej czasochłonne, szczególnie, jeśli konsumentami danego procesu są moduły należące do różnych systemów i nie istnieje prosta możliwość zbiorczego przeszukania ich logów.
+Taki sposób analizy przepływu procesów na Kafce pozwala zaoszczędzić sporo czasu, zwłaszcza w bardziej zawiłych procesach, kiedy rekordy mogą powtórnie trafić na topic, na którym znajdowały się wcześniej lub podczas analizy błędnych sytuacji, kiedy proces mógł trafić na topiki służące do obsługi błędów. Wyszukanie analogicznych informacji w logach aplikacji, choć możliwe, z reguły okazuje się być bardziej czasochłonne, szczególnie, jeśli konsumentami danego procesu są moduły należące do różnych systemów i nie istnieje prosta możliwość zbiorczego przeszukania ich logów.
 
 Co ważne, Event Tracking możemy zacząć od dowolnego miejsca w procesie - może to być jego początek, tak jak w przypadku topika *notification-input*, jednak nic nie stało na przeszkodzie, żeby analizę rozpocząć od samego końca przepływu - topika *notification-status* - efekt byłby dokładnie ten sam!
 
 ## Kouncil
 
-Kouncil jest darmowy, a jego źródła wraz z instrukcją uruchomienia można znaleźć [na naszym githubie](https://github.com/consdata/kouncil). Proces jego uruchomienia jest trywialny, i [sprowadza się do pojedynczej komendy docker run](https://github.com/consdata/kouncil#quick-start), w ramach której trzeba jedynie wskazać namiar na którykolwiek z węzłów klastra Kafki. Jedyne czego Kouncil wymaga do obsługi Event Trackingu to zapewnienie istnienia nagłówków w wiadomościach, a resztę, związaną z przeszukiwaniem topików, bierze już na siebie.
+Kouncil jest darmowy, a jego źródła wraz z instrukcją uruchomienia można znaleźć [na naszym githubie](https://github.com/consdata/kouncil). Proces jego uruchomienia jest trywialny i [sprowadza się do pojedynczej komendy docker run](https://github.com/consdata/kouncil#quick-start), w ramach której trzeba jedynie wskazać namiar na którykolwiek z węzłów klastra Kafki. Jedyne czego Kouncil wymaga do obsługi Event Trackingu to zapewnienie istnienia nagłówków w wiadomościach, a resztę, związaną z przeszukiwaniem topików, bierze już na siebie.
