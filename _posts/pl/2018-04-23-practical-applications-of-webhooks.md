@@ -29,6 +29,8 @@ Jeśli chodzi o wady webhooków, można wyróżnić dwie:
 - przy obsłudze webhooków musimy wziąć po uwagę, iż zdarzenia, o których jesteśmy powiadamiani, mogą występować bardzo często - zwykle nie mamy nad tym kontroli.
 
 ## Przykład integracji
+We wcześniejszym wpisie ([Monitorowanie zespołowych trendów jakości kodu]({% post_url pl/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu %})) przedstawiliśmy Wam nasz OpenSource'owy projekt – SonarQube Companion. Na jego przykładzie zaprezentuję, jak za pomocą webhooków można w łatwy sposób zintegrować kilka aplikacji.
+
 Zintegrujemy SonarQube Compoaniona z komunikatorem Slack. Efektem integracji będzie wiadomość na kanale w komunikatorze z informacją, jak w ciągu ostatniego dnia zmieniła się liczba naruszeń zespołu.
 
 ### Wymagania wstępne:
@@ -132,5 +134,6 @@ W ten sposób zintegrowaliśmy dwie, niezależne aplikacje za pomocą mechanizmu
 W artykule przedstawiłem koncepcję webhooków oraz pokazałem Wam, jak w prosty i szybki sposób można dzięki nim zintegrować dwie niezależne aplikacje. Zamierzamy stopniowo rozszerzać SonarQube Companiona o nowe akcje, np. przesyłanie cotygodniowego raportu o naruszeniach, poszczególnym użytkownikom - dlatego zalecam regularne odwiedzanie strony projektu :)
 
 ## Przydatne linki:
+- [Monitorowanie zespołowych trendów jakości kodu]({% post_url pl/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu %})
 - [https://github.com/Consdata/sonarqube-companion](https://github.com/Consdata/sonarqube-companion)
 - [https://github.com/Consdata/sonarqube-companion/wiki/Webhooks](https://github.com/Consdata/sonarqube-companion/wiki/Webhooks)

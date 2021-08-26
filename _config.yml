@@ -1,7 +1,9 @@
 title: Consdata - blog techniczny
 # the subpath of your site, e.g. /blog
-url: "https://chrrapek.github.io"
 baseurl: ""
+url: "https://blog.consdata.tech"
+
+google_analytics: UA-28387432-1
 
 sass:
   sass_dir: _sass
