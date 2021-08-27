@@ -22,6 +22,7 @@ Motywacja opisana w poprzednim artykule nie uległa zmianie. Nadal uważamy, że
 
 ## Podgląd kondycji klastra
 Ekran pozwala podejrzeć listę węzłów w klastrze. Został rozbudowany o podstawowe statystyki maszyny, na której węzeł jest osadzony. Co więcej, po wybraniu elementu z listy, istnieje możliwość przeglądu wartości wszystkich parametrów konfiguracyjnych. Warto też w tym miejscu zwrócić uwagę na możliwość obsługi wielu węzłów, przełączanie których odbywa się w prawym górnym rogu.  
+
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_brokers.png)
 
 ## Podgląd i dodawanie wiadomości do topiku
@@ -29,14 +30,17 @@ Tabelaryczna prezentacja wiadomości w topiku jest tym, od czego zaczęliśmy bu
 * stronicowanie
 * możliwość przejścia do dowolnego offsetu
 * obsługa natywnych nagłówków wiadomości
+
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_topic_details_border.png)
 
 ## Podgląd stanu grup konsumentów
 Ten ekran był funkcjonalnie kompletny w poprzedniej wersji, więc niewiele się tutaj zmieniło, poza bardziej czytelną prezentacją tempa, w którym odbywa się konsumpcja komunikatów.
+
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_consumer_group.png)
 
 ## Śledzenie wiadomości
 Zupełnie nowa funkcjonalność, która zdecydowanie wyróżnia nas na tle konkurencji. Więcej o motywacji oraz możliwościach tego ekranu będzie można przeczytać w kolejnym wpisie.
+
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_event_tracking_result.png)
 
 ## Podsumowanie
