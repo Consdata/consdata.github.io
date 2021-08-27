@@ -1,23 +1,26 @@
 {% if page.lang-ref %}
-{% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-{% if posts.size == 0 %}
-{% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-{% endif %}
 <div class="post-language-options">
     <p>{{ site.data.translations['languageOptions'][page.lang]}}</p>
     <ul>
-        {% for post in posts %}
         <li>
-            <a href="{{ site.base-url }}{{ post.url }}"title="View in {{post.lang}}">
-                <div class="flag {{ post.lang }}">
+            {% if site.active_lang == "en" %}
+            <a href=" {{ page.url }} " title="View in Polish">
+                <div class="flag pl">
                     <div class="overlay">
-                        <p class="lang-code">{{post.lang}}</p>
+                        <p class="lang-code">PL</p>
                     </div>
                 </div>
-
             </a>
+            {% else %}
+            <a href="/en{{ page.url }} " title="Wyświetl po angielsku">
+                <div class="flag en">
+                    <div class="overlay">
+                        <p class="lang-code">EN</p>
+                    </div>
+                </div>
+            </a>
+            {% endif %}
         </li>
-        {% endfor %}
     </ul>
 </div>
 {% endif %}

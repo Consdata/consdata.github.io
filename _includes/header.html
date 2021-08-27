@@ -1,3 +1,5 @@
+---
+---
 <nav class="site-header">
     <div class="container">
         <div class="header navbar-default" role="navigation">
@@ -21,8 +23,21 @@
                     </svg>
                     </a>
                 </div>
+                {% if page.layout != "post" %}
+                    {% if site.active_lang == "en" %}
+                        <a class="language-switch" onclick="navigate(' {{ page.url }}')">PL</a>
+                    {% else %}
+                        <a class="language-switch" onclick="navigate('/en{{ page.url }}')">EN</a>
+                    {% endif %}
+                {% endif %}
             </div>
 
         </div>
     </div>
 </nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>

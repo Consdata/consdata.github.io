@@ -1,6 +1,10 @@
+{% if site.active_lang == "en" %}
+<form action="/en/search.html" method="get">
+{% else %}
 <form action="/search.html" method="get">
+{% endif %}
     <div class="search-input-container">
-        <input type="text" placeholder="Szukaj..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <input type="text" placeholder="{{ site.data.translations['search'][site.active_lang] }}" id="search-box" name="query" class="search-input" autocomplete="off">
         <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
     </div>
 </form>

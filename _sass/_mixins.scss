@@ -29,9 +29,7 @@
   padding-left: $content-padding;
 
   @include desktop {
-    width: $desktop-content-width;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 20%;
   }
 
 }

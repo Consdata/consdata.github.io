@@ -9,7 +9,7 @@ layout: search
             {% include author_bio.html %}
         </div>
     </div>
-    {% assign filtered_posts = site.posts | where: 'lang', "pl" | where: 'author', page.short_name %}
+    {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
     {% for forPost in filtered_posts %}
     <div class="row">
         {% include big-post-tile.html post=forPost %}

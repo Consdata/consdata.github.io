@@ -1,8 +1,7 @@
 ---
 ---
 {
-{% assign plPosts = site.posts | where:"lang", "pl" %}
-{% for post in plPosts  %}
+{% for post in site.posts  %}
 {% assign author = site.authors | where: "short_name", post.author | first %}
 "{{ post.url | slugify }}": {
 "title": "{{ post.title | xml_escape }}",

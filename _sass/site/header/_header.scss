@@ -37,6 +37,7 @@ nav {
     flex-direction: column;
     @include tablet-and-desktop {
       flex-direction: row;
+      padding: 0;
     }
   }
 
