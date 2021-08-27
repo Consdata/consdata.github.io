@@ -16,20 +16,20 @@ tags:
 - tool
 ---
 
-Niespełna dwa lata temu w artykule [Kafka Companion]({% post_url pl/2019-10-03-kafka-companion.md %}) pisałem o narzędziu, które stworzyliśmy rozwijając system oparty o event sourcing na Kafce. Kafka Companiona już nie ma, ale jest to dobra informacja, gdyż jego miejsce zajął Kouncil. Nowa wersja narzędzie oferuje wszystkie funkcje, które posiadał poprzednik i jednocześnie wprowadza nowe. Oprócz rzucającego się w oczy całkowitego redesignu aplikacji pojawiły się nowe funkcjonalności, które w szczegółach zostaną opisane w kolejnych wpisach na tym blogu.
+Niespełna dwa lata temu w artykule [Kafka Companion]({% post_url pl/2019-10-03-kafka-companion.md %}) pisałem o narzędziu, które stworzyliśmy rozwijając system oparty o event sourcing na Kafce. Kafka Companiona już nie ma, ale jest to dobra informacja, gdyż jego miejsce zajął Kouncil. Nowa wersja narzędzia oferuje wszystkie funkcje, które posiadał poprzednik i jednocześnie wprowadza nowe. Oprócz rzucającego się w oczy całkowitego redesignu aplikacji pojawiły się nowe funkcjonalności, które w szczegółach zostaną opisane w kolejnych wpisach na tym blogu.
 
-Motywacja opisana w poprzednim artykule nie uległa zmianie. Nadal uważamy, że żaden z dostępnych darmowych interfejsów graficznych do Kafki nie spełnia naszych oczekiwań. A trzeba przyznać, że kilka ich powstało. Przez ostatnie lata pracy z Kafką wypracowaliśmy szereg wzorców i dobrych praktyk, które Kouncil pozwala nam nadzorować. Przedstawię teraz poszczególne funkcjonalności, kładąc szczególnu nacisk na to, co zmieniło się w stosunku do poprzednika.
+Motywacja opisana w poprzednim artykule nie uległa zmianie. Nadal uważamy, że żaden z dostępnych darmowych interfejsów graficznych do Kafki nie spełnia naszych oczekiwań. A trzeba przyznać, że kilka ich powstało. Przez ostatnie lata pracy z Kafką wypracowaliśmy szereg wzorców i dobrych praktyk, które Kouncil pozwala nam nadzorować. Przedstawię teraz poszczególne funkcjonalności, kładąc szczególny nacisk na to, co zmieniło się w stosunku do poprzednika.
 
 ## Podgląd kondycji klastra
-Ekran pozwala podejrzeć listę węzłów w klastrze. Został rozbudowany o podstawowe statystyki maszyny, na której węzeł jest osadzony. Co więcej, po wybraniu elementu z listy, istnieje możliwość przeglądu wartości wszystkich parametrów konfiguracyjnych. Warto też w tym miejscu zwrócić uwagę na możliwość obsługi wielu węzłów, przełączanie których odbywa się w prawym górnym rogu.  
+Ekran pozwala podejrzeć listę węzłów w klastrze. Został rozbudowany o podstawowe statystyki maszyny, na której węzeł jest osadzony. Co więcej, po wybraniu elementu z listy, istnieje możliwość przeglądu wartości wszystkich parametrów konfiguracyjnych. Warto też w tym miejscu zwrócić uwagę na możliwość obsługi wielu klastrów, których przełączanie odbywa się w prawym górnym rogu.  
 
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_brokers.png)
 
 ## Podgląd i dodawanie wiadomości do topiku
 Tabelaryczna prezentacja wiadomości w topiku jest tym, od czego zaczęliśmy budować narzędzie w pierwszej kolejności. Nic więc dziwnego, że nadal duży nacisk położony jest na funkcjonalność i użyteczność tego widoku. Pojawiły się tutaj możliwości wyczekiwane przez wielu użytkowników Kouncila, czyli:
-* stronicowanie
-* możliwość przejścia do dowolnego offsetu
-* obsługa natywnych nagłówków wiadomości
+* stronicowanie,
+* możliwość przejścia do dowolnego offsetu,
+* obsługa natywnych nagłówków wiadomości.
 
 ![Kouncil introduction](/assets/img/posts/2021-08-30-kouncil-introduction/kouncil_topic_details_border.png)
 
