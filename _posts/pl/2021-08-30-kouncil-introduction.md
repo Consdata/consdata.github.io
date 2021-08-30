@@ -2,7 +2,7 @@
 layout:    post
 title:     "Kouncil - nowoczesny frontend do Kafki"
 date:      2021-08-30 6:00:00 +0100
-published: false
+published: true
 didyouknow: false
 lang: pl
 author:    jgrobelny
