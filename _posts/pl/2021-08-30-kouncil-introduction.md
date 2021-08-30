@@ -16,7 +16,7 @@ tags:
 - tool
 ---
 
-Niespełna dwa lata temu w artykule [Kafka Companion]({% post_url pl/2019-10-03-kafka-companion.md %}) pisałem o narzędziu, które stworzyliśmy rozwijając system oparty o event sourcing na Kafce. Kafka Companiona już nie ma, ale jest to dobra informacja, gdyż jego miejsce zajął Kouncil. Nowa wersja narzędzia oferuje wszystkie funkcje, które posiadał poprzednik i jednocześnie wprowadza nowe. Oprócz rzucającego się w oczy całkowitego redesignu aplikacji pojawiły się nowe funkcjonalności, które w szczegółach zostaną opisane w kolejnych wpisach na tym blogu.
+Niespełna dwa lata temu w artykule [Kafka Companion]({% post_url pl/2019-10-03-kafka-companion %}) pisałem o narzędziu, które stworzyliśmy rozwijając system oparty o event sourcing na Kafce. Kafka Companiona już nie ma, ale jest to dobra informacja, gdyż jego miejsce zajął Kouncil. Nowa wersja narzędzia oferuje wszystkie funkcje, które posiadał poprzednik i jednocześnie wprowadza nowe. Oprócz rzucającego się w oczy całkowitego redesignu aplikacji pojawiły się nowe funkcjonalności, które w szczegółach zostaną opisane w kolejnych wpisach na tym blogu.
 
 Motywacja opisana w poprzednim artykule nie uległa zmianie. Nadal uważamy, że żaden z dostępnych darmowych interfejsów graficznych do Kafki nie spełnia naszych oczekiwań. A trzeba przyznać, że kilka ich powstało. Przez ostatnie lata pracy z Kafką wypracowaliśmy szereg wzorców i dobrych praktyk, które Kouncil pozwala nam nadzorować. Przedstawię teraz poszczególne funkcjonalności, kładąc szczególny nacisk na to, co zmieniło się w stosunku do poprzednika.
 
