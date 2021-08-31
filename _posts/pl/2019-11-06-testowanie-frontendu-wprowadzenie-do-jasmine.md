@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-11-06 08:00:00 +0100
 author:    mmendlik
-image:     /assets/img/posts/2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine/frontend-testing.webp
+image:     /assets/img/posts/2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine/frontend-testing.jpeg
 tags:
   - javascript
   - test

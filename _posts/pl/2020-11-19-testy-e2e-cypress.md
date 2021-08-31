@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2020-11-24 09:00:00 +0100
 author:    amarszalek
-image:     /assets/img/posts/2020-11-24-testy-e2e-cypress/e2e-cypress.webp
+image:     /assets/img/posts/2020-11-24-testy-e2e-cypress/e2e-cypress.jpeg
 tags:
     - Cypress
     - e2e

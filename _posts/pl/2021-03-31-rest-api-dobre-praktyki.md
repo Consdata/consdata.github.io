@@ -5,7 +5,7 @@ date:      2021-03-31 08:00:00 +0100
 published: true
 lang:      pl
 author:    bmitan
-image:     /assets/img/posts/2021-03-31-rest-api-dobre-praktyki/RESTApi.webp
+image:     /assets/img/posts/2021-03-31-rest-api-dobre-praktyki/RESTApi.jpeg
 tags:
     - http
     - rest
