@@ -6,8 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    jgoszczurny
-image:     /assets/img/posts/2021-08-20-stun-server/handshake.webp
-description: "Czy wiesz że WebRTC korzysta z serwera STUN, aby umożliwić połączenie P2P, a w ostateczności z serwera TURN aby przepuścić ruch przez niego i umożliwić połączenie?"
+image:     /assets/img/posts/2021-08-20-stun-server/handshake.jpeg
 tags:
 - webrtc
 - stun

@@ -5,7 +5,7 @@ date:      2019-02-26 08:00:00 +0100
 published: true
 lang: pl
 author:    glipecki
-image:     /assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/pozycjonowanie-scroll.webp
+image:     /assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/pozycjonowanie-scroll.jpeg
 tags:
     - frontend
     - javascript
