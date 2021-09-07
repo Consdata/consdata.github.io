@@ -14,7 +14,7 @@
                 <div class="navigation-tags">
                     {% for tag in uniqueTags | limit: 5 %}
                         {% if site.active_lang == "en" %}
-                        <a href="/en/search?query={{ tag }}">
+                        <a href="/">
                         {% else %}
                         <a href="/search.html?query={{ tag }}">
                         {% endif %}
@@ -37,7 +37,7 @@
             <div class="navigation-tags">
                 {% for tag in uniqueTags | limit: 5 %}
                 {% if site.active_lang == "en" %}
-                <a href="/en/search?query={{ tag }}">
+                <a href="/">
                     {% else %}
                     <a href="/search.html?query={{ tag }}">
                         {% endif %}
