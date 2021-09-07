@@ -16,7 +16,7 @@
                         {% if site.active_lang == "en" %}
                         <a href="/en/search?query={{ tag }}">
                         {% else %}
-                        <a href="/search.html">
+                        <a href="/search.html?query={{ tag }}">
                         {% endif %}
                         {{ tag | upcase }}
                         </a>
@@ -39,7 +39,7 @@
                 {% if site.active_lang == "en" %}
                 <a href="/en/search?query={{ tag }}">
                     {% else %}
-                    <a href="/search.html">
+                    <a href="/search.html?query={{ tag }}">
                         {% endif %}
                         {{ tag | upcase }}
                     </a>
