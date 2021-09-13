@@ -2,7 +2,7 @@
 layout:    post
 title:     "Niezawodne dostarczanie zdarzeń w Apache Kafka oparte o ponawianie i DLQ"
 date:      2021-09-13 6:00:00 +0100
-published: false
+published: true
 didyouknow: false
 lang: pl
 author:    jgrobelny
