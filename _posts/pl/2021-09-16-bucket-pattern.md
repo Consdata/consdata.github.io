@@ -74,7 +74,8 @@ W naszym przykładzie, jeśli dojdzie nowy pomiar z czunika w tym zakresie, zwi�
 
 Wreszcie, dobrym pomysłem może być zarchiwizowanie części danych historycznych - dane spływają na bieżąco, wiemy, że dany dokument nie będzie już później modyfikowany, a dostęp do starych danych może być niezwykle rzadki.
 
-Praktyczne przypadki użycia
+## Praktyczne przypadki użycia
+
 Twórcy Mongo chwalą się, że takie zastosowania to nie tylko teoria. Bosch korzysta z MongoDB w aplikacji z branży automotive, zbierając dane z wielu czujników w pojeździe korzystając właśnie z Bucket Pattern. Również niektóre banki skorzystały z tego wzorca, grupując transakcje.
 
 ## Korzyści
