@@ -57,7 +57,7 @@ We hereby come to our final solution. Since there is a separate topic for broken
 
 
 ## Event tracking
-Whatever solution you choose, one thing is for sure: you need a tool that will allow you to track and see how events behave on topics. Kouncil, which we have been developing for some time now, fits especially well in a situation involving the strategy with the retry topic and DLQ. Using track view and having a correlating identifier, you can quickly verify the event processing path. For example, you know that the event with the identifier `h57z2z` has been correctly processed, i.e. has passed through the `events-in` and `events-out` topics, which can be seen in the screenshot below.
+Whatever solution you choose, one thing is for sure: you need a tool that will allow you to track and see how events behave on topics. [Kouncil](https://github.com/consdata/kouncil) ([demo](https://kouncil-demo.web.app/#/topics)), which we have been developing for some time now, fits especially well in a situation involving the strategy with the retry topic and DLQ. Using track view and having a correlating identifier, you can quickly verify the event processing path. For example, you know that the event with the identifier `h57z2z` has been correctly processed, i.e. has passed through the `events-in` and `events-out` topics, which can be seen in the screenshot below.
 
 
 ![Proper flow](/assets/img/posts/2021-09-13-kafka-retry-dlq/kafka-retry-dlq5.png)
