@@ -6,6 +6,7 @@ published: true
 didyouknow: false
 lang: en
 lang-ref: kouncil-introduction
+interpreter: Piotr Żurawski
 author:    jgrobelny
 image:     /assets/img/posts/2021-08-30-kouncil-introduction/kouncil_dashboard.png
 description: "Kouncil is a modern Kafka frontend equipped with features essential for developers."

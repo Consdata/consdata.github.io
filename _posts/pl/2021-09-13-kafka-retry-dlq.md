@@ -5,6 +5,7 @@ date:      2021-09-13 6:00:00 +0100
 published: true
 didyouknow: false
 lang: pl
+lang-ref:  kafla-retry-dlq
 author:    jgrobelny
 image:     /assets/img/posts/2021-09-13-kafka-retry-dlq/kafka-retry-dlq4.png
 description: "Dlaczego w Kafce nie ma DLQ? Zacznijmy zatem od odpowiedzi na pytanie. Większość popularnych systemów kolejkowych takich jak RabbitMQ czy ActiveMQ ma wbudowane systemy odpowiedzialne za niezawodne dostarczanie komunikatów. Dlaczego zatem Kafka nie oferuje takowego."
