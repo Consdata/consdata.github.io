@@ -17,7 +17,7 @@ tags:
 ---
 
 ## Wprowadzenie
-Dwa słowa wprowadzenia do problematyki - dlaczego chcielibyśmy zarządzać stanem - po co, jak i dlaczego?
+Aplikacje webowe bardzo często pełnią rolę interfejsu użytkownika w określonym systemie, a ich głównym zadaniem jest możliwość wyświetlenia danych. Nierzadko zdarza się  
 
 ### Czy na pewno potrzebujesz osobnej biblioteki?
 Myślę, żeby napisać tu o zasadzie SHARI, która jest nawet w dokumentacji NgRx, żeby pokazać przypadki, w których korzystanie z libki od zarządzania stanem może być sensowne.
