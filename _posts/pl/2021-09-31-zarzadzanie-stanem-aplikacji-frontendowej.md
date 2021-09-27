@@ -6,7 +6,8 @@ published:  true
 didyouknow: false
 lang:       pl
 author:     mchrapkowicz
-image:      
+image:      /assets/img/posts/2021-09-31-zarzadzanie-stanem-aplikacji-frontendowej/ngrx.webp
+description: "W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. W tym wpisie poznamy jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażemy przykład jej zastosowania w bibliotece NgRx."
 tags:
 - frontend
 - redux
@@ -20,7 +21,6 @@ tags:
 - react
 ---
 
-## Wprowadzenie
 W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. Często mamy do czynienia z wieloma źródłami danych - mogą to być na przykład najróżniejsze zewnętrzne serwisy, czy polecenia wprowadzane przez użytkownika. Podstawowym rozwiązaniem jest przekazywanie tych danych przy pomocy rozwiązań dostarczanych przez wykorzystywany framework (na przykład data binding w Angularze), jednak bardzo łatwo można wyobrazić sobie sytuację, w której informacje, z których chcemy skorzystać, znajdują się w zupełnie innej części aplikacji, a przed nami stoi zadanie „przepchania" ich aż do interesującego nas miejsca. Jest to oczywiście rozwiązanie nieskalowalne, trudne w utrzymaniu i niezbyt eleganckie.
 
 Wyobraźmy sobie zatem sytuację, w której wszystkie możliwe dane trafiają do jednego miejsca, uporządkowane i niemutowalne i mogą być z niego odczytane w dowolnej chwili. Prawda, że cudna koncepcja? Nazywamy ją "single source of truth", czyli w wolnym tłumaczeniu - jedno źródło prawdy.  Wykorzystanie takiego pomysłu pozwala pisać bardziej przewidywalny i łatwiej testowalny kod, jak również znacząco zwiększa możliwość skalowania aplikacji. W tym wpisie postaram się nieco przybliżyć jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażę przykład jej zastosowania w bibliotece NgRx.
@@ -41,11 +41,11 @@ No dobrze, to jeśli już wiemy, że w naszym dobrym interesie leży skorzystani
 
 Na razie powyższy diagram może wydawać się nieco tajemniczy, zatem już spieszę z wyjaśnieniami.
 
-* Jak wspomniałem we wstępie, Redux zakłada istnienie globalnego, niemutowalnego bytu, przechowującego stan aplikacji, nazywanego *store*. Fizycznie jest to obiekt w formacie JSON, którego struktura definiowana jest przez programistę. 
-* W celu wywołania zmian w store komponenty aplikacji muszą wywoływać (ang. _dispatch_) **akcje**. Reprezentują one konkretne zdarzenia zachodzące w systemie i niosą ze sobą konkretne informacje.
-* Akcje są przechwytywane przez **reducery**. Reducerem nazywamy czystą (nieposiadającą efektów ubocznych) funkcję, która konsumuje akcję i, w zależności od jej przeznaczenia, zwraca odpowiednio zmodyfikowany, nowy store.
-* Dane ze store do komponentów trafiają poprzez **selektory**. Każda zmiana stanu aplikacji jest propagowana do nasłuchujących selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}).
-* W przypadkach, kiedy wywołanie akcji powinno pociągnąć za sobą dowolne żądanie niezwiązane bezpośrednio z aplikacją (np. zapytanie do bazy danych, czy żądanie do zewnętrznej usługi) - do gry wchodzą **efekty**. Podobnie jak reducery potrafią one reagować na konkretne akcje i wykonać przypisane im zadanie. Mogą one również wywołać kolejną akcję, by wynik swojej pracy przekazać do reducera, a co za tym idzie - do store. Wywołania efektów mogą być zarówno synchroniczne, jak i asynchroniczne.
+* Jak wspomniałem we wstępie, Redux zakłada istnienie globalnego, niemutowalnego bytu, przechowującego stan aplikacji - **store**. Fizycznie jest to obiekt w formacie JSON, którego struktura definiowana jest przez programistę. 
+* W celu wywołania zmian w store komponenty aplikacji muszą wywoływać **akcje** (ang. _actions_). Reprezentują one konkretne zdarzenia zachodzące w systemie i niosą ze sobą konkretne informacje.
+* Akcje są przechwytywane przez **reducery** (ang. _reducers_). Reducerem nazywamy czystą (nieposiadającą efektów ubocznych) funkcję, która konsumuje akcję i, w zależności od jej przeznaczenia, zwraca odpowiednio zmodyfikowany, nowy store.
+* Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Każda zmiana stanu aplikacji jest propagowana do nasłuchujących selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}).
+* W przypadkach, kiedy wywołanie akcji powinno pociągnąć za sobą dowolne żądanie niezwiązane bezpośrednio z aplikacją (np. zapytanie do bazy danych, czy żądanie do zewnętrznej usługi) - do gry wchodzą **efekty** (ang. _effects_). Podobnie jak reducery potrafią one reagować na konkretne akcje i wykonać przypisane im zadanie. Mogą one również wywołać kolejną akcję, by wynik swojej pracy przekazać do reducera, a co za tym idzie - do store. Wywołania efektów mogą być zarówno synchroniczne, jak i asynchroniczne.
 
 ## Implementacja Redux w NgRx
 Przy pierwszym kontakcie wszystkie powyższe pojęcia i pomysły mogą wydawać się nieco skomplikowane i nadmiarowe, zatem na prostym przykładzie pokażę, jak wyglądają fragmenty aplikacji pisanej przy pomocy NgRx. Na końcu wpisu zamieszczę link do repozytorium, w którym będzie można zobaczyć, jak wygląda cała aplikacja oraz jej konfiguracja. Również z tego powodu pomijam instrukcje instalacji biblioteki i konfiguracji środowiska.
