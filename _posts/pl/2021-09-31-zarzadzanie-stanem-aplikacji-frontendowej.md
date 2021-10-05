@@ -7,7 +7,7 @@ didyouknow: false
 lang:       pl
 author:     mchrapkowicz
 image:      /assets/img/posts/2021-09-31-zarzadzanie-stanem-aplikacji-frontendowej/ngrx.webp
-description: "W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. W tym wpisie poznamy jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażemy przykład jej zastosowania w bibliotece NgRx."
+description: "W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. W tym artykule poznamy jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażemy przykład jej zastosowania w bibliotece NgRx."
 tags:
 - frontend
 - redux
@@ -21,12 +21,12 @@ tags:
 - react
 ---
 
-W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. Często mamy do czynienia z wieloma źródłami danych - mogą to być na przykład najróżniejsze zewnętrzne serwisy, czy polecenia wprowadzane przez użytkownika. Podstawowym podejściem jest przekazywanie tych danych przy pomocy rozwiązań dostarczanych przez wykorzystywany framework (na przykład data binding w Angularze), jednak bardzo łatwo można wyobrazić sobie sytuację, w której informacje, z których chcemy skorzystać, znajdują się w zupełnie innej części aplikacji, a przed nami stoi zadanie „przepchania" ich aż do interesującego nas miejsca. Jest to oczywiście rozwiązanie nieskalowalne, trudne w utrzymaniu i niezbyt eleganckie.
+W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. Często mamy do czynienia z wieloma źródłami danych. Mogą to być na przykład najróżniejsze zewnętrzne serwisy czy polecenia wprowadzane przez użytkownika. Podstawowym podejściem jest przekazywanie tych danych przy pomocy rozwiązań dostarczanych przez wykorzystywany framework (na przykład data binding w Angularze), jednak bardzo łatwo można wyobrazić sobie sytuację, w której informacje, z których chcemy skorzystać, znajdują się w zupełnie innej części aplikacji, a przed nami stoi zadanie „przepchania" ich aż do interesującego nas miejsca. Jest to oczywiście rozwiązanie nieskalowalne, trudne w utrzymaniu i niezbyt eleganckie.
 
 Wyobraźmy sobie zatem sytuację, w której wszystkie możliwe dane w sposób uporządkowany trafiają do jednego miejsca i mogą być z niego odczytane w dowolnej chwili. Prawda, że cudna koncepcja? Nazywamy ją "single source of truth", czyli, w wolnym tłumaczeniu, jedno źródło prawdy.  Wykorzystanie takiego pomysłu pozwala pisać bardziej przewidywalny i łatwiej testowalny kod, jak również znacząco zwiększa możliwość skalowania aplikacji. W tym wpisie postaram się nieco przybliżyć jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażę przykład jej zastosowania w bibliotece NgRx.
 
 ### Czy na pewno potrzebujesz zarządzania stanem aplikacji?
-Zanim zaczniemy, chciałbym jeszcze zwrócić uwagę, że nie każda aplikacja jest tak rozbudowana i złożona, żeby potrzebować całego mechanizmu zarzadzania stanem. W ustaleniu, czy tak jest, pomaga zasada SHARI zaprezentowana, chociażby, w [oficjalnej dokumentacji NgRx](https://ngrx.io/guide/store/why). Warto sobie odpowiedzieć, czy potrzebujemy stanu, który jest:
+Zanim zaczniemy, chciałbym jeszcze zwrócić uwagę, że nie każda aplikacja jest tak rozbudowana i złożona, żeby potrzebować całego mechanizmu zarządzania stanem. W ustaleniu, czy tak jest, pomaga zasada SHARI zaprezentowana, chociażby, w [oficjalnej dokumentacji NgRx](https://ngrx.io/guide/store/why). Warto sobie odpowiedzieć, czy potrzebujemy stanu, który jest:
 - **S**hared - współdzielony pomiędzy wiele komponentów i serwisów.
 - **H**ydrated - trwały i z możliwością ponownego zasilenia z zewnętrznego źródła jak np. local storage.
 - **A**vailable - dostępny cały czas, niezależnie od sposobu nawigacji po aplikacji, np. podczas przechodzenia i cofania się w aplikacji prezentującej złożony wniosek.
@@ -44,7 +44,7 @@ Na razie powyższy diagram może wydawać się nieco tajemniczy, zatem już spie
 * Jak wspomniałem we wstępie, Redux zakłada istnienie globalnego, niemutowalnego bytu, przechowującego stan aplikacji - **store**. Fizycznie jest to obiekt w formacie JSON, którego struktura definiowana jest przez programistę. 
 * W celu wywołania zmian w store komponenty aplikacji muszą wywoływać **akcje** (ang. _actions_). Reprezentują one konkretne zdarzenia zachodzące w systemie i niosą ze sobą konkretne informacje.
 * Akcje są przechwytywane przez **reducery** (ang. _reducers_). Reducerem nazywamy czystą funkcję (ang. _pure function_), która konsumuje akcję i, w zależności od jej przeznaczenia oraz zgodnie z logiką reducera, zwraca odpowiednio zmodyfikowany, nowy store. 
-* Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Wszystkie zmiany stanu aplikacji są propagowana do reagujących na nie selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}). Selektory powinny otrzymywać wyłącznie dane potrzebne do działania komponentu, w których są używane.
+* Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Wszystkie zmiany stanu aplikacji są propagowane do reagujących na nie selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}). Selektory powinny otrzymywać wyłącznie dane potrzebne do działania komponentu, w których są używane.
 * W przypadkach, kiedy wywołanie akcji powinno pociągnąć za sobą dowolne działanie niezwiązane bezpośrednio z aplikacją (np. zapytanie do bazy danych, czy żądanie do zewnętrznej usługi) - do gry wchodzą **efekty** (ang. _effects_). Podobnie jak reducery potrafią one reagować na konkretne akcje i wykonać przypisane im zadanie. Mogą one również wywołać kolejną akcję, która trafi do reducera, a co za tym idzie - do store. Wywołania efektów mogą być zarówno synchroniczne, jak i asynchroniczne.
 
 ## Implementacja Redux w NgRx
@@ -53,7 +53,7 @@ Przy pierwszym kontakcie wszystkie powyższe pojęcia i pomysły mogą wydawać 
 Załóżmy, że chcemy stworzyć prosty program pozwalający na zapisywanie sposobów na pokonanie nudy. Jednym z możliwych do podjęcia działań będzie wywołanie API, które na każde żądanie odpowie pomysłem na jakąś aktywność. Drugą opcją będzie dodanie własnej koncepcji poprzez prosty formularz. Zacznijmy zatem.
 
 ### Store
-Zanim zaczniemy zasilać store danymi, warto uzmysłowić sobie, co tak naprawdę chcemy w nim przechowywać, a następnie powiedzieć to Typescriptowi tworząc interfejs. W naszym przypadku będziemy przechowywali w nim jedynie listę czynności potencjalnie zabijających nudę, jednak nawet w tak prostym przypadku warto zwrócić uwagę na to, jaką strukturę planujemy nadać store'owi. Początkowo najprościej jest operować na płaskiej strukturze, w której wszystkie dane znajdują się na tym samym poziomie.
+Na samym początku procesu, warto uzmysłowić sobie, co tak naprawdę chcemy przechowywać w naszym store, a potem powiedzieć to Typescriptowi tworząc interfejs. W naszym przypadku będziemy przechowywali w nim jedynie listę czynności potencjalnie zabijających nudę, jednak nawet w tak prostym przypadku warto zwrócić uwagę na to, jaką strukturę planujemy nadać store'owi. Początkowo najprościej jest operować na płaskiej strukturze, w której wszystkie dane znajdują się na tym samym poziomie.
 Niestety przy rozwijaniu aplikacji takie podejście staje się bardzo nieefektywne, zarówno pod względem organizacji, jak i, z czasem, również wydajności. Zdecydowanie lepiej jest podzielić store na tak zwane "slice'y", czyli wycinki danych, na przykład dzieląc store według funkcjonalności aplikacji. Zobaczmy takie podejście na przykładzie:
 
 ```typescript
@@ -218,7 +218,7 @@ Należy również zaznaczyć, że Redux nie jest jedynym sposobem na zarządzani
 ## Podsumowanie
 Łatwo zauważyć, że na pierwszy ogień NgRx, czy szerzej - Redux - potrafią nieco przytłoczyć ilością kodu, którą trzeba napisać, by nawet drobne funkcjonalności działały. Jest to jeden z największych zarzutów wobec tego rozwiązania, więc jeśli takie były Twoje odczucia podczas czytania tego artykułu - gratuluję krytycznego myślenia! Zauważmy jednak, że po przebrnięciu przez początkowe trudności zostajemy z aplikacją, którą bardzo łatwo możemy otestować, rozszerzać i której działanie jest jasno zdefiniowane.
 
-Mam nadzieję, że tym artykułem zainspirowałem nieco do zainteresowania się tematem zarządzania stanem aplikacji frontendowych. Serdecznie zapraszam do rozpoznawania tematu we własnym zakresie, gdyż przedstawiłem tu zaledwie wierzchołek możliwości, jakie zapewnia Redux i NgRx.
+Mam nadzieję, że tym artykułem zainspirowałem nieco do zainteresowania się tematem zarządzania stanem aplikacji frontendowych. Serdecznie zapraszam do rozpoznawania tematu we własnym zakresie, gdyż przedstawiłem tu zaledwie namiastkę możliwości, jakie zapewnia Redux i NgRx.
 
 ### Linki
 - [Repozytorium z projektem](https://github.com/Chrrapek/BoredNgRx)
