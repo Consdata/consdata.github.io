@@ -37,14 +37,14 @@ Zanim zaczniemy, chciałbym jeszcze zwrócić uwagę, że nie każda aplikacja j
 No dobrze, to jeśli już wiemy, że w naszym dobrym interesie leży skorzystanie z dobrodziejstw architektury Redux, to spójrzmy, co tak naprawdę przez to rozumiemy.
 
 ![Redux](/assets/img/posts/2021-09-31-zarzadzanie-stanem-aplikacji-frontendowej/redux.png)
-<span class="img-legend">Architektura Redux z lotu ptaka</span>
+<span class="img-legend">Architektura Redux z lotu ptaka. Źródło: dokumentacja NgRx</span>
 
 Na razie powyższy diagram może wydawać się nieco tajemniczy, zatem już spieszę z wyjaśnieniami.
 
 * Jak wspomniałem we wstępie, Redux zakłada istnienie globalnego, niemutowalnego bytu, przechowującego stan aplikacji - **store**. Fizycznie jest to obiekt w formacie JSON, którego struktura definiowana jest przez programistę. 
 * W celu wywołania zmian w store komponenty aplikacji muszą wywoływać **akcje** (ang. _actions_). Reprezentują one konkretne zdarzenia zachodzące w systemie i niosą ze sobą konkretne informacje.
 * Akcje są przechwytywane przez **reducery** (ang. _reducers_). Reducerem nazywamy czystą funkcję (ang. _pure function_), która konsumuje akcję i, w zależności od jej przeznaczenia oraz zgodnie z logiką reducera, zwraca odpowiednio zmodyfikowany, nowy store. 
-* Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Wszystkie zmiany stanu aplikacji są propagowane do reagujących na nie selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}). Selektory powinny otrzymywać wyłącznie dane potrzebne do działania komponentu, w których są używane.
+* Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Wszystkie zmiany stanu aplikacji są propagowane do reagujących na nie selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}). Selektory powinny otrzymywać wyłącznie dane potrzebne do działania komponentów, w których są używane.
 * W przypadkach, kiedy wywołanie akcji powinno pociągnąć za sobą dowolne działanie niezwiązane bezpośrednio z aplikacją (np. zapytanie do bazy danych, czy żądanie do zewnętrznej usługi) - do gry wchodzą **efekty** (ang. _effects_). Podobnie jak reducery potrafią one reagować na konkretne akcje i wykonać przypisane im zadanie. Mogą one również wywołać kolejną akcję, która trafi do reducera, a co za tym idzie - do store. Wywołania efektów mogą być zarówno synchroniczne, jak i asynchroniczne.
 
 ## Implementacja Redux w NgRx
