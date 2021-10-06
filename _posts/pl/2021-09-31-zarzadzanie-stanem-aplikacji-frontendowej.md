@@ -21,9 +21,9 @@ tags:
 - react
 ---
 
-W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. Często mamy do czynienia z wieloma źródłami danych. Mogą to być na przykład najróżniejsze zewnętrzne serwisy czy polecenia wprowadzane przez użytkownika. Podstawowym podejściem jest przekazywanie tych danych przy pomocy rozwiązań dostarczanych przez wykorzystywany framework (na przykład data binding w Angularze), jednak bardzo łatwo można wyobrazić sobie sytuację, w której informacje, z których chcemy skorzystać, znajdują się w zupełnie innej części aplikacji, a przed nami stoi zadanie „przepchania" ich aż do interesującego nas miejsca. Jest to oczywiście rozwiązanie nieskalowalne, trudne w utrzymaniu i niezbyt eleganckie.
+W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. Często mamy do czynienia z wieloma źródłami danych. Mogą to być na przykład najróżniejsze zewnętrzne serwisy czy interakcje użytkownika. Podstawowym podejściem jest przekazywanie tych danych przy pomocy rozwiązań dostarczanych przez wykorzystywany framework (na przykład data binding w Angularze), jednak bardzo łatwo można wyobrazić sobie sytuację, w której informacje, z których chcemy skorzystać, znajdują się w zupełnie innej części aplikacji, a przed nami stoi zadanie „przepchania” ich aż do interesującego nas miejsca. Jest to oczywiście rozwiązanie nieskalowalne, trudne w utrzymaniu i niezbyt eleganckie.
 
-Wyobraźmy sobie zatem sytuację, w której wszystkie możliwe dane w sposób uporządkowany trafiają do jednego miejsca i mogą być z niego odczytane w dowolnej chwili. Prawda, że cudna koncepcja? Nazywamy ją "single source of truth", czyli, w wolnym tłumaczeniu, jedno źródło prawdy.  Wykorzystanie takiego pomysłu pozwala pisać bardziej przewidywalny i łatwiej testowalny kod, jak również znacząco zwiększa możliwość skalowania aplikacji. W tym wpisie postaram się nieco przybliżyć jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażę przykład jej zastosowania w bibliotece NgRx.
+Wyobraźmy sobie zatem sytuację, w której wszystkie możliwe dane w sposób uporządkowany trafiają do jednego miejsca i mogą być z niego odczytane w dowolnej chwili. Prawda, że cudna koncepcja? Nazywamy ją „single source of truth”, czyli, w wolnym tłumaczeniu, jedno źródło prawdy.  Wykorzystanie takiego pomysłu pozwala pisać bardziej przewidywalny i łatwiej testowalny kod, jak również znacząco zwiększa możliwość skalowania aplikacji. W tym wpisie postaram się nieco przybliżyć jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażę przykład jej zastosowania w bibliotece NgRx.
 
 ### Czy na pewno potrzebujesz zarządzania stanem aplikacji?
 Zanim zaczniemy, chciałbym jeszcze zwrócić uwagę, że nie każda aplikacja jest tak rozbudowana i złożona, żeby potrzebować całego mechanizmu zarządzania stanem. W ustaleniu, czy tak jest, pomaga zasada SHARI zaprezentowana, chociażby, w [oficjalnej dokumentacji NgRx](https://ngrx.io/guide/store/why). Warto sobie odpowiedzieć, czy potrzebujemy stanu, który jest:
@@ -43,7 +43,7 @@ Na razie powyższy diagram może wydawać się nieco tajemniczy, zatem już spie
 
 * Jak wspomniałem we wstępie, Redux zakłada istnienie globalnego, niemutowalnego bytu, przechowującego stan aplikacji - **store**. Fizycznie jest to obiekt w formacie JSON, którego struktura definiowana jest przez programistę. 
 * W celu wywołania zmian w store komponenty aplikacji muszą wywoływać **akcje** (ang. _actions_). Reprezentują one konkretne zdarzenia zachodzące w systemie i niosą ze sobą konkretne informacje.
-* Akcje są przechwytywane przez **reducery** (ang. _reducers_). Reducerem nazywamy czystą funkcję (ang. _pure function_), która konsumuje akcję i, w zależności od jej przeznaczenia oraz zgodnie z logiką reducera, zwraca odpowiednio zmodyfikowany, nowy store. 
+* Akcje są przechwytywane przez **reducery** (ang. _reducers_). Reducerem nazywamy czystą funkcję (ang. _pure function_), która konsumuje akcję i, w zależności od jej przeznaczenia oraz zgodnie z logiką reducera, zwraca nowy store z uwzględnioną zmianą. 
 * Dane ze store do komponentów trafiają poprzez **selektory** (ang. _selectors_). Wszystkie zmiany stanu aplikacji są propagowane do reagujących na nie selektorów dzięki mechanizmowi Observable znanym z biblioteki RxJs, o której więcej można przeczytać [w tym wpisie]({% post_url pl/2020-01-09-rxjs-introduction %}). Selektory powinny otrzymywać wyłącznie dane potrzebne do działania komponentów, w których są używane.
 * W przypadkach, kiedy wywołanie akcji powinno pociągnąć za sobą dowolne działanie niezwiązane bezpośrednio z aplikacją (np. zapytanie do bazy danych, czy żądanie do zewnętrznej usługi) - do gry wchodzą **efekty** (ang. _effects_). Podobnie jak reducery potrafią one reagować na konkretne akcje i wykonać przypisane im zadanie. Mogą one również wywołać kolejną akcję, która trafi do reducera, a co za tym idzie - do store. Wywołania efektów mogą być zarówno synchroniczne, jak i asynchroniczne.
 
@@ -80,17 +80,17 @@ Taki podział store zapewnia bardzo łatwą jego rozszerzalność, gdyż w przyp
 Potrzebujemy teraz możliwości wywoływania akcji, żeby powodować zmiany w store. Aplikacja będzie przewidywała dwa zdarzenia: wystosowanie żądania do API po pomysł na jakieś zajęcie oraz dodanie aktywności do listy. Wygląda to następująco:
 
 ```typescript
-export const addActivityType = 'Add activity';
-export const getActivityType = 'Get activity';
+export const activityAddedType = '[activity] Activity added';
+export const activitiesRetrievedType = '[activity] Activities retrieved';
 
-export const addActivity = createAction(addActivityType, props<ActivityItemModel>());
-export const getActivity = createAction(getActivityType);
+export const activityAdded = createAction(activityAddedType, props<ActivityItemModel>());
+export const activitiesRetrieved = createAction(activitiesRetrievedType);
 ```
 
-Każda akcja musi mieć zdefiniowany swój typ. NgRx używa do tego tzw. _literal type_, czyli po prostu używa typu string do identyfikacji akcji (u nas odpowiednio `Add activity` oraz `Get activity`. W nazywaniu akcji mamy pełną dowolność. Dodatkowo w przypadku dodawania nowej aktywności do listy musimy ją przekazać w ciele akcji przy pomocy metody `props<>()`. Dzięki wykorzystaniu funkcji `createAction` z biblioteki NgRx tworzenie akcji, jak widać, jest bardzo proste.
+Każda akcja musi mieć zdefiniowany swój typ. NgRx używa do tego tzw. _literal type_, czyli po prostu używa typu string do identyfikacji akcji (u nas odpowiednio `[activity] Activity added` oraz `[activity] Activities retrieved`. W nazywaniu akcji mamy pełną dowolność. Dodatkowo w przypadku dodawania nowej aktywności do listy musimy ją przekazać w ciele akcji przy pomocy metody `props<>()`. Dzięki wykorzystaniu funkcji `createAction` z biblioteki NgRx tworzenie akcji, jak widać, jest bardzo proste.
 
 ### Efekt
-Jak wspomniałem, będziemy korzystać z zewnętrznego API. W tym celu napiszemy efekt, który będzie reagował na akcję `Get activity`, następnie wystosowywał żądanie HTTP, a po otrzymaniu odpowiedzi wywoływał akcję `Add Activity`.
+Jak wspomniałem, będziemy korzystać z zewnętrznego API. W tym celu napiszemy efekt, który będzie reagował na akcję `[activity] Activities retrieved`, następnie wystosowywał żądanie HTTP, a po otrzymaniu odpowiedzi wywoływał akcję `[activity] Activity added`.
 
 ```typescript
 @Injectable()
@@ -110,7 +110,7 @@ export class ActivityEffect {
 }
 ```
 
-Pojawia się tutaj dość dużo zagadnień, zatem spójrzmy na ten fragment kodu od góry do dołu. Najpierw informujemy Angulara, że efekt to tak naprawdę wstrzykiwalna klasa, podobnie jak zwykłe serwisy. W konstruktorze zapewniamy dostęp do serwisu HTTP oraz do zmiennej typu `Actions`. Jest to w gruncie rzeczy serwis udostępniający wszystkie wywołane akcje od momentu ostatniego uruchomienia reducera (czyli dzięki temu damy radę reagować na przychodzące akcje). 
+Pojawia się tutaj dość dużo zagadnień, zatem spójrzmy na ten fragment kodu od góry do dołu. Najpierw informujemy Angulara, że efekt to nic innego, jak serwis, który wstrzykujemy do żądanego komponentu. W konstruktorze zapewniamy dostęp do serwisu HTTP oraz do zmiennej typu `Actions`. Jest to w gruncie rzeczy serwis udostępniający wszystkie wywołane akcje od momentu ostatniego uruchomienia reducera (czyli dzięki temu damy radę reagować na przychodzące akcje). 
 
 Następnie definiujemy sam efekt:
 * zaglądamy do strumienia akcji 
@@ -134,7 +134,7 @@ map(response => (addActivity(response)))
 catchError(() => EMPTY)
 ```
 
-W wyniku działania tego efektu każde wywołanie akcji `Get Activity` przy poprawnej odpowiedzi z API wywoła akcję `Add Activity` z otrzymaną czynnością.
+W wyniku działania tego efektu każde wywołanie akcji `[activity] Activities retrieved` przy poprawnej odpowiedzi z API wywoła akcję `[activity] Activity added` z otrzymaną czynnością.
 
 ### Reducer
 W reducerach zazwyczaj znajduje się najwięcej logiki ze wszystkich komponentów NgRx. To tutaj trzeba zdecydować jak dodawać do store kolejne dane. Warto pamiętać, że reducery to **czyste funkcje**, które przyjmują jako parametr akcję i obecny stan aplikacji, a następnie zwracają nowy stan, dzięki czemu zachowujemy jego niemutowalność. W naszym przypadku wygląda to tak:
@@ -151,10 +151,37 @@ export const activityReducer = createReducer(
 );
 ```
 
-W pierwszej linii definiujemy jakiego stanu początkowego store (lub - jak ma to miejsce powyżej - jego wycinka) się spodziewamy. W naszym przypadku będzie to pusta tablica. Następnie wywołujemy funkcję `createReducer`, która w pierwszym parametrze przyjmuje wspomniany stan początkowy, a w drugim (i każdym kolejnym) - definicję odpowiedzi na przybyłą akcję. W tym przypadku reducer reaguje na akcję `Add Activity` poprzez dodanie do dotychczasowej tablicy `activities` nowego elementu i zwrócenie całości jako wynik wywołania funkcji anonimowej. Reducer jest częścią całej architektury, którą można w bardzo łatwy sposób przetestować i zapewnić sobie w ten sposób pewność jego poprawnego działania.
+W pierwszej linii definiujemy, w jaki sposób ma zostać zainicjowany store (lub - jak ma to miejsce powyżej - jego wycinek). W naszym przypadku będzie to pusta tablica. Następnie wywołujemy funkcję `createReducer`, która w pierwszym parametrze przyjmuje wspomniany stan początkowy, a w drugim (i każdym kolejnym) odpowiednie handlery. W tym przypadku reducer reaguje na akcję `[activity] Activity added` poprzez dodanie do dotychczasowej tablicy `activities` nowego elementu i zwrócenie całości jako wynik wywołania funkcji. 
+
+Reducer jest częścią całej architektury, którą można w bardzo łatwy sposób przetestować i zapewnić sobie w ten sposób pewność jego poprawnego działania. W tym przypadku możemy napisać taki test:
+
+```typescript
+describe('Activity reducer test', () => {
+  function createState(activities: ActivityItemModel[]): ActivityItemsState {
+    return {activities: [...activities]};
+  }
+
+  it('should add new activity', () => {
+    // given
+    const state = createState([]);
+    const newActivityName = 'New activity';
+    const newActivityParticipants = 2;
+    const action = activityAdded({activity: newActivityName, participants: newActivityParticipants});
+
+    // when
+    const newState = activityReducer(state, action);
+
+    // then
+    expect(newState.activities.length).toBe(1);
+    expect(newState.activities[0].activity).toEqual(newActivityName);
+    expect(newState.activities[0].participants).toEqual(newActivityParticipants);
+  });
+});
+
+```
 
 ### Selektor
-Ostatnią częścią układanki w przepływie są selektory. Podobnie jak reducery są one czystymi funkcjami, których zadaniem jest obserwowanie wycinków store i dostarczanie informacji o ich zmianach do komponentów. W naszej aplikacji selektor zdefiniowany jest następująco:
+Ostatnią częścią układanki w przepływie są selektory. Podobnie jak reducery są one czystymi funkcjami, których zadaniem jest obserwowanie wycinków store i dostarczanie informacji o ich zmianach do komponentów. Warto tu wspomnieć, że są one dobrym miejscem na to, by dane te odpowiednio przygotować tak, by po trafieniu do komponentu mogły być „wygodnie” użyte. Dzięki temu komponent może całkowicie abstrahować od struktury store. W naszej aplikacji selektor zdefiniowany jest następująco:
 
 ```typescript
 const getActivitiesFeatureState = createFeatureSelector<ActivityItemsState>('activitiesState');
@@ -162,12 +189,14 @@ const getActivitiesFeatureState = createFeatureSelector<ActivityItemsState>('act
 export const getActivities = createSelector(getActivitiesFeatureState, state => state.activities);
 ```
 
-Najpierw, przy pomocy funkcji `createFeatureSelector` tworzymy tzw. feature selector pozwalający na wyciągnięcie pojedynczego wycinka (_slice_) danych, nazwanego przez nas `activitiesState`. Następnie używamy go tworząc właściwy selektor przy pomocy funkcji `createSelector` i wskazując go w pierwszym jej argumencie. Drugim parametrem jest funkcja anonimowa wskazująca, które dane chcemy otrzymać w wyniku działania selektora. W naszym przypadku jest to tablica czynności, o nazwie `activities`. Tak zbudowany selektor jest gotowy do użycia w komponencie.
+Najpierw, przy pomocy funkcji `createFeatureSelector` tworzymy tzw. feature selector pozwalający na wyciągnięcie pojedynczego wycinka (_slice_) danych, nazwanego przez nas `activitiesState`. Następnie używamy go tworząc właściwy selektor przy pomocy funkcji `createSelector` i wskazując go w pierwszym jej argumencie. Drugim parametrem jest funkcja wskazująca, które dane chcemy otrzymać w wyniku działania selektora. W naszym przypadku jest to tablica czynności, o nazwie `activities`. Tak zbudowany selektor jest gotowy do użycia w komponencie.
+
+Na początku tego punktu wspomniałem, że selektory są czystymi funkcjami, co oznacza między innymi, że przy zachowaniu tego samego stanu i dla tych samych parametrów wielu wywołań zawsze zwrócą ten sam wynik. Ta właściwość została wykorzystana w mechanizmie nazywanym „memoization” (zapamiętywanie). Dzięki niemu NgRx zapamiętuje, z jakimi argumentami ostatnio wywoływany był dany selektor. Jeśli nie uległy one zmianie, wówczas zwraca wynik poprzedniego wywołania selektora, nie wykonując logiki pobierania danych ze store.
 
 ### Spięcie całości
 Mamy już wszystkie potrzebne części logiki NgRx, z których chcemy skorzystać. Pozostaje już tylko dowiedzieć się, jak ich użyć. Pokażę sytuację, w której użytkownik klika przycisk odpowiadający za pobranie przykładowej aktywności z API, przechodząc jednocześnie przez odpowiednie miejsca w kodzie. W trakcie czytania zachęcam do spoglądania na zamieszczony wcześniej w poście diagram przepływu.
 
-1. Zacznijmy od komponentu wywołującego początkową akcję typu `Get Activity`. Budowa klasy tego komponentu może wyglądać następująco (pomijam _template_):
+1. Zacznijmy od komponentu wywołującego początkową akcję typu `[activity] Activities retrieved`. Budowa klasy tego komponentu może wyglądać następująco (pomijam _template_):
 ```typescript
 export class ActivityApiComponent {
 
@@ -181,26 +210,30 @@ export class ActivityApiComponent {
 ```
 Jak widać w konstruktorze, wstrzykujemy obiekt Store, na którym wykonujemy metodę `dispatch` podając w jej argumencie typ akcji. Na tym kończy się odpowiedzialność komponentu.
 
-2. Wysłaną akcję przechwytuje efekt, który, zgodnie z kodem zaprezentowanym wcześniej, wysyła żądanie do API, a otrzymawszy odpowiedź przekazuje ją jako argument nowej akcji `Add Activity`.
-3. Akcja typu `Add Activity` jest przechwytywana przez reducer, który wyłuskuje z niej przekazaną z API odpowiedź i dodaje do store.
+2. Wysłaną akcję przechwytuje efekt, który, zgodnie z kodem zaprezentowanym wcześniej, wysyła żądanie do API, a otrzymawszy odpowiedź przekazuje ją jako argument nowej akcji `[activity] Activity added`.
+3. Akcja typu `[activity] Activity added` jest przechwytywana przez reducer, który wyłuskuje z niej przekazaną z API odpowiedź i dodaje do store.
 4. W ostatniej kolejności do gry wchodzi selektor, który wykrywa zmianę store wynikającą z działania reducera. Użycie selektora w komponencie może wyglądać następująco:
 
 ```typescript
 export class ActivityListComponent implements OnInit {
 
-  activities: ActivityItemModel[] = [];
+    activities$: Observable<ActivityItemModel[]>;
 
-  constructor(private store: Store<State>) {
-  }
+    constructor(private store: Store<State>) {
+    }
 
-  ngOnInit(): void {
-    this.store.select(getActivities)
-      .subscribe(activities => this.activities = activities);
-  }
-
+    ngOnInit(): void {
+        this.activities$ = this.store.select(getActivities);
+    }
 }
 ```
-W metodzie `ngOnInit` wskazujemy, że chcemy reagować na zmiany store przy pomocy selektora `getActivities`, a następnie przy każdej takiej zmianie aktualizujemy lokalnie utrzymywaną tablicę, którą można następnie wykorzystać w ciele komponentu.
+W metodzie `ngOnInit` wskazujemy, że chcemy reagować na zmiany store przy pomocy selektora `getActivities`. Zmiennej `activities$` możemy następnie użyć w ciele komponentu przy pomocy async pipe, na przykład:
+
+```html
+<div *ngFor="let activity of activities$ | async">
+    <!-- wnętrze komponentu listy -->
+</div>
+```
 
 Tym samym cały proces dobiega końca, a kolejne kliknięcie przycisku wywoła go od nowa.
 
@@ -216,7 +249,7 @@ Należy również zaznaczyć, że Redux nie jest jedynym sposobem na zarządzani
 * [Apollo](https://www.apollographql.com/)
 
 ## Podsumowanie
-Łatwo zauważyć, że na pierwszy ogień NgRx, czy szerzej - Redux - potrafią nieco przytłoczyć ilością kodu, którą trzeba napisać, by nawet drobne funkcjonalności działały. Jest to jeden z największych zarzutów wobec tego rozwiązania, więc jeśli takie były Twoje odczucia podczas czytania tego artykułu - gratuluję krytycznego myślenia! Zauważmy jednak, że po przebrnięciu przez początkowe trudności zostajemy z aplikacją, którą bardzo łatwo możemy otestować, rozszerzać i której działanie jest jasno zdefiniowane.
+Łatwo zauważyć, że na pierwszy ogień NgRx, czy szerzej - Redux - potrafią nieco przytłoczyć ilością kodu, którą trzeba napisać, by nawet drobne funkcjonalności działały. Jest to jeden z największych zarzutów wobec tego rozwiązania, więc jeśli takie były Twoje odczucia podczas czytania tego artykułu - gratuluję krytycznego myślenia! Zauważmy jednak, że po przebrnięciu przez początkowe trudności zostajemy z aplikacją, którą bardzo łatwo możemy otestować, rozszerzać i której działanie jest jasno zdefiniowane. Chcę też zwrócić uwagę, że przytaczane tutaj przykłady były trywialne, w związku z czym stosunek tzw. boilerplate kodu do faktycznej logiki jest duży. W przypadku złożonych aplikacji, w których sens użycia bibliotek takich jak NgRx jest znacznie większy, narzut ten staje się dużo bardziej akceptowalny.
 
 Mam nadzieję, że tym artykułem zainspirowałem nieco do zainteresowania się tematem zarządzania stanem aplikacji frontendowych. Serdecznie zapraszam do rozpoznawania tematu we własnym zakresie, gdyż przedstawiłem tu zaledwie namiastkę możliwości, jakie zapewnia Redux i NgRx.
 
