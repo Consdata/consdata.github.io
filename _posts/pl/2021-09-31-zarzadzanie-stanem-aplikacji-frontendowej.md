@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Zarządzanie stanem aplikacji frontendowej na przykładzie NgRx"
-date:       2021-09-21 6:00:00 +0100
+date:       2021-10-13 6:00:00 +0100
 published:  true
 didyouknow: false
 lang:       pl
