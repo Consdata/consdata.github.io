@@ -100,10 +100,9 @@ Jak wspomniałem, będziemy korzystać z zewnętrznego API. W tym celu napiszemy
 Pojawia się tutaj dość dużo zagadnień, zatem spójrzmy na ten fragment nieco inaczej. Zastanówmy się najpierw jak, używając dotychczas znanych nam narzędzi (na  przykład RxJs), moglibyśmy napisać logikę wywołującą żądanie na każde kliknięcie przycisku i przekazać je dalej. Jeśli założymy, że zdarzenie kliknięcia pojawia się w Observable `click$`, a strumień, na który ma trafić odpowiedź został nazwany `response$`, wówczas kod mógłby wyglądać tak:
 
 ```typescript
-this.click$.pipe(
+this.response$ = this.click$.pipe(
     switchMap(() => this.http.get<ActivityItemModel>('https://www.boredapi.com/api/activity')
       .pipe(
-        map(response => response$.next(response)),
         catchError(() => EMPTY)
       ))
 );
@@ -114,7 +113,7 @@ Jeśli na tym etapie potrzebujesz chwili przerwy na zrozumienie co dzieje się w
 Wracając do naszego efektu - w zasadzie większość mamy już napisaną! Pozostaje nam tylko kilka rzeczy:
 * efekt jest tak naprawdę serwisem, jakie znamy z codziennego pisania w Angularze, tworzymy zatem klasę `ActivityEffect` i dekorujemy ją przy pomocy `@Injectable()`.
 * nie powinniśmy reagować bezpośrednio na zdarzenie kliknięcia przycisku, a na zgłoszone wcześniej akcję typu `activitiesRetrievedType`. Mamy do dyspozycji serwis `Actions`, który możemy traktować jak swoistą szynę, na którą trafiają wywołane akcje. Wstrzykujemy go więc przez konstruktor do efektu. Chcąc reagować wyłącznie na określony typ akcji korzystamy z operatora `ofType`. 
-* wynik żądania w naszym wypadku nie powinien trafiać do żadnego strumienia, tylko spowodować wywołanie akcji `activityAdded`. Wystarczy zmienić ostatnie mapowanie.
+* wynik żądania w naszym wypadku nie powinien trafiać do żadnego strumienia, tylko spowodować wywołanie akcji `activityAdded`. Wystarczy dodać  mapowanie w operatorze `pipe()`.
 
 Cały efekt wygląda wówczas tak:
 
