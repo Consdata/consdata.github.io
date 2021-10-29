@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest Bucket Pattern w MongoDB i czemu przydał się np. w implementacji IoT Boscha lub w aplikacjach bankowych?"
-date:      2021-09-16 6:00:00 +0100
+date:      2021-10-02 6:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
