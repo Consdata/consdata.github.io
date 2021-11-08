@@ -87,5 +87,5 @@ Twórcy Mongo chwalą się, że takie zastosowania to nie tylko teoria. Bosch ko
 - uproszczenie zapytań dotyczących zagregowanych danych.
 
 Przeczytaj więcej tutaj:
-[https://developer.mongodb.com/how-to/bucket-pattern/](https://developer.mongodb.com/how-to/bucket-pattern/)
-[https://www.mongodb.com/customers/bosch](https://www.mongodb.com/customers/bosch)
+* [https://developer.mongodb.com/how-to/bucket-pattern/](https://developer.mongodb.com/how-to/bucket-pattern/)
+* [https://www.mongodb.com/customers/bosch](https://www.mongodb.com/customers/bosch)
