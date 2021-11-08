@@ -7,7 +7,7 @@ didyouknow: true
 lang: pl
 author:    bmitan
 image:     /assets/img/posts/2021-09-16-bucket-pattern/bucket.jpeg
-description: "ajwiększe korzyści z używania odpowiedniego wzorca grupowania danych, czyli Bucket Pattern w MongoDB, to m.in. zwiększenie wydajności indeksów czy uproszczenie zapytań. Przeczytaj jak to wszystko zrealizować."
+description: "Największe korzyści z używania odpowiedniego wzorca grupowania danych, czyli Bucket Pattern w MongoDB, to m.in. zwiększenie wydajności indeksów czy uproszczenie zapytań. Przeczytaj jak to wszystko zrealizować."
 tags:
 - mongoDB
 ---
