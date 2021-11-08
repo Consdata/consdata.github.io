@@ -41,7 +41,7 @@ Oczywiste jest, że dokumentów w takiej kolekcji będzie bardzo dużo i w zwią
 
 ## Na czym polega Bucket Pattern?
 
-Wzorzec polega na **odpowiednim pogrupowaniu danych**. WPamiętając o naszym przykładzie z czujnikami, możemy pogrupować dane z jednego czujnika w interesującym nas przedziałach czasu, np. przedziałach 1-godzinnych. Przejdziemy wówczas z modelu danych odpowiadającemu relacyjnemu podejściu na model z zagnieżdżonymi dokumentami.
+Wzorzec polega na **odpowiednim pogrupowaniu danych**. Pamiętając o naszym przykładzie z czujnikami, możemy pogrupować dane z jednego czujnika w interesującym nas przedziałach czasu, np. przedziałach 1-godzinnych. Przejdziemy wówczas z modelu danych odpowiadającemu relacyjnemu podejściu na model z zagnieżdżonymi dokumentami.
 
 Te same dane wyglądałyby następująco:
 
