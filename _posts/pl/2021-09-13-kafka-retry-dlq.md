@@ -5,6 +5,7 @@ date:      2021-09-13 6:00:00 +0100
 published: true
 didyouknow: false
 lang: pl
+lang-ref:  kafla-retry-dlq
 author:    jgrobelny
 image:     /assets/img/posts/2021-09-13-kafka-retry-dlq/kafka-retry-dlq4.png
 description: "Dlaczego w Kafce nie ma DLQ? Zacznijmy zatem od odpowiedzi na pytanie. Większość popularnych systemów kolejkowych takich jak RabbitMQ czy ActiveMQ ma wbudowane systemy odpowiedzialne za niezawodne dostarczanie komunikatów. Dlaczego zatem Kafka nie oferuje takowego."
@@ -56,7 +57,7 @@ Dochodzimy niniejszym do naszego ostatecznego rozwiązania. Skoro mamy osobny to
 W systemie, na podstawie którego powstał ten wpis, występują wszystkie cztery opisywane warianty postępowania w sytuacji awaryjnej. Wyzwanie polega na dopasowaniu odpowiedniej metody do natury danych przetwarzanych w topiku. Warto też zaznaczyć, że należy uczyć się od największych i wówczas dwa ostatnie modele są mocno inspirowane sposobem, w jaki Kafkę w swoich systemach używa Uber. 
 
 ## Śledzenie przebiegu eventu
-Jakiekolwiek rozwiązanie wybierzemy, pewne jest jedno, potrzebujemy narzędzia, które pozwoli nam śledzić i podglądać, jak zachowuję się eventy na topikach. Kouncil, którego rozwijamy od jakiegoś czasu, szczególnie wpasowuje się w sytuację, gdy wybrana została strategia z topikiem retry oraz dlq. Korzystając z widoku track i mając zapewniony identyfikator korelującym, możemy szybko zweryfikować ścieżkę przetwarzania eventu. Wiemy na przykład, że zdarzenie o identyfikatorze `h57z2z` zostało poprawnie przetworzone, czyli przeszło przez topiku `event-in` oraz `events-out`, co widać na załączonym zrzucie ekranu.
+Jakiekolwiek rozwiązanie wybierzemy, pewne jest jedno, potrzebujemy narzędzia, które pozwoli nam śledzić i podglądać, jak zachowuję się eventy na topikach. [Kouncil](https://github.com/consdata/kouncil) ([demo](https://kouncil-demo.web.app/#/topics)), którego rozwijamy od jakiegoś czasu, szczególnie wpasowuje się w sytuację, gdy wybrana została strategia z topikiem retry oraz dlq. Korzystając z widoku track i mając zapewniony identyfikator korelującym, możemy szybko zweryfikować ścieżkę przetwarzania eventu. Wiemy na przykład, że zdarzenie o identyfikatorze `h57z2z` zostało poprawnie przetworzone, czyli przeszło przez topiku `event-in` oraz `events-out`, co widać na załączonym zrzucie ekranu.
 
 ![Proper flow](/assets/img/posts/2021-09-13-kafka-retry-dlq/kafka-retry-dlq5.png)
 

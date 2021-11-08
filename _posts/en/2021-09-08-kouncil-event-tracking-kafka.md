@@ -6,6 +6,7 @@ published: true
 didyouknow: false
 lang:       en
 lang-ref:   kouncil-event-tracking
+interpreter: Piotr Żurawski
 author:    mmergo
 image:     /assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/route.jpeg
 description: "Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics."
