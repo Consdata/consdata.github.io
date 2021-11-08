@@ -11,6 +11,7 @@ description: "Największe korzyści z używania odpowiedniego wzorca grupowania 
 tags:
 - mongoDB
 ---
+Największe korzyści z używania odpowiedniego wzorca grupowania danych, czyli Bucket Pattern w MongoDB, to m.in. zwiększenie wydajności indeksów czy uproszczenie zapytań. Przeczytaj jak to wszystko zrealizować.
 
 ## Jaki problem próbujemy rozwiązać?
 
@@ -71,7 +72,7 @@ Te same dane wyglądałyby następująco:
 
 Dokumentów w kolekcji będzie mniej i zwiększymy wydajność zapytań. Wiedząc, jakie będzie zastosowanie danych, możemy również dodać do naszego "wiaderka" dodatkowe informacje. Czy faktycznie potrzebujemy do większości zapytań każdego pojedynczego pomiaru? Być może ciekawszą informacją będzie średnia temperatura z godziny w danym miejscu? Wówczas możemy zapisać takie zagregowane dane w Bucket Pattern i uprościć późniejsze zapytania.
 
-W naszym przykładzie, jeśli dojdzie nowy pomiar z czunika w tym zakresie, zwiększymy liczbę `transaction_count` i `sum_temperature`. Zapytanie o średnią temperaturę w danym dniu lub godzinie, będzie wtedy nawet prostsze niż gdybyśmy korzystali z pojedynczych pomiarów.
+W naszym przykładzie, jeśli dojdzie nowy pomiar z czujnika w tym zakresie, zwiększymy liczbę `transaction_count` i `sum_temperature`. Zapytanie o średnią temperaturę w danym dniu lub godzinie, będzie wtedy nawet prostsze niż gdybyśmy korzystali z pojedynczych pomiarów.
 
 I na koniec jeszcze jedna wskazówka. Dobrym pomysłem może się okazać zarchiwizowanie części danych historycznych. Dane spływają wówczas na bieżąco i wiemy, że konkretny dokument nie będzie później modyfikowany, a dostęp do starych danych może być niezwykle rzadki.
 
