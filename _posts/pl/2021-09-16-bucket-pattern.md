@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Czy wiesz, jak działa Bucket Pattern w MongoDB i czemu sprawdził się się w implementacji IoT Boscha albo w apkach bankowych?"
+title:     "Czy wiesz, jak działa Bucket Pattern w MongoDB i czemu sprawdził się w implementacji IoT Boscha albo w apkach bankowych?"
 date:      2021-11-08 8:00:00 +0100
 published: true
 didyouknow: true
