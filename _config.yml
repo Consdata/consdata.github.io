@@ -1,5 +1,4 @@
 title: Consdata - blog techniczny
-# the subpath of your site, e.g. /blog
 baseurl: ""
 url: "https://blog.consdata.tech"
 
@@ -23,6 +22,15 @@ defaults:
       type: "authors"
     values:
       layout: "author"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      image:
+        path: /assets/img/logo_full_size.png
+        width: 1600
+        height: 400
+
 
 languages: ["en", "pl"]
 default_lang: "pl"
