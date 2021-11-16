@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest Shadow DOM?"
-date:      2021-09-01 8:00:00 +0100
+date:      2021-11-16 8:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
