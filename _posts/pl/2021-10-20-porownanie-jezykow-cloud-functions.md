@@ -11,13 +11,11 @@ tags:
     - cloud
     - functions
     - cloud function
+    - cold start
     - gcp
     - googlecloud
     - google
-    - lambda
     - serverless
-    - aws
-    - azure
 
 description: "W jakim języku programowania pisać funkcje w Google Cloud? Które środowisko uruchomieniowe jest najszybsze, czy ma na to wpływ region? Czy języki skryptowe mają mniejszy cold start?"
 ---
@@ -39,73 +37,105 @@ Google co chwilę rozszerza listę obsługiwanych środowisk uruchomieniowych, d
 
 Do automatyzacji wykorzystany został Terraform, za pomocą którego przygotowywane jest całe środowisko testowe. Wszystkie deployowane funkcje są definiowane w konfiguracji, dlatego w prosty sposób można uruchomić środowisko testujące wybrane języki oraz regiony.
 
-Testy czasów odpowiedzi zostały napisane w Gatlingu, który listę funkcji odczytuje z tej samej konfiguracji, przez co nie wymaga żadnej dodatkowej ingerencji. Testy zimnych startów wykonywane są natiomiast bezpośrednio przez kod napisany w Scali a wyniki wyświetlane są w formie tabeli ASCII.
+Testy czasów odpowiedzi zostały napisane w Gatlingu, który listę funkcji odczytuje z tej samej konfiguracji, przez co nie wymaga żadnej dodatkowej ingerencji. Testy zimnych startów wykonywane są natomiast bezpośrednio przez kod napisany w Scali, a wyniki wyświetlane są w formie tabeli ASCII.
 
 Kody wszystkich funkcji znajdują się w folderze `/functions` i są to podstawowe funkcje odpowiadające *"Hello World"*, takie same jak przykładowe funkcje tworzone z poziomu Cloud Console.
 
 Projekt znajduję się na GitHubie - [link do repozytorium.](https://github.com/Michuu93/google-cloud-function-comparison)
 
-## Testowane języki
+## Metodyka testowania
 
-W testach udział wezmą funkcje napisane we wszystkich dostępnych dla Cloud Functions językach programowania i wersjach środowiska:
+W testach wykorzystałem funkcje uruchomione w następujących środowiskach uruchomieniowych:
 
 - .NET Core 3.1
-- Go 1.16 (Preview)
 - Go 1.13
 - Java 11
-- Node.js 16 (Preview)
 - Node.js 14
-- Node.js 12
-- Node.js 10
 - PHP 7.4
 - Python 3.9
-- Python 3.8
-- Python 3.7
 - Ruby 2.7
-- Ruby 2.6
+
+Każda funkcja posiadała maksymalnie jedną instancję, przydzieloną pamięć 128 MB i została uruchomiona w regionach:
+
+- `europe-west3` (Frankfurt, Germany, Europe)
+- `us-central1` (Council Bluffs, Iowa, North America)
+- `asia-east2` (Hong Kong, APAC)
+
+W celu porównania czasów odpowiedzi, każda funkcja była wywoływana przez 10 minut i 20 równoległych użytkowników. Ilość wykonanych żądań jest zatem uzależniona od samej funkcji oraz Gatlinga.
+
+Testy zimnych startów zostały wykonane z zapewnieniem braku istnienia aktywnej instancji. Test polegał na wykonaniu 10 żądań do każdej z funkcji, a następnie porównaniu czasu pierwszej odpowiedzi do średniej arytmetycznej czasów pozostałych 9 odpowiedzi.
 
 # Czasy odpowiedzi
 
-## Metodyka
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+<style>
+    .dataTable-pagination {
+        display: none;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<table id="responseTimes">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Requests</th>
+                <th>Min</th>
+                <th>95th pct</th>
+                <th>Max</th>
+                <th>Mean</th>
+                <th>Std Dev</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+            </tr>
+        </tbody>
+    </table>
 
-W celu porównania czasów odpowiedzi, każda funkcja będzie wywoływana przez 10 minut, przez 20 równoległych użytkowników. Ilość wykonanych requestów będzie się zatem róznić w zależności od języka oraz działania samego Gatlinga.
+<script type="text/javascript">
+    new simpleDatatables.DataTable("#responseTimes", {
+        searchable: false,
+        paging: false,
+        info: false
+    });
+</script>
 
-Pierwszy test dotyczyć będzie regionu `europe-west3-a` (Frankfurt, Germany Europe), kolejny test zostanie ograniczony do 3 środowisk uruchomieniowych, ale za to porówna 5 różnych regionów.
+# Zimne starty
 
-## Wyniki
+<table id="coldstarts">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Region</th>
+                <th>1st time [ms]</th>
+                <th>avg remaining [ms]</th>
+                <th>diff [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+            </tr>
+        </tbody>
+    </table>
 
-// TODO przykładowa tabelka
-
-| Runtime       | Requests | Min | 95th pct | Max  | Mean | Std Dev |
-|---------------|----------|-----|----------|------|------|---------|
-| .NET Core 3.1 | 50000    | 80  | 1000     | 2000 | 500  | 200     |
-| Go 1.13       | 60000    | 90  | 1200     | 2400 | 550  | 240     |
-| Node.js 14    | 55000    | 100 | 1400     | 2600 | 580  | 280     |
-| Java 11       | 45000    | 150 | 1600     | 2800 | 670  | 320     |
-
-## Regiony
-
-# Cold start
-
-## Metodyka
-
-W celu sprawdzenia zimnego startu, całe środowisko testowe zostanie uruchomione na nowo, żeby mieć pewność że nie istnieje żadna aktywna instancja funkcji. Test polega na wykonaniu 10 requestów do każdej z funkcji, a następnie porównaniu czasu pierwszej odpowiedzi do średniej arytmetycznej czasów pozostałych 9 odpowiedzi.
-
-Pierwszy test dotyczyć będzie regionu `europe-west3-a` (Frankfurt, Germany Europe), kolejny test zostanie ograniczony do 3 środowisk uruchomieniowych, ale za to porówna 5 różnych regionów.
-
-// TODO pamiętać o tym, że nie każde środowisko uruchomieniowe jest dostępne we wszystkich regionach.
-
-## Wyniki
-
-// TODO przykładowa tabelka
-
-| Runtime       | 1st time | Avg remaining | Diff |
-|---------------|----------|---------------|------|
-| .NET Core 3.1 | 500      | 80            | 420  |
-| Go 1.13       | 400      | 90            | 310  |
-| Node.js 14    | 350      | 1000          | 650  |
-| Java 11       | 200      | 1500          | 1300 |
-
-## Regiony
+<script type="text/javascript">
+    new simpleDatatables.DataTable("#coldstarts", {
+        searchable: false,
+        paging: false,
+        info: false
+    });
+</script>
 
 # Podsumowanie
