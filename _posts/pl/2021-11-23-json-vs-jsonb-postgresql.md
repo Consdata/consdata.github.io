@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz czym różnią się json i jsonb w PostgreSQL"
-date:      2021-11-22 8:00:00 +0100
+date:      2021-12-01 8:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
 author:    kkur
-image:     /assets/img/posts/2021-09-16-bucket-pattern/bucket.jpeg
+image:     /assets/img/posts/2021-11-23-json-vs-jsonb-postgresql/json.png
 tags:
 - PostgreSQL
 ---
