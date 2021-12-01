@@ -67,13 +67,13 @@ Testy zimnych startów zostały wykonane z zapewnieniem braku istnienia aktywnej
 
 # Czasy odpowiedzi
 
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+<link href="{{ base.url | prepend: site.url }}/assets/css/simple-datatables.css" rel="stylesheet" type="text/css">
 <style>
     .dataTable-pagination {
         display: none;
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script src="{{ base.url | prepend: site.url }}/assets/js/simple-datatables.js"></script>
 
 {% include post_includes/2021-10-20-porownanie-jezykow-cloud-functions/responseTimes.html %}
 
