@@ -21,7 +21,7 @@
 .sidebar-title {
   font-weight: bold;
   font-size: 1.4em;
-  margin-bottom: 1em;
+  margin-bottom: $small-padding;
   letter-spacing: $general-letter-spacing;
   border-bottom: $separator-border;
 }
@@ -129,13 +129,17 @@
   }
 }
 
-.job-offer {
+.job-offer, .other-job-offers {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin-bottom: $very-small-padding;
 
   &:hover {
-    .job-salary, .job-description, .job-title {
-        color: $color-logo-red-dark;
+    .job-salary,
+    .job-description,
+    .job-title {
+      color: $color-logo-red-dark;
     }
   }
 
@@ -152,4 +156,14 @@
     @include job-offer-text($color-dark-gray);
     font-weight: bold;
   }
+}
+
+.job-offer::after {
+  content: "";
+  display: block;
+  position: relative;
+  width: 50%;
+  left: 25%;
+  border: 1px solid $color-stormgray;
+  margin-top: $very-small-padding;
 }
