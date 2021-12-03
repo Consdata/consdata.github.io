@@ -157,13 +157,3 @@
     font-weight: bold;
   }
 }
-
-.job-offer::after {
-  content: "";
-  display: block;
-  position: relative;
-  width: 50%;
-  left: 25%;
-  border: 1px solid $color-stormgray;
-  margin-top: $very-small-padding;
-}
