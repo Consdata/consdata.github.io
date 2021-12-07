@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Czy wiesz czym różnią się json i jsonb w PostgreSQL"
+title:     "Czy wiesz czym różnią się json i jsonb w PostgreSQL?"
 date:      2021-12-07 8:00:00 +0100
 published: true
 didyouknow: true
