@@ -13,7 +13,7 @@ tags:
 
 # Podstawowe różnice
 
-Podstawową różnicą pomiędzy json a jsonb jest sposób ich przechowywania. Typ json jest przechowywany jako tekst, natomiast typ jsonb jest przechowywany w postaci binarnej. Sposób przechowywania ma wpływ na kilka czynników:
+Podstawową różnicą pomiędzy json a jsonb jest sposób ich przechowywania. Typ json jest przechowywany jako tekst, natomiast typ jsonb w postaci binarnej. Typ, na jaki się zdecydujemy, json czy jsonb, ma wpływ na kilka czynników:
 
 * zapis danych w postaci jsonb trwa dłużej,
 * operacje wykonywane na typie jsonb trwają krócej, gdyż nie trzeba ich dodatkowo parsować.
@@ -80,17 +80,17 @@ t
 f
 ```
 
-Poza tym typ jsonb wspiera kilka operatorów, które pozwalają na skuteczną modyfikację jsonów trzymanych w bazie:
-* `||` - pozwala złączyć ze sobą dwa obiekty typu jsonb w jeden nowy obiekt typu jsonb, przykładowo dodać nowe wartości do istniejącej tablicy,
-* `- ` - pozwala na usunięcie pary klucz-wartość lub też określonego elementu z tablicy, przykładowo '["a", "b"]'::jsonb - 1. Zwróci to tablicę zawierającą wyłącznie element "a".
-* `#-` - pozwala na usunięcie pola lub elementu znajdującego się pod określoną ścieżką
+Poza tym typ jsonb wspiera kilka operatorów, które pozwalają na skuteczną modyfikację jsonów trzymanych w bazie.
+* `||` - Pozwala złączyć ze sobą dwa obiekty typu jsonb w jeden nowy obiekt typu jsonb, przykładowo dodać nowe wartości do istniejącej tablicy.
+* `- ` - Pozwala na usunięcie pary klucz-wartość lub też określonego elementu z tablicy, przykładowo '["a", "b"]'::jsonb - 1. Zwróci to tablicę zawierającą wyłącznie element "a".
+* `#-` - Pozwala na usunięcie pola lub elementu znajdującego się pod określoną ścieżką.
 
 # Kiedy stosować typ json, a kiedy jsonb?
-Jeżeli potrzebujemy jedynie zapisywać i odczytywać dane w formacie json i nie potrzebujemy wykonywać żadnych operacji na tych danych, to możemy zastosować typ json.
+Jeżeli potrzebujemy jedynie zapisywać i odczytywać dane w formacie json i dalsze operacje na tych danych nie będą konieczne, to możemy zastosować typ json.
 
-Natomiast jeżeli potrzebujemy wykonywać wiele operacji na jsonie albo potrzebujemy indexu na kluczu, wtedy zastosujmy typ jsonb.
+Kiedy jednak wykonujemy wiele operacji na jsonie albo potrzebujemy indexu na kluczu, wtedy lepszym wyborem będzie zastosowanie typu jsonb.
 
-W dokumentacji PostgreSQL można znaleźć rekomendację używania typu jsonb. Są jednak sytuacje, w których typ json może się sprawdzić - systemy legacy, w których polegamy na kolejności zapisu danych.
+W dokumentacji PostgreSQL znajdziemy rekomendację używania typu jsonb. Pamiętajmy jednak o sytuacjach, w których typ json może się sprawdzić lepiej. Dobrym przykładem są systemy legacy, w których polegamy na kolejności zapisu danych.
 
 Przeczytaj więcej tutaj:
 * [https://www.postgresql.org/docs/9.5/datatype-json.html](https://www.postgresql.org/docs/9.5/datatype-json.html)
