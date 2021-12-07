@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    kkur
-image:     /assets/img/posts/2021-11-23-json-vs-jsonb-postgresql/json.png
+image:     /assets/img/posts/2021-11-23-json-vs-jsonb-postgresql/json.jpg
 tags:
 - PostgreSQL
 ---
