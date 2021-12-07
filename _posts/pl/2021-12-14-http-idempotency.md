@@ -11,7 +11,7 @@ tags:
 - http
 ---
 
-Idempotentność to właściwość pewnych operacji, która pozwala na ich wielokrotne stosowanie bez zmiany wyniku. Informatyka, a w szczególności różnego rodzaju systemy rozproszone bardzo chętnie korzystają z idempotentnych rozwiązań. Łatwiej jest w końcu powtórzyć wykonanie operacji, jeśli nie mamy pewności czy doszła do skutku, zamiast ją weryfikować.
+Idempotentność to właściwość pewnych operacji, która pozwala na ich wielokrotne stosowanie bez zmiany wyniku. Twórcy różnego rodzaju systemów rozproszonych bardzo chętnie korzystają z idempotentnych rozwiązań. Łatwiej jest w końcu powtórzyć wykonanie operacji, jeśli nie mamy pewności czy doszła do skutku, zamiast ją weryfikować.
 
 # Idempotentność w metodach HTTP
 Jeśli przy projektowaniu API stosujemy się do zasad `REST`, otrzymujemy idempotentność dla metod HTTP `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS` i `TRACE`. Tylko interfejsy `POST` nie będą idempotentne.
