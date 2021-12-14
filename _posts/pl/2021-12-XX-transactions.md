@@ -1,8 +1,8 @@
 ---
 layout:    post
 title:     "Transakcje - co warto wiedzieć?"
-date:      2021-12-14 08:00:00 +0100
-published: true
+date:      2021-12-XX 08:00:00 +0100
+published: false
 didyouknow: false
 lang: pl
 author:    rmastalerek
@@ -180,7 +180,7 @@ Spring pozwala na wykorzystanie usługi BookService w każdym innym beanie, któ
 - delegowanie zadania do rzeczywistej usługi, jak nasze _BookService_
   
 Całą procedurę można zobrazować prostym diagramem:
-![2021-12-14-transaction-proxy.png](/assets/img/posts/2021-12-14-transactions/transaction-proxy.png)
+![2021-12-14-transaction-proxy.png](/assets/img/posts/2021-12-XX-transactions/transaction-proxy.png)
 
 ## Poziomy propagacji (_ang. propagation levels_)
 Spring pozwala na jeszcze jedną konfigurację mechanizmu zarządzania transakcjami. Daje bowiem możliwość ustawienia tzw. **poziomów propagacji**, które pozwalają niejako rozgraniczyć logikę biznesową w naszej aplikacji. Spring pozwala na wykorzystanie następujących rodzajów propagacji:
