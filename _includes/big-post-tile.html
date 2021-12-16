@@ -13,7 +13,11 @@
                 {{ include.post.title }}
             </p>
             <p class="post-description no-breaking-word">
-                {{include.post.content | strip_html | truncatewords: 50}}
+                {% if include.post.description %}
+                    {{include.post.description}}
+                {% else %}
+                    {{include.post.content | strip_html | truncatewords: 50}}
+                {% endif %}
             </p>
         </a>
         <div class="tile-author">
