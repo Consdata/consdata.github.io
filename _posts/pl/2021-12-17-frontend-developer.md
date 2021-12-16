@@ -43,7 +43,7 @@ Skuteczny frontend developer łączy nie tylko te dwie funkcje, ale też potrafi
 
 Czyli muszę znać UI, architekturę aplikacji i jeszcze backend? Przecież mamy też full-stacków, to jaka jest różnica?
 
-Bycie full-stackiem oznacza bycie wszechstronnym i zdolnym do podjęcia wszystkich wyzwań stawianych przed zespołem (w uproszczeniu, bo taki wątek poboczny zdominowałby cały wpis).
+Bycie full-stackiem oznacza bycie wszechstronnym i zdolnym do podjęcia wszystkich wyzwań stawianych przed zespołem (w uproszczeniu, bo taki wątek poboczny zdominowałby cały wpis, a już [byłem gościem podcastu na ten temat](https://porozmawiajmyoit.pl/poit-069-full-stack-developer/) :)).
 
 To znaczy, że w zależności od specjalizacji i zainteresowań, full-stack swobodnie porusza się we froncie w zakresie pracy, nazwijmy to, użytkowej. Umiejętność rozwoju zastanego kodu, realizacja tematów o znanym sposobie rozwiązania czy okazjonalne rozwiązywanie problemów z gatunku x-files, o ile szalenie ważna dla samodzielności zespołu, nadal nie zapewnia kompletu kompetencji.
 
@@ -136,8 +136,8 @@ Gdy nabierzesz ochoty na eksperymenty, prototypu i ogólnie luźniejsze podejśc
 
 Tylko z nazwy warto wspomnieć o:
 
-- kouncil - ui do Kafki zbudowany na bazie doświadczeń naszych i naszych klientów,
-- sonarqube-companion - agregat naruszeń SonarQube rozumiejący strukturę zespołów i śledzący trendy analizy statycznej,
+- [kouncil](https://github.com/Consdata/kouncil) - ui do Kafki zbudowany na bazie doświadczeń naszych i naszych klientów,
+- [sonarqube-companion](https://github.com/Consdata/sonarqube-companion) - agregat naruszeń SonarQube rozumiejący strukturę zespołów i śledzący trendy analizy statycznej,
 - inne narzędzia jak logger, aplikacje intranetowe do newsletterów, rezerwacji parkingu, czy śledzenia feedbacku i zbierania ankiet.
 
 W Open Source nie ograniczamy się żadnymi wytycznymi, to nasze poligony. Firebase? Angular czy React? Node czy Java? Spring czy Quarkus? Nie ma znaczenia! Zrealizuj funkcjonalność i powiedz innym jak poszło!
