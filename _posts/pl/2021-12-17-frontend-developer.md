@@ -96,7 +96,7 @@ W zależności od wybranego projektu, pojawiające się w nim wyzwania będą bl
 
 ### iBiznes
 
-iBiznes to złożony system kompleksowej obsługi klienta korporacyjnego. Głównym wyznacznikiem projektu jest jego złożoność biznesowa.
+iBiznes to złożony system bankowości elektronicznej do obsługi klienta korporacyjnego. Głównym wyznacznikiem projektu jest jego złożoność biznesowa.
 
 Mimo że dziedzina stanowi główne wyzwanie, to jednak nie brakuje w nim wyzwań technologicznych, takich jak np. wielomodułowa architektura zbudowana z myślą o niezależnych wdrożeniach obszarów funkcjonalnych, równoczesna praca wielu klientów nad pojedynczymi obiektami domeny czy optymalizacja z badaniami UX/UI i dbanie o czytelność złożonych biznesowo operacji.
 
