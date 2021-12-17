@@ -9,24 +9,24 @@ image:     /assets/img/posts/2021-12-17-frontend-developer/frontend.webp
 tags:
     - frontend
     - pogadajmy
-description: "Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak historycznie doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! :)"
+description: "Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! 🙂"
 ---
 
 Ostatnio ktoś mnie zapytał o naszą ofertę na Frontend Developera słowami "_To co, robicie stronki?_".
 
 Czy Frontend Developer w Consdata robi stronki? #takżetego 😀
 
-Korzystając z okazji, chciałbym przybliżyć trochę projekty, którymi się zajmujemy i opowiedzieć, jak wygląda przeciętny sprint frontend/fullstack developera. Przełom roku to dla wielu moment postanowień i zmian - może poniższy opis to impuls, którego właśnie szukasz? ;-)
+Korzystając z okazji, chciałbym przybliżyć trochę projekty, którymi się zajmujemy i opowiedzieć, jak wygląda przeciętny sprint frontend/fullstack developera. Przełom roku to dla wielu moment postanowień i zmian - może poniższy opis to impuls, którego właśnie szukasz? 😉
 
 ## Frontend developer, czyli kto?
 
-Czym właściwie zajmuje się frontend developer w Consdata? Jeżeli obstawiałeś, że praca na froncie to głównie pisanie CSSków to muszę Cię rozczarować (albo uspokoić, różnie ludzie na to patrzą ;-)). Wielu naszych developerów może przez całe sprinty nie dotykać HTMLa czy CSSów, a nadal być pewnym, że robią zadania na froncie.
+Czym właściwie zajmuje się frontend developer w Consdata? Jeżeli obstawiałeś, że praca na froncie to głównie pisanie CSSków to muszę Cię rozczarować (albo uspokoić, różnie ludzie na to patrzą 😉). Wielu naszych developerów może przez całe sprinty nie dotykać HTMLa czy CSSów, a nadal być pewnym, że robią zadania na froncie.
 
-Jakieś 15 lat temu świat był prosty. Jak się chciało mieć aplikację web to zapewne była to statycznie generowana strona HTML+CSS podparta backendem i jakąś formą budowania HTMLa po stronie serwera. Wtedy większość z nas ignorowała cały obszar frontu, zostawiając to komuś kto jest "gdzieś" i zajmuje się takimi rzeczami. Dobrze było, jak ktoś od frontu był w ogóle na miejscu, równie często mogła być to osoba spoza firmy wskakująca na praktycznie gotowy fragment systemu. Powiedzmy, że "ktoś później wpadnie zrobić CSSki" ;-)
+Jakieś 15 lat temu świat był prosty. Jak się chciało mieć aplikację web to zapewne była to statycznie generowana strona HTML+CSS podparta backendem i jakąś formą budowania HTMLa po stronie serwera. Wtedy większość z nas ignorowała cały obszar frontu, zostawiając to komuś kto jest "gdzieś" i zajmuje się takimi rzeczami. Dobrze było, jak ktoś od frontu był w ogóle na miejscu, równie często mogła być to osoba spoza firmy wskakująca na praktycznie gotowy fragment systemu. Powiedzmy, że "ktoś później wpadnie zrobić CSSki" 😉
 
-Kolejne kilka lat i okazało się, że świat nie kończy się na użytkownikach oglądających białe ekrany w oczekiwaniu na załadowanie kolejnej strony. Część z nas odkryła, że w przeglądarce da się wykonać kod i istnieje coś takiego jak JavaScript. Oczywiście, szkoda było czasu uczyć się nowych rzeczy, a JavaScript coś podobnie brzmi jak Java i radośnie wskoczyliśmy w GWT. Niby to fronty ale jednak w większości programiści Java nie specjalnie przejmowali się czy to Swing, czy GWT, w końcu autorzy postarali się o zbliżone API i wszystko było po staremu. Frontendowiec nadal był gdzieś obok, tylko miał trudniej. Trudniej uruchomić, trudniej ogarnąć strukturę, trudniej dopisać wstawkę w JSie. Nadal można było funkcjonować w modelu "ktoś później wpadnie zrobić CSSki" ;-)
+Kolejne kilka lat i okazało się, że świat nie kończy się na użytkownikach oglądających białe ekrany w oczekiwaniu na załadowanie kolejnej strony. Część z nas odkryła, że w przeglądarce da się wykonać kod i istnieje coś takiego jak JavaScript. Oczywiście na naukę nowych rzeczy szkoda nam było czasu, a JavaScript coś podobnie brzmi jak Java i radośnie wskoczyliśmy w GWT. Niby to fronty ale jednak w większości programiści Java nie specjalnie przejmowali się czy to Swing, czy GWT, w końcu autorzy postarali się o zbliżone API i wszystko było po staremu. Frontendowiec nadal był gdzieś obok, tylko miał trudniej. Trudniej uruchomić, trudniej ogarnąć strukturę, trudniej dopisać wstawkę w JSie. Nadal można było funkcjonować w modelu "ktoś później wpadnie zrobić CSSki" 😉
 
-Zapewne domyślasz się co wprost wynika z takiego podziału? Backend developerzy produkują coś, co nie jest do końca tym czym miało być, a frontend developerzy radzą sobie z tym jak mogą osiągając jedynie fragment jakości potencjalnego rozwiązania. Brak komunikacji, zrozumienia potrzeb i ograniczeń "drugiej strony" wprost prowadzi do systemów niskiej jakości. Z obu stron "coś wyszło" i jakoś trzeba to zgrać w ramach QA ;-)
+Zapewne domyślasz się jaki jest efekt takiego podziału? Backend developerzy produkują coś, co nie jest do końca tym czym miało być, a frontend developerzy radzą sobie z tym jak mogą, osiągając jedynie fragment jakości potencjalnego rozwiązania. Brak komunikacji, zrozumienia potrzeb i ograniczeń "drugiej strony" wprost prowadzi do systemów niskiej jakości. Z obu stron "coś wyszło" i jakoś trzeba to zgrać w ramach QA 😉
 
 To co, do trzech razy sztuka? Za trzecim podejściem w końcu pogodziliśmy się, że z tematem należy się zmierzyć i nie taki diabeł straszny jak go malują. Obecnie aplikacje webowe mogą mieć znacznie więcej kodu niż wspierające je usługi. Od rozbudowanego backendu ze szczątkowym UI dochodzimy do miejsca, w którym to UI jest rozbudowany, a usługi są upraszczane i służą jedynie zaspokojeniu potrzeb frontu.
 
@@ -35,15 +35,15 @@ Złożoność aplikacji doprowadziła nawet do dalszego rozróżniania specjaliz
 - programista (java/type/coffe/...)script, frontend developer,
 - programista ui,
 
-Tak, to te stanowiska potocznie nazywane frontendem i backendem frontendu. Dinozaury z serwerowymi korzeniami nie odpuszczają łatwo swoich nazw stanowisk ;-)
+Tak, to te stanowiska potocznie nazywane frontendem i backendem frontendu. Dinozaury z serwerowymi korzeniami nie odpuszczają łatwo swoich nazw stanowisk 😉
 
-Skuteczny frontend developer łączy nie tylko te dwie funkcje, ale też potrafi sięgnąć głębiej i pracować z backendem. Takie holistyczne podejście pozwala mu swobodnie podejmować decyzje dążące do optymalnej realizacji oraz świadomie wybierać konkretne rozwiązania, znając ich konsekwencje i zalety. Dzięki temu swobodnie żongluje technikami backendu i frontendu, żeby osiągnąć zamierzony efekt i nigdy nie da sobie powiedzieć "tak musi być" czy "nie da się inaczej". Mimo lekkiego tonu, warto jednak zapamiętać tę myśl, bo zdarza się, że znając tylko jedną stronę równania dążymy do rozwiązywania wszystkiego znanymi sobie narzędziami. Tak jak ten cieśla, który mając młotek wszędzie widzi gwoździe, tak i nam zdarzyło się wszędzie widzieć fabryki obiektów zamiast po prostu zmienić interfejs DTO ;-)
+Skuteczny frontend developer łączy nie tylko te dwie funkcje, ale też potrafi sięgnąć głębiej i pracować z backendem. Takie holistyczne podejście pozwala mu swobodnie podejmować decyzje dążące do optymalnej realizacji oraz świadomie wybierać konkretne rozwiązania, znając ich konsekwencje i zalety. Dzięki temu swobodnie żongluje technikami backendu i frontendu, żeby osiągnąć zamierzony efekt i nigdy nie da sobie powiedzieć "tak musi być" czy "nie da się inaczej". Mimo lekkiego tonu, warto jednak zapamiętać tę myśl, bo zdarza się, że znając tylko jedną stronę równania dążymy do rozwiązywania wszystkiego znanymi sobie narzędziami. Tak jak ten cieśla, który mając młotek wszędzie widzi gwoździe, tak i nam zdarzyło się wszędzie widzieć fabryki obiektów zamiast po prostu zmienić interfejs DTO 😉
 
 ## Odpowiedzialności Frontend developera w świecie Full-Stacków
 
 Czyli muszę znać UI, architekturę aplikacji i jeszcze backend? Przecież mamy też full-stacków, to jaka jest różnica?
 
-Bycie full-stackiem oznacza bycie wszechstronnym i zdolnym do podjęcia wszystkich wyzwań stawianych przed zespołem (w uproszczeniu, bo taki wątek poboczny zdominowałby cały wpis, a już [byłem gościem podcastu na ten temat](https://porozmawiajmyoit.pl/poit-069-full-stack-developer/) :)).
+Bycie full-stackiem oznacza bycie wszechstronnym i zdolnym do podjęcia wszystkich wyzwań stawianych przed zespołem (w uproszczeniu, bo taki wątek poboczny zdominowałby cały wpis, a już [byłem gościem podcastu na ten temat](https://porozmawiajmyoit.pl/poit-069-full-stack-developer/) 🙂).
 
 To znaczy, że w zależności od specjalizacji i zainteresowań, full-stack swobodnie porusza się we froncie w zakresie pracy, nazwijmy to, użytkowej. Umiejętność rozwoju zastanego kodu, realizacja tematów o znanym sposobie rozwiązania czy okazjonalne rozwiązywanie problemów z gatunku x-files, o ile szalenie ważna dla samodzielności zespołu, nadal nie zapewnia kompletu kompetencji.
 
@@ -110,7 +110,7 @@ Skłaniasz się bardziej w stronę *cutting edge* technologii, o których tyle s
 
 Udział w projekcie Mailbox oferuje zrównoważoną dawkę złożoności biznesowej i wyzwań technologicznych.
 
-Dodatkowym atutem jest możliwość pochwalenia się znajomym i rodzinie co się ostatnio robiło, wystarczy, że są klientami jednego z naszych klientów, a że klienci duzi to i szansa na bycie ich klientem spora ;-)
+Dodatkowym atutem jest możliwość pochwalenia się znajomym i rodzinie co się ostatnio robiło, wystarczy, że są klientami jednego z naszych klientów, a że klienci duzi to i szansa na bycie ich klientem spora 😉
 
 ~45k linii TypeScript z ~8k linii SASS stojących na froncie przed klastrem Kafki i Solara brzmi kusząco? Mailbox jest dla Ciebie!
 
@@ -126,7 +126,7 @@ Wszystko to sprawia, że Eximee to głównie wyzwanie technologiczne i poligon n
 
 Ale to nie wszystko, w projekcie budujemy też narzędzia graficznego projektowania procesów i wniosków, obsługi backoffice i inne. Poznaj potrzeby systemu spełniającego oczekiwania od klienta, przez obsługę backoffice, po pracę programistów oraz projektantów tworzących biznesowe rozwiązania oparte o dostarczaną przez Ciebie platformę.
 
-Twoi znajomi pewnie już korzystali z systemu który tworzysz, zapewne nie raz ;-)
+Twoi znajomi pewnie już korzystali z systemu który tworzysz, zapewne nie raz 😉
 
 Być może Eximee z ~250k linii TypeScript i ~130k linii SASS frameworku to coś dla Ciebie.
 
@@ -140,13 +140,13 @@ Tylko z nazwy warto wspomnieć o:
 - [sonarqube-companion](https://github.com/Consdata/sonarqube-companion) - agregat naruszeń SonarQube rozumiejący strukturę zespołów i śledzący trendy analizy statycznej,
 - inne narzędzia jak logger, aplikacje intranetowe do newsletterów, rezerwacji parkingu, czy śledzenia feedbacku i zbierania ankiet.
 
-W Open Source nie ograniczamy się żadnymi wytycznymi, to nasze poligony. Firebase? Angular czy React? Node czy Java? Spring czy Quarkus? Nie ma znaczenia! Zrealizuj funkcjonalność i powiedz innym jak poszło!
+W Open Source nie ograniczamy się żadnymi wytycznymi, to nasze poligony. Firebase? Angular czy React? Node czy Java? Spring czy Quarkus? Nie ma znaczenia! Zrealizuj funkcjonalność i powiedz innym jak poszło.
 
 ## Dołączysz?
 
-Czujesz, że frontend to może być miejsce dla Ciebie? Zainteresował Cię któryś z naszych projektów? Czujesz, że podołasz? Chciałbyś uczestniczyć w wyznaczaniu architektury i projektowaniu aplikacji web z szerokiego portoflio?
+Czujesz, że frontend to może być miejsce dla Ciebie? Zainteresował Cię któryś z naszych projektów? Czujesz, że podołasz? Chcesz uczestniczyć w wyznaczaniu architektury i projektowaniu aplikacji web z szerokiego portoflio?
 
-Sprawdź nasze oferty, u nas każdy znajdzie coś dla siebie ;-)
+Sprawdź nasze oferty, u nas każdy znajdzie coś dla siebie 😉
 
 Prowadzimy obecnie rekrutację na stanowisko Frontend Developer. Poszukujemy osób biegłych w tworzeniu aplikacji web, które pomogą nam wyznaczyć dalszy kierunek rozwoju i rozpędzić toczące się już zmiany w naszych aplikacjach. Kluczowa jest dla nas wiedza z poziomu projektowania aplikacji, wierzymy, że braki w tworzeniu komponentów czy jedynie ogólne wyczucie "tych backendów" to tematy, nad którymi możemy już pracować razem.
 
