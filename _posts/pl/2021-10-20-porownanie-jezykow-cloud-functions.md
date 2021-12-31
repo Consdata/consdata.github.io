@@ -72,12 +72,65 @@ Testy zimnych startów zostały wykonane z zapewnieniem braku istnienia aktywnej
     .dataTable-pagination {
         display: none;
     }
+
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+    
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+    
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    
+    .tab button.active {
+      background-color: #ccc;
+    }
+    
+    .tabcontent {
+      display: none;
+      animation: fadeEffect 1s;
+    }
+    
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
 </style>
 <script src="{{ base.url | prepend: site.url }}/assets/js/simple-datatables.js"></script>
+
+### TODO RUN#1 - środek tygodnia, 17-23 czasu polskiego
+
+### TODO RUN#2 - środek tygodnia, 20:00 czasu lokalnego w danym regionie
+
+- `europe-west3` (Frankfurt, Germany, Europe) - 20:00 o 20:00 czasu polskiego
+- `us-central1` (Council Bluffs, Iowa, North America) - 20:00 o 03:00 czasu polskiego (-7h)
+- `asia-east2` (Hong Kong, APAC) - 20:00 o 13:00 czasu polskiego (+7h)
+- <https://time.is/pl/compare/0800_7_Dec_2021_in_Frankfurt/Council_Bluffs/Hong_Kong,_Hong_Kong>
 
 {% include post_includes/2021-10-20-porownanie-jezykow-cloud-functions/responseTimes.html %}
 
 # Zimne starty
+
+### TODO RUN#1 - środek tygodnia, 22 czasu polskiego
+
+### TODO RUN#2 - środek tygodnia, 20:00 czasu lokalnego w danym regionie
+
+- `europe-west3` (Frankfurt, Germany, Europe) - 20:00 o 20:00 czasu polskiego
+- `us-central1` (Council Bluffs, Iowa, North America) - 20:00 o 03:00 czasu polskiego (-7h)
+- `asia-east2` (Hong Kong, APAC) - 20:00 o 13:00 czasu polskiego (+7h)
+- <https://time.is/pl/compare/0800_7_Dec_2021_in_Frankfurt/Council_Bluffs/Hong_Kong,_Hong_Kong>
 
 {% include post_includes/2021-10-20-porownanie-jezykow-cloud-functions/coldstarts.html %}
 
