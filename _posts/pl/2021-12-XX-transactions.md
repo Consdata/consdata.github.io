@@ -8,10 +8,10 @@ lang: pl
 author:    rmastalerek
 image:     /assets/img/posts/2021-12-XX-transactions/transactions.jpg
 tags:
-    - transactions
-    - spring
-    - java
-    - transactional
+- transactions
+- spring
+- java
+- transactional
 ---
 
 Czy ktokolwiek, po zamówieniu w restauracji kawy i ciastka chciałby zapłacić za oba, a otrzymać tylko czarny, gorący napój? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Podane przykłady mają na celu lepsze zilustrowanie zagadnienia, które zostanie poruszone w niniejszym wpisie. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Tym razem chciałbym przedstawić krótkie wprowadzanie do transakcji. Wpis zostanie podzielony na 2 części. W części pierwszej skupię się na przybliżeniu samej definicji oraz zasady działania transakcyjności w systemach baz danych oraz wykorzystaniu adnotacji _@Transactional_ w Springu. Kolejna część poświęcona będzie problemom jakie napotkaliśmy w codziennej pracy, co pozwoliło je zidentyfikować oraz jak zostały wyeliminowane.
@@ -42,16 +42,16 @@ System Zarządania Bazą Danych (_SZBD_) może np. zablokować wiersz tabeli, do
 
 Zgodnie ze standardem _SQL-92_ definiuje się 4 poziomy izolacji transakcji. Poniżej przedstawiono "efekty uboczne", które są akceptowalne na danym poziomie, poczynając od najmniej restrykcyjnego:
 
-| Poziom izolacji                | Brudne         | Niepowtarzalne         | Fantomowe         |
-|                                | odczyty        | odczyty                | odczyty           |
-| ------------------------------ |:--------------:|:----------------------:|:-----------------:|
-| `TRANSACTION_READ_UNCOMMITTED` | Dozwolone      | Dozwolone              | Dozwolone         |
-| `TRANSACTION_READ_COMMITTED`   | Uniemożliwione | Dozwolone              | Dozwolone         |
-| `TRANSACTION_REPEATABLE_READ`  | Uniemożliwione | Uniemożliwione         | Dozwolone         |
-| `TRANSACTION_SERIALIZABLE`     | Uniemożliwione | Uniemożliwione         | Uniemożliwione    |
+| Poziom izolacji    | Brudne         | Niepowtarzalne         | Fantomowe         |
+|                    | odczyty        | odczyty                | odczyty           |
+| ------------------ |:--------------:|:----------------------:|:-----------------:|
+| `READ_UNCOMMITTED` | Dozwolone      | Dozwolone              | Dozwolone         |
+| `READ_COMMITTED`   | Uniemożliwione | Dozwolone              | Dozwolone         |
+| `REPEATABLE_READ`  | Uniemożliwione | Uniemożliwione         | Dozwolone         |
+| `SERIALIZABLE`     | Uniemożliwione | Uniemożliwione         | Uniemożliwione    |
 
-Należy pamiętać, że zastosowanie wyższego poziomu izolacji wiążę się ze spadkiem wydajności aplikacji. Poziomy izolacji pozwalają zatem na zachowanie równowagi między wydajnością, a wymaganą izolacją. 
-Projektując aplikację trzeba pamiętać także o tym, że różne SZBD dostarczają różną liczbę poziomów izolacji. Dla przykładu w MySQL mamy 4 poziomy izolacji, podczas gdy w bazie Oracle poziomy izolacji są tylko 3. 
+Należy pamiętać, że zastosowanie wyższego poziomu izolacji wiążę się ze spadkiem wydajności aplikacji. Poziomy izolacji pozwalają zatem na zachowanie równowagi między wydajnością, a wymaganą izolacją.
+Projektując aplikację trzeba pamiętać także o tym, że różne SZBD dostarczają różną liczbę poziomów izolacji. Dla przykładu w MySQL mamy 4 poziomy izolacji, podczas gdy w bazie Oracle poziomy izolacji są tylko 3.
 
 ## Zarządzanie transakcjami w JDBC
 Każdy, kto korzysta z mechanizmu transakcji w Springu wie, że pomocna w tym jest adnotacja **@Transactional**. Dzięki niej możemy zaoszczędzić trochę czasu, bo sami nie musimy implementować całego mechanizmu, którym zarządza framework. Warto jednak wiedzieć co dzieje się „pod maską”. Zobaczmy zatem jak wygląda uproszczone zarządzanie transakcją w JDBC, na którym zawsze bazujemy.
@@ -117,7 +117,7 @@ public class BookService {
 }
 ```
 **Zalety**:
-- nie trzeba zaprzątać sobie głowy otwieraniem i zamykaniem połączenia z bazą danych poprzez stosowanie bloku _try-catch-finally_. Zamiast tego wykorzystywany jest mechanizm callback’ów (`Transaction Callbacks`).
+- nie trzeba zaprzątać sobie głowy otwieraniem i zamykaniem połączenia z bazą danych poprzez stosowanie bloku _try-catch-finally_. Zamiast tego wykorzystywany jest mechanizm callbacków (`Transaction Callbacks`).
 - nie trzeba przechwytywać wyjątków _SQLException_, ponieważ Spring konwertuje je na wyjątki _RuntimeException_.
 - lepsza integracja z ekosystemem Springa. _TransactionTemplate_ wykorzystuje _TransactionManager_ do konfiguracji połączenie z bazą danych. Ich implementacja wiążę się z koniecznością utworzenia odpowiednich beanów, jednak później nie musimy się już martwić o zarządzanie nimi.
 
@@ -138,7 +138,7 @@ public class BookService {
 	}
 }
 ```
-Wygląda znacznie prościej prawda? Aby skorzystać z adnotacji _@Transactional_, konieczne jest jedynie zdefiniowanie menadżera transakcji w konfiguracji Spring’a oraz dodanie adnotacji _@EnableTransactionManagement_ (w Spring Boot nie jest to konieczne).
+Wygląda znacznie prościej, prawda? Aby skorzystać z adnotacji _@Transactional_, konieczne jest jedynie zdefiniowanie menadżera transakcji w konfiguracji Spring’a oraz dodanie adnotacji _@EnableTransactionManagement_ (w Spring Boot nie jest to konieczne).
 ```java
 @Configuration
 @EnableTransactionManagement
@@ -155,11 +155,11 @@ public class MyConfig {
 Spring pozwala na wykorzystanie usługi BookService w każdym innym beanie, który tego wymaga. Stosując adnotację _@Transactional_ i odwołując się do metody, która jest nią opatrzona, Spring nie odwołuje się bezpośrednio do tej metody, ale tworzy tzw. **proxy transakcyjne**. Dzieje się to przy pomocy biblioteki _Cglib_ i metody zwanej _proxy-through-sublcassing_. Zadaniem tego proxy jest zawsze:
 - otwieranie i zamykanie połączeń/transakcji z bazą danych
 - delegowanie zadania do rzeczywistej usługi, jak nasze _BookService_
-  
+
 Całą procedurę można zobrazować prostym diagramem:
 ![2021-12-14-transaction-proxy.png](/assets/img/posts/2021-12-XX-transactions/transaction-proxy.png)
 
-Dodając adnotację _@Transactional_ do naszej metody lub klasy, ale nie definiując ręcznie poziomu izolacji musimy zawsze pamiętać, że Spring ustawia ten poziom na domyślny. Co to oznacza? Otóż, w rezultacie, kiedy Spring tworzy transakcję, poziom izolacji będzie domyślną izolacją SZBD, z którego korzystamy. Niezwykle ważne jest zatem zachowanie ostrożności zarówno w momencie wyboru Systemu Zarządzania Bazą Danych, jak i jego późniejszej zmiany. 
+Dodając adnotację _@Transactional_ do naszej metody lub klasy, ale nie definiując ręcznie poziomu izolacji musimy zawsze pamiętać, że Spring ustawia ten poziom na domyślny. Co to oznacza? Otóż, w rezultacie, kiedy Spring tworzy transakcję, poziom izolacji będzie domyślną izolacją SZBD, z którego korzystamy. Niezwykle ważne jest zatem zachowanie ostrożności zarówno w momencie wyboru Systemu Zarządzania Bazą Danych, jak i jego późniejszej zmiany.
 Żeby samodzielnie określić poziom izolacji transakcji wystarczy wykorzystać atrybut adnotacji @Transational o nazwie _isolation_, np.:
 ```java
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -179,11 +179,11 @@ Spring pozwala na jeszcze jedną konfigurację mechanizmu zarządzania transakcj
 - `NESTED` – Spring sprawdza czy istnieje aktywna transakcja. Jeżeli tak, to utworzony zostaje punkt zapisu. Oznacza to, że jeżeli wykonana następnie logika biznesowa zakończy się błędem, to stan systemu zostanie przywrócony do punktu zapisu. Jeżeli natomiast nie ma aktywnej transakcji, to system zachowa się tak, jak w przypadku `REQUIRED`.
 
 ### Wybór metody zarządzania transakcjami w springu
-Mając do dyspozycji dwie metody zarządzania transakcjami - programową i deklaratywną warto wiedzieć, kiedy stosować każdą z nich. 
+Mając do dyspozycji dwie metody zarządzania transakcjami - programową i deklaratywną warto wiedzieć, kiedy stosować każdą z nich.
 
 **Programowe zarządzanie transakcjami:**
 - pozwala na "zakodowanie" logiki transakcji między logiką biznesową
-- jest elastyczne, ale trudne w utrzymaniu z dużą ilością logiki biznesowej 
+- jest elastyczne, ale trudne w utrzymaniu z dużą ilością logiki biznesowej
 - preferowane, gdy stosowana jest względnie mała logika obsługi transakcji
 
 **Deklaratywne zarządzanie transakcjami:**
@@ -191,7 +191,7 @@ Mając do dyspozycji dwie metody zarządzania transakcjami - programową i dekla
 - oznacza oddzielenie logiki transakcji od logiki biznesowej
 - używa się adnotacji (lub XML) do zarządzania transakcjami
 - łatwe w utrzymaniu - _boilerplate_ trzymany jest z dala od logiki biznesowej
-- preferowane podczas pracy z dużą ilością logiki obsługi transakcji 
+- preferowane podczas pracy z dużą ilością logiki obsługi transakcji
 
 ### Pułapka
 Na zakończenie warto wspomnieć o częstym błędzie popełnianym głównie na początku przygody z transakcjami. Zdarza się, że adnotacją _@Transactional_ oznacza się powiązane ze sobą metody w tej samej klasie oczekując, że te wykonane zostaną w ramach odrębnych transakcji. W takim przypadku należy spojrzeć ponownie na powyższy diagram. Spring tworzy proxy transakcyjne, ale w momencie, gdy znajdziemy się już w rzeczywistym beanie _BookService_ i wywołamy inne metody w nim zaimplementowane, żadne nowe proxy nie będzie zaangażowane w te operacje. Innymi słowy, nie zostanie rozpoczęta żadna nowa transakcja.

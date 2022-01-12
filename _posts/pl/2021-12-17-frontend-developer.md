@@ -7,8 +7,8 @@ lang:      pl
 author:    glipecki
 image:     /assets/img/posts/2021-12-17-frontend-developer/frontend.webp
 tags:
-    - frontend
-    - pogadajmy
+- frontend
+- pogadajmy
 description: "Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak historycznie doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! :)"
 ---
 
@@ -58,30 +58,30 @@ Zrozumienie obu stron problemu jest kluczowe w zapobieganiu przerzucania się "u
 Padło już wiele okrągłych zdań próbujących opisowo wytłumaczyć kontekst i motywację, pora zatem na kilka reprezentatywnych przykładów typowych zadań.
 
 - Rozbudowa aplikacji o współdzielony pomiędzy komponentami stan:
-    - integracja biblioteki NgRx z aplikacją Angular,
-    - przygotowanie konfiguracji lokalnej i produkcyjnej,
-    - referencyjna implementacja obsługi stanu w jednym z modułów funkcjonalnych,
-    - wypracowanie utili i wytycznych określających zalecany sposób implementacji i dobre praktyki,
-    - przedstawienie implementacji zespołom i wskazanie materiałów poszerzających wiedzę.
+  - integracja biblioteki NgRx z aplikacją Angular,
+  - przygotowanie konfiguracji lokalnej i produkcyjnej,
+  - referencyjna implementacja obsługi stanu w jednym z modułów funkcjonalnych,
+  - wypracowanie utili i wytycznych określających zalecany sposób implementacji i dobre praktyki,
+  - przedstawienie implementacji zespołom i wskazanie materiałów poszerzających wiedzę.
 - Wsparcie równoległej pracy wielu użytkowników nad pojedynczym elementem domeny:
-    - zbudowanie mechanizmu wprowadzania zmian sterowanego zdarzeniami,
-    - przygotowanie synchronizacji delt zmian klient-serwer,
-    - podsystemu redukowania zdarzeń do projekcji bieżącego stanu po stronie aplikacji klienckiej,
-    - propagowanie wiedzy i edukacja zespołu w zakresie wykorzystania rozwiązania.
+  - zbudowanie mechanizmu wprowadzania zmian sterowanego zdarzeniami,
+  - przygotowanie synchronizacji delt zmian klient-serwer,
+  - podsystemu redukowania zdarzeń do projekcji bieżącego stanu po stronie aplikacji klienckiej,
+  - propagowanie wiedzy i edukacja zespołu w zakresie wykorzystania rozwiązania.
 - Możliwość rozbudowy aplikacji rozszerzeniami funkcjonalnymi dostarczanymi przez klienta w runtime:
-    - określenie api i specyfikacji osadzania webcomponentów,
-    - implementacja ładowania i obsługi cyklu życia komponentów klienta,
-    - rekomendacje i współpraca w budowaniu gateway dla webcomponentów z uwzlędnieniem modelu uprawnień,
-    - przygotowanie przykładów komponentów w oparciu o LitElement,
-    - eksponowanie elementów UI aplikacji nadrzędnej jako webcomponenty dostępne dla komponentów rozszerzeń.
+  - określenie api i specyfikacji osadzania webcomponentów,
+  - implementacja ładowania i obsługi cyklu życia komponentów klienta,
+  - rekomendacje i współpraca w budowaniu gateway dla webcomponentów z uwzlędnieniem modelu uprawnień,
+  - przygotowanie przykładów komponentów w oparciu o LitElement,
+  - eksponowanie elementów UI aplikacji nadrzędnej jako webcomponenty dostępne dla komponentów rozszerzeń.
 - Budowanie kreatora wieloetapowej akceptacji operacji asynchronicznych:
-    - przygotowanie generycznego mechanizmu wieloetapowej akceptacji na wiele rąk,
-    - referencyjna implementacja funkcjonalności potwierdzania paczek transakcji,
-    - uogólnienie kodu na potrzeby przyszłych funkcjonalności i przygotowanie funkcjonalnych prototypów Storybook.
+  - przygotowanie generycznego mechanizmu wieloetapowej akceptacji na wiele rąk,
+  - referencyjna implementacja funkcjonalności potwierdzania paczek transakcji,
+  - uogólnienie kodu na potrzeby przyszłych funkcjonalności i przygotowanie funkcjonalnych prototypów Storybook.
 - Komponent tworzenia wiadomości oferujący funkcjonalność formatowania treści:
-    - opracowanie komponentu edytora WYSIWYG z przykładami w UI guideline,
-    - wykorzystanie komponentu na ekranie tworzenia wiadomości,
-    - integracja wysyłki z istniejącą usługą REST z uwzględnieniem praktyk UI/UX i optymistycznego potwierdzania operacji.
+  - opracowanie komponentu edytora WYSIWYG z przykładami w UI guideline,
+  - wykorzystanie komponentu na ekranie tworzenia wiadomości,
+  - integracja wysyłki z istniejącą usługą REST z uwzględnieniem praktyk UI/UX i optymistycznego potwierdzania operacji.
 
 I tak dalej. To tylko kilka z przykładów kompetencji i umiejętności których szukamy u osób specjalizujących się w obszarze Frontend Developer.
 
