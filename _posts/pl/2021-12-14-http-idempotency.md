@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest HTTP idempotency?"
-date:      2021-12-14 8:00:00 +0100
+date:      2022-01-18 8:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
@@ -17,20 +17,20 @@ Twórcy różnego rodzaju systemów rozproszonych, bardzo chętnie korzystają z
 # HTTP idempotency, czyli Idempotentność w metodach HTTP
 Jeśli przy projektowaniu API stosujemy się do zasad `REST`, otrzymujemy HTTP idempotency dla `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS` i `TRACE`. Tylko interfejsy `POST` nie będą idempotentne.
 
-|Metoda HTTP|Idempotentność|
-|-----------|--------------|
-|OPTIONS    |tak           |
-|GET        |tak           |
-|HEAD       |tak           |
-|PUT        |tak           |
-|POST       |nie           |
-|DELETE     |tak           |
-|TRACE      |tak           |
+|Metoda HTTP| Idempotentność |
+|-----------|----------------|
+|OPTIONS    | tak            |
+|GET        | tak            |
+|HEAD       | tak            |
+|PUT        | tak            |
+|POST       | **nie**        |
+|DELETE     | tak            |
+|TRACE      | tak            |
 
 W jaki sposób powyższe metody HTTP stają się idempotentne i dlaczego `POST` nią nie jest? Sprawdźcie konkretne metody i ich możliwości.
 
 ## POST
-Metoda `POST` służy zazwyczaj do tworzenia nowego zasobu na serwerze, chociaż nie jest to reguła. Kiedy wywołamy to samo żądanie POST N razy, otrzymamy N nowych zasobów na serwerze. Tak więc POST nie jest idempotentny.
+Metoda `POST` służy zazwyczaj do tworzenia nowego zasobu na serwerze, chociaż nie jest to reguła. Kiedy wywołamy to samo żądanie `POST` `N` razy, otrzymamy `N` nowych zasobów na serwerze. Tak więc POST nie jest idempotentny.
 
 ## GET, HEAD, OPTIONS oraz TRACE
 Metody `GET`, `HEAD`, `OPTIONS` i `TRACE` nie zmieniają stanu zasobów na serwerze. Służą one wyłącznie do pobierania reprezentacji zasobów lub metadanych w danym momencie. W związku z tym, wywoływanie wielu żądań nie będzie miało żadnej operacji zapisu na serwerze, co sprawia, że `GET`, `HEAD`, `OPTIONS` i `TRACE` są idempotentne.
