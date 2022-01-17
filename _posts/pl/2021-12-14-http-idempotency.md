@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest HTTP idempotency?"
-date:      2022-01-18 8:00:00 +0100
+date:      2022-01-17 8:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
@@ -9,6 +9,7 @@ author:    fphilavong
 image:     /assets/img/posts/2021-12-14-http-idempotency/http-idempotency.jpg
 tags:
 - http
+- idempotency
 ---
 
 Właściwość pewnych operacji, która umożliwia ich wielokrotne stosowanie bez zmiany wyniku, nazywamy trudnym polskim słowem ;) - idempotentność. Częściej spotkaliście się pewnie z angielskim tłumaczeniem - idempotency i też będziemy go tutaj używać.
