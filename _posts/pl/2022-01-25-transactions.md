@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Zarządzanie transakcjami w Java - jak to robić dobrze?"
-date:      2021-12-XX 08:00:00 +0100
-published: false
+date:      2022-01-25 08:00:00 +0100
+published: true
 didyouknow: false
 lang: pl
 author:    rmastalerek
-image:     /assets/img/posts/2021-12-XX-transactions/transactions.jpg
+image:     /assets/img/posts/2022-01-25-transactions/transactions.jpg
 tags:
 - transactions
 - spring
