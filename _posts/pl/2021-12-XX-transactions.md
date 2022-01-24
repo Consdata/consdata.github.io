@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Transakcje - co warto wiedzieć?"
+title:     "Zarządzanie transakcjami w Java - jak to robić dobrze?"
 date:      2021-12-XX 08:00:00 +0100
 published: false
 didyouknow: false
@@ -14,10 +14,12 @@ tags:
 - transactional
 ---
 
-Czy ktokolwiek, po zamówieniu w restauracji kawy i ciastka chciałby zapłacić za oba, a otrzymać tylko czarny, gorący napój? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Podane przykłady mają na celu lepsze zilustrowanie zagadnienia, które zostanie poruszone w niniejszym wpisie. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Tym razem chciałbym przedstawić krótkie wprowadzanie do transakcji. Wpis zostanie podzielony na 2 części. W części pierwszej skupię się na przybliżeniu samej definicji oraz zasady działania transakcyjności w systemach baz danych oraz wykorzystaniu adnotacji _@Transactional_ w Springu. Kolejna część poświęcona będzie problemom jakie napotkaliśmy w codziennej pracy, co pozwoliło je zidentyfikować oraz jak zostały wyeliminowane.
+Czy ktokolwiek zamawiając w restauracji kawę i ciastka chciałby zapłacić za oba, a otrzymać tylko jedno? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Odpowiedzi na te pytania są oczywiste. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Podobnie jest z systemem zarządzania transakcjami w Javie, a podane przykłady świetnie ilustrują zależności, o jakich musimy pamiętać przy tym temacie.
+
+W tym wpisie przedstawię krótkie wprowadzanie, ponieważ temat transakcji w programowaniu jest na tyle obszerny, że warto go podzielić na 2 części. W części pierwszej skupię się na przybliżeniu samej definicji oraz zasady działania transakcyjności w systemach baz danych oraz wykorzystaniu adnotacji _@Transactional_ w Springu. Druga część poświęcona będzie problemom jakie napotkaliśmy w codziennej pracy, co pozwoliło je zidentyfikować oraz jak zostały wyeliminowane.
 
 ## Transakcja
-Pewien zbiór operacji, które muszą zostać wykonane kompleksowo (wszystkie lub żadna), nazywamy wlaśnie **transakcją**. Odniesienie do operacji bankowej o takiej samej nazwie jest nieprzypadkowe. Wspomniany we wstępie przykład przelewu jest modelowym wzorem transakcji. Wykonując przelew w banku pieniądze muszą jedocześnie zostać odjęte z rachunku nadawcy, jak i dodane w tej samej kwocie do salda konta odbiorcy. Tylko wtedy transakcja kończy się sukcesem.
+Pewien zbiór operacji, które muszą zostać wykonane kompleksowo (wszystkie lub żadna), nazywamy właśnie **transakcją**. Odniesienie do operacji bankowej o takiej samej nazwie jest nieprzypadkowe, a wspomniany już przykład przelewu jest modelowym wzorem transakcji. Wykonując przelew w banku pieniądze muszą jedocześnie zostać odjęte z rachunku nadawcy, jak i dodane w tej samej kwocie do salda konta odbiorcy. Tylko wtedy transakcja kończy się sukcesem.
 
 W przypadku niepowodzenia, któregokolwiek z kroków, wykonane dotąd operacje muszą zostać cofnięte, a stan systemu przywrócony do chwili sprzed rozpoczęcia całej procedury.
 
@@ -25,9 +27,9 @@ Transakcje cechują się pewnym zbiorem zasad, określanych mianem ACID. Jest to
 
 - **A** (_ang. atomicity_) – atomowość – transakcja może zostać wykonana w całości albo anulowana. Jeżeli w trakcie wykonywania kroku objętego transakcją wystąpi problem, to wykonane zmiany powinny zostać cofnięte (rollback). Jeżeli wszystkie zakończone zostałyby sukcesem, to transakcja jest akceptowana (commit).
 
-- **C** (_ang. consistency_) – spójność – mówiąc potocznie oznacza, że „baza jest w dobrym stanie”. Powracając do przykładu przelewu, spójność oznaczałaby, że konto, z którego wysyłane są środki, pozwala na dokonanie operacji. Po zakończeniu transakcji stan konta nie może być ujemny. Spójność jest zatem pewnym zestawem reguł i zasad, które należy przestrzegać.
+- **C** (_ang. consistency_) – spójność – mówiąc potocznie oznacza, że „baza jest w dobrym stanie”. Powracając do przykładu przelewu, spójność oznaczałaby, że konto, z którego wysyłane są środki, pozwala na dokonanie operacji. Po zakończeniu transakcji stan konta nie może być ujemny. Spójność jest zatem pewnym zestawem reguł i zasad, których należy przestrzegać.
 
-- **I** (_ang. isolation_) – izolacja – właściwość, która odseparowuje od siebie operacje wykonywane jednocześnie tak, aby te nie miały na siebie wpływu. Chodzi np. o sytuację, gdy odwołujemy się do tej samej tabeli w bazie. Można też powiedzieć, że izolacja zapewnia, że w przypadku wykonywania operacji w sposób równoległy baza danych pozostanie w takim stanie, jakby operacje te zostały wykonane sekwencyjnie.
+- **I** (_ang. isolation_) – izolacja – właściwość, która odseparowuje od siebie operacje wykonywane jednocześnie tak, aby te nie miały na siebie wpływu. Chodzi np. o sytuację, gdy odwołujemy się do tej samej tabeli w bazie. Można też powiedzieć, że izolacja zapewnia, że w przypadku wykonywania operacji w sposób równoległy, baza danych pozostanie w takim stanie, jakby operacje te zostały wykonane sekwencyjnie.
 
 - **D** (_ang. durability_) – trwałość – gwarancja, że zaakceptowana transakcja nie zniknie niespodziewanie z systemu np. w przypadku awarii. Trwałość uzyskuje się poprzez zastosowanie mechanizmu replikacji, odnotowywania operacji w dzienniku logów czy poprzez zapis danych na dysku.
 
@@ -40,7 +42,7 @@ System Zarządania Bazą Danych (_SZBD_) może np. zablokować wiersz tabeli, do
 
 **Odczyt fantomowy** (_ang. phantom read_) to sytuacja, gdy transakcja A pobiera zbiór wierszy będących w danym stanie. Transakcja B następnie wstawia lub aktualizuje wiersz do tabeli. Następnie transakcja A ponownie odczytuję zbiór wierszy widząc tym razem nowy lub zaktualizowany wiersz, określany jako fantom.
 
-Zgodnie ze standardem _SQL-92_ definiuje się 4 poziomy izolacji transakcji. Poniżej przedstawiono "efekty uboczne", które są akceptowalne na danym poziomie, poczynając od najmniej restrykcyjnego:
+Zgodnie ze standardem _SQL-92_ definiuje się 4 poziomy izolacji transakcji. Poniżej widzicie "efekty uboczne", które są akceptowalne na danym poziomie, poczynając od najmniej restrykcyjnego:
 
 | Poziom izolacji    | Brudne         | Niepowtarzalne         | Fantomowe         |
 |                    | odczyty        | odczyty                | odczyty           |
@@ -173,7 +175,7 @@ Spring pozwala na jeszcze jedną konfigurację mechanizmu zarządzania transakcj
 - `REQUIRED` (domyślna) – Spring sprawdza czy istnieje aktywna transakcja, i jeżeli nie, tworzy ją. W przeciwnym razie logika biznesowa zostaje wykonana w ramach istniejącej transakcji.
 - `SUPPORTS` – Spring najpierw sprawdza czy istnieje aktywna transakcja. Jeżeli tak, wtedy jest ona wykorzystywana do wykonania logiki biznesowej, w przeciwnym razie logika wykonana jest poza transakcją.
 - `MANDATORY` – Podobnie, jak w przypadku `SUPPORTS`, Spring najpierw poszukuje aktywnej transakcji, i jeżeli ją znajdzie, to ją wykorzystuje. W przeciwnym razie rzucany jest wyjątek.
-- `NEVER` – Spring rzuca wyjątek w przypadku wykrycia aktywnej transakcji
+- `NEVER` – Spring rzuca wyjątek w przypadku wykrycia aktywnej transakcji.
 - `NOT_SUPPORTED` – Jeżeli istenieje aktywna transakcja, Spring przerywa ją, a następnie logika biznesowa wykonywana jest poza transakcją.
 - `REQUIRES_NEW` – Podobnie, jak w przypadku `NOT_SUPPORTED`, Spring przerywa aktywną transakcję, lecz tym razem tworzy nową na potrzebę wykonania logiki biznesowej w odrębnej transakcji.
 - `NESTED` – Spring sprawdza czy istnieje aktywna transakcja. Jeżeli tak, to utworzony zostaje punkt zapisu. Oznacza to, że jeżeli wykonana następnie logika biznesowa zakończy się błędem, to stan systemu zostanie przywrócony do punktu zapisu. Jeżeli natomiast nie ma aktywnej transakcji, to system zachowa się tak, jak w przypadku `REQUIRED`.
@@ -271,4 +273,4 @@ public class MailService {
 ```
 
 ## Podsumowanie
-Było to teoretyczne wprowadzenie do systemu zarządzania transakcjami w Javie. Na początku dowiedzieliśmy się czym w ogóle jest transakcje, dlaczego są ważne i co je cechuje. Następnie przedstawiony został mechanizm działania transakcji w JDBC po to, by na koniec zaprezentować uproszczenie implementacji tego mechanizmu w Springu. W kolejnym artykule z tej serii dowiemy się jakie problemy napotkaliśmy wykorzystując mechanizm zarządzania transakcjami, jak udało się go zlokalizować oraz na czym polegała poprawka. 
+Teoretyczne wprowadzenie do systemu zarządzania transakcjami w Javie już za nami! Na początku dowiedzieliśmy się czym w ogóle są transakcje, dlaczego są ważne i co je cechuje. Następnie przedstawiony został mechanizm działania transakcji w JDBC po to, by na koniec zaprezentować uproszczenie implementacji tego mechanizmu w Springu. W kolejnym artykule z tej serii dowiemy się jakie problemy napotkaliśmy wykorzystując mechanizm zarządzania transakcjami, jak udało się go zlokalizować oraz na czym polegała poprawka. 
