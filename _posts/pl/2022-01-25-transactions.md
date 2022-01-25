@@ -159,7 +159,7 @@ Spring pozwala na wykorzystanie usługi BookService w każdym innym beanie, któ
 - delegowanie zadania do rzeczywistej usługi, jak nasze _BookService_
 
 Całą procedurę można zobrazować prostym diagramem:
-![2021-12-14-transaction-proxy.png](/assets/img/posts/2021-12-XX-transactions/transaction-proxy.png)
+![2021-12-14-transaction-proxy.png](/assets/img/posts/2022-01-25-transactions/transaction-proxy.png)
 
 Dodając adnotację _@Transactional_ do naszej metody lub klasy, ale nie definiując ręcznie poziomu izolacji musimy zawsze pamiętać, że Spring ustawia ten poziom na domyślny. Co to oznacza? Otóż, w rezultacie, kiedy Spring tworzy transakcję, poziom izolacji będzie domyślną izolacją SZBD, z którego korzystamy. Niezwykle ważne jest zatem zachowanie ostrożności zarówno w momencie wyboru Systemu Zarządzania Bazą Danych, jak i jego późniejszej zmiany.
 Żeby samodzielnie określić poziom izolacji transakcji wystarczy wykorzystać atrybut adnotacji @Transational o nazwie _isolation_, np.:
