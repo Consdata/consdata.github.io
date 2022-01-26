@@ -21,7 +21,7 @@
 .sidebar-title {
   font-weight: bold;
   font-size: 1.4em;
-  margin-bottom: 1em;
+  margin-bottom: $small-padding;
   letter-spacing: $general-letter-spacing;
   border-bottom: $separator-border;
 }
@@ -96,5 +96,64 @@
 }
 
 .fa-meetup {
-  color: #ED1C40;
+  color: #ed1c40;
+}
+
+.clickable-offer {
+  display: block;
+  margin-bottom: $small-padding;
+}
+
+.job-offer-highlighted {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-logo-red;
+  padding: $very-small-padding;
+
+  &:hover {
+    background-color: $color-logo-red-dark;
+  }
+
+  .job-title {
+    @include job-offer-text(white);
+    font-weight: bold;
+  }
+
+  .job-description {
+    @include job-offer-text(white);
+  }
+
+  .job-salary {
+    @include job-offer-text(white);
+    font-weight: lighter;
+  }
+}
+
+.job-offer, .other-job-offers {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: $very-small-padding;
+
+  &:hover {
+    .job-salary,
+    .job-description,
+    .job-title {
+      color: $color-logo-red-dark;
+    }
+  }
+
+  .job-salary {
+    @include job-offer-text($color-dark-gray);
+    font-weight: lighter;
+  }
+
+  .job-description {
+    @include job-offer-text($color-dark-gray);
+  }
+
+  .job-title {
+    @include job-offer-text($color-dark-gray);
+    font-weight: bold;
+  }
 }

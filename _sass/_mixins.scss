@@ -1,24 +1,24 @@
 @mixin tablet-and-desktop() {
   @media (min-width: $tablet-breakpoint) {
-    @content
+    @content;
   }
 }
 
 @mixin desktop() {
   @media (min-width: $desktop-breakpoint) {
-    @content
+    @content;
   }
 }
 
 @mixin tablet() {
   @media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint - 1px) {
-    @content
+    @content;
   }
 }
 
 @mixin mobile() {
   @media (max-width: $tablet-breakpoint - 1px) {
-    @content
+    @content;
   }
 }
 
@@ -31,10 +31,14 @@
   @include desktop {
     margin: 0 20%;
   }
-
 }
 
 @mixin flex-container() {
   display: flex;
   min-width: 1px;
+}
+
+@mixin job-offer-text($font-color) {
+  color: $font-color;
+  font-size: 1.2em;
 }
