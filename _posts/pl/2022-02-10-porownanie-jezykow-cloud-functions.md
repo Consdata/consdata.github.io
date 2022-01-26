@@ -106,7 +106,7 @@ W przypadku środowisk uruchomieniowych spodziewałem się, że języki interpre
 
 Wyniki testu potwierdziły moje podejrzenia, ponieważ najszybciej odpowiadały funkcje napisane w Go, Ruby czy PHP.
 
-Kompletnie nie zdziwiły mnie wyniki funkcji napisanych w Javie czy .NET, jednak nie spisywałbym ich na straty. Środowiska uruchomieniowe wykorzystujące maszyny wirtualne (takie jak właśnie Java - JVM, czy .NET - CLR) potrafią optymalizować uruchomiony kod, jednak nie zrobią tego od razu, ponieważ potrzebują w tym celu większej ilości danych. Całkiem możliwe, że funkcje które obsługują bardzo dużo żądań w czasie ciągłym (czyli takim, dzięki któremu instancja funkcji będzie żyła bardzo długo) osiągnęłyby z czasem lepsze wyniki.
+Kompletnie nie zdziwiły mnie wyniki funkcji napisanych w Javie czy .NET, jednak nie spisywałbym ich na straty. Środowiska uruchomieniowe wykorzystujące maszyny wirtualne (takie jak właśnie Java - JVM, czy .NET - CLR) potrafią optymalizować uruchomiony kod, jednak nie zrobią tego od razu, ponieważ potrzebują w tym celu zebrać odpowiednią ilość statystyk. Całkiem możliwe, że funkcje które obsługują bardzo dużo żądań w czasie ciągłym (czyli takim, dzięki któremu instancja funkcji będzie żyła bardzo długo) osiągnęłyby z czasem lepsze wyniki.
 
 Jakie z tego wnioski? Jeżeli piszemy prostą funkcję i nie zależy nam na wydajności (albo spodziewamy się małego ruchu), śmiało możemy napisać ją w języku, który znamy najlepiej. Jeżeli jednak zależy nam na obsłudze jak największej ilości żądań (i jednocześnie wiemy że instancja funkcji nie będzie długowieczna), najlepszym wyborem będą języki interpretowane/skryptowe.
 
