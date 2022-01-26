@@ -1,0 +1,31 @@
+.tablinks {
+  background-color: inherit;
+  float: left;
+  border: none;
+  cursor: pointer;
+  padding: 6px 20px 6px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.tablinks:hover {
+  border-bottom: 1px solid #b31536;
+}
+
+.tablinks.active {
+  border-bottom: 2px solid #b31536;
+}
+
+.tabcontent {
+  display: none;
+  animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,10 +1,9 @@
-   
-<div class="tab">
-    <button class="tablinks_coldstarts" onclick="showColdstartTable(event, 'coldstarts1')" id="defaultOpenColdstarts">Run #1</button>
-    <button class="tablinks_coldstarts" onclick="showColdstartTable(event, 'coldstarts2')">Run #2</button>
+<div>
+    <button class="tablinks coldstarts" onclick="showColdstartTable(event, 'coldstarts1')" id="defaultOpenColdstarts">Run #1</button>
+    <button class="tablinks coldstarts" onclick="showColdstartTable(event, 'coldstarts2')">Run #2</button>
 </div>
 
-<div id="coldstarts1" class="tabcontent_coldstarts">
+<div id="coldstarts1" class="tabcontent coldstarts">
     <table id="coldstarts1_table">
         <thead>
             <tr>
@@ -167,7 +166,7 @@
     </table>
 </div>
 
-<div id="coldstarts2" class="tabcontent_coldstarts">
+<div id="coldstarts2" class="tabcontent coldstarts">
     <table id="coldstarts2_table">
         <thead>
             <tr>
@@ -335,11 +334,11 @@
 
     function showColdstartTable(evt, tabId) {
         var i, tabcontentColdstarts, tablinksColdstarts;
-        tabcontentColdstarts = document.getElementsByClassName("tabcontent_coldstarts");
+        tabcontentColdstarts = document.getElementsByClassName("tabcontent coldstarts");
         for (i = 0; i < tabcontentColdstarts.length; i++) {
             tabcontentColdstarts[i].style.display = "none";
         }
-        tablinksColdstarts = document.getElementsByClassName("tablinks_coldstarts");
+        tablinksColdstarts = document.getElementsByClassName("tablinks coldstarts");
         for (i = 0; i < tablinksColdstarts.length; i++) {
             tablinksColdstarts[i].className = tablinksColdstarts[i].className.replace(" active", "");
         }

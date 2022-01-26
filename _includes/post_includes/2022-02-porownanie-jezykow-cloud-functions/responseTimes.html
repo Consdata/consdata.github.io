@@ -1,9 +1,9 @@
-<div class="tab">
-    <button class="tablinks_responsetimes" onclick="showResponsetimesTable(event, 'responsetimes1')" id="defaultOpenResponseTimes">Run #1</button>
-    <button class="tablinks_responsetimes" onclick="showResponsetimesTable(event, 'responsetimes2')">Run #2</button>
+<div>
+    <button class="tablinks responsetimes" onclick="showResponsetimesTable(event, 'responsetimes1')" id="defaultOpenResponseTimes">Run #1</button>
+    <button class="tablinks responsetimes" onclick="showResponsetimesTable(event, 'responsetimes2')">Run #2</button>
 </div>
 
-<div id="responsetimes1" class="tabcontent_responsetimes">
+<div id="responsetimes1" class="tabcontent responsetimes">
     <table id="responsetimes1_table">
         <thead>
             <tr>
@@ -232,7 +232,7 @@
     </table>
 </div>
 
-<div id="responsetimes2" class="tabcontent_responsetimes">
+<div id="responsetimes2" class="tabcontent responsetimes">
     <table id="responsetimes2_table">
         <thead>
             <tr>
@@ -466,11 +466,11 @@
 
     function showResponsetimesTable(evt, tabId) {
         var i, tabcontentResponseTimes, tablinksResponseTimes;
-        tabcontentResponseTimes = document.getElementsByClassName("tabcontent_responsetimes");
+        tabcontentResponseTimes = document.getElementsByClassName("tabcontent responsetimes");
         for (i = 0; i < tabcontentResponseTimes.length; i++) {
             tabcontentResponseTimes[i].style.display = "none";
         }
-        tablinksResponseTimes = document.getElementsByClassName("tablinks_responsetimes");
+        tablinksResponseTimes = document.getElementsByClassName("tablinks responsetimes");
         for (i = 0; i < tablinksResponseTimes.length; i++) {
             tablinksResponseTimes[i].className = tablinksResponseTimes[i].className.replace(" active", "");
         }

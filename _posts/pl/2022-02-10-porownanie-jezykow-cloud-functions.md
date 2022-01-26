@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "W jakim języku pisać Google Cloud Functions?"
-date:       2021-10-20 6:00:00 +0100
+title:      "Czy język programowania i region mają wpływ na Google Cloud Functions?"
+date:       2022-01-26 06:00:00 +0100
 published:  true
 didyouknow: false
 lang:       pl
 author:     mhoja
-image:      /assets/img/posts/2021-10-20-porownanie-jezykow-cloud-functions/clouds.jpg
+image:      /assets/img/posts/2022-02-porownanie-jezykow-cloud-functions/clouds.jpg
 tags:
     - google cloud function
     - google cloud platform
@@ -70,47 +70,8 @@ Każdy test uruchomiłem dwa razy, o tej samej godzinie czasu polskiego dla wszy
 
 # Czasy odpowiedzi
 
+<link href="{{ base.url | prepend: site.url }}/assets/css/tabs.css" rel="stylesheet" type="text/css">
 <link href="{{ base.url | prepend: site.url }}/assets/css/simple-datatables.css" rel="stylesheet" type="text/css">
-<style>
-    .dataTable-pagination {
-        display: none;
-    }
-
-    .tab {
-      overflow: hidden;
-      border: 1px solid #ccc;
-      background-color: #f1f1f1;
-    }
-    
-    .tab button {
-      background-color: inherit;
-      float: left;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
-      font-size: 17px;
-    }
-    
-    .tab button:hover {
-      background-color: #ddd;
-    }
-    
-    .tab button.active {
-      background-color: #ccc;
-    }
-    
-    .tabcontent {
-      display: none;
-      animation: fadeEffect 1s;
-    }
-    
-    @keyframes fadeEffect {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-</style>
 <script src="{{ base.url | prepend: site.url }}/assets/js/simple-datatables.js"></script>
 
 ## Godziny uruchomienia testów
@@ -123,7 +84,7 @@ Każdy test uruchomiłem dwa razy, o tej samej godzinie czasu polskiego dla wszy
 
 ## Wyniki
 
-{% include post_includes/2021-10-20-porownanie-jezykow-cloud-functions/responseTimes.html %}
+{% include post_includes/2022-02-porownanie-jezykow-cloud-functions/responseTimes.html %}
 
 ### Regiony
 
@@ -161,7 +122,7 @@ Jakie z tego wnioski? Jeżeli piszemy prostą funkcję i nie zależy nam na wyda
 
 ## Wyniki
 
-{% include post_includes/2021-10-20-porownanie-jezykow-cloud-functions/coldstarts.html %}
+{% include post_includes/2022-02-porownanie-jezykow-cloud-functions/coldstarts.html %}
 
 ### Regiony
 
