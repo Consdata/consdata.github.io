@@ -28,67 +28,66 @@ Zanim jednak przejdę do detali i wszystkich technicznych kwestii związanych ze
 
 ### Oświetlenie
 
-Przygodę ze Smart Home zacząłem od oświetlenia, a inspiracją do zmian były przełączniki w niewygodnych miejscach. 
-Na start wziąłem przedpokój jako idealne miejsce do zastosowania czujnika ruchu. Teraz wystarczy wejść, aby światło z automatu się zapaliło, a zgasiło po około 40 sekundach bez ruchu. 
+Przygodę ze Smart Home zacząłem od oświetlenia, a inspiracją do zmian były przełączniki w niewygodnych miejscach.
+Na start wziąłem przedpokój, jako idealne miejsce do zastosowania czujnika ruchu. Teraz wystarczy wejść, aby światło z automatu się zapaliło i zgasiło po około 40 sekundach bez ruchu. 
 Oczywiście nie „odciąłem” standardowego włącznika na ścianie, a jego użycie zaprogramowałem tak, żeby ręczne włączenie nie brało pod uwagę braku ruchu i było zapalone „na stałe". 
-Moje czujniki ruchu działają na baterie, są bardzo małe, więc można je sprytnie ukryć, nie psując estetyki pomieszczenia. 
-Poniżej przykład czujnika ruchu, który zapala mi światło na przedpokoju (jest nad lewą szafką).
+Moje czujniki ruchu działają na baterie, są bardzo małe, więc można je sprytnie ukryć, zachowując estetykę pomieszczenia.
+Poniżej przykład czujnika ruchu, który zapala światło w przedpokoju. Umieściłem go nad lewą szafką, dzięki czemu jest niewidoczny.
 
 ![Czujnik ruchu umieszczony w szafce](/assets/img/posts/2022-02-05-smarthome/czujnikruchu.jpg){: width="250" }
 
-Doświadczenie z czujnikami ruchu wykorzystałem też w innych miejscach. Dla przykładu jeden z nich włącza taśmę LED pod łóżkiem w sypialni, dając dosyć ciekawy efekt.
+Doświadczenie z czujnikami ruchu wykorzystałem też w innych miejscach. Dla przykładu jeden z nich zapala taśmę LED pod łóżkiem w sypialni, dając ciekawy efekt.
 
-Kolejnym przełącznikiem, którego użycie było dla mnie niewygodne to główne oświetlenie kuchenne. 
-Tak jak wcześniej, standardowy przełącznik na ścianie pozostawiłem, ale dołożyłem drugi „przyklejany” na magnes pod okapem kuchennym. 
-Może nieco mniej smart niż poprzednie rozwiązanie, za to komfort zdecydowanie wzrósł. 
-W kwestii oświetlenia kuchennego mam w planach dołożyć też czujnik, który po kilku minutach bez ruchu zgasi światło nad blatem, ponieważ dosyć często zapominam o jego wyłączeniu.
+Kolejne pomieszczenie, w którym chciałem zadbać o ergonomię związaną z użyciem przełącznika oświetlenia, była kuchnia.
+Tak jak wcześniej, standardowy przełącznik na ścianie pozostawiłem, ale dołożyłem drugi „przyklejany” na magnes pod okapem kuchennym.
+Może nieco mniej smart niż poprzednie rozwiązanie, za to komfort zdecydowanie większy.
+Dosyć często zapominam o wyłączeniu oświetlenia w kuchni, planuję więc dołożyć jeszcze czujnik, który po kilku minutach bez ruchu automatycznie wyłączy światło nad blatem.
 
-Kolejna oświetleniowa automatyzacja warta podzielenia to taka zależna od zachodu słońca (zmiennego w zależności od daty i położenia geograficznego).
-Automatyzacja zapala mi zewnętrzne lampki świąteczne po zachodzie słońca, a wyłącza tuż przed północą.
+Kolejna oświetleniowa automatyzacja, którą warto rozważyć, to taka zależna od zachodu słońca (zmiennego w zależności od daty i położenia geograficznego).
+Automatyzacja „zapala mi” zewnętrzne lampki świąteczne po zachodzie słońca, a wyłącza tuż przed północą.
 
-No i na koniec, z użyciem odpowiedniej automatyzacji bazującej na położeniu telefonów domowników upewniam się,
-że gdy wszyscy są poza domem, wszystkie światła są pogaszone.
+I jeszcze jedna „oświecona” podpowiedź na koniec. Z użyciem odpowiedniej automatyzacji, bazującej na położeniu telefonów domowników, 
+za każdym razem, kiedy wszyscy są poza domem, mam pewność, że wszystkie światła są pogaszone.
 
 ### Ogrzewanie
 
-W tej kwestii ogrzewania też nieco zadziałałem ze Smart Home.
-Rano zaczynam od wpuszczenia świeżego powietrza, wiec otwarcie okna z automatu zakręca mi głowice na kaloryferach, 
-a odkręca po 10 minutach od ich zamknięcia, tak aby temperatura już nieco się unormowała. 
+W moim inteligentnym domu zmieniło się też sporo w kwestii ogrzewania.
+Poranek zawsze zaczyna się od wpuszczenia świeżego powietrza, wiec otwarcie okna z automatu zakręca głowice na kaloryferach,
+a odkręca po 10 minutach od ich zamknięcia w celu unormowania temperatury.
 Podobnie jak w przypadku oświetlenia tak i tutaj, gdy wszyscy domownicy są poza domem, to upewniam się, że grzanie jest zakręcone.
 
 ### Ostrzeżenia / alarmy
 
-Z użyciem Smart Home i wcześniej wspomnianych czujników ruchu możemy stworzyć własny system alarmowy, 
-który pod nieobecność włączy alarm i poinformuje nas odpowiednim komunikatem. 
-To, co przydało mi się już dwa razy to czujniki informujące o wycieku. 
-Pierwszy raz przy zmywarce.
-Okazało się, że na jednym z połączeń jest mała nieszczelność i dopiero pod koniec zmywania pojawiały się pojedyncze kropelki, które czujnik na szczęście wykrył.
-Drugi raz to z jakiegoś powodu pękło mi w niewidoczny sposób połączenie silikonowe między wanną a ścianą, przez co po prysznicu powoli zbierała się woda pod spodem.
+Z użyciem Smart Home i wcześniej wspomnianych czujników ruchu, możemy stworzyć własny system alarmowy,
+który pod nieobecność domowników włączy alarm i przekaże nam odpowiedni komunikat.
+W moim przypadku bardzo przydatne okazały się czujniki informujące o wycieku.
+Przy użytkowaniu zmywarki okazało się, że na jednym z połączeń jest mała nieszczelność i dopiero pod koniec zmywania pojawiały się pojedyncze kropelki, które czujnik na szczęście wykrył.
+Innym razem, w tajemniczy sposób pękło połączenie silikonowe między wanną a ścianą, przez co pod prysznicem powoli zbierała się woda.
 Tak jak w przypadku zmywarki, tak i tutaj były to dosłownie pojedyncze kropelki.
 Do przetarcia wystarczał jeden listek ręcznika papierowego.
 Nie mniej jednak dzięki alarmowi wiedziałem, że coś trzeba poprawić.
 
-### Centrum sterowania
+### Centrum sterowania Smart Home
 
-Mając już urządzenia do Smart Home, całość można spiąć tak, że każdy z telefonów staje się swego rodzaju centrum sterowania domem.
-Zyskujemy też sterowanie głosowe całością.
-Z odpowiednimi urządzeniami wystarczy “Hey Google” lub “Hey Siri” oraz odpowiednia komenda, aby nasz asystent włączył światło, zmienił jego kolor, czy zasłonił okna.
+Mając już zestaw narzędzi do samodzielnego wdrożenia Smart Home (nasze DoItYourself), wszystko możemy spiąć tak, aby nasz telefon stał się „centrum sterowania” inteligentnego domu dla programisty.
+Możemy też korzystać z coraz bardziej popularnego sterowania głosowego.
+Z odpowiednimi urządzeniami wystarczy „Hey Google” lub „Hey Siri” oraz konkretna komenda, aby nasz asystent włączył światło, zmienił jego kolor czy zasłonił okna.
 Poniżej przykład z integracji HomeKit na telefonach wyposażonych w iOS.
 
 ![HomeKit](/assets/img/posts/2022-02-05-smarthome/homekit1.jpg){: width="250" }
 ![HomeKit](/assets/img/posts/2022-02-05-smarthome/homekit2.jpg){: width="250" }
 
-Jeśli ktoś posiada stary telefon/tablet/czytnik kindle z wifi może nadać mu nowe życie.
-Stare urządzenie można umieścić w centralnym miejscu, prezentując aktualny stan temperatury, światła lub tego, co nam inwencja twórcza podpowie.
-Wydaje mi się, że ogranicza nas tylko wyobraźnia. Poniżej też moje przykłady:
+Jeśli ktoś posiada stary telefon, tablet czy czytnik kindle z wifi, może mu nadać nowe życie. Takie nasze programistyczne zero waste ;)
+Stare urządzenie można umieścić w centralnym miejscu, prezentując aktualny stan temperatury, światła lub tego, co nam nasza kreatywność podpowie.
+Wydaje mi się, że ogranicza nas tylko wyobraźnia. Poniżej znowu moje przykłady:
 
 ![HomeAssistant](/assets/img/posts/2022-02-05-smarthome/ha-temperature.png){: width="250" }
 ![HomeAssistant](/assets/img/posts/2022-02-05-smarthome/ha-light.png){: width="250" }
 
-## Co siedzi pod \"maską\"
+## Co siedzi pod „maską”?
 
 Zanim zaczniesz ze Smart Home, przejrzyj dostępne rozwiązania i zwróć uwagę na ich ograniczenia.
-Ja opiszę swoją ścieżkę.
+Wiadomo, że najłatwiej uczyć się na błędach i sukcesach innych, opiszę więc swoją ścieżkę do optymalnego rozwiązania.
 Na starcie wybrałem Xiaomi, bo było dostępnych najwięcej urządzeń w przyzwoitych cenach.
 Dodatkowo miałem już czujnik do kwiatka i żarówkę RGB od tego producenta.
 Kupiłem bramkę Xiaomi Gateway v3 działającą po Zigbee oraz Bluetooth i kilka czujników.
@@ -96,22 +95,23 @@ Niedługo później zaczęły się schody.
 Okazało się, że do sensownego działania bramka potrzebuje stałego dostępu do internetu, komunikuje się z chińskimi serwerami (bo taką wersję kupiłem) i pojawiają się opóźnienia na automatyzacjach.
 
 Wtedy zrobiłem mały krok wstecz i zacząłem szukać rozwiązania, które w pełni będzie działało w sieci lokalnej oraz będzie obsługiwało sensory ZigBee, które już mam.
-Tak trafiłem na HomeAssistant i tzw. uniwersalne bramki Zigbee, do których można podłączyć większość sprzętu i co najlepsze różnych producentów.
+Tak trafiłem na HomeAssistant i tzw. uniwersalne bramki Zigbee, do których można podłączyć większość sprzętu od różnych producentów.
 
 ### Bramka Zigbee
 
 W kwestii bramek uniwersalnych popularnych jest kilka układów. Tym razem, przed zakupem dokładniej prześledziłem opinie użytkowników.
-Po analizie wybór padł na [ZZH](https://electrolama.com/projects/zig-a-zig-ah/) jako najbardziej zachwalane urządzenie.
-Mam to urządzenia od jakichś dwóch lat i jestem zdania, że to był dobry wybór, nigdy nie miałem z nim problemów.
+Po analizie wybór padł na [ZZH](https://electrolama.com/projects/zig-a-zig-ah/). To właśnie to urządzenie miało najlepsze oceny użytkowników i spełniło moje oczekiwania.
+Mam to urządzenia od jakichś dwóch lat i dla mnie to był bardzo dobry wybór. Nigdy nie miałem z nim problemów.
 
-### Komputer
+### Komputer pod automatyzację
 
-Poniżej zacznę opisywać software, który obsługiwać będzie uniwersalną bramkę oraz pozwoli tworzyć nam automatyzację. 
+Skoro mamy już koncepcje i narzędzia dla naszego Smart Home, przyszedł czas na wybór software,
+który będzie obsługiwać uniwersalną bramkę oraz pozwoli nam tworzyć automatyzację.
 Software trzeba na czymś zainstalować, więc trzeba wybrać odpowiedni komputer. Tutaj też miałem małe potknięcie.
 Akurat miałem wolne Raspberry Pi2 i postanowiłem z niego skorzystać, pomimo że producenci poniższego softu na swoich stronach wprost to odradzali.
 Jak się szybko przekonałem, mieli rację.
-Pomijam już problemy techniczne z zasilaniem mojego egzemplarza Raspberry, które po jakimś czasie freez’owało,
-Większą bolączką okazał się ponowny start HomeAssistant'a. Wymagał kilkunastu minut, aby podnieść całe oprogramowanie do Smart Home.
+Pomijam już problemy techniczne z zasilaniem mojego egzemplarza Raspberry, które po jakimś czasie freez’owało...
+Większą bolączką okazał się ponowny start HomeAssistant'a, potrzebujący kilkunastu minut, aby podnieść całe oprogramowanie do Smart Home.
 To było stanowczo za długo, a urządzeń oraz automatyzacji miałem zdecydowanie mniej niż teraz.
 Aktualnie korzystam z wirtualki z 2GB RAM, ale wiem, że Raspberry Pi4 też spokojnie daje radę.
 
@@ -141,7 +141,7 @@ Dodatkowo Smart Home to też ciągle rosnąca liczba urządzeń, która może sp
 Ze swojego doświadczenia mogę powiedzieć, że pomimo bardzo dobrego zasięgu zdarzyło mi się kilka problemów z urządzeniami Wi-Fi.
 Ostatni z problemów, który pamiętam to taki, że przekaźnik Shelly zintegrowany po MQTT przestał być widoczny przez HomeAssistant’a po zaniku zasilania.
 Wymagane było odpowiednie skonfigurowanie i wydaje mi się, że od tamtej pory jest już ok.
-Z urządzeń, które mam działających po Wi-Fi mogę wymienić następujące:
+Poniżej podrzucam listę przykładowych urządzeń działających po Wi-Fi, których używam w swoim Smart Home:
 
 #### Taśma LED Yeelight 
 
@@ -149,7 +149,7 @@ Z urządzeń, które mam działających po Wi-Fi mogę wymienić następujące:
 
 Zalety — ładnie świeci, możliwy wybór koloru, łatwo się przedłuża.
 
-Wady — maksymalna długość taśmy w niektórych przypadkach może okazać się za krótka. 
+Wady — maksymalna długość taśmy w niektórych przypadkach może nie wystarczyć.
 Łączenie kolejnych „kawałków” jest zrobione dosyć dużym wtykiem, w porównaniu do taśm, które lutujemy i może spowodować problem z umieszczeniem całości w aluminiowym profilu na taśmy.
 
 #### Przekaźnik Shelly 2.5
@@ -159,7 +159,7 @@ Wady — maksymalna długość taśmy w niektórych przypadkach może okazać si
 Zalety — duża liczba dostarczanych danych, a także różne sposoby integracji (API lub MQTT).
 Każdy z dwóch kanałów może być osobno konfigurowany pod względem rodzaju podłączonego klawisza (dzwonkowy, stanowy).
 Dla każdego z kanałów mamy też osobny zestaw informacji o aktualnym poborze prądu.
-Możemy skonfigurować stan przekaźnika po powrocie zasilania (dla mnie to ważne, aby pod nieobecność nie okazało się, że całe mieszkanie nagle się świeci).
+Możemy skonfigurować stan przekaźnika po powrocie zasilania (dla mnie to ważne, aby pod nieobecność domowników nie okazało się, że w całym mieszkaniu mamy zapalone światła).
 No i ostatnie — mieści się w puszce, niestety część urządzeń nie przewiduje umieszczania w europejskich okrągłych puszkach.
 
 Wady — komunikacja Wi-Fi i wszystko, co z nią się wiąże.
@@ -172,7 +172,7 @@ Z doświadczenia preferuje Zigbee, tym bardziej że urządzenia Zigbee na stałe
 Mały, tani, ale potężny układ. Na standardowym wyposażeniu używanej przeze mnie wersji „devkit v1” znajduje się Wi-Fi oraz Bluetooth.
 Dzięki popularności układu łatwo można znaleźć projekty obudowy do samodzielnego wydrukowania na drukarce 3D.
 W moim Smart Home pracują dwa rodzaje takich układów:
-- Pierwszy z nich ma na pokładzie [OpenMQTTGateway](https://docs.openmqttgateway.com/). Wykorzystuje go do odczytywania danych z czujników Bluetooth jak czujnik w kwiatku (o czym dalej), czy zegarek z wyświetlaczem eInk.
+- Pierwszy z nich ma na pokładzie [OpenMQTTGateway](https://docs.openmqttgateway.com/). Wykorzystuje go do odczytywania danych z czujników Bluetooth, jak czujnik w kwiatku (o czym dalej) czy zegarek z wyświetlaczem eInk.
 - Drugi z nich ma na pokładzie [EspHome](https://esphome.io/) i podłączony odbiornik oraz nadajnik podczerwieni. Myślę, że podłączone elementy już dobrze reprezentują jego przeznaczenie. 
   W dalszych planach mam też przetłumaczenie sygnałów podczerwieni z indukcji Electrolux Hob2Hood na okap firmy Globalo (sprzęt, jaki posiadam).
   Wyzwanie stanowi brak w okapie opcji „ustaw wentylator na 3" (taki sygnał nada indukcja). Jedynym sposobem osiągnięcia tego stanu jest klikanie w +/-.
@@ -180,18 +180,20 @@ W moim Smart Home pracują dwa rodzaje takich układów:
 
 ### Komunikacja po Bluetooth
 
-To, co można powiedzieć o tym sposobie integracji, że na pewno jego wadą jest mały zasięg. 
-Wcześniej wspomniany układ Esp32 z OpenMQTTGateway może okazać się niezbędnym narzędziem celem zebrania danych z różnych zakątków domu.
-Ciekawostką może być to, że sensory Bluetooth Low Energy, póki są niepołączone z konkretnym urządzeniem, nadają informacje o swoim stanie w eter w taki sposób,
-że odczytać może je każdy. Stąd odbieram dane z zegarka Xiaomi sąsiadów. Z urządzeń Bluetooth mam następujące:
+O tym sposobie integracji z pewnością można powiedzieć, że jego największą wadą jest mały zasięg.
+Wcześniej wspomniany układ Esp32 z OpenMQTTGateway może okazać się niezbędnym narzędziem, celem zebrania danych z różnych zakątków domu.
+Ciekawostką może być to, że sensory Bluetooth Low Energy, póki są niepołączone z konkretnym urządzeniem, nadają informacje o swoim stanie w taki sposób,
+że każdy może je odczytać. Stąd odbieram dane z zegarka Xiaomi sąsiadów...
+
+Urządzenia Bluetooth, z których korzystam:
 
 #### Xiaomi Flora flower monitor
 
 ![Czujnik do roślin](/assets/img/posts/2022-02-05-smarthome/flowermonitor.png){: width="250" }
 
-Zalety — duża liczba danych, zarówno o glebie, jak i otoczeniu. Z danych otoczenia mamy np. temperature oraz jasność.
+Zalety — duża liczba danych, zarówno o glebie, jak i otoczeniu. Z danych otoczenia mamy np. temperaturę oraz jasność.
 
-Wady — to na pewno komunikacja bluetooth i to, co za sobą ciągnie.
+Wady — to na pewno komunikacja bluetooth i to, z czym się wiąże.
 
 #### Zegarek z wyświetlaczem eInk (lywsd02mmc)
 
@@ -249,11 +251,11 @@ Jednak jest dużo mniej intuicyjny od standardowych przycisków i trzeba wiedzie
 #### Czujniki ruchu
 
 W moich automatyzacjach używam jedynie czujników ruchu od Xiami/Aqara.
-Mogę o nich powiedzieć, że są dosyć małe, stąd łatwo wpasować je w estetykę pomieszczenia.
-Z wad to w domyślnej konfiguracji mogą się nie sprawdzić we wszystkich automatyzacjach, ponieważ raportują swój stan co około minutę-półtora.
+Mogę o nich powiedzieć, że są dosyć małe, dlatego łatwo je wpasować je w każde pomieszczenie.
+Mogą się jednak nie sprawdzić w domyślnej konfiguracji, zwłaszcza we wszystkich automatyzacjach, ponieważ raportują swój stan co około minutę-półtora.
 Na szczęście istnieją poradniki, jak można łatwo wprowadzić je w tryb testowy, gdzie będą raportować wykryty ruch co 5 sekund.
-Korzystam z takiego rozwiązania przy czujniku, który zapala mi światło na przedpokoju. Hack działa już od kilku miesięcy, bez widocznego wpływu na baterię.
-W kwestii modyfikacji mogę dodać, że pierwszy czujnik po takiej zmianie podziałał 2 dni, po czym z nieznanych przyczyn przestał.
+Korzystam z takiego rozwiązania przy czujniku, który zapala mi światło w przedpokoju. Hack działa już od kilku miesięcy, bez widocznego wpływu na baterię.
+W kwestii modyfikacji mogę dodać, że pierwszy czujnik po takiej zmianie działał 2 dni, po czym z nieznanych przyczyn przestał.
 Być może przegrzałem go przy lutowaniu, a być może po prostu „nastał jego czas”. Link do modyfikacji: [https://community.smartthings.com/t/making-xiaomi-motion-sensor-a-super-motion-sensor/139806](https://community.smartthings.com/t/making-xiaomi-motion-sensor-a-super-motion-sensor/139806)
 
 ![Czujnik ruchu](/assets/img/posts/2022-02-05-smarthome/motionsensor.png){: width="250" }
@@ -263,20 +265,20 @@ Być może przegrzałem go przy lutowaniu, a być może po prostu „nastał jeg
 
 Podobnie jak w przypadku czujników ruchu, tak i tutaj używam czujników tylko jednego rodzaju. 
 Szukałem jak najmniejszych, żeby nie rzucały się w oczy i po analizie kilku wybór padł na te od Aqara.
-Ciężko powiedzieć o nich coś więcej niż to, że dobrze spełniają swoją funkcję. 
-Zasięg między magnesem a czujnikiem może się wahać, w zależności czy urządzenia skierowane są do siebie frontami, czy bokiem.
-Mam urządzenia umieszczone w obydwu wariantach. odległość między nimi zazwyczaj wynosi około 1 cm i nie zaobserwowałem jeszcze żadnych problemów.
+Ciężko powiedzieć o nich coś więcej niż to, że dobrze spełniają swoją funkcję.
+Zasięg między magnesem a czujnikiem może się wahać, w zależności od tego jak ustawimy urządzenia, skierowane do siebie frontem czy bokiem.
+Mam urządzenia umieszczone w obydwu wariantach. Odległość między nimi zazwyczaj wynosi około 1 cm i nie zaobserwowałem jeszcze żadnych problemów.
 
 ![Głowica termostatyczna](/assets/img/posts/2022-02-05-smarthome/windowsensor.png){: width="250" }
 
 #### Głowice termostatyczne
 
-Temat głowic termostatycznych może być nieco bardziej zawiły, bo dostępnych jest sporo wariantów. 
+Temat głowic termostatycznych może być nieco bardziej zawiły, ponieważ mamy sporo wariantów do wyboru. 
 Ja wybrałem [Moes BRT-100-TRV](https://www.zigbee2mqtt.io/devices/BRT-100-TRV.html). Przy wyborze kierowałem się liczbą wystawianych informacji oraz zapewnieniem producenta, 
 że działają na baterii dłużej niż inne warianty.
 Szczegółowe informacje o wystawianych danych dostępne są na stronach projektu [Zigbee2MQTT](https://www.zigbee2mqtt.io/supported-devices/).
 Jedna z moich głowic raportuje stan baterii 91%, druga 83%. Obydwie działają od listopada, a w momencie sprawdzania tego stanu mieliśmy połowę stycznia.
-W kwestii baterii mogę dodać tylko, że ze względu na różnice w napięciu między bateriami a akumulatorami (1.2V vs 1.5V) konieczne może być używanie zwykłych baterii.
+W kwestii baterii mogę dodać tylko, że ze względu na różnice w napięciu między bateriami a akumulatorami (1.2V vs 1.5V), konieczne może być używanie zwykłych baterii.
 
 ![Głowica termostatyczna](/assets/img/posts/2022-02-05-smarthome/trv.png){: width="250" }
 
@@ -291,14 +293,14 @@ Najstarszy z moich czujników ma już dwa lata, a ciągle raportuje stan baterii
 #### Czujniki temperatury
 
 Jedne z moich pierwszych czujników, a jak wspominałem, zaczynałem z bramką od Xiaomi, stąd wybór też tego producenta.
-Z zalet kwadratowych czujników temperatury Xiaomi mogę wymienić to, że poza temperaturą oraz wilgotnością raportują też ciśnienie atmosferyczne.
+Dużą zaletą kwadratowych czujników temperatury Xiaomi jest to, że poza temperaturą oraz wilgotnością, raportują też ciśnienie atmosferyczne.
 
 ![Czujnik temperatury](/assets/img/posts/2022-02-05-smarthome/temperaturesensor.png){: width="250" }
 
 ## Bezpieczeństwo i prywatność
 
 W mojej ocenie w całej zabawie w Smart Home warto zwrócić uwagę na prywatność oraz bezpieczeństwo.
-Nie wyobrażam sobie trzymać w sieci urządzeń, które zbierają dane i wysyłają je na Azjatyckie, niesprawdzone serwery.
+Nie wyobrażam sobie trzymać w sieci urządzeń, które zbierają dane i wysyłają je na azjatyckie, niesprawdzone serwery.
 W sieci można znaleźć wiele przykładów kamerek, które albo miały słabe zabezpieczenia, albo luki w bezpieczeństwie i pozwalały każdemu na zdalny dostęp.
 Dla mnie podstawowym wymaganiem przy tego typu rozwiązaniach jest praca w sieci lokalnej.
 Wszystkie systemy i narzędzia dla Smart Home w moim domu mają wycięty dostęp do internetu, a pozwalam na niego jedynie przy okresowych aktualizacjach.
