@@ -30,8 +30,8 @@ Zanim jednak przejdę do detali i wszystkich technicznych kwestii związanych ze
 
 Przygodę ze Smart Home zacząłem od oświetlenia, a inspiracją do zmian były przełączniki w niewygodnych miejscach.
 Na start wziąłem przedpokój, jako idealne miejsce do zastosowania czujnika ruchu. Teraz wystarczy wejść, aby światło z automatu się zapaliło i zgasiło po około 40 sekundach bez ruchu. 
-Oczywiście nie „odciąłem” standardowego włącznika na ścianie, a jego użycie zaprogramowałem tak, żeby ręczne włączenie nie brało pod uwagę braku ruchu i było zapalone „na stałe". 
-Moje czujniki ruchu działają na baterie, są bardzo małe, więc można je sprytnie ukryć, zachowując estetykę pomieszczenia.
+Oczywiście nie „odciąłem” standardowego włącznika na ścianie, a jego użycie zaprogramowałem tak, żeby ręczne włączenie nie brało pod uwagę braku ruchu i było zapalone „na stałe".
+Moje czujniki ruchu działają na baterie i są bardzo małe, można więc je sprytnie ukryć, zachowując estetykę pomieszczenia.
 Poniżej przykład czujnika ruchu, który zapala światło w przedpokoju. Umieściłem go nad lewą szafką, dzięki czemu jest niewidoczny.
 
 ![Czujnik ruchu umieszczony w szafce](/assets/img/posts/2022-02-05-smarthome/czujnikruchu.jpg){: width="250" }
