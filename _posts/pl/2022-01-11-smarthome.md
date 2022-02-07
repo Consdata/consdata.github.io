@@ -234,8 +234,8 @@ W moim wypadku jest to taśma LED zasilona z 24V na dwóch końcach (dla równom
 
 #### Przyciski
 
-W przypadku przycisków podobnie jak i w przypadku przekaźników jest w czym przebierać. 
-Szczególnie lubię te najmniejsze, z dwoma przyciskami pochodzące z rodziny IKEA Tradfri. 
+W przypadku przycisków podobnie jak i w przypadku przekaźników jest w czym przebierać.
+Szczególnie lubię te najmniejsze urządzenia z dwoma przyciskami, pochodzące z rodziny IKEA Tradfri. 
 Są dosyć tanie, poza krótkim przyciśnięciem obsługują także te długie, więc możemy wykorzystać je nawet do ściemniania i rozjaśniania.
 W moim przypadku z ich pomocą dołożyłem obsługę głównego oświetlenia kuchennego w bardziej wygodnym miejscu — pod okap.
 Przyciski mają wbudowany magnes, więc nie było problemu z ich przymocowaniem w tym miejscu.
@@ -314,5 +314,5 @@ spinając całość przez chmurę Apple.
 ## To na tyle...
 
 Zabawa w SmartHome nie należy do najtańszych i najłatwiejszych. Mam jednak nadzieję, że lektura tego artykułu nieco przybliży Wam temat inteligentnego domu dla programisty.
-Sami musicie zdecydować, czy chcecie zająć się całością sami czy może skorzystać z pomocy specjalistycznych firm.
+To już Wasza decyzja, czy chcecie zająć się całością sami, czy może skorzystać z pomocy specjalistycznych firm.
 Jeśli zdecydujecie się na wybór jakieś firmy, to ten artykuł nakieruje Was na możliwe opcje, tak aby nie żałować wydanych pieniędzy.
