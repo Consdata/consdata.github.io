@@ -1,6 +1,6 @@
 {% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
 <div class="col-15 post-animation">
-    <div class="col-2-3 {% if include.post.didyouknow %} big-post-tile-did-you-know {% endif %}">
+    <div class="col-2-3 {% if include.post.didyouknow %} big-post-tile-did-you-know {% elsif include.post.afterhours %} big-post-tile-after-hours {% endif %}">
         <a href="{{ include.post.url }}">
             <img class="highlight-image" src="{{include.post.image}}"
                  alt="postimage"/>

@@ -90,24 +90,7 @@
   max-height: 238px;
 }
 
-.post-tile-did-you-know {
-  overflow: hidden;
-  position: relative;
-
-  &:before {
-    display: block;
-    content: "Czy wiesz, że?";
-    width: 100%;
-    position: absolute;
-    height: 43px;
-    font-size: 28px;
-    background-color: $color-logo-red;
-    color: $color-white;
-    text-align: center;
-  }
-}
-
-.post-tile-did-you-know, .big-post-tile-did-you-know {
+.post-tile-band {
   overflow: hidden;
   position: relative;
 
@@ -120,14 +103,26 @@
     height: 30px;
     font-size: 20px;
     font-weight: bold;
-    background-color: $color-logo-red;
-    color: $color-white;
     text-align: center;
   }
 }
 
-.big-post-tile-did-you-know {
+.post-tile-did-you-know, .big-post-tile-did-you-know {
+  @extend .post-tile-band;
+
   &:before {
-    transform: translateX(-45px) translateY(40px) rotate(-45deg);
+    content: "Czy wiesz, że?";
+    background-color: $color-logo-red;
+    color: $color-white;
+  }
+}
+
+.post-tile-after-hours, .big-post-tile-after-hours {
+  @extend .post-tile-band;
+
+  &:before {
+    content: "Po godzinach";
+    background-color: $color-highlight-blue;
+    color: $color-white;
   }
 }
