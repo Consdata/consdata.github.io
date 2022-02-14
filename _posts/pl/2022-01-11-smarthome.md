@@ -1,11 +1,12 @@
 ---
-layout:    post
-title:     "Inteligentny dom dla programisty, czyli DIY Smart Home"
-date:      2022-02-05 08:00:00 +0100
-published: true
-lang:      pl
-author:    aswarcewicz
-image:     /assets/img/posts/2022-02-05-smarthome/smarthome.jpg
+layout:     post
+title:      "Inteligentny dom dla programisty, czyli DIY Smart Home"
+date:       2022-02-15 08:00:00 +0100
+published:  true
+lang:       pl
+author:     aswarcewicz
+image:      /assets/img/posts/2022-02-05-smarthome/smarthome.jpg
+afterhours: true
 tags:
     - smarthome
     - homeassistant
