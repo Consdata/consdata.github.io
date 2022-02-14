@@ -26,9 +26,8 @@ comments: true
         <div itemprop="articleBody" class="post-content-container">
             <div class="post-content-left-pane">
                 <div class="post-content">
-                    <div class="{% if post.didyouknow %} big-post-tile-did-you-know {% endif %} post-highlight-image">
-                        <img src="{{post.image}}"
-                             alt="postimage"/>
+                    <div class="{% if post.didyouknow %} big-post-tile-did-you-know {% elsif post.afterhours %} big-post-tile-after-hours {% endif %} post-highlight-image">
+                        <img src="{{post.image}}" alt="postimage"/>
                     </div>
                     <div class="social-media-sharing">
                         {% include share_bar.html %}
@@ -44,6 +43,9 @@ comments: true
                     {% endif %}
                     {% if post.didyouknow %}
                     {% include did-you-know-box.html %}
+                    {% endif %}
+                    {% if post.afterhours %}
+                    {% include after-hours-box.html %}
                     {% endif %}
                 </div>
             </div>
