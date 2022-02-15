@@ -65,7 +65,7 @@ Testy zimnych startów zostały wykonane z zapewnieniem braku istnienia aktywnej
 
 Każdy test uruchomiłem dwa razy, o tej samej godzinie czasu polskiego dla wszystkich regionów oraz o tej samej godzinie czasu lokalnego w danym regionie. Wszystkie żądania były wykonywane z mojej stacji roboczej w Poznaniu.
 
-Przyjąłem nazewnictwo *język interpretowany* dla języków skryptowych oraz kompilowanych (nie korzystających z maszyny wirtualnej) oraz *język uruchamiany w maszynie wirtualnej* dla języków kompilowanych i uruchamianych w maszynie wirtualnej.
+Przyjąłem nazewnictwo *język interpretowany* dla języków skryptowych i kompilowanych (nie korzystających z maszyny wirtualnej) oraz *język uruchamiany w maszynie wirtualnej* dla języków kompilowanych i uruchamianych w maszynie wirtualnej.
 
 # Czasy odpowiedzi
 
