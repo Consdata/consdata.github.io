@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Czy język programowania i region mają wpływ na wydajność Google Cloud Functions?"
-date:       2022-02-14 06:00:00 +0100
+date:       2022-02-21 06:00:00 +0100
 published:  true
 didyouknow: false
 lang:       pl
