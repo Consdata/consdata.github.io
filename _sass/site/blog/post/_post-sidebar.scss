@@ -48,7 +48,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
   box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: $color-logo-red;
 }
 
 .ad-icons-container {
@@ -70,24 +70,28 @@
   font-size: 24px;
   font-weight: bold;
   text-align: center;
-  color: $color-dark-gray;
+  color: $color-white;
   line-height: 1.2em;
 }
 
-.ad-red-text {
-  color: $color-logo-red-dark;
+.ad-date {
+  color: $color-white;
   font-weight: bold;
   font-size: 1.1em;
   text-align: center;
   margin-bottom: $small-padding;
 }
 
+.ad-text {
+  @extend .ad-date;
+  margin-bottom: $small-padding;
+}
+
 .ad-event-title {
-  color: $color-dark-gray;
+  color: $color-white;
   font-size: 1.2em;
   font-weight: bold;
   text-align: center;
-  margin-bottom: $small-padding;
 }
 
 .event-icon {
@@ -96,7 +100,7 @@
 }
 
 .fa-meetup {
-  color: #ed1c40;
+  color: $color-white;
 }
 
 .clickable-offer {
