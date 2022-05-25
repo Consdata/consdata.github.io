@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?"
-date:      2022-05-24 08:00:00 +0100
+date:      2022-05-25 08:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
