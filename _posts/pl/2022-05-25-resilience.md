@@ -5,7 +5,7 @@ date:      2022-05-24 08:00:00 +0100
 published: true
 didyouknow: true
 lang: pl
-author:    rmastalerek
+author:    pstachowiak
 image:     /assets/img/posts/2022-05-25-resilience/resilience.jpg
 tags:
 - Resilience4j
