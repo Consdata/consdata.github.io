@@ -16,7 +16,7 @@ description: "Jeśli zastanawialiście się, jak rozpocząć testy komponentów 
 2 tygodnie temu [Marcin Mendlik pisał o konfiguracji Karmy i Jasmine w projekcie]({% post_url pl/2019-11-06-testowanie-frontendu-wprowadzenie-do-jasmine %}).
 Dziś będzie o tym, jak rozpocząć testy komponentów i serwisu.
 
-# Wprowadzenie do testowania
+## Wprowadzenie do testowania
 [Projekt dostępny jest tutaj](https://github.com/krzysztof83/Angular-testing-services-and-component).
 Zaczniemy od *AnimalsComponent* - komponent prezentuje listę zwierząt:
 

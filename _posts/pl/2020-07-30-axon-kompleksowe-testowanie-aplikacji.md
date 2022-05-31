@@ -22,7 +22,7 @@ Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny 
 Niniejszy artykuł jest poświęcony w pełni temu tematowi.
 Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona. 
 
-# Testy domenowe
+## Testy domenowe
 Zacznijmy od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
 W Axonie jest to ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
 Zaleta tych testów jest taka, że nie podnoszą one żadnego kontekstu, a więc wykonują się bardzo szybko.
@@ -182,7 +182,7 @@ public class MovieSagaTest {
 
 Jak widać zastosowanie fixture również w przypadku sagi, okazuje się proste i intuicyjne.
 
-# Testy integracyjne - możliwe z Axonem?
+## Testy integracyjne - możliwe z Axonem?
 Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), można zabrać się za weryfikację trochę większego fragmentu aplikacji.
 
 ## Konfiguracja
@@ -332,7 +332,7 @@ public class TrailersIntegrationTest extends CommonIntegrationSetup {
 
 Skorzystałem z [**awaitility**](https://github.com/awaitility/awaitility), żeby poczekać chwilę na odpowiedź w razie małej czkawki.  
 
-# Testy E2E
+## Testy E2E
 Na samym szczycie piramidy testów są testy end-to-end, czyli sprawdzenie aplikacji w ten sposób, w jaki klient z niej korzysta.
 W moim przypadku klientem jest aplikacja frontendowa, która uderzając na konkretny endpoint, oczekuje konkretnej odpowiedzi.
 Przetestujmy wyszukanie filmu po tytule.
@@ -383,9 +383,9 @@ public class MovieE2ETest {
 W tym podejściu również wykorzystałem kontenery testowe, tak samo, jak przy testach integracyjnych, konfiguracja jest identyczna.
 Nie chcę uzależniać żadnych testów od połączenia z zewnętrznym serwisem, więc i w tym przypadku posłużyłem się mockiem, symulującym działanie proxy-service.
 
-# Podsumowanie
+## Podsumowanie
 Jak widać korzystanie z Axonowych **fixture** bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również istnieją rozwiązania.
 Uruchamianie takich testów można w łatwy sposób zautomatyzować, np. używając Travisa, dzięki czemu będziemy znali na bieżąco stan naszej aplikacji.
 
-# Źródła
+## Źródła
 - <https://github.com/matty-matt/movie-keeper-core>

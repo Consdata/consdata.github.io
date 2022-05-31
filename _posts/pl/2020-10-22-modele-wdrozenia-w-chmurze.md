@@ -22,7 +22,7 @@ Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak 
 
 Czym właściwie jest chmura? W uproszczeniu możemy powiedzieć, że to dowolna usługa (lub zestaw usług), która dostarcza mechanizmy automatycznego tworzenia zasobów na żądanie i rozliczania ich zgodnie z faktycznym ich wykorzystaniem ([The NIST Definition of Cloud Computing](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf)). Sama definicja jest rozległa i możemy pod nią umieścić wiele skrajnie różnych rozwiązań. W kolejnych akapitach przyjrzymy się krótkiej charakterystyce podejść oferowanych przez wiodących dostawców chmur publicznych.
 
-# On-premises - własna infrastruktura
+## On-premises - własna infrastruktura
 
 Zanim omówimy podejścia do migracji w chmurze, określmy zgrubnie punkt wyjścia, do którego będziemy odnosić kolejne modele wdrożeniowe:
 
@@ -30,7 +30,7 @@ Zanim omówimy podejścia do migracji w chmurze, określmy zgrubnie punkt wyjśc
 
 Powyższy diagram przedstawia uproszczony model elementów, za które jesteś odpowiedzialny wdrażając system we własnej serwerowni.
 
-# IaaS - Infrastructure as a service
+## IaaS - Infrastructure as a service
 
 Dostawca chmury przejmuje odpowiedzialność za fizyczny sprzęt potrzebny do uruchomienia infrastruktury. Użytkownik zarządza systemem na poziomie konkretnych maszyn wirtualnych.
 
@@ -56,7 +56,7 @@ W przypadku migracji systemu do modelu IaaS mówimy o podejściu rehosting i jes
 
 Model IaaS może być prostym pierwszym krokiem, który pozwoli szybko wskoczyć do publicznej chmury i otworzyć możliwości szerszej integracji z systemami dostawcy i przyrostowych zmian we wdrażanym systemie (ewolucja przez refaktoring, podmiana pojedynczych elementów czy integracja z konkretnymi usługami zamiast długotrwałego przepisywania całego systemu od podstaw).
 
-# CaaS - Container as a service
+## CaaS - Container as a service
 
 Dostawca chmury przejmuje odpowiedzialność za utrzymanie maszyn wirtualnych obsługujących infrastrukturę. Użytkownik zarządza systemem na poziomie kontenerów aplikacji.
 
@@ -81,7 +81,7 @@ W przypadku modelu CaaS możemy już mówić o strategii migracji typu refactori
 
 Model CaaS pozwala w praktyce wdrożyć wiele rozwiązań kojarzonych z publicznymi chmurami obliczeniowymi - skalowanie, niezawodność, szybkość zmian. Dla wielu będzie to docelowy model wdrożenia w chmurze, optymalnie łączący koszt i zakres zmian z natychmiastowymi zyskami i możliwościami dalszego rozwoju. Ewolucyjna natura podejścia, możliwość migracji do innego dostawcy czy nawet powrót do wdrożeń _on-premises_ będą przemawiać za modelem CaaS.
 
-# PaaS - Platform as a service
+## PaaS - Platform as a service
 
 Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie aplikacji. Użytkownik zarządza systemem na poziomie pojedynczych aplikacji.
 
@@ -106,7 +106,7 @@ W przypadku migracji systemu w modelu PaaS możemy wpaść w jedną z dwóch śc
 
 Model sprawdzi się dobrze w aplikacjach webowych i serwerach usług HTTP - wszędzie tam, gdzie przejście na model FaaS nie jest możliwe ze względu na jego ograniczenia.
 
-# FaaS - Function as a service
+## FaaS - Function as a service
 
 Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie pojedynczych funkcji. Użytkownik zarządza systemem na poziomie kodu źródłowego konkretnych funkcji.
 
@@ -141,7 +141,7 @@ FaaS najlepiej sprawdza się w przetwarzaniu opartym o zdarzenia. Zastosowanie f
 
 Niskie koszty utrzymania infrastruktury, wysokie tempo wprowadzania zmian i wzorowe możliwości skalowania pozwolą Twojemu produktowi zyskać przewagę nad konkurencją.
 
-# Migracja a rozwój
+## Migracja a rozwój
 
 Przytaczane do tej pory koszty związane z migracją zakładały dostosowanie i wdrożenie działających systemów. Przy ich ocenie zakładałem, że zespół nie posiada wiedzy i doświadczenia w tworzeniu aplikacji w chmurze. W takiej sytuacji koszt szkoleń, prób i błędów oraz faktycznego wdrożenia rośnie wraz ze wzrostem "chmurowości" rozwiązania.
 
@@ -151,7 +151,7 @@ Sytuacja będzie wyglądać zupełnie inaczej dla zespołu tworzącego i utrzymu
 - przeniesienie ciężaru na rozwój funkcjonalny aplikacji,
 - dostępność gotowych do integracji z systemem usług w modelu SaaS
 
-# Vendor lock-in
+## Vendor lock-in
 
 Planując migrację do chmury musisz zmierzyć się z tematem uzależnienia kodu od konkretnego dostawcy.
 
@@ -165,7 +165,7 @@ Warto zauważyć, że problem _vendor lock-in_, jako poważne ryzyko migracji do
 
 Szacując koszty wyjścia z chmury powinieneś rozważyć również utracone zyski wynikające z obaw przed _vendor lock-in_. Obawa przed uzależnieniem może doprowadzić do zwiększenia złożoności systemu, zwiększenia kosztu produkcji i utrzymania systemu, utraty funkcjonalności dających przewagę, itp. Czy ew. koszt wyjścia z chmury będzie większy niż oszczędności wynikające z jej wykorzystania? W przypadku dużego prawdopodobieństwa lub wysokiego kosztu wyjścia z chmury warto rozważyć ograniczenie migracji do modelu CaaS.
 
-# On-prem, IaaS, CaaS, PaaS, FaaS
+## On-prem, IaaS, CaaS, PaaS, FaaS
 
 Mając już w głowie argumentacje i przykłady wszystkich podejść, możemy nakreślić podsumowanie odpowiedzialności w różnych modelach.
 
@@ -173,7 +173,7 @@ Mając już w głowie argumentacje i przykłady wszystkich podejść, możemy na
 
 Im bardziej zaadaptujemy rozwiązania chmurowe, tym więcej odpowiedzialności przerzucimy na stronę dostawcy.
 
-# Dojrzałość chmurowa
+## Dojrzałość chmurowa
 
 Znając system możemy pokusić się o ocenę jego dojrzałości chmurowej. Z jednej strony mamy klasyczne rozwiązania _on-premises_, a z drugiej rozwiązania w pełni serverless. Podsumowując wady i zalety opisywanych do tej pory podejść naszkicujmy prosty diagram szans i ryzyk zależny od stopnia migracji do chmury:
 
@@ -181,7 +181,7 @@ Znając system możemy pokusić się o ocenę jego dojrzałości chmurowej. Z je
 
 Im bardziej zbliżymy się do podejść serverless, tym więcej korzyści osiągniemy z migracji. Należy jednak zwrócić uwagę, że im dalej się przesuwamy, tym droższa będzie migracja oraz wzrośnie ryzyko uzależnienia się od konkretnego dostawcy.
 
-# Cele migracji
+## Cele migracji
 
 Podsumowując, zanim wybierzesz odpowiedni kierunek migracji do chmury, powinieneś zidentyfikować kluczowe problemy, które starasz się rozwiązać. Na ich podstawie możesz ustalić cele i ograniczenia, które pomogą Ci wybrać odpowiednią strategię dla Twojego systemu.
 
@@ -197,7 +197,7 @@ Rzućmy okiem na kilka przykładowych celów. Pokażę Ci, jakie decyzje mógłb
 
 Potraktuj przykładowe cele jako inspiracje i przygotuj własną listę oczekiwań i driverów migracji do chmury. Znając problemy i oczekiwania, skuteczniej ocenisz potencjalne zyski i sensowność wybranego podejścia.
 
-# Co wybrać?
+## Co wybrać?
 
 To co ostatecznie wybrać? Wszystko po trochu!
 

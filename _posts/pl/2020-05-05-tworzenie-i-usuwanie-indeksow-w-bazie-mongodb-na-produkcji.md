@@ -26,7 +26,7 @@ Aby cała operacja odbyła się bez problemów, powinniśmy wykonać ją w nast�
 - aktualizacja części biznesowej systemu;
 - usunięcie starego indeksu, o ile nie jest już używany.
 
-# Tworzenie indeksu w MongoDB w sposób _rolling_
+## Tworzenie indeksu w MongoDB w sposób _rolling_
 
 Tworzenie indeksu w sposób _rolling_ dotyczy tylko i wyłącznie bazy z redundacją danych w klastrze. Ta metoda pozwala na tworzenie nieunikalnych indeksów. Przeprowadzana jest dla każdego węzła w klastrze:
 - węzeł jest odłączany od klastra i uruchamiany w trybie standalone;
@@ -73,18 +73,18 @@ Informacje o klastrze są zwracane przez polecenia:
 - `rs.status()` - zwraca status klastra względem węzła, na którym polecenie zostało uruchomione;
 - `rs.printSlaveReplicationInfo()` - zwraca informacje o węzłach secondary łącznie z opóźnieniem względem węzła primary.
 
-# Usuwanie indeksu
+## Usuwanie indeksu
 
 Procedura usunięcia indeksu zależy od wersji MongoDB. Od wersji 4.2 wystarczy usunąć indeks na węźle primary. Całą resztą, czyli usunięciem indeksu z węzłów secondary, zajmie się baza. Jeżeli pracujemy z wcześniejszą wersją, to indeks należy usunąć podobnie jak tworzymy indeks w sposób rolling. Jedyną różnicą jest to, że indeks usuwamy, a nie tworzymy.
 
 W jednym i drugim przypadku musimy jednak się upewnić, że żadne zapytanie nie korzysta z danego indeksu. Inaczej zapytanie zakończy się błędem.
 
-# Zarządzanie indeksami a automatyzacja
+## Zarządzanie indeksami a automatyzacja
 
 Zazwyczaj chcemy ułatwić sobie życie i wiele rzeczy automatyzujemy. Można również się pokusić o automatyczne usuwanie i tworzenie indeksów podczas wdrażania kolejnej wersji systemu. Doświadczenie pokazuje, że można pochopnie umieścić w skryptach dwa polecenia usunięcia i stworzenia indeksu na węźle primary. Najprawdopodobniej skończy się to poważnym błędem i jeżeli operację przeprowadzamy na produkcji, to produkcja będzie niedostępna do czasu naprawy. Czas przestoju będzie znaczący, jeżeli kolekcja będzie znaczących rozmiarów.
 
 Zmiany w indeksach powinniśmy przeprowadzać manualnie z planem działania w ręku.
 
-# Podsumowanie
+## Podsumowanie
 
 MongoDB jest dokumentową bazą danych oferującą bogatą funkcjonalność i jednocześnie na tyle elastyczną, że pozwala przeprowadzać zadania administracyjne bez przerwy w działaniu. To się tyczy również tworzenia oraz usuwania indeksów, co nie jest operacją trudną.
