@@ -26,7 +26,7 @@ Swoją wiedzę opierać będę na doświadczeniach z chmurą Google ([Google Clo
 
 ![Etapy migracji do chmury](/assets/img/posts/2020-11-03-proces-migracji-do-chmury/etapy_migracji.jpg)
 
-# Szacowanie
+## Szacowanie
 
 Pierwszym z etapów migracji do chmury jest etap szacowania, na którym przeprowadzona zostaje dokładna analiza istniejącego systemu oraz infrastruktury.
 Podczas szacowania analizujemy wykorzystywane zasoby, zależności pomiędzy elementami systemu oraz wymagania.
@@ -74,7 +74,7 @@ W wyniku takiej analizy może okazać się, że niektóre elementy nie mogą zos
 - obostrzenia wynikające z licencji,
 - zbyt duże ryzyko lub brak opłacalności migracji.
 
-# Planowanie
+## Planowanie
 
 Drugim z etapów migracji do chmury jest etap planowania, na którym powstaje podstawowa infrastruktura w chmurze oraz planowane jest przeniesienie systemu.
 Planowanie obejmuje takie elementy jak zarządzanie tożsamością, struktura i organizacja projektu w GCP, infrastruktura sieci oraz komunikacja pomiędzy elementami systemu.
@@ -179,7 +179,7 @@ Taka zmiana pozwoli wykorzystać natywne rozwiązania chmury, które zapewnią s
 - wysoki koszt i czasochłonność migracji,
 - uzależnianie się od operatora chmury ([vendor lock-in]({% post_url pl/2020-10-22-modele-wdrozenia-w-chmurze %})).
 
-# Wdrażanie
+## Wdrażanie
 
 Trzecim z etapów migracji do chmury jest etap wdrażania, na którym projektujemy, implementuje oraz wdrażamy system docelowy w chmurze.
 Część elementów systemu może zostać przeniesiona bez większych zmian, inne zaś wymagać mogą gruntownej refaktoryzacji lub zastąpienia innym rozwiązaniem (np. usługami SaaS).
@@ -203,7 +203,7 @@ W przypadku migracji maszyn wirtualnych (VMware vSphere, Amazon AWS, Microsoft A
 
 Efektem etapu wdrażania jest gotowy i działający system w architekturze chmurowej. Skonfigurowane są takie elementy jak sieć, uprawnienia, skalowanie czy monitoring aplikacji.
 
-# Optymalizacja
+## Optymalizacja
 
 Ostatnim i czwartym z etapów migracji do chmury jest etap optymalizacji, na którym monitoruje się działający system w celu optymalizacji jego działania.
 Podczas optymalizacji wykonujemy testy wydajnościowe, które możemy porównać z testami systemu źródłowego oraz konfigurujemy wykorzystywane usługi i zasoby tak, aby system działał stabilnie, bezawaryjnie oraz wydajnie.
@@ -223,7 +223,7 @@ Proces optymalizacji nie ma swojego końca, ponieważ działający system może 
 użytkowników. Powinniśmy stale analizować miesięczne koszty utrzymania, trendy i produkty, które są wykorzystywane najczęściej.
 Dzięki temu można zmniejszać koszty, na przykład podpisując umowy na korzystanie z [Compute Engine](https://cloud.google.com/compute) ([committed use discounts](https://cloud.google.com/compute/docs/instances/signing-up-committed-use-discounts)), czy zmieniając model płatności za usługę BigQuery na [flat-rate](https://cloud.google.com/bigquery/pricing#flat_rate_pricing).
 
-# Migracja do chmury - podsumowanie
+## Migracja do chmury - podsumowanie
 
 Na koniec chciałbym zaznaczyć, że opisane tutaj strategie migracji mogą być różnie opisywane w literaturze.
 Możemy spotkać się z artykułami opisującymi 4 czy 6 strategii, np.  

@@ -21,7 +21,7 @@ przedstawiłem etapy procesu migracji aplikacji do chmury, a także opisałem po
 
 W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.
 
-# Słowem wstępu
+## Słowem wstępu
 
 **Kody źródłowe aplikacji demo są dostępne na GitHubie:**
 
@@ -31,7 +31,7 @@ W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w
 Dla przypomnienia, 4 etapy procesu migracji do chmury, opisane w poprzednim wpisie:
 ![Etapy migracji do chmury](/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/etapy_migracji.jpg)
 
-# Szacowanie
+## Szacowanie
 
 Na etapie szacowania powinniśmy dokonać analizy istniejącego systemu/infrastruktury. Na potrzeby wpisu przygotowałem aplikację demo, która nie jest uruchomiona produkcyjnie, stąd trudno byłoby oszacować wykorzystywane zasoby. Nie chcąc wróżyć z fusów, na etapie szacowania przedstawię jedynie architekturę aplikacji oraz jej działanie.
 
@@ -52,7 +52,7 @@ Infrastruktura systemu źródłowego może być oparta o maszyny fizyczne, wirtu
 
 Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przejdźmy do kolejnego etapu migracji.
 
-# Planowanie
+## Planowanie
 
 Planując architekturę systemu w chmurze, pierwszą czynnością, jaką należy wykonać, jest wybór strategii migracji. Od niej zależeć będzie to, jak będzie wyglądał system docelowy oraz jakie narzędzia i usługi zostaną wykorzystane.
 
@@ -120,7 +120,7 @@ Pojawienie się wiadomości w Cloud Pub/Sub triggerować będzie wywołanie funk
 
 Odpowiednikiem bazy MongoDB jest usługa Cloud Firestore. Umożliwia ona zapis i odczyt za pomocą REST API, dzięki czemu odczyt może być wykonywany w samej aplikacji frontendowej, bez udziału aplikacji backendowej (nie jest potrzebny sterownik do bazy danych). To upraszcza jeszcze bardziej architekturę systemu docelowego.
 
-# Wdrażanie
+## Wdrażanie
 
 Wszystkie elementy zostaną wdrożone ręcznie, za pomocą [Cloud CLI](https://cloud.google.com/sdk) (które umożliwia wykonywanie poleceń GCP w lokalnym terminalu) oraz Cloud Console.
 
@@ -479,7 +479,7 @@ Aby umożliwić komunikację z usługami (zapis danych do usługi Cloud Pub/Sub 
 
 W celach demonstracyjnych, możemy wykorzystać nasze konto, które posiada uprawnienie właściciela projektu. Gdybyśmy chcieli umożliwić korzystanie z systemu innym użytkownikom, powinniśmy utworzyć odpowiednią rolę, posiadającą wymagane uprawnienia oraz nadać tę rolę każdemu użytkownikowi. Jest wiele sposobów na zarządzanie użytkownikami w Google Cloud. Można zaimportować ich z pliku CSV, utworzyć ręcznie, wykorzystać rozwiązania zewnętrzne takie jak [Okta](https://www.okta.com/) czy [Ping](https://www.pingidentity.com/) lub skorzystać z zalecanego rozwiązania, czyli narzędzia [Google Cloud Directory Sync](https://seqred.pl/google-cloud-directory-sync-gcds-do-czego-sluzy-jak-skonfigurowac/).
 
-# Optymalizacja
+## Optymalizacja
 
 Etap optymalizacji polega na monitorowaniu aplikacji w poszukiwaniu błędów, optymalizacji wydajności oraz wykonywaniu zmian, na które nie było czasu lub budżetu przed wdrożeniem.
 
@@ -880,7 +880,7 @@ W przedstawionym rozwiązaniu, kody aplikacji przechowywane są w repozytorium G
 
 Zaletą IaC, oprócz automatyzacji tworzenia infrastruktury, jest również wersjonowanie. Każda zmiana infrastruktury wiąże się ze zmianą kodu Terraform i może wymagać np. pull requesta, lub napisania testów, sprawdzających poprawność konfiguracji. Dzięki temu, proces wdrażania infrastruktury jest powtarzalny oraz bardziej odporny na błędy, niż ręczne tworzenie zasobów z poziomu GUI, czy konsoli.
 
-# Migracja do chmury - podsumowanie
+## Migracja do chmury - podsumowanie
 
 Opisany przeze mnie proces migracji do chmury Google Cloud Platform, jest jedynie przykładem, zawierającym minimalną ilość wiedzy, potrzebnej do rozpoczęcia przygody z chmurą Google. Nie powinniśmy podejmować się takiego procesu nie posiadajac wcześniej wiedzy na temat usług GCP, ponieważ w najgorszym wypadku, może się to skończyć bardzo wysokimi rachunkami.
 

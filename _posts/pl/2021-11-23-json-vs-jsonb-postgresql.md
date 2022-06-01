@@ -11,7 +11,7 @@ tags:
 - PostgreSQL
 ---
 
-# Podstawowe różnice
+## Podstawowe różnice
 
 Podstawową różnicą pomiędzy json a jsonb jest sposób ich przechowywania. Typ json jest przechowywany jako tekst, natomiast typ jsonb w postaci binarnej. Typ, na jaki się zdecydujemy, json czy jsonb, ma wpływ na kilka czynników:
 
@@ -36,7 +36,7 @@ SELECT '{"c":0, "a":2,"a":1}'::json, '{"c":0, "a":2,"a":1}'::jsonb;
 * Jsonb przechowuje obiekty w postaci binarnej, natomiast json przechowuje dane jako tekst.
 * Jsonb pozwala zakładać indexy na kluczach.
 
-# Operatory wspierane tylko przez jsonb
+## Operatory wspierane tylko przez jsonb
 W celu zobrazowania dodatkowych operatorów dla typu jsonb, zacznijmy od utworzenia prostej tabeli, którą wykorzystamy w przykładach
 
 ```sql
@@ -85,7 +85,7 @@ Poza tym typ jsonb wspiera kilka operatorów, które pozwalają na skuteczną mo
 * `- ` - Pozwala na usunięcie pary klucz-wartość lub też określonego elementu z tablicy, przykładowo '["a", "b"]'::jsonb - 1. Zwróci to tablicę zawierającą wyłącznie element "a".
 * `#-` - Pozwala na usunięcie pola lub elementu znajdującego się pod określoną ścieżką.
 
-# Kiedy stosować typ json, a kiedy jsonb?
+## Kiedy stosować typ json, a kiedy jsonb?
 Jeżeli potrzebujemy jedynie zapisywać i odczytywać dane w formacie json i dalsze operacje na tych danych nie będą konieczne, to możemy zastosować typ json.
 
 Kiedy jednak wykonujemy wiele operacji na jsonie albo potrzebujemy indexu na kluczu, wtedy lepszym wyborem będzie zastosowanie typu jsonb.

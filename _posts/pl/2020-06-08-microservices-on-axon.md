@@ -22,13 +22,13 @@ Alternatywą będzie zatem skorzystanie z gotowego frameworku, który od począt
 
 W tym wpisie przedstawię Axona i omówię wybory, przed którymi stałem w kontekście tego frameworka, oraz drogę migracji z monolitu do mikroserwisów wraz z problemami, na które się natknąłem.
 
-# Krótko o Axonie
+## Krótko o Axonie
 Axon to framework, który czerpie garściami z Domain Driven Design (które jest poza zakresem tego wpisu), wykorzystując również nomenklaturę panującą w tym podejściu, którą także będę się posługiwał w tym wpisie.
 Axon bierze na barki zarządzanie przepływem wszystkich informacji między komponentami np. kierowanie commandów do odpowiednich agregatów, czy zapisywanie eventów w event store. 
 Jeżeli chodzi o kwestie event store'a, to framework zostawia tu pełną dowolność, choć nie każda baza spełni się w tej roli.
 Dodatkowym plusem jest bezproblemowa integracja ze Spring Bootem, możliwość skalowania i gotowość produkcyjna, co moim zdaniem czyni Axona mocnym graczem.
 
-# Event store
+## Event store
 Fundamentem projektu opartego o Event Sourcing jest oczywiście event store - źródło prawdy całego systemu, stąd wybór narzędzia pod tę funkcję jest kluczowy.
 
 ### Może Kafka?
@@ -62,7 +62,7 @@ Na samym dashboardzie, funkcjonalności panelu administracyjnego się nie kończ
 
 Oczywiście AxonFramework jest w pełni kompatybilny z AxonServerem i działa out-of-the-box, bez dodatkowej konfiguracji.
 
-# Najpierw monolit
+## Najpierw monolit
 Zaczynając przygodę z Axonem, nie chciałem skakać na głęboką wodę, zacząłem więc od monolitu, mając jednak z tyłu głowy perspektywę zmigrowania na coś bardziej skalowalnego.
 Migracja z monolitu na mikroserwisy nierzadko sprawia wiele problemów, tak było również w moim przypadku z [**tą aplikacją**](https://github.com/matty-matt/movie-keeper-core).
 W skrócie pozwala ona na wyszukiwanie filmów po tytułach, wraz z ich obsadą oraz trailerami korzystając z [**API TMDb**](https://developers.themoviedb.org/3/getting-started), zapisywanie wszystkiego w bazie, oznaczanie filmu jako przeczytany oraz sprawdzanie premiery cyfrowego wydania.
@@ -113,7 +113,7 @@ Projekt w tym momencie spełniał moje wymagania i składał się z trzech eleme
  
 Uwidoczniły się poszczególne funkcjonalności, które mogłyby być odrębnymi serwisami - mowa tu o zarządzaniu: filmami, trailerami, obsadą oraz serwis odpowiedzialny za odświeżanie dat cyfrowej premiery wraz z ocenami i liczbą głosów.
 
-# Mikroserwisy
+## Mikroserwisy
 Przyszła pora na przekucie teorii w praktykę wykorzystując wypracowany wcześniej podział odpowiedzialności.
 Aplikacja podzielona na mniejsze fragmenty (realizujące skończone funkcjonalności) wyglądałaby w ten sposób:
 - proxy-service, odpowiedzialny za pobieranie danych z zewnętrznego serwisu.
@@ -198,13 +198,13 @@ public class TrailerAggregate {
 }
 ```
 
-# Podsumowanie
+## Podsumowanie
 Przejście na architekturę mikroserwisów niewątpliwie daje wiele korzyści, jednak bez wyklarowanego dobrego podziału jest to mocno utrudnione.
 Axon sam w sobie sprzyja tej architekturze, a korzystając z gotowych narzędzi, można taką migrację przeprowadzić w relatywnie krótkim czasie.
 
 Cały kod znajduje się w moim repozytorium [**tutaj**](https://github.com/matty-matt/movie-keeper-core).
 
-# Źródła
+## Źródła
 - <https://github.com/matty-matt/movie-keeper-core>
 - <https://axoniq.io/>
 - <https://youtu.be/zUSWsJteRfw?t=2179>

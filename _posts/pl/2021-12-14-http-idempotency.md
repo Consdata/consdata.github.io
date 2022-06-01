@@ -15,7 +15,7 @@ tags:
 Właściwość pewnych operacji, która umożliwia ich wielokrotne stosowanie bez zmiany wyniku, nazywamy trudnym polskim słowem ;) - idempotentność. Częściej spotkaliście się pewnie z angielskim tłumaczeniem - idempotency i też będziemy go tutaj używać.
 Twórcy różnego rodzaju systemów rozproszonych, bardzo chętnie korzystają z idempotentnych rozwiązań. Kiedy nie mamy pewności czy jakaś konkretna operacja doszła do skutku, łatwiej jest przecież powtórzyć jej wykonanie, zamiast ją weryfikować.
 
-# HTTP idempotency, czyli Idempotentność w metodach HTTP
+## HTTP idempotency, czyli Idempotentność w metodach HTTP
 Jeśli przy projektowaniu API stosujemy się do zasad `REST`, otrzymujemy HTTP idempotency dla `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS` i `TRACE`. Tylko interfejsy `POST` nie będą idempotentne.
 
 |Metoda HTTP| Idempotentność |

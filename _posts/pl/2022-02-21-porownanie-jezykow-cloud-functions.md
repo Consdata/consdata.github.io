@@ -23,13 +23,13 @@ Jeżeli chociaż raz zastanawiałeś się, w jakim języku programowania napisa�
 Na warsztat weźmiemy wszystkie dostępne na ten moment środowiska uruchomieniowe dla Google Cloud Functions i porównamy czasy odpowiedzi oraz zimne starty (tzw. cold starts).
 Porównamy nie tylko środowiska uruchomieniowe, ale również regiony w których osadzone są funkcje.
 
-# Motywacja
+## Motywacja
 
 Pisząc swoją pierwszą funkcję w GCP zastanawiałem się, w jakim języku ją napisać? Przecież to prosta funkcja, mogę ją napisać w każdym dostępnym języku. Pisać w Javie, której używam na co dzień? A może w Node.js? Przecież TypeScript też jest dla mnie codziennością...
 
 Motywacją do przeprowadzenia testów był przede wszystkim brak odpowiedzi na moje pytania oraz brak porównań środowisk uruchomieniowych dla Cloud Functions w Internecie.
 
-# Środowisko testowe
+## Środowisko testowe
 
 Google co chwilę rozszerza listę obsługiwanych środowisk uruchomieniowych, dlatego zależało mi na tym, żeby porównanie funkcji było łatwe do przeprowadzenia w przyszłości, z uwzględnieniem nowych języków. Chcąc zautomatyzować całą procedurę i środowisko testowe, wraz z kolegą Jackiem Grobelnym przygotowaliśmy projekt pt. [**Google Coud Functions Comparison**](https://github.com/Michuu93/google-cloud-function-comparison).
 
@@ -67,7 +67,7 @@ Każdy test uruchomiłem dwa razy, o tej samej godzinie czasu polskiego dla wszy
 
 Przyjąłem nazewnictwo *język interpretowany* dla języków skryptowych i kompilowanych (nie korzystających z maszyny wirtualnej) oraz *język uruchamiany w maszynie wirtualnej* dla języków kompilowanych i uruchamianych w maszynie wirtualnej.
 
-# Czasy odpowiedzi
+## Czasy odpowiedzi
 
 <link href="{{ base.url | prepend: site.url }}/assets/css/tabs.css" rel="stylesheet" type="text/css">
 <link href="{{ base.url | prepend: site.url }}/assets/css/simple-datatables.css" rel="stylesheet" type="text/css">
@@ -109,7 +109,7 @@ Kompletnie nie zdziwiły mnie za to wyniki funkcji napisanych w Javie czy .NET, 
 
 Jakie z tego wnioski? Jeżeli piszemy prostą funkcję i nie zależy nam na wydajności (albo spodziewamy się małego ruchu), śmiało możemy napisać ją w języku programowania, który znamy najlepiej. Jeżeli jednak zależy nam na obsłudze jak największej ilości żądań (i jednocześnie wiemy, że instancja funkcji nie będzie długowieczna), najlepszym wyborem będą języki, które nie są uruchamiane w wirtualnej maszynie.
 
-# Zimne starty
+## Zimne starty
 
 ## Godziny uruchomienia testów
 
@@ -139,7 +139,7 @@ W przypadku zimnych startów na pewno większą rolę odgrywa region, w którym 
 
 Patrząc na wyniki testu, nie potrafię jednoznacznie stwierdzić w jakim języku napisałbym funkcję, aby zapewnić jak najkrótszy zimny start. Sytuacja mogłaby ulec zmianie w przypadku bardziej złożonych implementacji i wykorzystania zewnętrznych zależności/bibliotek, ponieważ ich rozmiar i implementacja mogłyby odgrywać tutaj kluczową rolę.
 
-# Podsumowanie
+## Podsumowanie
 
 Na zakończenie chciałbym zaznaczyć, że wykonane przeze mnie testy dotyczyły jedynie prostych implementacji funkcji, a wyniki mogłyby być inne w przypadku bardziej złożonych implementacji lub przesyłania większej ilości danych. Mimo wszystko najczęściej spotykam się z bardzo prostymi funkcjami i z tego też powodu przeprowadziłem takie testy. Starając się porównać środowiska uruchomieniowe, musiałem zapewnić zbliżoną implementację funkcji, aby wykluczyć wpływ dostępnych bibliotek i zależności na wyniki.
 
