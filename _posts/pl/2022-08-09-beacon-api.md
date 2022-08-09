@@ -7,6 +7,7 @@ didyouknow: true
 lang: pl
 author:    dmejer
 image:     /assets/img/posts/2022-08-09-beacon-api/beacon-api.jpg
+description: "Beacon API pozwala na wysyłanie asynchronicznych, nieblokujących żądań. W odróżnieniu od XMLHttpRequest czy Fetch API, przeglądarka gwarantuje wykonanie żądań, nawet gdy użytkownik zamknie przeglądarkę. Idealnie nadaje się do wysyłania analityk czy logów z przeglądarki na serwer."
 tags:
 - javascript
 - ecmascript
