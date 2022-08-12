@@ -6,7 +6,7 @@ published:  true
 didyouknow: false
 lang:       pl
 author:     mhoja
-image:      /assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/clouds.jpg
+image:      /assets/img/posts/2022-08-cloud-functions-2/clouds.jpg
 tags:
     - google cloud function
     - cloud functions gen 2
