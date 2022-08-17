@@ -44,7 +44,7 @@ Czyli coś co daje nam architektura Cloud Run. Możemy wersjonować funkcję i k
 
 [Więcej informacji...](https://cloud.google.com/functions/docs/configuring/traffic-splitting)
 
-### Przetwarzanie współbierzne
+### Przetwarzanie współbieżne
 
 W pierwszej generacji instancja funkcji przetwarzała jednocześnie tylko jedno żądanie, w nowej generacji możemy zdefiniować parametr `--concurrency` i ustalić liczbę jednocześnie przetwarzanych żądań. Dzięki temu możemy zmniejszyć minimalną liczbę instancji i zaoszczędzić czas przy tworzeniu nowych (cold start), co w praktyce przekłada się na niższe koszty. Maksymalna wartość parametru jest uzależniona od środowiska uruchomieniowego, a w przypadku ustawienia wartości większej niż 1 (domyślna wartość) instancja funkcji musi posiadać minimum 1 vCPU.
 
