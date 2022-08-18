@@ -28,7 +28,7 @@ W lutym tego roku Google wprowadziło w wersji poglądowej (public preview) now�
 
 ### Wydłużony czas działania funkcji
 
-W przypadku funkcji wyzwalanych eventem zwiększono maksymalny czas procesowania z 9 do 10 minut, natomiast w przypadku funkcji wyzwalanych zapytaniami HTTP zwiększono ten czas z 9 do aż 60 minut. Domyślny czas wynosi 1 minutę, można go zwiększyć za pomocą parametru `--timeout`. Dłuższy czas procesowania może przydać się np. w przypadku przetwarzania danych z Cloud Storage do BigQuery.
+W przypadku funkcji wyzwalanych eventem zwiększono maksymalny czas procesowania z 9 do 10 minut, natomiast w przypadku funkcji wyzwalanych żądaniami HTTP zwiększono ten czas z 9 do aż 60 minut. Domyślny czas wynosi 1 minutę, można go zwiększyć za pomocą parametru `--timeout`. Dłuższy czas procesowania może przydać się np. w przypadku przetwarzania danych z Cloud Storage do BigQuery.
 
 [Więcej informacji...](https://cloud.google.com/functions/docs/configuring/timeout)
 
@@ -48,12 +48,11 @@ Czyli coś co daje nam architektura Cloud Run. Możemy wersjonować funkcję i k
 
 W pierwszej generacji instancja funkcji przetwarzała jednocześnie tylko jedno żądanie, w nowej generacji możemy zdefiniować parametr `--concurrency` i ustalić liczbę jednocześnie przetwarzanych żądań. Dzięki temu możemy zmniejszyć minimalną liczbę instancji i zaoszczędzić czas przy tworzeniu nowych (cold start), co w praktyce przekłada się na niższe koszty. Maksymalna wartość parametru jest uzależniona od środowiska uruchomieniowego, a w przypadku ustawienia wartości większej niż 1 (domyślna wartość) instancja funkcji musi posiadać minimum 1 vCPU.
 
-[Więcej informacji tutaj](https://cloud.google.com/functions/docs/configuring/concurrency)
-[oraz tutaj...](https://cloud.google.com/run/docs/about-concurrency)
+[Więcej informacji tutaj](https://cloud.google.com/functions/docs/configuring/concurrency) oraz [tutaj...](https://cloud.google.com/run/docs/about-concurrency)
 
 ### Minimalna liczba "rozgrzanych" instancji
 
-Możemy zdefiniować liczbę instancji, które mają być cały gotowe do obsługi żądań. Pozwala to skrócić czas obsługi żądania w przypadku tworzenia nowej instancji (cold start). Warto pamiętać również o tym, że płacimy za cały czas działania funkcji, również za zimny start jeżeli wystąpi.
+Możemy zdefiniować liczbę instancji, które mają być cały czas gotowe do obsługi żądań. Pozwala to skrócić czas obsługi żądania w przypadku tworzenia nowej instancji (cold start). Warto pamiętać również o tym, że płacimy za cały czas działania funkcji, również za zimny start jeżeli wystąpi.
 
 [Więcej informacji...](https://cloud.google.com/functions/docs/configuring/min-instances)
 
@@ -65,7 +64,7 @@ Nowa generacja wprowadza natywne wsparcie dla platformy [Eventarc](https://cloud
 
 ### Nowe regiony
 
-Funkcje drugiej generacji są dostępne we wszystkich regionach w których dostępna jest pierwsza generacja oraz w dwóch nowych: europe-north1 (Finlandia), europe-west4 (Holandia).
+Funkcje drugiej generacji są dostępne we wszystkich regionach w których dostępna jest pierwsza generacja oraz w dwóch dodatkowych: europe-north1 (Finlandia), europe-west4 (Holandia).
 
 [Więcej informacji...](https://cloud.google.com/functions/docs/locations)
 
