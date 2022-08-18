@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Google Cloud Functions (2nd gen) - co nowego wprowadza?"
-date:       2022-08-11 06:00:00 +0100
+date:       2022-08-18 06:00:00 +0100
 published:  true
 didyouknow: false
 lang:       pl
