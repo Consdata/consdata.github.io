@@ -19,7 +19,7 @@ tags:
 description: "Od kilku miesięcy dostępna jest nowa generacja Google Cloud Function (2nd gen), początkowo w wersji poglądowej (public preview) a dzisiaj również w wersji ogólnodostępnej (general availability). Jakie zmiany zostały wprowadzone względem poprzedniej generacji?"
 ---
 
-W lutym tego roku Google wprowadziło w wersji poglądowej (public preview) nową generację usługi Cloud Functions (2nd gen). Architektura Google Cloud Function (2nd gen) została oparta o Cloud Run oraz Eventarc, co niesie za sobą kilka ciekawych funkcjonalności względem poprzedniej generacji. W sierpniu tego roku druga generacja funkcji przeszła z wersji poglądowej do ogólnodostępnej (general availability, GA).
+W lutym tego roku Google wprowadziło w wersji poglądowej (public preview) nową generację usługi Cloud Functions (2nd gen). Architektura Google Cloud Function (2nd gen) została oparta o Cloud Run oraz Eventarc, co wprowadza kilka ciekawych funkcjonalności względem poprzedniej generacji. W sierpniu tego roku druga generacja funkcji przeszła z wersji poglądowej do ogólnodostępnej (general availability, GA).
 
 ![Cloud Functions 2nd gen](/assets/img/posts/2022-08-cloud-functions-2/cloud_function_2nd_gen_whats_new.jpg)
 <span class="img-legend">Cloud Functions 2nd gen<br />źródło: <a href="https://cloud.google.com/blog/products/serverless/cloud-functions-2nd-generation-now-generally-available">https://cloud.google.com</a> - dostęp: 2022-08-15</span>
@@ -52,7 +52,7 @@ W pierwszej generacji instancja funkcji przetwarzała jednocześnie tylko jedno 
 
 ### Minimalna liczba "rozgrzanych" instancji
 
-Możemy zdefiniować liczbę instancji, które mają być cały czas gotowe do obsługi żądań. Pozwala to skrócić czas obsługi żądania w przypadku tworzenia nowej instancji (cold start). Warto pamiętać również o tym, że płacimy za cały czas działania funkcji, również za zimny start jeżeli wystąpi.
+Możemy zdefiniować liczbę instancji, które mają być cały czas gotowe do obsługi żądań. Pozwala to skrócić czas obsługi żądania w przypadku tworzenia nowej instancji (cold start). Warto pamiętać również o tym, że płacimy za cały czas działania funkcji, również za zimny start.
 
 [Więcej informacji...](https://cloud.google.com/functions/docs/configuring/min-instances)
 
