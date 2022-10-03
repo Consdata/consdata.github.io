@@ -16,7 +16,7 @@ tags:
 
 ---
 
-W tym artykule pokażę jak postawić klaster kubernetesa na popularnych płytkach Raspberry Pi. W końcu czas post pandemicznego kryzysu półprzewodników, niedoboru tych płytek oraz ich horrendalnych cen na serwisach aukcyjnych, to idealny moment na taki poradnik ;).
+W tym artykule pokażę jak postawić klaster kubernetesa na popularnych płytkach Raspberry Pi. Czas post pandemicznego kryzysu półprzewodników, niedoboru płytek oraz ich horrendalnych cen na serwisach aukcyjnych, to idealny moment na taki poradnik ;)
 
 ## Przygotowanie płytek
 
@@ -31,7 +31,7 @@ Zakładając, że karta jest reprezentowana przez urządzenie /dev/sdb:
 dd if=wypakowanyObraz.img of=/dev/sdb bs=4M conv=fsync
 ```
 
-Bardzo ważne jest, aby karty sd były w dobrym stanie (idealnie, gdyby był nowe). Najistotniejsza jest karta użyta na maszynie master. Po dłuższym czasie użytkowania (około 2 lat) karta, którą miałem na głównej maszynie uległa degradacji. W efekcie w czasie inicjalizacji klastra otrzymywałem timeouty na requestach do `etcd`. Pomogła wymiana karty na nową.
+Bardzo ważne, aby karty sd były w dobrym stanie (idealnie, gdyby były nowe). Najistotniejsza jest karta użyta na maszynie master. Po dłuższym czasie użytkowania (około 2 lat) karta, którą miałem na głównej maszynie uległa degradacji. W efekcie w czasie inicjalizacji klastra otrzymywałem timeouty na requestach do `etcd`. Pomogła wymiana karty na nową.
 
 Po uruchomieniu płytki przechodzimy przez wstępną konfigurację (zależnie od wersji systemu pojawi się konfigurator lub od razu zostaniem zalogowaniu na użytkownika 'pi').
 
@@ -298,7 +298,7 @@ kube-system            kube-scheduler-k8s-master-1                 1/1     Runni
 
 ```
 
-W kolejnej części zaprezentuję jak skonfigurować dodatkowe klastra (ingress, dns, loadbalancer itd.), tak aby wycisnąć z niego maksimum możliwości. 
+W kolejnej części zaprezentuję jak skonfigurować dodatkowe elementy klastra (ingress, dns, loadbalancer itd.), tak aby wycisnąć z niego maksimum możliwości. 
 
 Wszystkie kroki (poza etapem konfiguracji płytek) można znaleźć [tutaj](https://github.com/m87/pi-k8s-base) w formie playbooka Ansible.
 
