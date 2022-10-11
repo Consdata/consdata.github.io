@@ -34,7 +34,8 @@ spec:
   containers:
     livenessProbe:
       httpGet:
-        path: /health-check # ścieżka do health-check'a
+        (...)
+        path: /health-check # ścieżka do health-checka
         port: 8080 # port na którym wystawiony jest kontener
       initialDelaySeconds: 3 # po ilu sekundach od uruchomienia kontenera włączyć health-checka 
       periodSeconds: 3 # co ile serwować zapytanie do /health-check
@@ -43,8 +44,8 @@ spec:
 ## Przykład interaktywny:
 
 Poniżej przedstawiono polecenia, dzięki którym można samodzielnie zobaczyć, jak działa Liveness Probe. Zamieszczony
-przykład zawiera definicję Pod'a, który po 30 sekundach od uruchomienia przestaje odpowiadać na health-check'a. W tym
-przypadku zdecydowano się na definicję health-check'a przy użyciu wywołania komendy w kontenerze.
+przykład zawiera definicję Poda, który po 30 sekundach od uruchomienia przestaje odpowiadać na health-checka. W tym
+przypadku zdecydowano się na definicję health-checka przy użyciu wywołania komendy w kontenerze.
 
 Uruchomienie kontenera:
 
@@ -54,7 +55,7 @@ kubectl apply -f https://k8s.io/examples/pods/probe/exec-liveness.yaml
 
 Przy użyciu poniższego polecenia możliwe jest śledzenie stanu poda. Należy zauważyć, że po czasie 30 sekund od
 uruchomienia, pod zostaje zrestartowany, dlatego, że usunięty zostaje plik, który odpowiada za poprawne zwracanie
-odpowiedzi dla health-check'a:
+odpowiedzi dla health-checka:
 
 ```shell
 watch -n 1 kubectl get pods
