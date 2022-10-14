@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Domowy klaster Kubernetesa na Raspberry Pi"
-date:      2022-10-01 08:00:00 +010
+date:      2022-10-14 08:00:00 +010
 published: true
 didyouknow: false
 lang:      pl
