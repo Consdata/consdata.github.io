@@ -15,8 +15,6 @@ tags:
 
 ---
 
-# Czy wiesz co to healthcheck i jak z niego korzystać?
-
 Health check pozwala na monitorowanie działania aplikacji. Mechanizm ten w Kubernetesie pozwala sprawdzić nie tylko, czy
 kontener działa (czy node port jest dostępny), ale także czy aplikacja wciąż działa (czy odpowiada). W tym wpisie
 poruszany jest temat mechanizmu Liveness Probe.
