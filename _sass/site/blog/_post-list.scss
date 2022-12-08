@@ -75,6 +75,10 @@
   align-items: center;
 }
 
+.coauthors-container {
+  @include flex-container;
+}
+
 .author-name {
   font-weight: bold;
 }

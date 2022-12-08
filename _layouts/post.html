@@ -4,7 +4,7 @@ comments: true
 ---
 {% assign post = page %}
 {% assign author = site.authors | where: "short_name", post.author | first %}
-{% assign assets = post.path | remove: "_posts/" | remove: ".md" %}
+{% assign coauthor = site.authors | where: "short_name", post.coauthor | first %}
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
         <header>
@@ -65,6 +65,10 @@ comments: true
             {% include consdata-offers.html %}
         </div>
         {% include author_bio.html %}
+        {%- if post.coauthor -%}
+            {% assign author = site.authors | where: "short_name", post.coauthor | first %}
+            {% include author_bio.html %}
+        {%- endif -%}
         {%- if site.disqus.shortname -%}
             {%- include disqus_comments.html -%}
         {%- endif -%}
