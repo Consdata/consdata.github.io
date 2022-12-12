@@ -10,6 +10,12 @@
     align-items: center;
   }
 
+  .author-name {
+    width: 85px;
+    height: 75px;
+    position: relative;
+  }
+
   .author-name-metadata {
     font-size: 1.3em;
     letter-spacing: $general-letter-spacing;

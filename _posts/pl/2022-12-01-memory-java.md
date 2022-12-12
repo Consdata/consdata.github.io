@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Dobór limitów pamięci w Javie (w kontenerach i nie tylko)"
-date:      2022-12-9 06:00:00 +0100
+date:      2022-12-11 06:00:00 +0100
 published: true
 didyouknow: false
 lang: pl

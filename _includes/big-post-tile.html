@@ -22,39 +22,23 @@
             </p>
         </a>
         <div class="tile-author">
-            {%- unless include.post.coauthor -%}
+            {%- if include.post.coauthor -%}
+            <a href="{{ coauthor.url }}" class="author-name coauthor">
+                <img class="small-author-image" src="/assets/img/authors/{{coauthor.image}}" alt="coauthor" width="50"
+                     height="50">
+            </a>
+            {%- endif -%}
             <a href="{{ author.url }}" class="author-name">
                 <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author" width="50"
                      height="50">
             </a>
             <div class="post-info">
+                {%- if include.post.coauthor -%}
+                <a href="{{ coauthor.url }}" class="author-name">{{coauthor.name}}</a>
+                {%- endif -%}
                 <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
                 <span>{% include post-date.html date=include.post.date lang=site.active_lang %}</span>
             </div>
-            {%- endunless -%}
-            {%- if include.post.coauthor -%}
-            <div class="tile-coauthors">
-                <div class="coauthors-container">
-                    <a href="{{ author.url }}" class="author-name">
-                        <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author"
-                             width="50"
-                             height="50">
-                    </a>
-                    <div class="post-info">
-                        <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
-                    </div>
-                    <a href="{{ coauthor.url }}" class="author-name">
-                        <img class="small-author-image" src="/assets/img/authors/{{coauthor.image}}" alt="author"
-                             width="50"
-                             height="50">
-                    </a>
-                    <div class="post-info">
-                        <a href="{{ coauthor.url }}" class="author-name">{{coauthor.name}}</a>
-                    </div>
-                </div>
-                <div>{% include post-date.html date=include.post.date lang=site.active_lang %}</div>
-            </div>
-            {%- endif -%}
         </div>
     </div>
 </div>
