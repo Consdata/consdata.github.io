@@ -92,7 +92,7 @@ Trochę sporo. Innymi słowy, kontenery CRI-O nie mają ustawionego limitu pami�
 
 I tu dochodzimy do sedna. Otóż limit zasobów cgroupy dla poda jest liczony jako suma limitów bezpośrednio zdefiniowanych kontenerów. Przykładowo, mam zdefiniowane dwa kontenery w podzie, każdy ma limit 256 MB pamięci. Sumarycznie limit pamięci dla poda (a więc i dla całej cgroupy) będzie wynosił 512MB. Nigdzie w tym limicie nie są uwzględnione dodatkowe kontenery CRI-O. I to właśnie z tego powodu systemowy OOM killer potrafi uwalić kontener, mimo że wcale nie doszedł do zdefiniowanego na nim limitu pamięci. Po prostu sumaryczne zużycie pamięci przez cgroupę poda (a więc pamięć zużyta przez nasz kontener/y oraz dodatkowa pamięć zjadana przez kontenery CRI-O) przekracza zdefiniowany na niej limit, który był policzony wyłącznie na bazie naszych kontenerów. W tym momencie system operacyjny odpala OOM killera, który ubije proces zabierający najwięcej pamięci. Praktycznie zawsze będzie to nasz kontener. Dla przykładu, mamy poda, którego limit pamięci to 640MB. Nasz kontener zajmuje 620MB, i w tym momencie odpala się OOM killer, ponieważ pamięć zajęta przez nasz kontener + kontenery CRI-O przekroczyła 640MB, a nasz kontener był pierwszy do odstrzału.
 
-Reasumując, aby poznać faktyczne zużycie pamięci przez poda należy zajrzeć do sysemd-cgtop –depth=5. W ten sposób dowiemy się nie tylko, ile w rzeczywistości zajmują nasze kontenery, ale też ile w bonusie dorzuciło od siebie CRI-O. I to tłumaczy pierwszy z rozjazdów wymienionych na samej górze - cache dyskowy oraz dodatkowe kontenery CRI-O nie są nigdzie uwzględnione i praktycznie żadne monitoringi ich nie wychwytują, a potrafią rozdmuchać pamięć kontenerów oraz poda.
+Reasumując, aby poznać faktyczne zużycie pamięci przez poda należy zajrzeć do sysemd-cgtop -–depth=5. W ten sposób dowiemy się nie tylko, ile w rzeczywistości zajmują nasze kontenery, ale też ile w bonusie dorzuciło od siebie CRI-O. I to tłumaczy pierwszy z rozjazdów wymienionych na samej górze - cache dyskowy oraz dodatkowe kontenery CRI-O nie są nigdzie uwzględnione i praktycznie żadne monitoringi ich nie wychwytują, a potrafią rozdmuchać pamięć kontenerów oraz poda.
 
 Pora na drugi rozjazd, związany już wyłącznie z Javą.
 
@@ -186,7 +186,7 @@ Total: reserved=1943037KB, committed=610501KB
 -                 Safepoint (reserved=8KB, committed=8KB)
                             (mmap: reserved=8KB, committed=8KB)
 ```
-Najbardziej interesujące są tutaj wartości commited, pokazujące faktycznie używaną pamięć.
+Najbardziej interesujące są tutaj wartości `commited`, pokazujące faktycznie używaną pamięć.
 
 Co możemy z tego zrzutu wyczytać? Przede wszystkim, że z punktu widzenia samego JVMa, proces zajmuje 610501KB, czyli około 596MB pamięci.
 
