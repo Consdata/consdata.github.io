@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Dobór limitów pamięci w Javie (w kontenerach i nie tylko)"
-date:      2022-12-11 06:00:00 +0100
+date:      2022-12-16 06:00:00 +0100
 published: true
 didyouknow: false
 lang: pl
@@ -197,8 +197,8 @@ Spójrzmy natomiast na wyjście ps aux dotyczące tej samej aplikacji.
 ```
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 1000630+       1  0.8  2.0 2283920 721032 ?      Ssl  Nov22  12:27 Java -Dspring.config.location=classpath:/applic....
-I tutaj widzimy drugi rozjazd - według NMT proces bierze niecałe 600MB RAMu, podczas gdy według systemu operacyjnego jest to około 700MB. Gdzie podziało się 100MB?
 ```
+I tutaj widzimy drugi rozjazd - według NMT proces bierze niecałe 600MB RAMu, podczas gdy według systemu operacyjnego jest to około 700MB. Gdzie podziało się 100MB?
 
 Musimy zejść na poziom niżej niż JVM, żeby pokazać, gdzie leży problem. Alokacją pamięci na linuksie domyślnie zajmuje się `malloc()` pochodzący z `glibc` (a tak na serio, to malloc() w glibc wywołuje aktualnie podlinkowaną implementację alokatora, domyślnie ptmalloc2). Do glibc należy też zwalnianie do systemu nieużywanej pamięci. Zacznijmy od tego, jak alokowana jest pamięć przez glibc - proces ten generalnie należy do skomplikowanych i ma trochę niuansów, ale tutaj go uprościmy i skupimy się na ogólnej zasadzie działania.
 
