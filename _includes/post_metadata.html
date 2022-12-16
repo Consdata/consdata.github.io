@@ -1,9 +1,18 @@
 <div class="post-metadata">
+
     <a href="{{author.url}}" class="author-name">
         <img class="big-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+        {%- if post.coauthor -%}
+        <img class="big-author-image coauthor" src="/assets/img/authors/{{coauthor.image}}" alt="author">
+        {%- endif -%}
     </a>
     <div class="post-info">
+        {%- if post.coauthor -%}
+        <a href="{{coauthor.url}}" class="author-name-metadata">{{coauthor.name}}</a>
+        {%- endif -%}
         <a href="{{author.url}}" class="author-name-metadata">{{author.name}}</a>
         <span>{% include post-date.html date=post.date lang=page.lang %}</span>
     </div>
+
+
 </div>

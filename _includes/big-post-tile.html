@@ -8,23 +8,34 @@
     </div>
     <div class="col-1-3 big-post-tile-content">
         {% assign author = site.authors | where: "short_name", include.post.author | first %}
+        {% assign coauthor = site.authors | where: "short_name", include.post.coauthor | first %}
         <a href="{{ include.post.url }}">
             <p class="post-title no-breaking-word">
                 {{ include.post.title }}
             </p>
             <p class="post-description no-breaking-word">
                 {% if include.post.description %}
-                    {{include.post.description}}
+                {{include.post.description}}
                 {% else %}
-                    {{include.post.content | strip_html | truncatewords: 50}}
+                {{include.post.content | strip_html | truncatewords: 50}}
                 {% endif %}
             </p>
         </a>
         <div class="tile-author">
+            {%- if include.post.coauthor -%}
+            <a href="{{ coauthor.url }}" class="author-name coauthor">
+                <img class="small-author-image" src="/assets/img/authors/{{coauthor.image}}" alt="coauthor" width="50"
+                     height="50">
+            </a>
+            {%- endif -%}
             <a href="{{ author.url }}" class="author-name">
-                <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author" width="50" height="50">
+                <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author" width="50"
+                     height="50">
             </a>
             <div class="post-info">
+                {%- if include.post.coauthor -%}
+                <a href="{{ coauthor.url }}" class="author-name">{{coauthor.name}}</a>
+                {%- endif -%}
                 <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
                 <span>{% include post-date.html date=include.post.date lang=site.active_lang %}</span>
             </div>

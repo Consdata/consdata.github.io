@@ -59,8 +59,16 @@
 }
 
 .big-author-image {
+  z-index: 2;
+  position: absolute;
   width: $big-author-image-size;
   height: auto;
   border-radius: 50%;
   margin-right: $small-padding;
+}
+
+.coauthor {
+  z-index: 1;
+  left: -25px;
+  top: -25px;
 }
