@@ -25,13 +25,14 @@ Interfejs Figmy składa się wielu różnych elementów pogrupowanych według fu
 Komponenty w Figmie pomagają zastosować zmiany do grupy elementów. Oszczędza to czas projektanta podczas zmiany całej makiety. Załóżmy, że stworzyliśmy makietę składającą się z 50 widoków, a klient chciał zmienić w nim kolor przycisków. W przypadku komponentów wystarczy wprowadzić zmianę do jednego obiektu, po czym nowy kolor zostanie zastosowany do wszystkich przycisków jednocześnie.
 Aby utworzyć komponent, wystarczy zaznaczyć te elementy lub grupy elementów, z których chcemy go utworzyć, po czym kliknąć prawym przyciskiem myszy i wybrać <i>"Create Component" (lub Ctrl+Alt+K)</i>. Teraz tworząc kopię, uzyskujemy komponenty potomne. Wszystkie zmiany dotyczące rodzica zostaną przeniesione na komponenty od niego pochodzące.
 
+![](/assets/img/posts/2023-01-16-uiux-tools/components.gif)
+
 ## Auto Layout
 Funkcja <i>Auto Layout</i> jest jedną z najważniejszych i najbardziej używanych właściwości w Figmie, która odróżnia ją od innych narzędzi projektowych. Krótko mówiąc, <i>Auto Layout</i> pozwala na strukturyzację komponentów i ramek w sposób, który może automatycznie rozszerzać się lub zmniejszać się, dzięki czemu obiekt złączony z innych obiektów dostosowuje się do wielkości jego zawartości lub też w inną stronę. <i>Auto Layout</i> pozwala na określenie kierunku ułożenia elementów (pionowo lub poziomo), także pozwala na określenie dynamicznego ustawiania odstępów, ograniczenia wielkości, szerokości, długości obiektów, oraz automatyczne wyrównywanie położenia. Jeżeli znasz się na stylowaniu <i>CSS</i>, to możesz słusznie zauważyć pewne podobieństwo <i>Auto Layout</i> do <i>Flexbox</i>.
 
 Aby zastosować <i>Auto Layout</i> wystarczy wydzielić obiekty, które chcemy uzależnić od siebie, po czym wcisnąć skrót klawiszowy <i>Shift+A</i> albo wybrać opcję <i>Auto Layout</i> w prawym menu.
 
-![](https://i.imgur.com/VD6pOx5.gif) // @TODO LICENCJE
-
+![](/assets/img/posts/2023-01-16-uiux-tools/auto-layout.gif)
 ## Prototypowanie
 
 Funkcje prototypowania w Figmie umożliwiają tworzenie interaktywnych przepływów pomiędzy makietami, co przybliża makietę do prawdziwej aplikacji w porównaniu do zwykłych statycznych ekranów. Prototypy replikują sposób, w jaki użytkownicy mogą wchodzić w interakcję z zaprojektowanym interfejsem aplikacji. Możemy łączyć elementy na wybranym ekranie lub też poszczególne ekrany między sobą w celu utworzenia przepływu, czyli pełnej  interaktywnej ścieżki. Np. w przypadku makiety witryny e-Commerce możemy zamodelować za pomocą przepływów wszystkie możliwe interakcje użytkownika - tworzenie konta, dodawanie elementów do koszyka, wylogowania się itd.
@@ -42,15 +43,23 @@ Przepływ składa się z trzech części:
 
 Po utworzeniu połączenia można zdefiniować rodzaj interakcji, czyli jakie działanie uruchomi utworzony przepływ. Może to być naciśnięcie/najechanie myszką, wciśnięcie klawisza, interakcja w momencie puszczenia myszki lub wiele innych. Jest też możliwość zdefiniowania akcji, czyli w jaki sposób dany przepływ zostanie wykonany. Możemy wybrać spośród wielu różnych akcji, m.in. nawigacji, zmiany obiektu (interaktywny komponent), otwierania linku, przejścia wstecz lub też przewijania do poszczególnych miejsc.
 
-![](https://i.imgur.com/UOJHk2F.png) // @TODO LICENCJE
+![](/assets/img/posts/2023-01-16-uiux-tools/prototypowanie.png)
 
 ## Rozwiązania konkurencyjne wobec Figmy
 ### Sketch
 Jest oprogramowaniem, z którym większość projektantów interfejsu użytkownika jest dobrze zaznajomiona. Od lat Sketch był złotym standardem w projektowaniu makiet i jest docelowym konkurentem Figmy, jednak jest dostępny wyłącznie na komputery z systemem macOS, a aby korzystać z jego pełnej wersji, musimy płacić pewną kwotę roczną.
 
-Różnica Figma a Sketch
+**Różnica Figma a Sketch**
 
-|       Różnice        |                                                                        Figma                                                                       |                                                            Sketch                                                            |
+<style>
+td,th {
+   border-color: #611661;
+   border-style: groove;
+   border-width: 2px;
+}
+</style>
+
+|       **Różnice**        |                                                                        **Figma**                                                                       |                                                            **Sketch**                                                            |
 |:--------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|
 |    Kompatybilność    |                                                              Przeglądarka internetowa                                                              |                                                    System operacyjny macOS                                                   |
 |        Cennik        |                                             Wersja darmowa, professional, organization oraz enterprice                                             |                                   Jednorazowa wpłata albo opłata per edytor w Sketch Teams                                   |
@@ -61,7 +70,7 @@ Różnica Figma a Sketch
 |    Prototypowanie    |  Wbudowana integracja z Principle. Obsługuje overlays podczas łączenia obiektów oraz ma większa liczbę triggerów używanych podczas prototypowania  |                                Obsługuję większość zaawansowanych aplikacji do prototypowania                                |
 |         Współpraca   |                              Oparta na chmurze, obsługuje wielu projektantów do pracy i edycji dokumentu jednocześnie                              |                     W 2021 roku wprowadzono możliwość współpracy różnych projektantów w tym samym czasie                     |
 
-Zalety Sketch wobec Figmy - względem twórców Sketcha
+**Zalety Sketch wobec Figmy - względem twórców Sketcha**
  1. Zawiera potężną natywną aplikację Mac.
  2. Pełny przepływ pracy w trybie offline.
  3. Użytkownik sam kontroluje kto widzi jego pracę.
@@ -77,7 +86,7 @@ Zalety Sketch wobec Figmy - względem twórców Sketcha
  13. Niezalażność.
 
 
- Zalety Figma wobec Sketch - względem twórców Figmy
+ **Zalety Figma wobec Sketch - względem twórców Figmy**
  1. Szybsza dzięki chmurze.
  2. Multiplatformowa.
  3. Mniej znaczy więcej - używając Sketch musisz również korzystać z InVision, Abstract lub Zeplin. Figma ma to wszystko w sobie.
@@ -109,8 +118,8 @@ Tutoriale Figma na Youtube:
 
 Źródła:
 
-* [https://www.figma.com/pricing/)](https://www.figma.com/pricing/)
-* [https://www.figma.com/pricing/)](https://www.figma.com/pricing/))
+* [https://www.figma.com/pricing/](https://www.figma.com/pricing/)
+* [https://www.figma.com/pricing/](https://www.figma.com/pricing/)
 * [https://www.youtube.com/watch?v=yzO31hMTkus&t=479s](https://www.youtube.com/watch?v=yzO31hMTkus&t=479s)
 * [https://www.imaginarycloud.com/blog/figma-vs-sketch/](https://www.imaginarycloud.com/blog/figma-vs-sketch/)
 * [https://kinsta.com/blog/figma-vs-sketch/](https://kinsta.com/blog/figma-vs-sketch/)
