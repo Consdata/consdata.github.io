@@ -9,5 +9,5 @@ mkdir -p "$HOME/.jekyll/tmp_bundle" \
     -p 35729:35729 \
     --volume="$HOME/.jekyll/tmp_bundle:/usr/local/bundle" \
     --volume="$PWD:/srv/jekyll" \
-    jekyll/jekyll:4.2.0 bash -c 'bundle install && jekyll serve --livereload'
+    jekyll/jekyll:3.8 bash -c 'bundle install && jekyll serve --livereload'
 ```

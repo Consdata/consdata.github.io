@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Rzut okiem na narzędzia do projektowania interfejsu użytkownika"
+title:     "Figma - narzędzie do projektowania interfejsu użytkownika"
 date:      2023-01-16 06:00:00 +0100
 published: true
 didyouknow: false
@@ -118,7 +118,7 @@ Tutoriale Figma na Youtube:
 
 Źródła:
 
-* [https://www.figma.com/pricing/](https://www.figma.com/pricing/)
+* [https://www.figma.com/about/](https://www.figma.com/about/)
 * [https://www.figma.com/pricing/](https://www.figma.com/pricing/)
 * [https://www.youtube.com/watch?v=yzO31hMTkus&t=479s](https://www.youtube.com/watch?v=yzO31hMTkus&t=479s)
 * [https://www.imaginarycloud.com/blog/figma-vs-sketch/](https://www.imaginarycloud.com/blog/figma-vs-sketch/)
