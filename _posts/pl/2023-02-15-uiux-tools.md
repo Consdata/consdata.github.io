@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Figma - narzędzie do projektowania interfejsu użytkownika"
-date:      2023-01-16 06:00:00 +0100
+date:      2023-02-15T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: jlavrinovics
-image: /assets/img/posts/2023-01-16-uiux-tools/uiux-tools.jpg
+image: /assets/img/posts/2023-02-15-uiux-tools/uiux-tools.jpg
 tags:
 
 - ui/ux
@@ -25,14 +25,14 @@ Interfejs Figmy składa się z wielu różnych elementów pogrupowanych według 
 Komponenty w Figmie pomagają zastosować zmiany do grupy elementów. Oszczędza to czas projektanta podczas zmiany całej makiety. Załóżmy, że stworzyliśmy makietę składającą się z 50 widoków, a klient chciał zmienić w nim kolor przycisków. W przypadku komponentów wystarczy wprowadzić zmianę do jednego obiektu, po czym nowy kolor zostanie zastosowany do wszystkich przycisków jednocześnie.
 Aby utworzyć komponent, wystarczy zaznaczyć te elementy lub grupy elementów, z których chcemy go utworzyć, po czym kliknąć prawym przyciskiem myszy i wybrać <i>"Create Component" (lub Ctrl+Alt+K)</i>. Teraz tworząc kopię, uzyskujemy komponenty potomne. Wszystkie zmiany dotyczące rodzica zostaną przeniesione na komponenty od niego pochodzące.
 
-![](/assets/img/posts/2023-01-16-uiux-tools/components.gif)
+![](/assets/img/posts/2023-02-15-uiux-tools/components.gif)
 
 ## Auto Layout
 Funkcja <i>Auto Layout</i> jest jedną z najważniejszych i najczęściej używanych właściwości w Figmie, która odróżnia ją od innych narzędzi projektowych. Krótko mówiąc, <i>Auto Layout</i> pozwala na strukturyzację komponentów i ramek w sposób, który może automatycznie się rozszerzać lub zmniejszać, dzięki czemu obiekt złączony z innych obiektów dostosowuje się do wielkości jego zawartości lub też w inną stronę. <i>Auto Layout</i> pozwala na określenie kierunku ułożenia elementów (pionowo lub poziomo), pozwala także na określenie dynamicznego ustawiania odstępów, ograniczenia wielkości, szerokości, długości obiektów oraz automatyczne wyrównywanie położenia. Jeżeli znasz się na stylowaniu <i>CSS</i>, to możesz słusznie zauważyć pewne podobieństwo <i>Auto Layout</i> do <i>Flexbox</i>.
 
 Aby zastosować <i>Auto Layout</i> wystarczy wydzielić obiekty, które chcemy uzależnić od siebie, po czym wcisnąć skrót klawiszowy <i>Shift+A</i> albo wybrać opcję <i>Auto Layout</i> w prawym menu.
 
-![](/assets/img/posts/2023-01-16-uiux-tools/auto-layout.gif)
+![](/assets/img/posts/2023-02-15-uiux-tools/auto-layout.gif)
 ## Prototypowanie
 
 Funkcje prototypowania w Figmie umożliwiają tworzenie interaktywnych przepływów pomiędzy makietami, co przybliża makietę do prawdziwej aplikacji w porównaniu do zwykłych statycznych ekranów. Prototypy replikują sposób, w jaki użytkownicy mogą wchodzić w interakcję z zaprojektowanym interfejsem aplikacji. Możemy łączyć elementy na wybranym ekranie lub też poszczególne ekrany między sobą w celu utworzenia przepływu, czyli pełnej  interaktywnej ścieżki. Np. w przypadku makiety witryny e-Commerce, jesteśmy w stanie zamodelować za pomocą przepływów wszystkie możliwe interakcje użytkownika - tworzenie konta, dodawanie elementów do koszyka, wylogowania się itd.
@@ -43,7 +43,7 @@ Przepływ składa się z trzech części:
 
 Po utworzeniu połączenia można zdefiniować rodzaj interakcji, czyli jakie działanie uruchomi utworzony przepływ. Może to być naciśnięcie/najechanie myszką, wciśnięcie klawisza, interakcja w momencie puszczenia myszki lub wiele innych. Jest też możliwość zdefiniowania akcji, czyli w jaki sposób dany przepływ zostanie wykonany. Możemy wybrać spośród wielu różnych akcji, m.in. nawigacji, zmiany obiektu (interaktywny komponent), otwierania linku, przejścia wstecz lub też przewijania do poszczególnych miejsc.
 
-![](/assets/img/posts/2023-01-16-uiux-tools/prototypowanie.png)
+![](/assets/img/posts/2023-02-15-uiux-tools/prototypowanie.png)
 
 ## Rozwiązania konkurencyjne wobec Figmy
 ### Sketch
