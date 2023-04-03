@@ -12,11 +12,11 @@ tags:
 - npm
 ---
 W `package.json` można wskazać wersję pakietu zależnego na kilka sposobów.
-Większość operatorów przydatna jest, jeżeli zależna paczka stosuje semantyczne wersjonowanie (major.minor.patch).
+Większość operatorów jest przydatna, jeżeli zależna paczka stosuje semantyczne wersjonowanie (major.minor.patch).
 
 ## Operatory `>=`, `>`, `=`, `<`, `<=`, `||`
 - `>=1.6.7` oznacza wersje od 1.6.7 w górę,
-- `>=1.6.7 <2.0.0` wersje do 1.6.7 do 2.0.0, bez 2.0.0,
+- `>=1.6.7 <2.0.0` wersje od 1.6.7 do 2.0.0, bez 2.0.0,
 - `<=2.0.0` wersje do 2.0.0, włącznie z 2.0.0,
 - `1.1.1 || >=1.1.3 <2.0.0` 1.1.1, większa od 1.1.3 do 2.0.0, gdy 1.1.2 powodowała problemy i chcemy ją pominąć.
 
@@ -37,7 +37,7 @@ Umożliwia zmianę wersji "patch", gdy ustawiona jest na wersji "minor" lub zmia
 - `~1.2.3-beta.10`, to samo co `>=1.2.3-beta.10 <2.0.0`, ale np: `1.2.3-beta.11` wpadnie do zakresu, natomiast `1.2.4-beta.1` już nie.  
 
 ## Operator `^`
-Umożliwia zmianę tylko pierwszej niezerowej wersji. Zmiana pierwszej niezerowej wersji, często uznawana jest za "breaking-change", `^` nas przed tym chroni.
+Umożliwia zmianę tylko pierwszej niezerowej wersji. Zmiana pierwszej niezerowej wersji często uznawana jest za "breaking-change", `^` nas przed tym chroni.
 - `^1.2.3` jest tym samym co `>=1.2.3 <2.0.0` oraz `1.*`,
 - `^0.2.3` oznacza to samo co `>=0.2.3 <0.3.0`, i to samo co `0.*`,
 - `^0.0.3`, to samo co `>=0.0.3 <0.0.4`, oraz to samo co `0.0.*`.
