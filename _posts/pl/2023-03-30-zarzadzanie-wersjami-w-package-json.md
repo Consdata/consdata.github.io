@@ -11,8 +11,8 @@ tags:
 - package.json
 - npm
 ---
-W `package.json` można wskazać wersję pakietu zależnego na kilka sposobów.
-Większość operatorów jest przydatna, jeżeli zależna paczka stosuje semantyczne wersjonowanie (major.minor.patch).
+`package.json` jest plikiem, który opisuje każdy projekt oparty o Node.js. Jedną z jego najważniejszych ról jest przechowywanie informacji o zależnościach projektu. 
+Wersję zależności można wskazać na kilka sposobów używając do tego operatorów - ten wpis przybliża ich znaczenie. Większość operatorów jest przydatna, jeżeli zależna paczka stosuje semantyczne wersjonowanie (major.minor.patch).
 
 ## Operatory `>=`, `>`, `=`, `<`, `<=`, `||`
 - `>=1.6.7` oznacza wersje od 1.6.7 w górę,
