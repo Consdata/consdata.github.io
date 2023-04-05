@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz, jak zarządzać wersjami w package.json?"
-date:      2023-03-03T08:00:00+01:00
+date:      2023-04-05T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-03-30-zarzadzanie-wersjami-w-package-json/keyboard.jpg
+image: /assets/img/posts/2023-04-05-zarzadzanie-wersjami-w-package-json/keyboard.jpg
 tags:
 - package.json
 - npm
