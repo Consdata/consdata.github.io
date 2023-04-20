@@ -2,8 +2,6 @@ title: Consdata - blog techniczny
 baseurl: ""
 url: "https://blog.consdata.tech"
 
-google_analytics: UA-28387432-1
-
 sass:
   sass_dir: _sass
   style: compressed
