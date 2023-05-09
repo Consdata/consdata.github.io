@@ -8,6 +8,7 @@
   bottom: 0;
   width: calc(100% - 2rem);
   background: $color-blackcurrant;
+  z-index: 100;
 
   span {
     color: $color-gray-80;
