@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-06-30-czy-wiesz-ze-w-angular-16-pojawia-sie-sygnaly/keyboard.jpg
+image: /assets/img/posts/2023-06-30-czy-wiesz-ze-w-angular-16-pojawia-sie-sygnaly/angular.png
 description: Sygnały to nowa koncepcja w Angular, upraszcza ona tworzenie reaktywnych komponentów. Mogą one w przyszłości doprowadzić do usunięcia Zone.js z Angular.
 tags:
 - angular
@@ -68,7 +68,7 @@ export class SimpleNameSignalComponent {
     data = signal('Szczupły Zbyszek');
     
     doSomething() {
-    console.log(this.data()); // wywołanie this.data(), zwróci ostatnia wartość, bez rekalkulacji!
+    console.log(this.data()); // wywołanie this.data(), zwróci ostatnią wartość, bez rekalkulacji!
     }
 }
 ```
@@ -105,7 +105,7 @@ this.name.set('Grześ');
 // output:
 // SIGNAL computing concat
 ```
-Sygnały działają jak producer-consumer. Jeżeli ustawiamy nową wartość na sygnale, konsumer - `name()` zostanie powiadomiony o zmianie i funkcja `concat` zostanie przeliczona.
+Sygnały działają jak producer-consumer. Jeżeli ustawiamy nową wartość na sygnale, konsumer - `name()` otrzyma powiadomienie o zmianie i funkcja `concat` zostanie przeliczona.
 
 W przypadku rxjs zostaną wyemitowane dwa eventy. Wykorzystując dodatkowy operator - `distinctUntilChanged`, wynik byłby taki sam jak w przypadku sygnałów.
 
