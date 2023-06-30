@@ -34,7 +34,7 @@ Przykład prostego komponentu:
     standalone: true,
     imports: [CommonModule],
     template: `
-        <p>{{ name() }}</p>
+        <p>{{ '{{' }} name() }}</p>
         <button (click)="generateName()">Generate name</button>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +58,7 @@ Sygnał zawsze posiada wartość, dlatego możliwe jest odczytanie ostatniej war
     standalone: true,
     imports: [CommonModule],
     template: `
-        <p>{{data()}}</p>
+        <p>{{ '{{' }} data() }}</p>
         <button (click)="doSomething()">Do something</button>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,

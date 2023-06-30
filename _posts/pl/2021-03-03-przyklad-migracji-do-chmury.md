@@ -16,7 +16,7 @@ tags:
 description: "W tym wpisie chciałbym przedstawić jak wygląda migracja do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich."
 ---
 
-W poprzednim wpisie pt. ["Migracja do chmury - czyli od czego zacząć?"]({% post_url 2020-11-03-proces-migracji-do-chmury %})  
+W poprzednim wpisie pt. ["Migracja do chmury - czyli od czego zacząć?"]({% post_url pl/2020-11-03-proces-migracji-do-chmury %})  
 przedstawiłem etapy procesu migracji aplikacji do chmury, a także opisałem poszczególne strategie migracji.
 
 W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.

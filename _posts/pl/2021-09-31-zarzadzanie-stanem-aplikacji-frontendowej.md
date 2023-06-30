@@ -108,7 +108,7 @@ this.response$ = this.click$.pipe(
 );
 ```
 
-Jeśli na tym etapie potrzebujesz chwili przerwy na zrozumienie co dzieje się w tym kodzie, to polecam [wpis o RxJs]({% post_url pl/2020-01-09-rxjs-introduction %}) dostępny na łamach naszego bloga.
+Jeśli na tym etapie potrzebujesz chwili przerwy na zrozumienie co dzieje się w tym kodzie, to polecam [wpis o RxJs]({% post_url /pl/2020-01-09-rxjs-introduction %}) dostępny na łamach naszego bloga.
 
 Wracając do naszego efektu - w zasadzie większość mamy już napisaną! Pozostaje nam tylko kilka rzeczy:
 * efekt jest tak naprawdę serwisem, jakie znamy z codziennego pisania w Angularze, tworzymy zatem klasę `ActivityEffect` i dekorujemy ją przy pomocy `@Injectable()`.

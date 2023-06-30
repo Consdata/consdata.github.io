@@ -4,7 +4,7 @@ title:     RxJS z Angularem - programowanie reaktywne aplikacji frontendowej
 published: true
 lang: pl
 lang-ref:  rxjs-introduction
-date:      2020-01-09 08:00:00 +0100
+date:      2020-01-09T08:00:00+0100
 author:    kgabara
 image:     /assets/img/posts/2020-01-09-rxjs-wstep/RxJS.png
 tags:
