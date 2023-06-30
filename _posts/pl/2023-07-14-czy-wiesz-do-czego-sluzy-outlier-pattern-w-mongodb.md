@@ -55,3 +55,6 @@ Musimy zadbać o to, żeby dociągnąć potrzebne informacje dla dokumentów z `
 ## Zastosowania
 Inne zastosowania to relacje (polubienia, obserwowanie) w sieciach społecznościowych czy recenzje filmów. Popularne osoby, filmy, książki mogą zaburzyć standardowe zastosowania i typową liczbę powiązań.
 
+## Źródła
+- [https://www.mongodb.com/developer/products/mongodb/outlier-pattern/](https://www.mongodb.com/developer/products/mongodb/outlier-pattern/)
+- [https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design)
