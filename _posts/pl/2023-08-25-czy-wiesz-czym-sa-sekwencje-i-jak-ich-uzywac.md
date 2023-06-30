@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz czym są sekwencje i jak ich (nie) używać?"
-date:      2023-08-28T08:00:00+01:00
+date:      2023-08-25T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: bmitan
-image: /assets/img/posts/2023-07-28-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/sequence.webp
+image: /assets/img/posts/2023-07-25-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/sequence.webp
 tags:
 - sekwencje
 - bazy danych
