@@ -7,7 +7,7 @@ didyouknow: true
 lang: pl
 author: bmitan
 image: /assets/img/posts/2023-07-14-czy-wiesz-do-czego-sluzy-outlier-pattern-w-mongodb/outlier.webp
-description: Sygnały to nowa koncepcja w Angular, upraszcza ona tworzenie reaktywnych komponentów. Mogą one w przyszłości doprowadzić do usunięcia Zone.js z Angular.
+description: Wzorzec ten jest stosowany, kiedy większość danych można i warto zamodelować w jeden sposób, ale dla niewielkiego odsetka dokumentów, które odstają od normy, będzie to nieakceptowalne lub niemożliwe.
 tags:
 - mongodb
 - outlier pattern
