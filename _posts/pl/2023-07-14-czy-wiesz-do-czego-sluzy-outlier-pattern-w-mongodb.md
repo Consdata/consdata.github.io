@@ -50,7 +50,7 @@ Nadal większość dokumentów będzie przechowywać identyfikatory w polu `cust
 }
 ```
 
-Musimy zadbać o to, żeby dociągnąć potrzebne informacje dla dokumentów z `has_extras`. Powinno to być jednak robione w jednym miejscu w kodzie, a we wszystkich innych ta flaga i cały design powinny być tak naprawdę transparentne i nie mieć wpływu na resztę kodu aplikacji.
+Musimy zadbać o to, żeby dociągnąć potrzebne informacje dla dokumentów z `has_extras`. Warto jednak robić to w jednym miejscu w kodzie, a we wszystkich innych ta flaga i cały design powinny być tak naprawdę transparentne i nie mieć wpływu na resztę kodu aplikacji.
 
 ## Zastosowania
 Inne zastosowania to relacje (polubienia, obserwowanie) w sieciach społecznościowych czy recenzje filmów. Popularne osoby, filmy, książki mogą zaburzyć standardowe zastosowania i typową liczbę powiązań.
