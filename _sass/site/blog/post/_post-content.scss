@@ -1,6 +1,10 @@
 @-webkit-keyframes image-blur {
-  0% {filter: blur(10px);}
-  100% {filter: blur(0)}
+  0% {
+    filter: blur(10px);
+  }
+  100% {
+    filter: blur(0)
+  }
 }
 
 .post-big-title {
@@ -36,8 +40,12 @@
   letter-spacing: $general-letter-spacing;
 
   code {
+    font-family: 'Roboto Mono';
     font-size: 15px;
-    font-weight: 600;
+    background: $color-code-background;
+    border-radius: 4px;
+    padding: 1px 4px;
+    display: inline-block;
   }
 
   p {
@@ -84,7 +92,7 @@
   z-index: $header-z-index + 1;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.9);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .modal-content {
