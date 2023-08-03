@@ -17,21 +17,21 @@ tags:
 
 IndexedDB to wbudowana w przeglądarkę internetową baza danych typu NoSQL. Przechowuje ona dane lokalnie w przeglądarce,
 co pozwala na korzystanie z nich nawet wtedy, gdy urządzenie nie ma połączenia z internetem. Dzięki temu IndexedDB
-stanowi świetną opcję dla aplikacji internetowych i jest dobrą alternatywą dla localStorage.
+stanowi świetną opcję dla aplikacji internetowych i jest dobrą alternatywą dla Local Storage.
 
-W przeciwieństwie do localStorage, dane w IndexedDB nie są automatycznie usuwane przez przeglądarkę. Zostają one
+W przeciwieństwie do Local Storage, dane w IndexedDB nie są automatycznie usuwane przez przeglądarkę. Zostają one
 przechowywane trwale do momentu, gdy użytkownik zdecyduje się usunąć je ręcznie lub gdy aplikacja, która korzysta z
 IndexedDB, wykona odpowiednie operacje usuwania.
 
 Dodatkowo IndexedDB pozwala na:
 
 - obsługę transakcji,
-- tworzenie zapytań range queries,
+- tworzenie zapytań typu range query,
 - obsługę indeksów,
-- przechowywanie znacznie większej ilości danych niż localStorage i cookies.
+- przechowywanie znacznie większej ilości danych niż Local Storage i cookies.
 
 ## Maksymalna ilość danych przechowywanych w IndexedDB
-Maksymalna ilość danych, jaką można przechowywać w IndexedDB, różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
+Maksymalna ilość danych jaką można przechowywać w IndexedDB różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
 
 ### Firefox
 Firefox nakłada ograniczenia w zależności od rozmiaru profilu użytkownika na dysku:
@@ -45,7 +45,7 @@ Jeśli nasze urządzenie ma dysk o pojemności 1000 GB, Firefox pozwoli źródł
 - 500 GB danych (50% całkowitego rozmiaru dysku).
 
 ### Chrome i przeglądarki oparte na projekcie open-source Chromium (np. Edge)
-Przeglądarki te pozwalają źródłu na przechowywanie do 60% całkowitego rozmiaru dysku.
+Przeglądarki te pozwalają źródłu na zajęcie do 60% całkowitego rozmiaru dysku.
 Przykładowo, jeśli urządzenie ma dysk o pojemności 1 TB, przeglądarka pozwoli źródłu na wykorzystanie do 600 GB.
 
 ### Safari
@@ -61,7 +61,8 @@ Listę przeglądarek wspierających opisywany mechanizm możemy znaleźć [tutaj
 W celu rozpoczęcia prac z IndexedDB musimy najpierw "otworzyć" bazę danych (połączyć się z nią).
 
 ```javascript
-//Otwieranie połączenia z bazą danych. Jeśli baza nie istnieje to zostanie utworzona
+// Otwieranie połączenia z bazą danych. 
+// Jeśli baza nie istnieje to zostanie utworzona.
 
 const dbName = 'MyDatabase';
 const dbVersion = 1;
@@ -70,14 +71,14 @@ const request = indexedDB.open(dbName, dbVersion);
 
 Aby podejrzeć bazę danych, musimy otworzyć konsolę deweloperską (devTools), przejść do zakładki "Application", następnie w sekcji "Storage" znajduje się "IndexedDB", a w niej utworzone bazy danych.
 
-![](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_db.jpg)
+![Umiejscownienie IndexedDB w devTools](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_db.jpg)
 
-Możemy utworzyć wiele baz danych o różnych nazwach, ale istnieją one w ramach jednego źródła (domeny/protokołu/portu).
+Możemy utworzyć wiele baz danych o różnych nazwach, ale istnieją one w ramach jednego źródła (ang. *origin* - protokół warstwy aplikacji, domena, port).
 Strony internetowe działające w ramach tej samej domeny mają dostęp do swoich własnych baz danych, ale nie mogą uzyskać
 dostępu do baz danych utworzonych na innych domenach. Poniżej zamieszczam źródło, dla którego została utworzona nasza
 baza danych:
 
-![](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_origin.jpg)
+![Weryfikacja źródła bazy danych w devTools](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_origin.jpg)
 
 ### Wersjonowanie
 
@@ -87,7 +88,7 @@ idzie, zapobiega powtórnemu tworzeniu istniejących elementów struktury danych
 
 Aby wersjonować bazę danych w IndexedDB, możemy określić numer wersji bazy danych podczas jej otwierania, używając
 drugiego parametru w metodzie `open()` (tak jak w kodzie powyżej). Jeśli numer wersji jest większy niż wersja
-istniejącej bazy danych, zostanie wywołany odpowiedni callback aktualizacji, który umożliwi dodanie nowych object store
+istniejącej bazy danych, zostanie wywołany odpowiedni callback aktualizacji, który umożliwi dodanie nowego object store 
 lub indeksów.
 
 Warto zauważyć, że próba utworzenia object store lub indeksu, który już istnieje w bazie danych, spowoduje
@@ -116,7 +117,8 @@ liczba, data, ciąg znaków, dane binarne lub tablica. Klucze mogą być generow
 ### Dodawanie object store, przykład:
 
 ```javascript
-//Tworzenie object store o nazwie 'Customers', z polem 'id' jako kluczem podstawowy
+// Tworzenie object store o nazwie 'Customers', z polem 'id' 
+// jako kluczem podstawowym
 
 let db = request.result;
 const customersObjectStoreKey = 'Customers';
@@ -145,42 +147,41 @@ db.deleteObjectStore('Customers');
 ## Operacje na danych
 
 Wszystkie operacje na danych w IndexedDB muszą być wykonywane w ramach transakcji, co pozwala na zapewnienie spójności
-danych. Transakcja w IndexedDB jest zbiorem operacji, które wykonają się w całości lub nie wykona się żadna z nich.
+danych. Transakcja w IndexedDB jest zbiorem operacji, które wykonają się atomowo - wszystkie lub, w przypadku błędu, nie wykona się żadna z nich.
 Zarządzanie danymi w transakcyjny sposób pomaga w unikaniu konfliktów i utrzymaniu
-spójności danych nawet w przypadku równoczesnych operacji na bazie danych. Jest to ważne w przypadku aplikacji, które
-działają w środowisku wielu użytkowników lub wymagają pracy w trybie offline.
+spójności danych nawet w przypadku równoczesnych operacji na bazie danych. Jest to ważne w przypadku aplikacji, w których
+odbywa sie przetwarzanie równoległe (np: wielu użytkowników pracujacych równolegle) lub wymagają pracy w trybie offline.
 
-Poprawiony przykład tworzenia transakcji:
+Przykład tworzenia transakcji:
 
 ```javascript
-const customersObjectStoreKey = 'Customers';
+const customersObjectStore = 'Customers';
 const transactionType = 'readwrite';
 
-const transaction = db.transaction(customersObjectStoreKey, transactionType);
+const transaction = db.transaction(customersObjectStore, transactionType);
 
-//Pobranie object store dla klientów w celu wykonywania dowolnej operacji
+// Pobranie object store dla klientów w celu wykonywania dowolnej operacji
 const customers = transaction.objectStore(customersObjectStoreKey);
 ```
 
 Typy transakcji:
-
 - `readonly` - umożliwia jedynie odczyt danych (opcja domyślna).
 - `readwrite` - umożliwia zarówno odczyt, jak i zapis danych, ale nie pozwala na tworzenie, usuwanie ani modyfikację
   object store.
 
 Przykładowy kod dodający obiekt do naszej bazy danych:
 ```javascript
-//Rozpoczynanie transakcji na object store 'Customers'
+// Rozpoczynanie transakcji na object store 'Customers'
 const transaction = db.transaction(customersObjectStoreKey, 'readwrite');
 const customers = transaction.objectStore(customersObjectStoreKey);
 
-//Dodawanie danych do object store
+// Dodawanie danych do object store
 const customer = { id: 1, name: 'Jan', surname: 'Kowalski' };
 const transactioRequest = customers.add(customer);
 ```
 
 Podgląd bazy danych po dodaniu obiektu:
-![](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_with_data.jpg)
+![Podgląd stanu bazy danych w devTools po dodaniu obiektu](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_with_data.jpg)
 
 Podstawowe operacje, które można wykonać w ramach transakcji to:
 
@@ -199,12 +200,11 @@ tematu i skorzystania z dodatkowych źródeł zamieszczonych poniżej, które do
 temat tego mechanizmu.
 
 ## Playground
-
-https://jsfiddle.net/wstolarski_consdata/awy94tsm/1/
+[https://jsfiddle.net/wstolarski_consdata/awy94tsm/1/](https://jsfiddle.net/wstolarski_consdata/awy94tsm/1/)
 
 ## Źródła
 
-- https://javascript.info/indexeddb
-- https://www.freecodecamp.org/news/how-indexeddb-works-for-beginners/
-- https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
-- https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/
+- [https://javascript.info/indexeddb](https://javascript.info/indexeddb)
+- [https://www.freecodecamp.org/news/how-indexeddb-works-for-beginners/](https://www.freecodecamp.org/news/how-indexeddb-works-for-beginners/)
+- [https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- [https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/)
