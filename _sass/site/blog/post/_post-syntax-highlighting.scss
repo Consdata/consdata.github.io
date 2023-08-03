@@ -14,12 +14,12 @@ div.highlight {
     max-height: 600px;
   }
 
-
   pre,
   span,
   div,
   code {
-    font-family: 'Ubuntu Mono', monospace;
+    font-family: 'Roboto Mono', monospace;
+    background: unset;
   }
 
   .c     { color: #998; font-style: italic } // Comment
