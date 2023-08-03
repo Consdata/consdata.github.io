@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Czy wiesz czym jest IndexedDB?"
+title: "IndexedDB - narzędzie do przechowywania danych w przeglądarce"
 date: 2023-07-24T11:00:00+01:00
 published: true
-didyouknow: true
+didyouknow: false
 lang: pl
 author: wstolarski
 image: /assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/post_img.jpg
@@ -30,6 +30,28 @@ Dodatkowo IndexedDB pozwala na:
 - obsługę indeksów,
 - przechowywanie znacznie większej ilości danych niż localStorage i cookies.
 
+## Maksymalna ilość danych przechowywanych w IndexedDB
+Maksymalna ilość danych, jaką można przechowywać w IndexedDB, różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
+
+### Firefox
+Firefox nakłada ograniczenia w zależności od rozmiaru profilu użytkownika na dysku:
+- 10% całkowitego rozmiaru dysku dla profilu użytkownika,
+- 10 GB dla wszystkich stron z tej samej domeny (limity grupowe),
+- Do 50% całkowitego rozmiaru dysku, z ograniczeniem do 8 TB, dla stron z przyznaną pamięcią trwałą.
+
+#### Przykład:
+Jeśli nasze urządzenie ma dysk o pojemności 1000 GB, Firefox pozwoli źródłu na przechowywanie do:
+- 10 GB danych (limit grupy dla tej samej domeny),
+- 500 GB danych (50% całkowitego rozmiaru dysku).
+
+### Chrome i przeglądarki oparte na projekcie open-source Chromium (np. Edge)
+Przeglądarki te pozwalają źródłu na przechowywanie do 60% całkowitego rozmiaru dysku.
+Przykładowo, jeśli urządzenie ma dysk o pojemności 1 TB, przeglądarka pozwoli źródłu na wykorzystanie do 600 GB.
+
+### Safari
+W Safari źródło otrzymuje początkowy limit 1 GB.
+Gdy źródło osiągnie ten limit, Safari prosi użytkownika o zgodę na przechowywanie większej ilości danych.
+
 ## Kompatybilność i wsparcie przeglądarek
 
 Listę przeglądarek wspierających opisywany mechanizm możemy znaleźć [tutaj](https://caniuse.com/indexeddb).
@@ -46,7 +68,7 @@ const dbVersion = 1;
 const request = indexedDB.open(dbName, dbVersion);
 ```
 
-Aby podejrzeć otworzoną bazę danych, musimy otworzyć konsolę deweloperską (devTools), przejść do zakładki "Application", następnie w sekcji "Storage" znajduje się "IndexedDB", a w niej utworzone bazy danych.
+Aby podejrzeć bazę danych, musimy otworzyć konsolę deweloperską (devTools), przejść do zakładki "Application", następnie w sekcji "Storage" znajduje się "IndexedDB", a w niej utworzone bazy danych.
 
 ![](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_db.jpg)
 
@@ -85,7 +107,7 @@ IndexedDB dane są reprezentowane jako obiekty JavaScript, które można przeksz
 tekstowego przed zapisaniem ich w bazie danych.
 
 IndexedDB dodatkowo obsługuje przechowywanie danych w różnych formatach, takich jak typy wbudowane JavaScript (np.
-liczby, ciągi znaków, daty), tablice oraz dane binarne. Warto zaznaczyć, że obiekty, które nie można serializować, nie
+liczby, ciągi znaków, daty), tablice oraz dane binarne. Warto zaznaczyć, że obiekty, których nie można serializować, nie
 mogą być umieszczone w bazie.
 
 Dla każdej wartości w object store musi istnieć unikalny klucz (identyfikator). Klucz musi być jednym z tych typów:
@@ -172,7 +194,7 @@ Podstawowe operacje, które można wykonać w ramach transakcji to:
 
 ## Podsumowanie
 
-W artykule przedstawione zostały podstawowe koncepcje i operacje na danych w kontekście IndexedDB. Zachęca do zgłębienia
+W artykule przedstawione zostały podstawowe koncepcje i operacje na danych w kontekście IndexedDB. Zachęcam do zgłebienia
 tematu i skorzystania z dodatkowych źródeł zamieszczonych poniżej, które dostarczą bardziej zaawansowanych informacji na
 temat tego mechanizmu.
 
@@ -185,3 +207,4 @@ https://jsfiddle.net/wstolarski_consdata/awy94tsm/1/
 - https://javascript.info/indexeddb
 - https://www.freecodecamp.org/news/how-indexeddb-works-for-beginners/
 - https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+- https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/
