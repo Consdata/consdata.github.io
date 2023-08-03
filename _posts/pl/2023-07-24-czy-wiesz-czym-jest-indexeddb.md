@@ -31,7 +31,7 @@ Dodatkowo IndexedDB pozwala na:
 - przechowywanie znacznie większej ilości danych niż Local Storage i cookies.
 
 ## Maksymalna ilość danych przechowywanych w IndexedDB
-Maksymalna ilość danych jaką można przechowywać w IndexedDB różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
+Maksymalna ilość danych, którą można przechowywać w IndexedDB różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
 
 ### Firefox
 Firefox nakłada ograniczenia w zależności od rozmiaru profilu użytkownika na dysku:
@@ -150,7 +150,7 @@ Wszystkie operacje na danych w IndexedDB muszą być wykonywane w ramach transak
 danych. Transakcja w IndexedDB jest zbiorem operacji, które wykonają się atomowo - wszystkie lub, w przypadku błędu, nie wykona się żadna z nich.
 Zarządzanie danymi w transakcyjny sposób pomaga w unikaniu konfliktów i utrzymaniu
 spójności danych nawet w przypadku równoczesnych operacji na bazie danych. Jest to ważne w przypadku aplikacji, w których
-odbywa sie przetwarzanie równoległe (np: wielu użytkowników pracujacych równolegle) lub wymagają pracy w trybie offline.
+odbywa sie przetwarzanie równoległe (np. wielu użytkowników pracujących równolegle) lub wymagają pracy w trybie offline.
 
 Przykład tworzenia transakcji:
 
