@@ -19,8 +19,7 @@ IndexedDB to wbudowana w przeglądarkę internetową baza danych typu NoSQL. Prz
 co pozwala na korzystanie z nich nawet wtedy, gdy urządzenie nie ma połączenia z internetem. Dzięki temu IndexedDB
 stanowi świetną opcję dla aplikacji internetowych i jest dobrą alternatywą dla Local Storage.
 
-W przeciwieństwie do Local Storage, dane w IndexedDB nie są automatycznie usuwane przez przeglądarkę. Zostają one
-przechowywane trwale do momentu, gdy użytkownik zdecyduje się usunąć je ręcznie lub gdy aplikacja, która korzysta z
+W przeciwieństwie do Local Storage, dane w IndexedDB nie są automatycznie usuwane przez przeglądarkę. Są one trwale przechowywane do momentu, gdy użytkownik zdecyduje się usunąć je ręcznie lub gdy aplikacja, która korzysta z
 IndexedDB, wykona odpowiednie operacje usuwania.
 
 Dodatkowo IndexedDB pozwala na:
@@ -31,16 +30,16 @@ Dodatkowo IndexedDB pozwala na:
 - przechowywanie znacznie większej ilości danych niż Local Storage i cookies.
 
 ## Maksymalna ilość danych przechowywanych w IndexedDB
-Maksymalna ilość danych, którą można przechowywać w IndexedDB różni się w zależności od przeglądarki internetowej, a ograniczenia te mogą wynosić do kilku gigabajtów.
+Maksymalna ilość danych, którą można przechowywać w IndexedDB różni się w zależności od przeglądarki internetowej, ale zwykle jest to kilka gigabajtów.
 
 ### Firefox
 Firefox nakłada ograniczenia w zależności od rozmiaru profilu użytkownika na dysku:
 - 10% całkowitego rozmiaru dysku dla profilu użytkownika,
 - 10 GB dla wszystkich stron z tej samej domeny (limity grupowe),
-- Do 50% całkowitego rozmiaru dysku, z ograniczeniem do 8 TB, dla stron z przyznaną pamięcią trwałą.
+- Do 50% całkowitego rozmiaru dysku, z ograniczeniem do 8 TB dla stron z przyznaną pamięcią trwałą.
 
 #### Przykład:
-Jeśli nasze urządzenie ma dysk o pojemności 1000 GB, Firefox pozwoli źródłu na przechowywanie do:
+Jeśli nasze urządzenie ma dysk o pojemności 1000 GB, Firefox pozwoli źródłu na przechowanie:
 - 10 GB danych (limit grupy dla tej samej domeny),
 - 500 GB danych (50% całkowitego rozmiaru dysku).
 
