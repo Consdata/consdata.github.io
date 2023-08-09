@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "IndexedDB - narzędzie do przechowywania danych w przeglądarce"
-date: 2023-07-24T11:00:00+01:00
+date: 2023-08-09T08:00:00+02:00
 published: true
 didyouknow: false
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/post_img.jpg
+image: /assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/post_img.jpg
 description:
 tags:
   - indexeddb
@@ -70,14 +70,14 @@ const request = indexedDB.open(dbName, dbVersion);
 
 Aby podejrzeć bazę danych, musimy otworzyć konsolę deweloperską (devTools), przejść do zakładki "Application", następnie w sekcji "Storage" znajduje się "IndexedDB", a w niej utworzone bazy danych.
 
-![Umiejscownienie IndexedDB w devTools](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_db.jpg)
+![Umiejscownienie IndexedDB w devTools](/assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/indexeddb_db.jpg)
 
 Możemy utworzyć wiele baz danych o różnych nazwach, ale istnieją one w ramach jednego źródła (ang. *origin* - protokół warstwy aplikacji, domena, port).
 Strony internetowe działające w ramach tej samej domeny mają dostęp do swoich własnych baz danych, ale nie mogą uzyskać
 dostępu do baz danych utworzonych na innych domenach. Poniżej zamieszczam źródło, dla którego została utworzona nasza
 baza danych:
 
-![Weryfikacja źródła bazy danych w devTools](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_origin.jpg)
+![Weryfikacja źródła bazy danych w devTools](/assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/indexeddb_origin.jpg)
 
 ### Wersjonowanie
 
@@ -180,7 +180,7 @@ const transactioRequest = customers.add(customer);
 ```
 
 Podgląd bazy danych po dodaniu obiektu:
-![Podgląd stanu bazy danych w devTools po dodaniu obiektu](/assets/img/posts/2023-07-24-czy-wiesz-czym-jest-indexeddb/indexeddb_with_data.jpg)
+![Podgląd stanu bazy danych w devTools po dodaniu obiektu](/assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/indexeddb_with_data.jpg)
 
 Podstawowe operacje, które można wykonać w ramach transakcji to:
 
