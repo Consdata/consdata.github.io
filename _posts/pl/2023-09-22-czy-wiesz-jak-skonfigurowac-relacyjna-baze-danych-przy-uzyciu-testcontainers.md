@@ -1,7 +1,7 @@
 ---
 layout:    post
-title:     "Czy wiesz jak skonfigurować relacyjną bazę danych przy użyciu TestContainers?"
-date:      2023-08-11T08:00:00+01:00
+title:     "Czy wiesz, jak skonfigurować relacyjną bazę danych przy użyciu TestContainers?"
+date:      2023-09-22T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
@@ -32,7 +32,7 @@ Dodajemy zależności:
 </dependency>
 ```
 
-Ustawiamy konfigurację testową korzystając z JDBC URL scheme:
+Ustawiamy konfigurację testową, korzystając z JDBC URL scheme:
 ```yaml
 datasource:
   url: jdbc:tc:db2:///databasename
@@ -50,7 +50,7 @@ Mamy też możliwość uruchomienia skryptu lub funkcji inicjującej bazę danyc
 url: jdbc:tc:db2:///databasename?TC_INITSCRIPT=init.sql # Konfiguracja pliku inicjującego bazę
 url: jdbc:tc:db2:///databasename?TC_INITFUNCTION=org.testcontainers.jdbc.JDBCDriverTest::sampleInitFunction  # Konfiguracja funkcji inicjującej
 ```
-To najszybszy i najłatwiejszy sposób konfiguracji bazy danych z TestContainers. Jeśli potrzebujemy więcej konfiguracji, lub też chcemy wykorzystać kontener z bazą w inny sposób możemy dostarczyć go ręcznie.
+To najszybszy i najłatwiejszy sposób konfiguracji bazy danych z TestContainers. Jeśli potrzebujemy więcej konfiguracji lub też chcemy wykorzystać kontener z bazą w inny sposób, możemy dostarczyć go ręcznie.
 Warto wspomnieć o dużej wadzie tego rozwiązania - czas uruchomienia kontenera z DB2 to blisko 3 minuty.
 
 ## Przykłady innych konfiguracji
