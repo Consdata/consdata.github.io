@@ -1,18 +1,18 @@
 ---
 layout:    post
-title:     "Czy wiesz czym są sekwencje i jak ich (nie) używać?"
-date:      2023-08-25T08:00:00+01:00
+title:     "Czy wiesz, czym są sekwencje i jak ich (nie) używać?"
+date:      2023-08-25T12:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: bmitan
-image: /assets/img/posts/2023-07-25-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/sequence.webp
+image: /assets/img/posts/2023-08-25-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/sequence.webp
 tags:
 - sekwencje
 - bazy danych
 ---
 
-W sql możemy utworzyć kolumnę tak, żeby jej wartość była automatycznie inkrementowana (dekrementowana), co jest zwłaszcza przydatne w przypadku klucza głównego. W pewnych przypadkach możemy jednak zdecydować, żeby zamiast tego skorzystać z sekwencji.
+W sql możemy utworzyć kolumnę tak, żeby jej wartość była automatycznie inkrementowana (dekrementowana), co jest przydatne zwłaszcza w przypadku klucza głównego. W pewnych sytuacjach możemy jednak zdecydować, żeby zamiast tego skorzystać z sekwencji.
 
 W sql można utworzyć sekwencję, która będzie generatorem kolejnych wartości numerycznych zgodnie ze swoją specyfikacją. Można określić m.in. wartość minimalną i maksymalną lub ich brak, wartość początkową, o ile zwiększać (lub zmniejszać) kolejne wartości, typ, cykliczność lub jej brak oraz to, czy korzystać z cache'a i jakiej wielkości. Te i inne parametry są często opcjonalne, bo mają swoje domyślne wartości i to jedna z pułapek, które opiszę.
 
@@ -53,7 +53,7 @@ create table TASK (
 
 Wydawałoby się, że w drugą stronę nie ma większego problemu. Jeśli sekwencja ma typ BIGINT, a kolumna INTEGER i sekwencja nie jest używana dla żadnej innej tabeli, to widocznie oceniliśmy, tworząc tabelę, że nigdy nie dojdziemy do tak dużych wartości, żeby mieć problem. Nie zawsze...
 
-Zakładając, że w tabeli TASK jest bardzo dużo zadań, których szybko się pozbywamy, uznaliśmy, że najlepsze będzie użycie cyklu - kiedy sekwencja dobije do maksymalnej wartości, generuje minimalną wartość ( i odwrotnie w przypadku sekwencji malejącej). Nie musimy się wtedy martwić ograniczeniami maksymalnej wartości użytego typu numerycznego.
+Zakładając, że w tabeli TASK jest bardzo dużo zadań, których szybko się pozbywamy, uznaliśmy, że najlepsze będzie użycie cyklu - kiedy sekwencja dobije do maksymalnej wartości, generuje minimalną wartość (i odwrotnie w przypadku sekwencji malejącej). Nie musimy się wtedy martwić ograniczeniami maksymalnej wartości użytego typu numerycznego.
 
 Niestety nasza sekwencja przekroczy maksymalną wartość INTEGERa i nie zresetuje się jeszcze, bo jest typu BIGINT. Jednak insert wiersza z taką wartością nie będzie dozwolony.
 
@@ -67,4 +67,4 @@ create sequence ORDER_SEQ
     no maxvalue
     cache 1000;
 ```
-Warto pamiętać o zdefiniowaniu cache'a, jeśli to możliwe, a zależy nam na wydajności zapytań. Wówczas naraz zostanie zaalokowanych w pamięci więcej wartości i przy odpowiednio dużym cache'u osiągniemy wydajność insertów z zastosowaniem sekwencji zbliżoną do insertów z zastosowaniem kolumny identity. W tym przypadku możemy "zgubić" niektóre wcześniej scache'owane wartości w przypadku awarii i mogą się zdarzyć przerwy w wartościach kolejnych wierszy.
+Warto pamiętać o zdefiniowaniu cache'a, jeśli to możliwe, a zależy nam na wydajności zapytań. Wówczas naraz zostanie zaalokowanych w pamięci więcej wartości i przy odpowiednio dużym cache'u osiągniemy wydajność insertów z zastosowaniem sekwencji zbliżoną do insertów z zastosowaniem kolumny identity. W takiej sytuacji możemy "zgubić" niektóre wcześniej scache'owane wartości w przypadku awarii i mogą się zdarzyć przerwy w wartościach kolejnych wierszy.
