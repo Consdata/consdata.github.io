@@ -1,12 +1,12 @@
 ---
 layout:    post
-title:     "Czy wiesz po co stosuje się @SneakyThrows z biblioteki Lombok?"
-date:      2023-09-08T08:00:00+01:00
+title:     "Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok?"
+date:      2023-09-22T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: kdudek
-image: /assets/img/posts/2023-09-08-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/sneaky.jpg
+image: /assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/sneaky.jpg
 tags:
 - java
 - lombok
@@ -24,7 +24,7 @@ private static void divideByZero() {
 }
 ```
 
-`Checked exception` to wyjątek reprezentujący przewidywalną, błędną sytuację, która może wystąpić nawet w przypadku poprawnej logiki programu - przykładowo próba otwarcia pliku, który nie istnieje, spowoduje rzucenie wyjątku `FileNotFoundException`. Wyjątki tego rodzaju są weryfikowane w czasie kompilacji, dlatego Java zmusza nas do ich obsługi - albo poprzez słowo kluczowe throws albo poprzez złapanie wyjątku w bloku `try-catch`:
+`Checked exception` to wyjątek reprezentujący przewidywalną, błędną sytuację, która może wystąpić nawet w przypadku poprawnej logiki programu - przykładowo próba otwarcia pliku, który nie istnieje, spowoduje rzucenie wyjątku `FileNotFoundException`. Wyjątki tego rodzaju są weryfikowane w czasie kompilacji, dlatego Java zmusza nas do ich obsługi - albo poprzez słowo kluczowe throws, albo poprzez złapanie wyjątku w bloku `try-catch`:
 - Przykład obsługi przez słowo kluczowe `throws` - przekazanie wyjątku w dół stosu wywołań:
   ```java
   private static void openFile() throws FileNotFoundException {
@@ -103,7 +103,7 @@ public void tryToDeleteNotExistingFile() {
    }
 }
 ```
-Do adnotacji `@SneakyThrows` można przekazać dowolną liczbę wyjątków. Jeśli nie podamy żadnego to adnotacja ta uwzględni dowolny wyjątek. Należy pamiętać także o tym, że `@SneakyThrows` nie dziedziczy.
+Do adnotacji `@SneakyThrows` można przekazać dowolną liczbę wyjątków. Jeśli nie podamy żadnego, to adnotacja ta uwzględni dowolny wyjątek. Należy pamiętać także o tym, że `@SneakyThrows` nie dziedziczy.
 
 ## Kiedy używać?
 
