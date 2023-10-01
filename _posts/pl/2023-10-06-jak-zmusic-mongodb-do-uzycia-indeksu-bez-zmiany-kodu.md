@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Jak zmusić mongodb do użycia indeksu bez zmiany kodu - zastosowanie index filter"
-date:      2023-10-01T08:00:00+01:00
+date:      2023-10-06T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
