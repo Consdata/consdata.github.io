@@ -17,7 +17,7 @@ tags:
 
 ## Optymalizotory zapytań
 
-Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla mongodb możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjch i samodzielnie optymalizować wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
+Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla mongodb możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjch i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
 
 ## Analiza problemów wydajnościowych
 
@@ -1404,7 +1404,90 @@ Przy czym jeden z planów odrzuconych mógł zwrócić wynik po odwiedzeniu 75 d
 ```
 ## Dlaczego mongodb nie używa indeksu
 
+W tym miejscu należy się zastanowić w jaki sposób mongodb wybiera najlepszy plan zapytania. Z pierwszego punktu tego wpisu wiemy, że optmalizator bazuje na statystykach zbieranych podczas działania bazy. Potrzebujemy jeszcze wiedzieć w jaki sposób budowane są te statystyki. W opisywanym przypadku to właśnie tutaj kryje się rozwiązanie naszego problemu.
+
+Optymalizator mongodb cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
+
+![Algorytm optymalizatora](/assets/img/posts/2023-10-06-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg)
+
+Kluczem w cachu planów zapytań jest kształt zapytania [query-shape](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-query-shape). Na kształt zapytania składają się:
+- predykat zapytania (czyli to po czym filtrujemy kolekcję),
+- projekcja,
+- sposób sortowania,
+- [collation](https://www.mongodb.com/docs/manual/reference/collation/#std-label-collation).
+
+Uzbrojeni w tą wiedzę przeanalizowaliśmy jakie zapytania kieruje do mongodb nasza aplikacja. Okazało się, że w większości przypadków aplikacja odpytuje bazę o pojedynczą wartość pola `formFields.formInstanceNumber.value`. Tak więc w klauzuli `in` znajduje się jedna wartość. Dla takiej postaci zapytania optymalizator wybierał plan, który nie uwzględniał oczekiwanego przez nas indeksu. Taki plan trafiał do cache'a planów zapytań. Od czasu do czasu zdarzał się jednak klient systmu, dla którego zapytanie zawierało wiele wartości w klauzuli `in`. Kształt zapytania pozostawał ten sam więc mongodb nadal używało planu, który znajdował się w cache'u. W ten sposób, dla klienta, który używał systemu w szerszym zakresie niż pozostali dostawaliśmy timeout. Rozwiązaniem tego problemu mogło by być takie dobranie zapytań, aby klienci z pojedynczą wartością w klauzuli `in` posługiwali się innym kształtem zaytania niż klienci z wieloma wartościami. To wymagało by jednak zmiany w kodach systemu.  
+
 ## Wymuszenie użycia indeksu na live'ie
+
+MongoDB daje nam jednak możliwość na wymuszenie użycia indeksu dla określonego kształtu zapytania. Taką konfigurację można zastosować na działającym systemie i działa ona natychmiast. Należy użyć polecenia: `planCacheSetFilter`. W naszej sytuacji użyliśmy następującej komendy:
+
+```json
+db.runCommand(
+ {
+  planCacheSetFilter: "formModel",
+  query: {
+      "formFields.formInstanceNumber.value" : {
+        "$in" : [
+          "COR4237202310111009162413",
+          "COR4237202310111013462417",
+          "COR4237202310111019332424",
+          "COR4237202310111021092426",
+          "COR4237202310111025402435",
+          "COR4237202310111029522437",
+          "COR4237202310111037172450",
+          "COR4237202310111039252454",
+          "COR4736202212011044172348",
+          "COR4736202212011048012354",
+          "COR4736202212011052562365",
+          "COR4736202212011054372367",
+          "COR4736202212011057402371",
+          "COR4237202310111105342487",
+          "COR4237202310111107172490",
+          "COR4237202310111109112491",
+          "COR4237202310111112132495",
+          "COR4237202310111118142499",
+          "COR4237202310111120472501",
+          "COR4736202212011126462396",
+          "COR4736202212011128092400",
+          "COR4736202212011131232402",
+          "COR4736202212011136292409",
+          "COR4736202212011137482414"
+        ]
+      },
+      "formType" : "corpo_reset_balance"
+    },      
+    projection : {
+      "formFields.GesComplexComponent5.GesTileGroup1" : 1,
+      "formType" : 1,
+      "formFields.currentYear" : 1,
+      "formFields.GesComplexComponent1.transferAccount" : 1,
+      "formFields.startTime" : 1,
+      "formFields.finishTime" : 1,
+      "formFields.GesComplexComponent7.GesTileGroup1" : 1,
+      "formFields.formInstanceNumber" : 1,
+      "formFields.kozbeDescription" : 1,
+      "formFields.operationIdFromBDB" : 1,
+      "formFields.CorpoSegment" : 1,
+      "formFields.transferTime" : 1,
+      "formFields.GesComplexComponent1.beneficiaryName" : 1,
+      "formFields.formProcessingStatus" : 1,
+      "formFields.GesComplexComponent2.GesFrontendComponent2" : 1,
+      "formFields.GesComplexComponent3.GesTextField1" : 1,
+      "lastUpdateTime" : 1
+    },
+    sort : {
+      "_id" : -1
+    },
+    indexes: [
+    {"formFields.formInstanceNumber.value" : 1}
+    ]
+ }
+)
+```
+W ten sposób wymuszamy na mongodb używanie ineksu na polu `formFields.formInstanceNumber.value` w zapytaniach o podanym kształcie. Być może zapytania dla pojedynczych wartości będą trochę mniej optymalne, ale ta za to dużo szybciej wykonają się zapytania dla dużej liczby wartości w klauzuli `in`.
+
+**Uwaga! Zmiana ta działa do czasu restartu mongodb**, nie jest więc docelowym rozwiązaniem, ale daje czas na uzyskanie satysfakcjonującego rozwiązania w kodzie.
 
 ## Wnioski
 
