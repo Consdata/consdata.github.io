@@ -13,9 +13,9 @@ tags:
 - errorhandler
 ---
 
-W Angularze istnieje ErrorHandler, jest to hook do scentralizowanej obsługi błędów. Domyślny ErrorHandler wyświetla jedynie błędy na konsoli. Jeżeli chcemy wyłapać i obsłużyć nieobsłużone błędy, należy dodać implementację ErrorHandlera. Pokażę jak to zrobić na prostym przykładzie.
+W Angularze istnieje ErrorHandler, jest to hook do scentralizowanej obsługi błędów. Domyślny ErrorHandler wyświetla jedynie błędy na konsoli. Jeżeli chcemy wyłapać i obsłużyć nieobsłużone błędy, należy dodać implementację ErrorHandlera. Pokażę, jak to zrobić na prostym przykładzie.
 
-W module, należy dodać providera:
+W module należy dodać providera:
 ```typescript
 providers: [
     {provide: ErrorHandler, useClass: GlobalErrorHandler}
@@ -82,6 +82,6 @@ export class AppComponent {
 }
 ```
 
-Powyższa implementacja jest tylko uproszczonym przykładem ale pokazuje, jak można obsłużyć niespodziewane wyjątki.
+Powyższa implementacja jest tylko uproszczonym przykładem, ale pokazuje, jak można obsłużyć niespodziewane wyjątki.
 
 
