@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Jak zmusić mongodb do użycia indeksu bez zmiany kodu - zastosowanie index filter"
+title:     "Jak zmusić MongoDB do użycia indeksu bez zmiany kodu - zastosowanie index filter"
 date:      2023-10-13T08:00:00+01:00
 published: true
 didyouknow: false
@@ -17,11 +17,11 @@ tags:
 
 ## Optymalizatory zapytań
 
-Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla mongodb możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjach i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
+Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla MongoDB możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjach i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
 
 ## Analiza problemów wydajnościowych
 
-Jeżeli mamy podejrzenie, że problemy z wydajnością naszego systemu mogą być związane z bazą mongodb istnieje dość prosty sposób, który pozwala na potwierdzenie lub wykluczenie takiej tezy. Należy mianowicie ustawić próg czasowy, przy którym mongodb będzie logowało przekraczające go zapytania:
+Jeżeli mamy podejrzenie, że problemy z wydajnością naszego systemu mogą być związane z bazą MongoDB istnieje dość prosty sposób, który pozwala na potwierdzenie lub wykluczenie takiej tezy. Należy mianowicie ustawić próg czasowy, przy którym MongoDB będzie logowało przekraczające go zapytania:
 [https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
 
 W analizowanym przez nas przypadku, w logu diagnostycznym znajdowało się wiele wpisów, których czas wykonania przekraczał 10 sekund:
@@ -32,7 +32,7 @@ Linijka logu jest dość długa. Na jej końcu mamy podany czas wykonania zapyta
 
 `planSummary: IXSCAN { _id: 1 } keysExamined:254713 docsExamined:254713`.
 
-Wskazuje ona na to, że użyty został standardowy indeks mongodb zakładany na identyfikatorze kolekcji `_id`. Oczekiwaliśmy tutaj raczej użycia indeksu założonego na polu, po którym odbywało się filtrowanie czyli na `formFields.formInstanceNumber.value`. W takim przypadku pierwsze podejrzenie padło na możliwy brak indeksu. W celu potwierdzenia lub zaprzeczenia tej możliwości pobraliśmy indeksy założone na problematycznej kolekcji: `db.formModel.getIndexes();`. Odpowiedź wskazywała jednak, że wymagany indeks został założony:
+Wskazuje ona na to, że użyty został standardowy indeks MongoDB zakładany na identyfikatorze kolekcji `_id`. Oczekiwaliśmy tutaj raczej użycia indeksu założonego na polu, po którym odbywało się filtrowanie czyli na `formFields.formInstanceNumber.value`. W takim przypadku pierwsze podejrzenie padło na możliwy brak indeksu. W celu potwierdzenia lub zaprzeczenia tej możliwości pobraliśmy indeksy założone na problematycznej kolekcji: `db.formModel.getIndexes();`. Odpowiedź wskazywała jednak, że wymagany indeks został założony:
 ```json
 [
   {
@@ -1402,11 +1402,11 @@ Przy czym jeden z planów odrzuconych mógł zwrócić wynik po odwiedzeniu 75 d
   "totalKeysExamined" : 135,
   "totalDocsExamined" : 75,
 ```
-## Dlaczego mongodb nie używa indeksu
+## Dlaczego MongoDB nie używa indeksu
 
-W tym miejscu należy się zastanowić w jaki sposób mongodb wybiera najlepszy plan zapytania. Z pierwszego punktu tego wpisu wiemy, że optymalizator bazuje na statystykach zbieranych podczas działania bazy. Potrzebujemy jeszcze wiedzieć w jaki sposób budowane są te statystyki. W opisywanym przypadku to właśnie tutaj kryje się rozwiązanie naszego problemu.
+W tym miejscu należy się zastanowić w jaki sposób MongoDB wybiera najlepszy plan zapytania. Z pierwszego punktu tego wpisu wiemy, że optymalizator bazuje na statystykach zbieranych podczas działania bazy. Potrzebujemy jeszcze wiedzieć w jaki sposób budowane są te statystyki. W opisywanym przypadku to właśnie tutaj kryje się rozwiązanie naszego problemu.
 
-Optymalizator mongodb cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
+Optymalizator MongoDB cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
 
 ![Algorytm optymalizatora](/assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg)
 
@@ -1416,7 +1416,7 @@ Kluczem w cachu planów zapytań jest kształt zapytania [query-shape](https://w
 - sposób sortowania,
 - [collation](https://www.mongodb.com/docs/manual/reference/collation/#std-label-collation).
 
-Uzbrojeni w tę wiedzę przeanalizowaliśmy jakie zapytania kieruje do mongodb nasza aplikacja. Okazało się, że w większości przypadków aplikacja odpytuje bazę o pojedynczą wartość pola `formFields.formInstanceNumber.value`. Tak więc w klauzuli `in` znajduje się jedna wartość. Dla takiej postaci zapytania optymalizator wybierał plan, który nie uwzględniał oczekiwanego przez nas indeksu. Taki plan trafiał do cache'a planów zapytań. Od czasu do czasu zdarzał się jednak klient systemu, dla którego zapytanie zawierało wiele wartości w klauzuli `in`. Kształt zapytania pozostawał ten sam więc mongodb nadal używało planu, który znajdował się w cache'u. W ten sposób, dla klienta, który używał systemu w szerszym zakresie niż pozostali dostawaliśmy timeout. Rozwiązaniem tego problemu mogłoby być takie dobranie zapytań, aby klienci z pojedynczą wartością w klauzuli `in` posługiwali się innym kształtem zapytania niż klienci z wieloma wartościami. To wymagałoby jednak zmiany w kodach systemu.  
+Uzbrojeni w tę wiedzę przeanalizowaliśmy jakie zapytania kieruje do MongoDB nasza aplikacja. Okazało się, że w większości przypadków aplikacja odpytuje bazę o pojedynczą wartość pola `formFields.formInstanceNumber.value`. Tak więc w klauzuli `in` znajduje się jedna wartość. Dla takiej postaci zapytania optymalizator wybierał plan, który nie uwzględniał oczekiwanego przez nas indeksu. Taki plan trafiał do cache'a planów zapytań. Od czasu do czasu zdarzał się jednak klient systemu, dla którego zapytanie zawierało wiele wartości w klauzuli `in`. Kształt zapytania pozostawał ten sam więc MongoDB nadal używało planu, który znajdował się w cache'u. W ten sposób, dla klienta, który używał systemu w szerszym zakresie niż pozostali dostawaliśmy timeout. Rozwiązaniem tego problemu mogłoby być takie dobranie zapytań, aby klienci z pojedynczą wartością w klauzuli `in` posługiwali się innym kształtem zapytania niż klienci z wieloma wartościami. To wymagałoby jednak zmiany w kodach systemu.  
 
 ## Wymuszenie użycia indeksu na live'ie
 
@@ -1485,9 +1485,9 @@ db.runCommand(
  }
 )
 ```
-W ten sposób wymuszamy na mongodb używanie indeksu na polu `formFields.formInstanceNumber.value` w zapytaniach o podanym kształcie. Być może zapytania dla pojedynczych wartości będą trochę mniej optymalne, ale za to dużo szybciej wykonają się zapytania dla dużej liczby wartości w klauzuli `in`.
+W ten sposób wymuszamy na MongoDB używanie indeksu na polu `formFields.formInstanceNumber.value` w zapytaniach o podanym kształcie. Być może zapytania dla pojedynczych wartości będą trochę mniej optymalne, ale za to dużo szybciej wykonają się zapytania dla dużej liczby wartości w klauzuli `in`.
 
-**Uwaga! Zmiana ta działa do czasu restartu mongodb**, nie jest więc docelowym rozwiązaniem, ale daje czas na uzyskanie satysfakcjonującego rozwiązania w kodzie.
+**Uwaga! Zmiana ta działa do czasu restartu MongoDB**, nie jest więc docelowym rozwiązaniem, ale daje czas na uzyskanie satysfakcjonującego rozwiązania w kodzie.
 
 Po ponowieniu zapytania otrzymaliśmy następujący wynik:
 ```json
@@ -1970,20 +1970,20 @@ a wykonanie zapytania trwało 10 milisekund. Podczas przetwarzania zapytania odw
 
 ## Wnioski
 
-Oczywisty wniosek płynący z przedstawionej tutaj sytuacji jest taki, że musimy brać pod uwagę to, że mongodb nie musi używać utworzonego przez nas indeksu. Szczególną uwagę powinniśmy zwrócić na zapytania, które są uruchamiane ze znacząco różnymi zakresami danych wejściowych.
+Oczywisty wniosek płynący z przedstawionej tutaj sytuacji jest taki, że musimy brać pod uwagę to, że MongoDB nie musi używać utworzonego przez nas indeksu. Szczególną uwagę powinniśmy zwrócić na zapytania, które są uruchamiane ze znacząco różnymi zakresami danych wejściowych.
 
 Wniosek mniej oczywisty jest związany z użyciem circuit breakera. W naszym przypadku circuit breaker odcinał wykonywanie zapytań trwających dłużej niż 10 sekund. Ponieważ klienci, dla których w klauzuli `in` wykorzystywaliśmy dużo wartości ponawiali próby wywołania funkcjonalności, circuit breaker wyłączył wywoływanie tej funkcjonalności. To spowodowało, że również dla klientów z mniejszą liczbą wartości w klauzuli `in` funkcjonalność stała się niedostępna.
 
 ## tl;dr
 
-1. Jeżeli używasz mongodb włącz [logowanie długich zapytań](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
+1. Jeżeli używasz MongoDB włącz [logowanie długich zapytań](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
 2. W przypadku problemów wydajnościowych z zapytaniem sprawdź plan wykonania zapytania dodając do polecenia `.explain("allPlansExecution")`.
-3. Jeżeli chcesz wymusić, aby mongodb używało indeksu w określonym zapytaniu można to osiągnąć bez przerwy w pracy systemu za pomocą polecenia `planCacheSetFilter`.
+3. Jeżeli chcesz wymusić, aby MongoDB używało indeksu w określonym zapytaniu można to osiągnąć bez przerwy w pracy systemu za pomocą polecenia `planCacheSetFilter`.
 
 # Źródła
 
-- [Opis działania optymalizatora zapytań w mongodb](https://www.mongodb.com/docs/manual/core/query-plans/).
-- [Sposób na logowanie długich zapytań w mongodb](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
+- [Opis działania optymalizatora zapytań w MongoDB](https://www.mongodb.com/docs/manual/core/query-plans/).
+- [Sposób na logowanie długich zapytań w MongoDB](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
 - [Polecenie umożliwiające wymuszenie użycia określonego indeksu dla zapytania o podanym kształcie](https://www.mongodb.com/docs/manual/reference/command/planCacheSetFilter/)
 - [Wyjaśnienie czym jest kształt zapytania `query-shape`](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-query-shape)
 
