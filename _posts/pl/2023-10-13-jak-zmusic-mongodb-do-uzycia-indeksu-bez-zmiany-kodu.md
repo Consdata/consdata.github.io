@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Jak zmusić mongodb do użycia indeksu bez zmiany kodu - zastosowanie index filter"
-date:      2023-10-06T08:00:00+01:00
+date:      2023-10-13T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: jwilczewski
-image: /assets/img/posts/2023-10-06-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/mongodb.jpg
+image: /assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/mongodb.jpg
 tags:
 - mongodb
 - index
@@ -1408,7 +1408,7 @@ W tym miejscu należy się zastanowić w jaki sposób mongodb wybiera najlepszy 
 
 Optymalizator mongodb cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
 
-![Algorytm optymalizatora](/assets/img/posts/2023-10-06-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg)
+![Algorytm optymalizatora](/assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg)
 
 Kluczem w cachu planów zapytań jest kształt zapytania [query-shape](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-query-shape). Na kształt zapytania składają się:
 - predykat zapytania (czyli to po czym filtrujemy kolekcję),
