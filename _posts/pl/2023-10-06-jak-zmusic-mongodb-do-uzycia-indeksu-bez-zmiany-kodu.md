@@ -15,9 +15,9 @@ tags:
 - query shape
 ---
 
-## Optymalizotory zapytań
+## Optymalizatory zapytań
 
-Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla mongodb możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjch i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
+Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla mongodb możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjach i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
 
 ## Analiza problemów wydajnościowych
 
@@ -32,32 +32,32 @@ Linijka logu jest dość długa. Na jej końcu mamy podany czas wykonania zapyta
 
 `planSummary: IXSCAN { _id: 1 } keysExamined:254713 docsExamined:254713`.
 
-Wskazuje ona na to, że użyty został standardowy indeks mongodb zakładany na identyfikatorze kolekcji `_id`. Oczekiwaliśmy tutaj raczej użycia indeksu założenego na polu, po którym odbywało się filtrowanie czyli na `formFields.formInstanceNumber.value`. W takim przypadku pierwsze podejrzenie padło na możliwy brak indeksu. W celu potwierdzenia lub zaprzeczenia tej możliwości pobraliśmy indeksy założone na problematycznej kolekcji: `db.formModel.getIndexes();`. Odpowiedź wskazywała jednak, że wymagany indeks został założony:
+Wskazuje ona na to, że użyty został standardowy indeks mongodb zakładany na identyfikatorze kolekcji `_id`. Oczekiwaliśmy tutaj raczej użycia indeksu założonego na polu, po którym odbywało się filtrowanie czyli na `formFields.formInstanceNumber.value`. W takim przypadku pierwsze podejrzenie padło na możliwy brak indeksu. W celu potwierdzenia lub zaprzeczenia tej możliwości pobraliśmy indeksy założone na problematycznej kolekcji: `db.formModel.getIndexes();`. Odpowiedź wskazywała jednak, że wymagany indeks został założony:
 ```json
 [
-        {
-                "v" : 2,
-                "key" : {
-                        "_id" : 1
-                },
-                "name" : "_id_",
-                "ns" : "formstore_db.formModel"
-        },
-        {
-                "v" : 2,
-                "key" : {
-                        "formFields.formInstanceNumber.value" : 1
-                },
-                "name" : "formFields.formInstanceNumber.value_1",
-                "ns" : "formstore_db.formModel",
-                "background" : true
-        }
+  {
+    "v" : 2,
+    "key" : {
+      "_id" : 1
+    },
+    "name" : "_id_",
+    "ns" : "formstore_db.formModel"
+  },
+  {
+    "v" : 2,
+    "key" : {
+      "formFields.formInstanceNumber.value" : 1
+    },
+    "name" : "formFields.formInstanceNumber.value_1",
+    "ns" : "formstore_db.formModel",
+    "background" : true
+  }
 ]
 ```
 
 ## Sprawdzamy plan zapytania
 
-W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne należy go przeprowadzić na środowisku, na którym wystąpiły problemy, gdyż wyniki pracy optymalizatora są zależne od danych znajdujących się w bazie oraz statystyk zbieranych podczas jej działania. Wyświetlenie wybranego planu zapytania oraz planów alternatywnych realizujemy poprzez wywołanie zapytania wykonywanego przez aplikację, w którym na końcu dodajemy: `.explain("allPlansExecution")`. W analizowanym przypadku otrzymaliśmy następujący wynik:
+W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, należy go przeprowadzić na środowisku, na którym wystąpiły problemy, gdyż wyniki pracy optymalizatora są zależne od danych znajdujących się w bazie oraz statystyk zbieranych podczas jej działania. Wyświetlenie wybranego planu zapytania oraz planów alternatywnych realizujemy poprzez wywołanie zapytania wykonywanego przez aplikację, w którym na końcu dodajemy: `.explain("allPlansExecution")`. W analizowanym przypadku otrzymaliśmy następujący wynik:
 ```json
 {
   "queryPlanner" : {
@@ -1345,66 +1345,66 @@ Wynik analizy jest dość obszerny jednak można go podsumować tak:
 - `winningPlan` czyli plan, który został wykonany posłużył się standardowym indeksem kolekcji:
 ```json
 "inputStage" : {
-          "stage" : "IXSCAN",
-          "keyPattern" : {
-            "_id" : 1
-          },
-          "indexName" : "_id_",
-          "isMultiKey" : false,
-          "multiKeyPaths" : {
-            "_id" : [ ]
-          },
-          "isUnique" : true,
-          "isSparse" : false,
-          "isPartial" : false,
-          "indexVersion" : 2,
-          "direction" : "backward",
-          "indexBounds" : {
-            "_id" : [
-              "[MaxKey, MinKey]"
-            ]
-          }
-        }
+  "stage" : "IXSCAN",
+  "keyPattern" : {
+    "_id" : 1
+  },
+  "indexName" : "_id_",
+  "isMultiKey" : false,
+  "multiKeyPaths" : {
+    "_id" : [ ]
+  },
+  "isUnique" : true,
+  "isSparse" : false,
+  "isPartial" : false,
+  "indexVersion" : 2,
+  "direction" : "backward",
+  "indexBounds" : {
+    "_id" : [
+      "[MaxKey, MinKey]
+    ]
+  }
+}
 ```        
 - `rejectedPlans` czyli plany odrzucone zawierają plan wykorzystujący indeks, który naszym zdaniem powinien zostać użyty:
 ```json
 "inputStage" : {
-                "stage" : "IXSCAN",
-                "keyPattern" : {
-                  "formFields.formInstanceNumber.value" : 1
-                },
-                "indexName" : "formFields.formInstanceNumber.value_1",
-                "isMultiKey" : false,
-                "multiKeyPaths" : {
-                  "formFields.formInstanceNumber.value" : [ ]
-                },
-                "isUnique" : false,
-                "isSparse" : false,
-                "isPartial" : false,
-                "indexVersion" : 2,
-                "direction" : "forward",
+  "stage" : "IXSCAN",
+  "keyPattern" : {
+    "formFields.formInstanceNumber.value" : 1
+  },
+  "indexName" : "formFields.formInstanceNumber.value_1",
+  "isMultiKey" : false,
+  "multiKeyPaths" : {
+    "formFields.formInstanceNumber.value" : [ ]
+  },
+  "isUnique" : false,
+  "isSparse" : false,
+  "isPartial" : false,
+  "indexVersion" : 2,
+  "direction" : "forward",
 ```
 
-Co więcej plan, który został wybrany odwiedził 254851 dokumentów i kluczy, a zapytanie trwało 11651 ms:
+Co więcej, plan który został wybrany odwiedził 254851 dokumentów i kluczy, a zapytanie trwało 11651 ms:
 ```json
-  "executionStats" : {
-    "executionSuccess" : true,
-    "nReturned" : 75,
-    "executionTimeMillis" : 11651,
-    "totalKeysExamined" : 254851,
-    "totalDocsExamined" : 254851,
+"executionStats" : {
+  "executionSuccess" : true,
+  "nReturned" : 75,
+  "executionTimeMillis" : 11651,
+  "totalKeysExamined" : 254851,
+  "totalDocsExamined" : 254851,
 ```
 Przy czym jeden z planów odrzuconych mógł zwrócić wynik po odwiedzeniu 75 dokumentów i 135 kluczy, a jego wykonanie szacowane było na 30 ms:
 ```json
 {
-        "nReturned" : 0,
-        "executionTimeMillisEstimate" : 30,
-        "totalKeysExamined" : 135,
-        "totalDocsExamined" : 75,
+  "nReturned" : 0,
+  "executionTimeMillisEstimate" : 30,
+  "totalKeysExamined" : 135,
+  "totalDocsExamined" : 75,
 ```
 ## Dlaczego mongodb nie używa indeksu
 
-W tym miejscu należy się zastanowić w jaki sposób mongodb wybiera najlepszy plan zapytania. Z pierwszego punktu tego wpisu wiemy, że optmalizator bazuje na statystykach zbieranych podczas działania bazy. Potrzebujemy jeszcze wiedzieć w jaki sposób budowane są te statystyki. W opisywanym przypadku to właśnie tutaj kryje się rozwiązanie naszego problemu.
+W tym miejscu należy się zastanowić w jaki sposób mongodb wybiera najlepszy plan zapytania. Z pierwszego punktu tego wpisu wiemy, że optymalizator bazuje na statystykach zbieranych podczas działania bazy. Potrzebujemy jeszcze wiedzieć w jaki sposób budowane są te statystyki. W opisywanym przypadku to właśnie tutaj kryje się rozwiązanie naszego problemu.
 
 Optymalizator mongodb cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
 
@@ -1416,7 +1416,7 @@ Kluczem w cachu planów zapytań jest kształt zapytania [query-shape](https://w
 - sposób sortowania,
 - [collation](https://www.mongodb.com/docs/manual/reference/collation/#std-label-collation).
 
-Uzbrojeni w tą wiedzę przeanalizowaliśmy jakie zapytania kieruje do mongodb nasza aplikacja. Okazało się, że w większości przypadków aplikacja odpytuje bazę o pojedynczą wartość pola `formFields.formInstanceNumber.value`. Tak więc w klauzuli `in` znajduje się jedna wartość. Dla takiej postaci zapytania optymalizator wybierał plan, który nie uwzględniał oczekiwanego przez nas indeksu. Taki plan trafiał do cache'a planów zapytań. Od czasu do czasu zdarzał się jednak klient systmu, dla którego zapytanie zawierało wiele wartości w klauzuli `in`. Kształt zapytania pozostawał ten sam więc mongodb nadal używało planu, który znajdował się w cache'u. W ten sposób, dla klienta, który używał systemu w szerszym zakresie niż pozostali dostawaliśmy timeout. Rozwiązaniem tego problemu mogło by być takie dobranie zapytań, aby klienci z pojedynczą wartością w klauzuli `in` posługiwali się innym kształtem zaytania niż klienci z wieloma wartościami. To wymagało by jednak zmiany w kodach systemu.  
+Uzbrojeni w tę wiedzę przeanalizowaliśmy jakie zapytania kieruje do mongodb nasza aplikacja. Okazało się, że w większości przypadków aplikacja odpytuje bazę o pojedynczą wartość pola `formFields.formInstanceNumber.value`. Tak więc w klauzuli `in` znajduje się jedna wartość. Dla takiej postaci zapytania optymalizator wybierał plan, który nie uwzględniał oczekiwanego przez nas indeksu. Taki plan trafiał do cache'a planów zapytań. Od czasu do czasu zdarzał się jednak klient systemu, dla którego zapytanie zawierało wiele wartości w klauzuli `in`. Kształt zapytania pozostawał ten sam więc mongodb nadal używało planu, który znajdował się w cache'u. W ten sposób, dla klienta, który używał systemu w szerszym zakresie niż pozostali dostawaliśmy timeout. Rozwiązaniem tego problemu mogłoby być takie dobranie zapytań, aby klienci z pojedynczą wartością w klauzuli `in` posługiwali się innym kształtem zapytania niż klienci z wieloma wartościami. To wymagałoby jednak zmiany w kodach systemu.  
 
 ## Wymuszenie użycia indeksu na live'ie
 
@@ -1485,12 +1485,506 @@ db.runCommand(
  }
 )
 ```
-W ten sposób wymuszamy na mongodb używanie ineksu na polu `formFields.formInstanceNumber.value` w zapytaniach o podanym kształcie. Być może zapytania dla pojedynczych wartości będą trochę mniej optymalne, ale ta za to dużo szybciej wykonają się zapytania dla dużej liczby wartości w klauzuli `in`.
+W ten sposób wymuszamy na mongodb używanie indeksu na polu `formFields.formInstanceNumber.value` w zapytaniach o podanym kształcie. Być może zapytania dla pojedynczych wartości będą trochę mniej optymalne, ale za to dużo szybciej wykonają się zapytania dla dużej liczby wartości w klauzuli `in`.
 
 **Uwaga! Zmiana ta działa do czasu restartu mongodb**, nie jest więc docelowym rozwiązaniem, ale daje czas na uzyskanie satysfakcjonującego rozwiązania w kodzie.
 
+Po ponowieniu zapytania otrzymaliśmy następujący wynik:
+```json
+{
+  "queryPlanner" : {
+    "plannerVersion" : 1,
+    "namespace" : "formstore_db.formModel",
+    "indexFilterSet" : true,
+    "parsedQuery" : {
+      "$and" : [
+        {
+          "formType" : {
+            "$eq" : "corpo_reset_balance"
+          }
+        },
+        {
+          "formFields.formInstanceNumber.value" : {
+            "$in" : [
+              "COR4237202310131425401494",
+              "COR4237202310150947272272",
+              "COR4237202310150955452282",
+              "COR4237202310150956472284",
+              "COR4237202310151004272296",
+              "COR4237202310151005332297",
+              "COR4236202310131257073150",
+              "COR4236202310131301403155",
+              "COR4236202310131303093157",
+              "COR4236202310131304493160",
+              "COR4236202310131307543163",
+              "COR4236202310131309113164",
+              "COR4236202310131312063169",
+              "COR4236202310131313393173",
+              "COR4236202310131316003176",
+              "COR4236202310131317053180",
+              "COR4236202310131319153182",
+              "COR4236202310131320203184",
+              "COR4236202310131321283185",
+              "COR4236202310131322183187",
+              "COR4236202310131323243188",
+              "COR4236202310131325233192",
+              "COR4236202310131326113196",
+              "COR4236202310131326583198",
+              "COR4236202310131328073200",
+              "COR4236202310131331033203",
+              "COR4236202310131335123206",
+              "COR4236202310131340003210",
+              "COR4236202310131340463212",
+              "COR4236202310131342313214",
+              "COR4236202310131345293217",
+              "COR4236202310131351543220",
+              "COR4236202310131353313222",
+              "COR4236202310131355073226",
+              "COR4236202310131357053229",
+              "COR4236202310131433123250",
+              "COR4236202310131517313292",
+              "COR4236202310131518413294",
+              "COR4236202310131520553297",
+              "COR4236202310131521433299",
+              "COR4236202310131522523304",
+              "COR4236202310131529033308",
+              "COR4236202310131529583311",
+              "COR4236202310131536393315",
+              "COR4236202310140717303352",
+              "COR4236202310140720093353",
+              "COR4236202310140721083354",
+              "COR4236202310140722093355",
+              "COR4236202310140723363357",
+              "COR4236202310140726553358",
+              "COR4236202310140728083359",
+              "COR4236202310140728593360",
+              "COR4236202310140730003361",
+              "COR4236202310140730413362",
+              "COR4236202310140807533373",
+              "COR4236202310140809033376",
+              "COR4236202310140810003377",
+              "COR4236202310151009214060",
+              "COR4236202310151010104062",
+              "COR4236202310151011004065",
+              "COR4236202310151011524067",
+              "COR4236202310151013594072",
+              "COR4236202310151015214074",
+              "COR4236202310151017134080",
+              "COR4236202310151018234085",
+              "COR4236202310151039104112",
+              "COR4236202310151041024114",
+              "COR4236202310151041554116",
+              "COR4236202310151042464119",
+              "COR4236202310151043554120",
+              "COR4236202310151056304136",
+              "COR4236202310151058274138",
+              "COR4236202310151059394140",
+              "COR4236202310151101134142",
+              "COR4236202310151102374144"
+            ]
+          }
+        }
+      ]
+    },
+    "winningPlan" : {
+      "stage" : "PROJECTION",
+      "transformBy" : {
+        "formFields.GesComplexComponent5.GesTileGroup1" : 1,
+        "formType" : 1,
+        "formFields.currentYear" : 1,
+        "formFields.GesComplexComponent1.transferAccount" : 1,
+        "formFields.startTime" : 1,
+        "formFields.finishTime" : 1,
+        "formFields.GesComplexComponent7.GesTileGroup1" : 1,
+        "formFields.formInstanceNumber" : 1,
+        "formFields.kozbeDescription" : 1,
+        "formFields.operationIdFromBDB" : 1,
+        "formFields.CorpoSegment" : 1,
+        "formFields.transferTime" : 1,
+        "formFields.GesComplexComponent1.beneficiaryName" : 1,
+        "formFields.formProcessingStatus" : 1,
+        "formFields.GesComplexComponent2.GesFrontendComponent2" : 1,
+        "formFields.GesComplexComponent3.GesTextField1" : 1,
+        "lastUpdateTime" : 1
+      },
+      "inputStage" : {
+        "stage" : "SORT",
+        "sortPattern" : {
+          "_id" : -1
+        },
+        "inputStage" : {
+          "stage" : "SORT_KEY_GENERATOR",
+          "inputStage" : {
+            "stage" : "FETCH",
+            "filter" : {
+              "formType" : {
+                "$eq" : "corpo_reset_balance"
+              }
+            },
+            "inputStage" : {
+              "stage" : "IXSCAN",
+              "keyPattern" : {
+                "formFields.formInstanceNumber.value" : 1
+              },
+              "indexName" : "formFields.formInstanceNumber.value_1",
+              "isMultiKey" : false,
+              "multiKeyPaths" : {
+                "formFields.formInstanceNumber.value" : [ ]
+              },
+              "isUnique" : false,
+              "isSparse" : false,
+              "isPartial" : false,
+              "indexVersion" : 2,
+              "direction" : "forward",
+              "indexBounds" : {
+                "formFields.formInstanceNumber.value" : [
+                  "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                  "[\"COR4237202310150947272272\", \"COR4237202310150947272272\"]",
+                  "[\"COR4237202310150955452282\", \"COR4237202310150955452282\"]",
+                  "[\"COR4237202310150956472284\", \"COR4237202310150956472284\"]",
+                  "[\"COR4237202310151004272296\", \"COR4237202310151004272296\"]",
+                  "[\"COR4237202310151005332297\", \"COR4237202310151005332297\"]",
+                  "[\"COR4236202310131257073150\", \"COR4236202310131257073150\"]",
+                  "[\"COR4236202310131301403155\", \"COR4236202310131301403155\"]",
+                  "[\"COR4236202310131303093157\", \"COR4236202310131303093157\"]",
+                  "[\"COR4236202310131304493160\", \"COR4236202310131304493160\"]",
+                  "[\"COR4236202310131307543163\", \"COR4236202310131307543163\"]",
+                  "[\"COR4236202310131309113164\", \"COR4236202310131309113164\"]",
+                  "[\"COR4236202310131312063169\", \"COR4236202310131312063169\"]",
+                  "[\"COR4236202310131313393173\", \"COR4236202310131313393173\"]",
+                  "[\"COR4236202310131316003176\", \"COR4236202310131316003176\"]",
+                  "[\"COR4236202310131317053180\", \"COR4236202310131317053180\"]",
+                  "[\"COR4236202310131319153182\", \"COR4236202310131319153182\"]",
+                  "[\"COR4236202310131320203184\", \"COR4236202310131320203184\"]",
+                  "[\"COR4236202310131321283185\", \"COR4236202310131321283185\"]",
+                  "[\"COR4236202310131322183187\", \"COR4236202310131322183187\"]",
+                  "[\"COR4236202310131323243188\", \"COR4236202310131323243188\"]",
+                  "[\"COR4236202310131325233192\", \"COR4236202310131325233192\"]",
+                  "[\"COR4236202310131326113196\", \"COR4236202310131326113196\"]",
+                  "[\"COR4236202310131326583198\", \"COR4236202310131326583198\"]",
+                  "[\"COR4236202310131328073200\", \"COR4236202310131328073200\"]",
+                  "[\"COR4236202310131331033203\", \"COR4236202310131331033203\"]",
+                  "[\"COR4236202310131335123206\", \"COR4236202310131335123206\"]",
+                  "[\"COR4236202310131340003210\", \"COR4236202310131340003210\"]",
+                  "[\"COR4236202310131340463212\", \"COR4236202310131340463212\"]",
+                  "[\"COR4236202310131342313214\", \"COR4236202310131342313214\"]",
+                  "[\"COR4236202310131345293217\", \"COR4236202310131345293217\"]",
+                  "[\"COR4236202310131351543220\", \"COR4236202310131351543220\"]",
+                  "[\"COR4236202310131353313222\", \"COR4236202310131353313222\"]",
+                  "[\"COR4236202310131355073226\", \"COR4236202310131355073226\"]",
+                  "[\"COR4236202310131357053229\", \"COR4236202310131357053229\"]",
+                  "[\"COR4236202310131433123250\", \"COR4236202310131433123250\"]",
+                  "[\"COR4236202310131517313292\", \"COR4236202310131517313292\"]",
+                  "[\"COR4236202310131518413294\", \"COR4236202310131518413294\"]",
+                  "[\"COR4236202310131520553297\", \"COR4236202310131520553297\"]",
+                  "[\"COR4236202310131521433299\", \"COR4236202310131521433299\"]",
+                  "[\"COR4236202310131522523304\", \"COR4236202310131522523304\"]",
+                  "[\"COR4236202310131529033308\", \"COR4236202310131529033308\"]",
+                  "[\"COR4236202310131529583311\", \"COR4236202310131529583311\"]",
+                  "[\"COR4236202310131536393315\", \"COR4236202310131536393315\"]",
+                  "[\"COR4236202310140717303352\", \"COR4236202310140717303352\"]",
+                  "[\"COR4236202310140720093353\", \"COR4236202310140720093353\"]",
+                  "[\"COR4236202310140721083354\", \"COR4236202310140721083354\"]",
+                  "[\"COR4236202310140722093355\", \"COR4236202310140722093355\"]",
+                  "[\"COR4236202310140723363357\", \"COR4236202310140723363357\"]",
+                  "[\"COR4236202310140726553358\", \"COR4236202310140726553358\"]",
+                  "[\"COR4236202310140728083359\", \"COR4236202310140728083359\"]",
+                  "[\"COR4236202310140728593360\", \"COR4236202310140728593360\"]",
+                  "[\"COR4236202310140730003361\", \"COR4236202310140730003361\"]",
+                  "[\"COR4236202310140730413362\", \"COR4236202310140730413362\"]",
+                  "[\"COR4236202310140807533373\", \"COR4236202310140807533373\"]",
+                  "[\"COR4236202310140809033376\", \"COR4236202310140809033376\"]",
+                  "[\"COR4236202310140810003377\", \"COR4236202310140810003377\"]",
+                  "[\"COR4236202310151009214060\", \"COR4236202310151009214060\"]",
+                  "[\"COR4236202310151010104062\", \"COR4236202310151010104062\"]",
+                  "[\"COR4236202310151011004065\", \"COR4236202310151011004065\"]",
+                  "[\"COR4236202310151011524067\", \"COR4236202310151011524067\"]",
+                  "[\"COR4236202310151013594072\", \"COR4236202310151013594072\"]",
+                  "[\"COR4236202310151015214074\", \"COR4236202310151015214074\"]",
+                  "[\"COR4236202310151017134080\", \"COR4236202310151017134080\"]",
+                  "[\"COR4236202310151018234085\", \"COR4236202310151018234085\"]",
+                  "[\"COR4236202310151039104112\", \"COR4236202310151039104112\"]",
+                  "[\"COR4236202310151041024114\", \"COR4236202310151041024114\"]",
+                  "[\"COR4236202310151041554116\", \"COR4236202310151041554116\"]",
+                  "[\"COR4236202310151042464119\", \"COR4236202310151042464119\"]",
+                  "[\"COR4236202310151043554120\", \"COR4236202310151043554120\"]",
+                  "[\"COR4236202310151056304136\", \"COR4236202310151056304136\"]",
+                  "[\"COR4236202310151058274138\", \"COR4236202310151058274138\"]",
+                  "[\"COR4236202310151059394140\", \"COR4236202310151059394140\"]",
+                  "[\"COR4236202310151101134142\", \"COR4236202310151101134142\"]",
+                  "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "rejectedPlans" : [ ]
+  },
+  "executionStats" : {
+    "executionSuccess" : true,
+    "nReturned" : 75,
+    "executionTimeMillis" : 10,
+    "totalKeysExamined" : 136,
+    "totalDocsExamined" : 75,
+    "executionStages" : {
+      "stage" : "PROJECTION",
+      "nReturned" : 75,
+      "executionTimeMillisEstimate" : 10,
+      "works" : 213,
+      "advanced" : 75,
+      "needTime" : 137,
+      "needYield" : 0,
+      "saveState" : 1,
+      "restoreState" : 1,
+      "isEOF" : 1,
+      "invalidates" : 0,
+      "transformBy" : {
+        "formFields.GesComplexComponent5.GesTileGroup1" : 1,
+        "formType" : 1,
+        "formFields.currentYear" : 1,
+        "formFields.GesComplexComponent1.transferAccount" : 1,
+        "formFields.startTime" : 1,
+        "formFields.finishTime" : 1,
+        "formFields.GesComplexComponent7.GesTileGroup1" : 1,
+        "formFields.formInstanceNumber" : 1,
+        "formFields.kozbeDescription" : 1,
+        "formFields.operationIdFromBDB" : 1,
+        "formFields.CorpoSegment" : 1,
+        "formFields.transferTime" : 1,
+        "formFields.GesComplexComponent1.beneficiaryName" : 1,
+        "formFields.formProcessingStatus" : 1,
+        "formFields.GesComplexComponent2.GesFrontendComponent2" : 1,
+        "formFields.GesComplexComponent3.GesTextField1" : 1,
+        "lastUpdateTime" : 1
+      },
+      "inputStage" : {
+        "stage" : "SORT",
+        "nReturned" : 75,
+        "executionTimeMillisEstimate" : 0,
+        "works" : 213,
+        "advanced" : 75,
+        "needTime" : 137,
+        "needYield" : 0,
+        "saveState" : 1,
+        "restoreState" : 1,
+        "isEOF" : 1,
+        "invalidates" : 0,
+        "sortPattern" : {
+          "_id" : -1
+        },
+        "memUsage" : 33914115,
+        "memLimit" : 335544320,
+        "inputStage" : {
+          "stage" : "SORT_KEY_GENERATOR",
+          "nReturned" : 75,
+          "executionTimeMillisEstimate" : 0,
+          "works" : 137,
+          "advanced" : 75,
+          "needTime" : 61,
+          "needYield" : 0,
+          "saveState" : 1,
+          "restoreState" : 1,
+          "isEOF" : 1,
+          "invalidates" : 0,
+          "inputStage" : {
+            "stage" : "FETCH",
+            "filter" : {
+              "formType" : {
+                "$eq" : "corpo_reset_balance"
+              }
+            },
+            "nReturned" : 75,
+            "executionTimeMillisEstimate" : 0,
+            "works" : 136,
+            "advanced" : 75,
+            "needTime" : 60,
+            "needYield" : 0,
+            "saveState" : 1,
+            "restoreState" : 1,
+            "isEOF" : 1,
+            "invalidates" : 0,
+            "docsExamined" : 75,
+            "alreadyHasObj" : 0,
+            "inputStage" : {
+              "stage" : "IXSCAN",
+              "nReturned" : 75,
+              "executionTimeMillisEstimate" : 0,
+              "works" : 136,
+              "advanced" : 75,
+              "needTime" : 60,
+              "needYield" : 0,
+              "saveState" : 1,
+              "restoreState" : 1,
+              "isEOF" : 1,
+              "invalidates" : 0,
+              "keyPattern" : {
+                "formFields.formInstanceNumber.value" : 1
+              },
+              "indexName" : "formFields.formInstanceNumber.value_1",
+              "isMultiKey" : false,
+              "multiKeyPaths" : {
+                "formFields.formInstanceNumber.value" : [ ]
+              },
+              "isUnique" : false,
+              "isSparse" : false,
+              "isPartial" : false,
+              "indexVersion" : 2,
+              "direction" : "forward",
+              "indexBounds" : {
+                "formFields.formInstanceNumber.value" : [
+                  "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                  "[\"COR4237202310150947272272\", \"COR4237202310150947272272\"]",
+                  "[\"COR4237202310150955452282\", \"COR4237202310150955452282\"]",
+                  "[\"COR4237202310150956472284\", \"COR4237202310150956472284\"]",
+                  "[\"COR4237202310151004272296\", \"COR4237202310151004272296\"]",
+                  "[\"COR4237202310151005332297\", \"COR4237202310151005332297\"]",
+                  "[\"COR4236202310131257073150\", \"COR4236202310131257073150\"]",
+                  "[\"COR4236202310131301403155\", \"COR4236202310131301403155\"]",
+                  "[\"COR4236202310131303093157\", \"COR4236202310131303093157\"]",
+                  "[\"COR4236202310131304493160\", \"COR4236202310131304493160\"]",
+                  "[\"COR4236202310131307543163\", \"COR4236202310131307543163\"]",
+                  "[\"COR4236202310131309113164\", \"COR4236202310131309113164\"]",
+                  "[\"COR4236202310131312063169\", \"COR4236202310131312063169\"]",
+                  "[\"COR4236202310131313393173\", \"COR4236202310131313393173\"]",
+                  "[\"COR4236202310131316003176\", \"COR4236202310131316003176\"]",
+                  "[\"COR4236202310131317053180\", \"COR4236202310131317053180\"]",
+                  "[\"COR4236202310131319153182\", \"COR4236202310131319153182\"]",
+                  "[\"COR4236202310131320203184\", \"COR4236202310131320203184\"]",
+                  "[\"COR4236202310131321283185\", \"COR4236202310131321283185\"]",
+                  "[\"COR4236202310131322183187\", \"COR4236202310131322183187\"]",
+                  "[\"COR4236202310131323243188\", \"COR4236202310131323243188\"]",
+                  "[\"COR4236202310131325233192\", \"COR4236202310131325233192\"]",
+                  "[\"COR4236202310131326113196\", \"COR4236202310131326113196\"]",
+                  "[\"COR4236202310131326583198\", \"COR4236202310131326583198\"]",
+                  "[\"COR4236202310131328073200\", \"COR4236202310131328073200\"]",
+                  "[\"COR4236202310131331033203\", \"COR4236202310131331033203\"]",
+                  "[\"COR4236202310131335123206\", \"COR4236202310131335123206\"]",
+                  "[\"COR4236202310131340003210\", \"COR4236202310131340003210\"]",
+                  "[\"COR4236202310131340463212\", \"COR4236202310131340463212\"]",
+                  "[\"COR4236202310131342313214\", \"COR4236202310131342313214\"]",
+                  "[\"COR4236202310131345293217\", \"COR4236202310131345293217\"]",
+                  "[\"COR4236202310131351543220\", \"COR4236202310131351543220\"]",
+                  "[\"COR4236202310131353313222\", \"COR4236202310131353313222\"]",
+                  "[\"COR4236202310131355073226\", \"COR4236202310131355073226\"]",
+                  "[\"COR4236202310131357053229\", \"COR4236202310131357053229\"]",
+                  "[\"COR4236202310131433123250\", \"COR4236202310131433123250\"]",
+                  "[\"COR4236202310131517313292\", \"COR4236202310131517313292\"]",
+                  "[\"COR4236202310131518413294\", \"COR4236202310131518413294\"]",
+                  "[\"COR4236202310131520553297\", \"COR4236202310131520553297\"]",
+                  "[\"COR4236202310131521433299\", \"COR4236202310131521433299\"]",
+                  "[\"COR4236202310131522523304\", \"COR4236202310131522523304\"]",
+                  "[\"COR4236202310131529033308\", \"COR4236202310131529033308\"]",
+                  "[\"COR4236202310131529583311\", \"COR4236202310131529583311\"]",
+                  "[\"COR4236202310131536393315\", \"COR4236202310131536393315\"]",
+                  "[\"COR4236202310140717303352\", \"COR4236202310140717303352\"]",
+                  "[\"COR4236202310140720093353\", \"COR4236202310140720093353\"]",
+                  "[\"COR4236202310140721083354\", \"COR4236202310140721083354\"]",
+                  "[\"COR4236202310140722093355\", \"COR4236202310140722093355\"]",
+                  "[\"COR4236202310140723363357\", \"COR4236202310140723363357\"]",
+                  "[\"COR4236202310140726553358\", \"COR4236202310140726553358\"]",
+                  "[\"COR4236202310140728083359\", \"COR4236202310140728083359\"]",
+                  "[\"COR4236202310140728593360\", \"COR4236202310140728593360\"]",
+                  "[\"COR4236202310140730003361\", \"COR4236202310140730003361\"]",
+                  "[\"COR4236202310140730413362\", \"COR4236202310140730413362\"]",
+                  "[\"COR4236202310140807533373\", \"COR4236202310140807533373\"]",
+                  "[\"COR4236202310140809033376\", \"COR4236202310140809033376\"]",
+                  "[\"COR4236202310140810003377\", \"COR4236202310140810003377\"]",
+                  "[\"COR4236202310151009214060\", \"COR4236202310151009214060\"]",
+                  "[\"COR4236202310151010104062\", \"COR4236202310151010104062\"]",
+                  "[\"COR4236202310151011004065\", \"COR4236202310151011004065\"]",
+                  "[\"COR4236202310151011524067\", \"COR4236202310151011524067\"]",
+                  "[\"COR4236202310151013594072\", \"COR4236202310151013594072\"]",
+                  "[\"COR4236202310151015214074\", \"COR4236202310151015214074\"]",
+                  "[\"COR4236202310151017134080\", \"COR4236202310151017134080\"]",
+                  "[\"COR4236202310151018234085\", \"COR4236202310151018234085\"]",
+                  "[\"COR4236202310151039104112\", \"COR4236202310151039104112\"]",
+                  "[\"COR4236202310151041024114\", \"COR4236202310151041024114\"]",
+                  "[\"COR4236202310151041554116\", \"COR4236202310151041554116\"]",
+                  "[\"COR4236202310151042464119\", \"COR4236202310151042464119\"]",
+                  "[\"COR4236202310151043554120\", \"COR4236202310151043554120\"]",
+                  "[\"COR4236202310151056304136\", \"COR4236202310151056304136\"]",
+                  "[\"COR4236202310151058274138\", \"COR4236202310151058274138\"]",
+                  "[\"COR4236202310151059394140\", \"COR4236202310151059394140\"]",
+                  "[\"COR4236202310151101134142\", \"COR4236202310151101134142\"]",
+                  "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                ]
+              },
+              "keysExamined" : 136,
+              "seeks" : 61,
+              "dupsTested" : 0,
+              "dupsDropped" : 0,
+              "seenInvalidated" : 0
+            }
+          }
+        }
+      }
+    },
+    "allPlansExecution" : [ ]
+  },
+  "serverInfo" : {
+    "host" : "examplehost1",
+    "port" : 27017,
+    "version" : "4.0.9",
+    "gitVersion" : "fc525e2d9b0e4bceff5c2201457e564362909765"
+  },
+  "ok" : 1,
+  "operationTime" : Timestamp(1671537181, 9),
+  "$clusterTime" : {
+    "clusterTime" : Timestamp(1671537181, 9),
+    "signature" : {
+      "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+      "keyId" : NumberLong(0)
+    }
+  }
+}
+```
+Widać że `winningPlan` używa wskazanego przez nas indeksu:
+```json
+"inputStage" : {
+  "stage" : "IXSCAN",
+  "keyPattern" : {
+    "formFields.formInstanceNumber.value" : 1
+  },
+  "indexName" : "formFields.formInstanceNumber.value_1",
+  "isMultiKey" : false,
+  "multiKeyPaths" : {
+    "formFields.formInstanceNumber.value" : [ ]
+  },
+  "isUnique" : false,
+  "isSparse" : false,
+  "isPartial" : false,
+  "indexVersion" : 2,
+  "direction" : "forward",
+```
+a wykonanie zapytania trwało 10 milisekund. Podczas przetwarzania zapytania odwiedzonych zostało 136 kluczy i 75 dokumentów:
+```json
+"executionStats" : {
+    "executionSuccess" : true,
+    "nReturned" : 75,
+    "executionTimeMillis" : 10,
+    "totalKeysExamined" : 136,
+    "totalDocsExamined" : 75,
+```
+
 ## Wnioski
+
+Oczywisty wniosek płynący z przedstawionej tutaj sytuacji jest taki, że musimy brać pod uwagę to, że mongodb nie musi używać utworzonego przez nas indeksu. Szczególną uwagę powinniśmy zwrócić na zapytania, które są uruchamiane ze znacząco różnymi zakresami danych wejściowych.
+
+Wniosek mniej oczywisty jest związany z użyciem circuit breakera. W naszym przypadku circuit breaker odcinał wykonywanie zapytań trwających dłużej niż 10 sekund. Ponieważ klienci, dla których w klauzuli `in` wykorzystywaliśmy dużo wartości ponawiali próby wywołania funkcjonalności, circuit breaker wyłączył wywoływanie tej funkcjonalności. To spowodowało, że również dla klientów z mniejszą liczbą wartości w klauzuli `in` funkcjonalność stała się niedostępna.
 
 ## tl;dr
 
+1. Jeżeli używasz mongodb włącz [logowanie długich zapytań](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
+2. W przypadku problemów wydajnościowych z zapytaniem sprawdź plan wykonania zapytania dodając do polecenia `.explain("allPlansExecution")`.
+3. Jeżeli chcesz wymusić, aby mongodb używało indeksu w określonym zapytaniu można to osiągnąć bez przerwy w pracy systemu za pomocą polecenia `planCacheSetFilter`.
+
 # Źródła
+
+- [Opis działania optymalizatora zapytań w mongodb](https://www.mongodb.com/docs/manual/core/query-plans/).
+- [Sposób na logowanie długich zapytań w mongodb](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-operationProfiling.slowOpThresholdMs).
+- [Polecenie umożliwiające wymuszenie użycia określonego indeksu dla zapytania o podanym kształcie](https://www.mongodb.com/docs/manual/reference/command/planCacheSetFilter/)
+- [Wyjaśnienie czym jest kształt zapytania `query-shape`](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-query-shape)
+
+
