@@ -743,7 +743,10 @@ W tym miejscu należy się zastanowić w jaki sposób MongoDB wybiera najlepszy 
 
 Optymalizator MongoDB cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
 
-![Algorytm optymalizatora](/assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg)
+<div class="img-with-legend">
+<img alt="Algorytm optymalizatora" src="/assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg" />
+<span class="img-legend">Źródło: <a href="https://www.mongodb.com/docs/manual/core/query-plans/">www.mongodb.com</a> - dostęp: 2023-10-17</span>
+</div>
 
 Kluczem w cachu planów zapytań jest kształt zapytania [query-shape](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-query-shape). Na kształt zapytania składają się:
 - predykat zapytania (czyli to po czym filtrujemy kolekcję),
