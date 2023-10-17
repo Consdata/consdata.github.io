@@ -26,7 +26,7 @@ Jeżeli mamy podejrzenie, że problemy z wydajnością naszego systemu mogą by�
 
 W analizowanym przez nas przypadku w logu diagnostycznym znajdowało się wiele wpisów, których czas wykonania przekraczał 10 sekund:
 ```
-2023-10-01T14:50:35.652+0100 I COMMAND  [conn121] command formstore_db.formModel command: find { find: "formModel", readConcern: { level: "majority" }, filter: { formFields.formInstanceNumber.value: { $in: [ "COR4236202310131257073150", (...) "COR4236202310151102374144" ] }, formType: "some_form" }, sort: { _id: -1 }, projection: { formType: 1, (...) lastUpdateTime: 1 }, $db: "formstore_db", $clusterTime: { clusterTime: Timestamp(1671457810, 3), signature: { hash: BinData(0, 9A2225836AC174D40666995D6954154960FE67DB), keyId: 7137070794986749953 } }, lsid: { id: UUID("36e6cf62-4ad2-4b34-8a56-227d283da075") } } planSummary: IXSCAN { _id: 1 } keysExamined:254713 docsExamined:254713 fromMultiPlanner:1 replanned:1 cursorExhausted:1 numYields:2213 nreturned:75 reslen:289780 locks:{ Global: { acquireCount: { r: 2214 } }, Database: { acquireCount: { r: 2214 } }, Collection: { acquireCount: { r: 2214 } } } storage:{ data: { bytesRead: 15335932371, timeReadingMicros: 10566758 }, timeWaitingMicros: { cache: 56 } } protocol:op_msg 11597ms
+2023-10-01T14:50:35.652+0100 I COMMAND  [conn121] command formstore_db.formModel command: find { find: "formModel", readConcern: { level: "majority" }, filter: { formFields.formInstanceNumber.value: { $in: [ "EXI123456789", (...) "EXI987654321" ] }, formType: "some_form" }, sort: { _id: -1 }, projection: { formType: 1, (...) lastUpdateTime: 1 }, $db: "formstore_db", $clusterTime: { clusterTime: Timestamp(1671457810, 3), signature: { hash: BinData(0, 9A2225836AC174D40666995D6954154960FE67DB), keyId: 7137070794986749953 } }, lsid: { id: UUID("36e6cf62-4ad2-4b34-8a56-227d283da075") } } planSummary: IXSCAN { _id: 1 } keysExamined:254713 docsExamined:254713 fromMultiPlanner:1 replanned:1 cursorExhausted:1 numYields:2213 nreturned:75 reslen:289780 locks:{ Global: { acquireCount: { r: 2214 } }, Database: { acquireCount: { r: 2214 } }, Collection: { acquireCount: { r: 2214 } } } storage:{ data: { bytesRead: 15335932371, timeReadingMicros: 10566758 }, timeWaitingMicros: { cache: 56 } } protocol:op_msg 11597ms
 ```
 Linijka logu jest dość długa. Na jej końcu mamy podany czas wykonania zapytania: `protocol:op_msg 11597ms`. Czas wykonania zdecydowanie przekraczał oczekiwaną wartość, co pozwoliło potwierdzić tezę, że przyczyna problemów wydajnościowych leży po stronie bazy danych. Warto zwrócić jeszcze uwagę na następującą informację w logu:
 
@@ -74,9 +74,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
         {
           "formFields.formInstanceNumber.value": {
             "$in": [
-              "COR4237202310131425401494",
+              "EXI123456789",
               // ...
-              "COR4236202310151102374144"
+              "EXI987654321"
             ]
           }
         }
@@ -101,9 +101,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
             {
               "formFields.formInstanceNumber.value": {
                 "$in": [
-                  "COR4237202310131425401494",
+                  "EXI123456789",
                   // ...
-                  "COR4236202310151102374144"
+                  "EXI987654321"
                 ]
               }
             }
@@ -171,9 +171,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
                 "direction": "forward",
                 "indexBounds": {
                   "formFields.formInstanceNumber.value": [
-                    "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                    "[\"EXI123456789\", \"EXI123456789\"]",
                     // ...
-                    "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                    "[\"EXI987654321\", \"EXI987654321\"]"
                   ]
                 }
               }
@@ -200,9 +200,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
               "filter": {
                 "formFields.formInstanceNumber.value": {
                   "$in": [
-                    "COR4237202310131425401494",
+                    "EXI123456789",
                     // ...
-                    "COR4236202310151102374144"
+                    "EXI987654321"
                   ]
                 }
               },
@@ -268,9 +268,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
             {
               "formFields.formInstanceNumber.value": {
                 "$in": [
-                  "COR4237202310131425401494",
+                  "EXI123456789",
                   // ...
-                  "COR4236202310151102374144"
+                  "EXI987654321"
                 ]
               }
             }
@@ -361,9 +361,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
                 {
                   "formFields.formInstanceNumber.value": {
                     "$in": [
-                      "COR4237202310131425401494",
+                      "EXI123456789",
                       // ...
-                      "COR4236202310151102374144"
+                      "EXI987654321"
                     ]
                   }
                 }
@@ -517,9 +517,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
                   "direction": "forward",
                   "indexBounds": {
                     "formFields.formInstanceNumber.value": [
-                      "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                      "[\"EXI123456789\", \"EXI123456789\"]",
                       // ...
-                      "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                      "[\"EXI987654321\", \"EXI987654321\"]"
                     ]
                   },
                   "keysExamined": 135,
@@ -589,9 +589,9 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
                 "filter": {
                   "formFields.formInstanceNumber.value": {
                     "$in": [
-                      "COR4237202310131425401494",
+                      "EXI123456789",
                       // ...
-                      "COR4236202310151102374144"
+                      "EXI987654321"
                     ]
                   }
                 },
@@ -766,9 +766,9 @@ db.runCommand({
   query: {
       "formFields.formInstanceNumber.value": {
         "$in": [
-          "COR4237202310111009162413",
+          "EXI123456789",
           // ...
-          "COR4736202212011137482414"
+          "EXI987654321"
         ]
       },
       "formType": "some_form"
@@ -807,9 +807,9 @@ Po ponowieniu zapytania otrzymaliśmy następujący wynik:
         {
           "formFields.formInstanceNumber.value": {
             "$in": [
-              "COR4237202310131425401494",
+              "EXI123456789",
               // ...
-              "COR4236202310151102374144"
+              "EXI987654321"
             ]
           }
         }
@@ -853,9 +853,9 @@ Po ponowieniu zapytania otrzymaliśmy następujący wynik:
               "direction": "forward",
               "indexBounds": {
                 "formFields.formInstanceNumber.value": [
-                  "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                  "[\"EXI123456789\", \"EXI123456789\"]",
                   // ...
-                  "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                  "[\"EXI987654321\", \"EXI987654321\"]"
                 ]
               }
             }
@@ -963,9 +963,9 @@ Po ponowieniu zapytania otrzymaliśmy następujący wynik:
               "direction": "forward",
               "indexBounds": {
                 "formFields.formInstanceNumber.value": [
-                  "[\"COR4237202310131425401494\", \"COR4237202310131425401494\"]",
+                  "[\"EXI123456789\", \"EXI123456789\"]",
                   // ...
-                  "[\"COR4236202310151102374144\", \"COR4236202310151102374144\"]"
+                  "[\"EXI987654321\", \"EXI987654321\"]"
                 ]
               },
               "keysExamined": 136,
