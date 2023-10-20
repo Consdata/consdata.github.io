@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz co to stylePreprocessorOptions w Angular?"
-date:      2023-10-20T08:00:00+01:00
+date:      2024-01-12T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-10-20-czy-wiesz-co-to-style-processor-options-w-angular/css.webp
+image: /assets/img/posts/2024-01-12-czy-wiesz-co-to-style-processor-options-w-angular/css.webp
 description: StylePreprocessorOptions pozwala na dynamiczne dodawanie stylów do aplikacji. Pokazujemy kawałek kodu, który to umożliwia.
 tags:
 - angular
