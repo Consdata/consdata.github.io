@@ -12,29 +12,25 @@
   transition: 0.3s;
   animation: ease-in-out;
   position: absolute;
-  right: $search-icon-width;
   margin-right: $very-small-padding;
   background-color: $color-white;
   z-index: 999;
   border: none;
-  border-bottom: $inactive-input-bottom-border;
 
   &:focus {
     outline: none;
-    border-color: $color-logo-red;
+    border-color: $red-500;
   }
 
   @include mobile {
-    background-color: $color-russian-black;
+    background-color: $gray-900;
   }
 }
 
 .expanded {
-  width: $expanded-input-width-desktop;
   visibility: visible;
 
   @include mobile {
-    width: $expanded-input-width-mobile;
     color: $color-white;
   }
 }
@@ -42,10 +38,9 @@
 .search-icon {
   position: relative;
   cursor: pointer;
-  width: $search-icon-width;
   height: auto;
   font-size: 1.3em;
-  color: $color-logo-red;
+  color: $red-500;
 
   @include mobile {
     font-size: 1.6em;

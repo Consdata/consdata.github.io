@@ -1,5 +1,5 @@
 .newsletter-button {
-  background-color: $color-logo-red;
+  background-color: $red-500;
   color: $color-white;
   font-weight: bold;
   border: none;
@@ -7,7 +7,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $color-logo-red-dark;
+    background-color: $red-900;
   }
 }
 

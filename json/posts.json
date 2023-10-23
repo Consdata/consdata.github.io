@@ -1,5 +1,3 @@
----
----
 {
 {% for post in site.posts  %}
 {% assign author = site.authors | where: "short_name", post.author | first %}

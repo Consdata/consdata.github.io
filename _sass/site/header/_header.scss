@@ -8,13 +8,9 @@ nav {
     line-height: 1;
   }
 
-  position: fixed;
   top: 0;
   width: 100%;
   height: $navbar-height-mobile;
-  z-index: $header-z-index;
-  box-shadow: 0 0 5px $color-gray-80;
-  background-color: $color-white;
 
   @include tablet-and-desktop {
     height: $navbar-height-desktop;

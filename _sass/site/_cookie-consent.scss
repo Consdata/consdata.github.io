@@ -7,11 +7,11 @@
   position: fixed;
   bottom: 0;
   width: calc(100% - 2rem);
-  background: $color-blackcurrant;
+  background: $gray-900;
   z-index: 100;
 
   span {
-    color: $color-gray-80;
+    color: $gray-300;
     font-weight: $font-weight-bold;
   }
 
@@ -31,7 +31,7 @@
 }
 
 .consent-button {
-  background: $color-logo-red-dark;
+  background: $red-900;
   color: white;
   border-radius: 0.25rem;
   padding: .35rem .75rem;

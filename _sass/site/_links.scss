@@ -1,8 +1,8 @@
 a {
-  color: $color-dark-gray;
+  color: $gray-900;
   text-decoration: none;
   font-weight: $font-weight-semibold;
   &:hover {
-    color: $color-logo-red;
+    color: $red-500;
   }
 }

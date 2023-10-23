@@ -4,11 +4,6 @@ layout: search
 
 <article>
     {% assign author = site.authors | where: 'short_name', page.short_name | first %}
-    <div class="row">
-        <div class="col-15 with-bottom-separator">
-            {% include author_bio.html %}
-        </div>
-    </div>
     {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
     {% for forPost in filtered_posts %}
     <div class="row">

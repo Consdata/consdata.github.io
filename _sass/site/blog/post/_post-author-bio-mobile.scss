@@ -1,8 +1,6 @@
 .author-bio-mobile {
   display: block;
-  letter-spacing: $general-letter-spacing;
   font-size: 1.2em;
-  border-top: $separator-border;
   @include tablet-and-desktop {
     display: none;
   }
@@ -18,18 +16,18 @@
   }
 
   .author-image {
-    min-width: $big-author-image-size;
-    max-width: $big-author-image-size;
-    min-height: $big-author-image-size;
-    max-height: $big-author-image-size;
+    min-width: $avatar-size;
+    max-width: $avatar-size;
+    min-height: $avatar-size;
+    max-height: $avatar-size;
     border-radius: 50%;
     overflow: hidden;
 
     img {
-      min-width: $big-author-image-size;
-      max-width: $big-author-image-size;
-      min-height: $big-author-image-size;
-      max-height: $big-author-image-size;
+      min-width: $avatar-size;
+      max-width: $avatar-size;
+      min-height: $avatar-size;
+      max-height: $avatar-size;
     }
   }
 

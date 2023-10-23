@@ -2,10 +2,10 @@
   a {
     font-style: italic;
     word-break: keep-all;
-    color: $color-logo-red;
+    color: $red-500;
 
     &:hover {
-      color: $color-dark-gray;
+      color: $gray-900;
     }
   }
 }

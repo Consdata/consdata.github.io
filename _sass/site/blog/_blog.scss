@@ -3,17 +3,12 @@
   @import "post-metadata";
   @import "post/post";
 
-  @include desktop {
-    margin: 0 $blog-side-margins-desktop;
-  }
-
-  @include tablet {
-    margin: 0 $blog-side-margins-tablet;
-  }
+  width: $desktop-width;
+  margin: 0 auto;
 }
 
 .narrower {
   @include desktop {
-    margin: 0 $narrower-side-margins-desktop;
+    margin: 0 auto;
   }
 }

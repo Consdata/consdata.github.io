@@ -32,12 +32,12 @@
     align-items: center;
 
     a {
-      color: $color-very-dark-gray;
+      color: $gray-900;
       text-transform: uppercase;
 
       &.active,
       &:hover {
-        color: $color-logo-red;
+        color: $red-500;
       }
     }
   }

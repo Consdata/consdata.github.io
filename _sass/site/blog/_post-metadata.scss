@@ -2,7 +2,7 @@
   $field-margin: 5px;
 
   @include flex-container;
-  color: $color-light-gray;
+  color: $gray-300;
   align-items: center;
 
   .article-author {
@@ -18,7 +18,6 @@
 
   .author-name-metadata {
     font-size: 1.3em;
-    letter-spacing: $general-letter-spacing;
     font-weight: bold;
   }
 
@@ -28,14 +27,14 @@
 
   .author-image {
     margin-left: $field-margin;
-    width: $small-author-image-size;
-    height: $small-author-image-size;
+    width: $avatar-size;
+    height: $avatar-size;
     border-radius: 50%;
     overflow: hidden;
 
     img {
-      max-width: $small-author-image-size;
-      max-height: $small-author-image-size;
+      max-width: $avatar-size;
+      max-height: $avatar-size;
     }
   }
 

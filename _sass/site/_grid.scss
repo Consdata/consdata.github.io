@@ -7,7 +7,7 @@
 
 .first-row {
   @include desktop {
-    margin-bottom: $first-post-bottom-margin;
+    margin-bottom: $desktop-content-space;
   }
   @include mobile {
     margin: 0;

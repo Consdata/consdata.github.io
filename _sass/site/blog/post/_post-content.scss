@@ -8,26 +8,14 @@
 }
 
 .post-big-title {
-  font-size: $post-title-font-size-desktop;
   font-weight: bold;
-  letter-spacing: $general-letter-spacing;
   @include desktop {
     margin-bottom: 0;
-    line-height: $post-title-desktop-line-height;
   }
 
   @include mobile {
     margin-bottom: 0;
-    font-size: $post-title-font-size-mobile;
   }
-}
-
-.social-media-sharing {
-  @include flex-container;
-  justify-content: flex-end;
-  border-bottom: $separator-border;
-  font-size: 1.2em;
-  font-weight: bold;
 }
 
 .post-content {
@@ -35,14 +23,11 @@
   flex-direction: column;
   flex: 66%;
   text-align: justify;
-  font-size: $post-font-size;
-  line-height: $post-content-line-height;
-  letter-spacing: $general-letter-spacing;
 
   code {
     font-family: 'Roboto Mono';
     font-size: 15px;
-    background: $color-code-background;
+    background: $gray-200;
     border-radius: 4px;
     padding: 1px 4px;
     display: inline-block;
@@ -89,7 +74,6 @@
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: $header-z-index + 1;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
@@ -134,7 +118,7 @@
 
 .post-content-left-pane {
   @include flex-container;
-  flex: 66%;
+  width: $post-content-width;
 }
 
 .translation-details {
@@ -150,13 +134,13 @@
   line-height: 2;
 }
 
-.did-you-know-box {
-  @extend .highlighted-box;
-  background-color: $color-logo-red;
-}
-
 .highlighted-box-description {
   color: white;
   font-weight: $font-weight-bold;
   margin: 0;
+}
+
+
+.post-content {
+  width: $post-content-width;
 }

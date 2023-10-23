@@ -1,42 +1,29 @@
 @font-face {
-  font-family: "Roboto Condensed";
-  font-style: normal;
-  font-weight: 300;
-  src: url("/assets/fonts/RobotoCondensed-Light.ttf") format('truetype');
-}
-
-@font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 300;
-  src: url("/assets/fonts/RobotoCondensed-LightItalic.ttf") format('truetype');
-}
-
-@font-face {
-  font-family: "Roboto Condensed";
+  font-family: 'Manrope', sans-serif;
   font-style: normal;
   font-weight: 400;
-  src: url("/assets/fonts/RobotoCondensed-Regular.ttf") format('truetype');
+  src: url("/assets/fonts/Manrope-Regular.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 400;
-  src: url("/assets/fonts/RobotoCondensed-Italic.ttf") format('truetype');
+  font-family: 'Manrope', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  src: url("/assets/fonts/Manrope-Medium.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto Condensed";
+  font-family: 'Manrope', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  src: url("/assets/fonts/Manrope-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Manrope', sans-serif;
   font-style: normal;
   font-weight: 700;
-  src: url("/assets/fonts/RobotoCondensed-Bold.ttf") format('truetype');
-}
-@font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 700;
-  src: url("/assets/fonts/RobotoCondensed-BoldItalic.ttf") format('truetype');
+  src: url("/assets/fonts/Manrope-Bold.ttf") format('truetype');
 }
 
 html,
@@ -46,10 +33,53 @@ input,
 div,
 span {
   font-size: $default-font-size;
-  font-family: "Roboto Condensed", Helvetica, Arial, sans-serif;
+  font-family: "Manrope", sans-serif;
   font-weight: $font-weight-regular;
   line-height: $base-line-height;
-  color: $color-dark-gray;
+  color: $gray-900;
 }
 
+h1 {
+  font-size: 56px;
+  font-weight: $font-weight-semibold;
+  line-height: 64px;
 
+  //@include mobile {
+  //  font-size: 26px;
+  //  line-height: 42px;
+  //}
+}
+
+h2 {
+  font-size: 52px;
+  font-weight: $font-weight-semibold;
+  line-height: 64px;
+
+  //@include mobile {
+  //  font-size: 20px;
+  //  line-height: 32px;
+  //}
+}
+
+h3 {
+  font-size: 40px;
+  font-weight: $font-weight-semibold;
+  line-height: 60px;
+
+  //@include mobile {
+  //  font-size: 16px;
+  //  line-height: 30px;
+  //}
+}
+
+h4 {
+  font-size: 30px;
+  font-weight: $font-weight-semibold;
+  line-height: 42px;
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: $font-weight-semibold;
+  line-height: 32px;
+}

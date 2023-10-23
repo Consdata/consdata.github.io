@@ -7,17 +7,16 @@
   }
 
   a {
-    color: $color-logo-red;
+    color: $red-500;
     cursor: pointer;
     font-size: 1.1em;
     padding-right: $double-content-padding;
-    letter-spacing: $general-letter-spacing;
     @include mobile {
       padding-right: $content-padding;
     }
 
     &:hover {
-      color: $color-dark-gray;
+      color: $gray-900;
     }
   }
 }

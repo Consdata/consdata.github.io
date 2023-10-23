@@ -7,46 +7,28 @@ comments: true
 {% assign coauthor = site.authors | where: "short_name", post.coauthor | first %}
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-        <header>
-            {% include main-page-link.html %}
-            <div class="row">
-                <div class="col-15">
-                    <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
-                </div>
+        <div class="post-content">
+            <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+            {% include post_metadata.html %}
+            <div class="col-5">
+                {% include language_options.html %}
             </div>
-            <div class="row">
-                <div class="col-15">
-                    {% include post_metadata.html %}
-                </div>
-                <div class="col-5">
-                    {% include language_options.html %}
-                </div>
-            </div>
-        </header>
-        <div itemprop="articleBody" class="post-content-container">
-            <div class="post-content-left-pane">
-                <div class="post-content">
-                    <div class="{% if post.didyouknow %} big-post-tile-did-you-know {% elsif post.afterhours %} big-post-tile-after-hours {% endif %} post-highlight-image">
-                        <img src="{{post.image}}" alt="postimage"/>
+            <div itemprop="articleBody" class="post-content-container">
+                <div class="post-content-left-pane">
+                    <div class="post-content">
+                        <div id="myModal" class="modal">
+                            <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                               onclick="closeModal()"></i>
+                            <img class="modal-content">
+                        </div>
+                        {{ content }}
+                        {% if post.interpreter %}
+                        {% include translation-details.html %}
+                        {% endif %}
+                        {% if post.afterhours %}
+                        {% include after-hours-box.html %}
+                        {% endif %}
                     </div>
-                    <div class="social-media-sharing">
-                        {% include share_bar.html %}
-                    </div>
-                    <div id="myModal" class="modal">
-                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
-                           onclick="closeModal()"></i>
-                        <img class="modal-content">
-                    </div>
-                    {{ content }}
-                    {% if post.interpreter %}
-                    {% include translation-details.html %}
-                    {% endif %}
-                    {% if post.didyouknow %}
-                    {% include did-you-know-box.html %}
-                    {% endif %}
-                    {% if post.afterhours %}
-                    {% include after-hours-box.html %}
-                    {% endif %}
                 </div>
             </div>
             <div class="sidebar">
@@ -54,24 +36,15 @@ comments: true
                 {% include recommended-posts-desktop.html %}
                 {% include consdata-offers.html %}
             </div>
-        </div>
-        <div class="post-post-section-mobile">
-            {% include latest_posts.html %}
-        </div>
-        <div class="post-post-section-mobile">
-            {% include recommended-posts-mobile.html %}
-        </div>
-        <div class="post-post-section-mobile">
-            {% include consdata-offers.html %}
-        </div>
-        {% include author_bio.html %}
-        {%- if post.coauthor -%}
-            {% assign author = site.authors | where: "short_name", post.coauthor | first %}
-            {% include author_bio.html %}
-        {%- endif -%}
-        {%- if site.disqus.shortname -%}
-            {%- include disqus_comments.html -%}
-        {%- endif -%}
+            <div class="post-post-section-mobile">
+                {% include latest_posts.html %}
+            </div>
+            <div class="post-post-section-mobile">
+                {% include recommended-posts-mobile.html %}
+            </div>
+            <div class="post-post-section-mobile">
+                {% include consdata-offers.html %}
+            </div>
     </article>
 </div>
 <script>

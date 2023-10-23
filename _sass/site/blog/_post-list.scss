@@ -1,11 +1,6 @@
 .post-animation {
   transition: 0.2s;
   animation: ease;
-
-  &:hover {
-    transform: translate3d(0, -1px, 0);
-    box-shadow: $post-tile-hover-shadow;
-  }
 }
 
 .post-tile {
@@ -22,7 +17,6 @@
 .post-title {
   font-weight: bold;
   font-size: 1.5em;
-  letter-spacing: $general-letter-spacing;
   margin-top: 0;
 }
 
@@ -45,7 +39,6 @@
 
 .post-description {
   font-size: 1.2em;
-  letter-spacing: $general-letter-spacing;
 }
 
 .big-post-tile-content {
@@ -63,7 +56,7 @@
 }
 
 .small-author-image {
-  width: $medium-author-image-size;
+  width: $avatar-size;
   height: auto;
   border-radius: 50%;
   margin-right: $very-small-padding;
@@ -121,7 +114,7 @@
 
   &:before {
     content: "Czy wiesz, że?";
-    background-color: $color-logo-red;
+    background-color: $red-500;
     color: $color-white;
   }
 }
@@ -131,7 +124,7 @@
 
   &:before {
     content: "Po godzinach";
-    background-color: $color-highlight-blue;
+    background-color: $red-500;
     color: $color-white;
   }
 }

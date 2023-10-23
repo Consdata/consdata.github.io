@@ -2,7 +2,6 @@
   position: sticky;
   height: fit-content;
   top: 80px;
-  width: 33%;
   @include mobile {
     display: none;
   }
@@ -22,13 +21,10 @@
   font-weight: bold;
   font-size: 1.4em;
   margin-bottom: $small-padding;
-  letter-spacing: $general-letter-spacing;
-  border-bottom: $separator-border;
 }
 
 .sidebar-post {
   font-size: 1.2em;
-  letter-spacing: $general-letter-spacing;
   margin-bottom: $content-padding;
 }
 
@@ -48,7 +44,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
   box-sizing: border-box;
-  background-color: $color-logo-red;
+  background-color: $red-500;
 }
 
 .ad-icons-container {
@@ -111,11 +107,11 @@
 .job-offer-highlighted {
   display: flex;
   flex-direction: column;
-  background-color: $color-logo-red;
+  background-color: $red-500;
   padding: $very-small-padding;
 
   &:hover {
-    background-color: $color-logo-red-dark;
+    background-color: $red-900;
   }
 
   .job-title {
@@ -143,21 +139,21 @@
     .job-salary,
     .job-description,
     .job-title {
-      color: $color-logo-red-dark;
+      color: $red-900;
     }
   }
 
   .job-salary {
-    @include job-offer-text($color-dark-gray);
+    @include job-offer-text($gray-900);
     font-weight: lighter;
   }
 
   .job-description {
-    @include job-offer-text($color-dark-gray);
+    @include job-offer-text($gray-900);
   }
 
   .job-title {
-    @include job-offer-text($color-dark-gray);
+    @include job-offer-text($gray-900);
     font-weight: bold;
   }
 }
