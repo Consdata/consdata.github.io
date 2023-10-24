@@ -17,7 +17,7 @@ tags:
 
 ## Optymalizatory zapytań
 
-Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla MongoDB możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjach i samodzielną optymalizację wykonywanych zapytań. Z uwagi na to, że optymalizator działa bez kontroli programisty zdarzają się jednak sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
+Optymalizator zapytań to element silnika bazy danych, który dba o to, aby zapytanie zostało wykonane w optymalny sposób, uwzględniając zbiór danych przechowywanych w danym momencie w bazie. Pod pojęciem optymalny mamy zazwyczaj na myśli taki sposób, który zwróci nam wynik zapytania w najkrótszym czasie. Optymalizator bierze pod uwagę statystyki gromadzone i aktualizowane na bieżąco podczas działania bazy danych. Optymalizatory są wbudowane zarówno w bazy SQL'owe jak i bazy NoSQL. Sposób działania optymalizatora dla MongoDB możemy znaleźć na stronie: [https://www.mongodb.com/docs/manual/core/query-plans/](https://www.mongodb.com/docs/manual/core/query-plans/). W znakomitej większości przypadków optymalizatory są dużym ułatwieniem dla programistów, którzy nie muszą poświęcać czasu na analizę rozkładu danych w poszczególnych tabelach/kolekcjach i samodzielną optymalizację wykonywanych zapytań. Ponieważ optymalizator działa bez kontroli programisty, zdarzają się sytuacje, w których jego zachowanie jest dla nas zaskakujące i może prowadzić do problemów wydajnościowych.   
 
 ## Analiza problemów wydajnościowych
 
@@ -57,7 +57,7 @@ Wskazuje ona na to, że użyty został standardowy indeks MongoDB zakładany na 
 
 ## Sprawdzamy plan zapytania
 
-W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, należy go przeprowadzić na środowisku, na którym wystąpiły problemy, gdyż wyniki pracy optymalizatora są zależne od danych znajdujących się w bazie oraz statystyk zbieranych podczas jej działania. Wyświetlenie wybranego planu zapytania oraz planów alternatywnych realizujemy poprzez wywołanie zapytania wykonywanego przez aplikację, w którym na końcu dodajemy: `.explain("allPlansExecution")`. W analizowanym przypadku otrzymaliśmy następujący wynik:
+W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, analizę należy przeprowadzić na środowisku, na którym wystąpiły problemy, gdyż wyniki pracy optymalizatora są zależne od danych znajdujących się w bazie oraz statystyk zbieranych podczas jej działania. Wyświetlenie wybranego planu zapytania oraz planów alternatywnych realizujemy poprzez wywołanie zapytania wykonywanego przez aplikację, w którym na końcu dodajemy: `.explain("allPlansExecution")`. W analizowanym przypadku otrzymaliśmy następujący wynik:
 ```javascript
 {
   "queryPlanner": {
@@ -667,7 +667,7 @@ W takim przypadku warto przeprowadzić analizę planu zapytania. Co ważne, nale
   }
 }
 ```
-Wynik analizy jest dość obszerny jednak można go podsumować tak:
+Wynik analizy jest dość obszerny, jednak można go podsumować tak:
 - `winningPlan` czyli plan, który został wykonany posłużył się standardowym indeksem kolekcji:
 ```javascript
   {
