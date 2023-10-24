@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Jak zmusić MongoDB do użycia indeksu bez zmiany kodu - zastosowanie index filter"
-date:      2023-10-13T08:00:00+01:00
+date:      2023-10-24T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: jwilczewski
-image: /assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/mongodb.jpg
+image: /assets/img/posts/2023-10-24-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/mongodb.webp
 tags:
 - mongodb
 - index
@@ -744,7 +744,7 @@ W tym miejscu należy się zastanowić w jaki sposób MongoDB wybiera najlepszy 
 Optymalizator MongoDB cache'uje plany zapytań. Plan zapytania, który wygrał (`winningPlan`) trafia do cache'a i po kolejnym zapytaniu, w którym okazał się planem wygrywającym staje się aktywny. Następne zapytanie o takim samym **kształcie** zostaje wykonane w oparciu o aktywny plan z cache'a. Algorytm wygląda tak:
 
 <div class="img-with-legend">
-<img alt="Algorytm optymalizatora" src="/assets/img/posts/2023-10-13-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg" />
+<img alt="Algorytm optymalizatora" src="/assets/img/posts/2023-10-24-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/query-planner-logic.bakedsvg.svg" />
 <span class="img-legend">Źródło: <a href="https://www.mongodb.com/docs/manual/core/query-plans/">www.mongodb.com</a> - dostęp: 2023-10-17</span>
 </div>
 
