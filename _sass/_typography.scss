@@ -1,26 +1,26 @@
 @font-face {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 400;
   src: url("/assets/fonts/Manrope-Regular.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 500;
   src: url("/assets/fonts/Manrope-Medium.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 600;
   src: url("/assets/fonts/Manrope-SemiBold.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 700;
   src: url("/assets/fonts/Manrope-Bold.ttf") format('truetype');
@@ -33,7 +33,7 @@ input,
 div,
 span {
   font-size: $default-font-size;
-  font-family: "Manrope", sans-serif;
+  font-family: "Manrope";
   font-weight: $font-weight-regular;
   line-height: $base-line-height;
   color: $gray-900;

@@ -1,10 +1,7 @@
 .sidebar {
   position: sticky;
   height: fit-content;
-  top: 80px;
-  @include mobile {
-    display: none;
-  }
+  width: $post-sidebar-content-width;
 }
 
 .sidebar-container {

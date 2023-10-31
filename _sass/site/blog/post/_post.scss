@@ -1,6 +1,5 @@
 article {
   @import "post-syntax-highlighting";
-  @import "post-headers";
   @import "post-images";
   @import "post-blockquote";
   @import "post-author-bio";
@@ -13,4 +12,9 @@ article {
   @import "post-share-bar";
   @import "post-disqus";
   @import "post-languages";
+}
+
+.post {
+  @include flex-container;
+  justify-content: space-between;
 }
