@@ -42,3 +42,28 @@
   color: $font-color;
   font-size: 1.2em;
 }
+
+@mixin badge() {
+  text-transform: uppercase;
+  width: max-content;
+  color: $red-900;
+  background-color: $red-100;
+  padding: 2px 8px;
+  border-radius: $small-round-edge;
+}
+
+@mixin content-space(){
+  margin-top: $desktop-content-space;
+
+  @include mobile{
+    margin-top: $mobile-content-space;
+  }
+}
+
+@mixin section-space(){
+  margin-top: $desktop-section-space;
+
+  @include mobile{
+    margin-top: $mobile-section-space;
+  }
+}

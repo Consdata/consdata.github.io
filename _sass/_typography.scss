@@ -1,3 +1,5 @@
+@import "mixins";
+
 @font-face {
   font-family: 'Manrope';
   font-style: normal;
@@ -39,47 +41,82 @@ span {
   color: $gray-900;
 }
 
-h1 {
-  font-size: 56px;
-  font-weight: $font-weight-semibold;
-  line-height: 64px;
 
-  //@include mobile {
-  //  font-size: 26px;
-  //  line-height: 42px;
-  //}
+@mixin font-config($font-size, $font-weight, $line-height) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+}
+
+
+h1 {
+  @include font-config(52px, $font-weight-semibold, 64px);
+
+  @include mobile {
+    @include font-config(26px, $font-weight-semibold, 42px);
+  }
 }
 
 h2 {
-  font-size: 52px;
-  font-weight: $font-weight-semibold;
-  line-height: 64px;
+  @include font-config(40px, $font-weight-semibold, 60px);
 
-  //@include mobile {
-  //  font-size: 20px;
-  //  line-height: 32px;
-  //}
+  @include mobile {
+    @include font-config(20px, $font-weight-semibold, 32px);
+  }
 }
 
 h3 {
-  font-size: 40px;
-  font-weight: $font-weight-semibold;
-  line-height: 60px;
-
-  //@include mobile {
-  //  font-size: 16px;
-  //  line-height: 30px;
-  //}
+  @include font-config(30px, $font-weight-semibold, 42px);
+  @include mobile {
+    @include font-config(16px, $font-weight-semibold, 30px);
+  }
 }
 
 h4 {
-  font-size: 30px;
-  font-weight: $font-weight-semibold;
-  line-height: 42px;
+  @include font-config(20px, $font-weight-semibold, 32px);
 }
 
-h5 {
-  font-size: 20px;
-  font-weight: $font-weight-semibold;
-  line-height: 32px;
+@mixin title(){
+  @include font-config(56px, $font-weight-semibold, 64px);
+
+  @include mobile {
+    @include font-config(10px, $font-weight-semibold, 24px);
+  }
+}
+
+@mixin body-large() {
+  @include font-config(18px, $font-weight-semibold, 28px);
+}
+
+@mixin body() {
+  @include font-config(16px, $font-weight-regular, 30px);
+}
+
+@mixin body-semibold() {
+  @include font-config(16px, $font-weight-semibold, 30px);
+}
+
+@mixin body-small() {
+  @include font-config(14px, $font-weight-regular, 26px);
+}
+
+@mixin body-small-medium() {
+  @include font-config(14px, $font-weight-medium, 26px);
+}
+
+@mixin body-small-semibold() {
+  @include font-config(14px, $font-weight-semibold, 26px);
+}
+
+@mixin body-xs() {
+  @include font-config(12px, $font-weight-regular, 22px);
+}
+
+@mixin body-xs-semibold() {
+  @include font-config(12px, $font-weight-semibold, 22px);
+}
+
+
+@mixin label() {
+  @include font-config(10px, $font-weight-semibold, 24px);
 }

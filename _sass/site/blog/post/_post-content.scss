@@ -8,13 +8,20 @@
 }
 
 .post-big-title {
+  text-align: left;
+
   @include desktop {
+    @include title();
     margin-bottom: 0;
   }
 
   @include mobile {
     margin-bottom: 0;
   }
+}
+
+.badge {
+  @include badge;
 }
 
 .post-content {
