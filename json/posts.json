@@ -12,6 +12,7 @@
 "image": "{{ author.image }}",
 "highlight": "{{ post.image }}",
 "date": "{{ post.date | date: '%d-%m-%Y' }}",
+"readingTime": "{{ post.readingTime }}"
 "path": "{{ post.path | remove: '_posts/' | remove: '.md'}}"
 }
 {% unless forloop.last %},{% endunless %}

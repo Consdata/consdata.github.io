@@ -13,6 +13,7 @@ tags:
   - webstorage
   - database
   - javascript
+readingTime: 20 min
 ---
 
 IndexedDB to wbudowana w przeglądarkę internetową baza danych typu NoSQL. Przechowuje ona dane lokalnie w przeglądarce,

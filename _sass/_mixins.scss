@@ -67,3 +67,11 @@
     margin-top: $mobile-section-space;
   }
 }
+
+@mixin content-small-space(){
+  margin-top: $desktop-content-small-space;
+
+  @include mobile{
+    margin-top: $mobile-content-small-space;
+  }
+}

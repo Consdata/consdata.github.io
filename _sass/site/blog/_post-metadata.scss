@@ -1,46 +1,33 @@
 .post-metadata {
-  $field-margin: 5px;
-
   @include flex-container;
-  color: $gray-300;
   align-items: center;
+  justify-content: space-between;
+  @include content-small-space;
+}
 
-  .article-author {
-    @include flex-container;
-    align-items: center;
-  }
+.metadata {
+  @include flex-container;
+  gap: 32px;
+}
 
-  .author-name {
-    width: 85px;
-    height: 75px;
-    position: relative;
-  }
+.time {
+  margin-right: 16px;
+}
 
-  .author-name-metadata {
-    font-size: 1.3em;
-    font-weight: bold;
-  }
+.reading-time {
+  @include flex-container;
+}
 
-  .author-separator {
-    margin-left: $field-margin;
-  }
+.time, .publish-date, .separator {
+  @include body-small-semibold();
+  text-align: center;
+  color: $gray-500;
+}
 
-  .author-image {
-    margin-left: $field-margin;
-    width: $avatar-size;
-    height: $avatar-size;
-    border-radius: 50%;
-    overflow: hidden;
-
-    img {
-      max-width: $avatar-size;
-      max-height: $avatar-size;
-    }
-  }
-
-  .coauthors {
-    @include flex-container;
-    align-items: center;
-  }
-
+.clock-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
+  align-self: center;
+  margin: 0;
 }

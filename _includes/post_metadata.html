@@ -1,0 +1,11 @@
+<div class="post-metadata">
+    {% include post_author.html %}
+    <div class="metadata">
+        <div class="reading-time">
+            <span class="time">{{ post.readingTime }}</span>
+            <img class="clock-icon" src="/assets/img/clock.svg">
+        </div>
+        <span class="separator">|</span>
+        <span class="publish-date">{% include post-date.html date=post.date lang=page.lang %}</span>
+    </div>
+</div>
