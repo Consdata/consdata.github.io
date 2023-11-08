@@ -5,6 +5,7 @@
 
   width: $desktop-width;
   margin: 0 auto;
+  @include section-medium-space
 }
 
 .narrower {

@@ -1,5 +1,6 @@
 // Assets
 $images-dir: '/assets/img/';
+$icon-dir: '/assets/icon/';
 
 // Viewport
 $desktop-breakpoint: 1200px;
@@ -18,14 +19,18 @@ $blog-side-margins-desktop: 20%;
 $blog-side-margins-tablet: 15%;
 
 // Paddings, margins
-$desktop-content-space: 64px;
 $desktop-section-space: 120px;
-
-$desktop-content-small-space: 48px;
-$mobile-content-small-space: 24px;
-
-$mobile-content-space: 48px;
 $mobile-section-space: 72px;
+
+$desktop-section-medium-space: 72px;
+$mobile-section-medium-space: 36px;
+
+$desktop-section-small-space: 64px;
+$mobile-section-small-space: 48px;
+
+$desktop-section-xs-space: 48px;
+$mobile-section-xs-space: 24px;
+
 
 // Typography
 $font-weight-bold: 700;

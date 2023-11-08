@@ -9,15 +9,7 @@
 
 .post-big-title {
   text-align: left;
-
-  @include desktop {
-    @include title();
-    margin-bottom: 0;
-  }
-
-  @include mobile {
-    margin-bottom: 0;
-  }
+  @include title();
 }
 
 .badge {
@@ -34,22 +26,15 @@
     font-family: 'Roboto Mono';
     font-size: 15px;
     background: $gray-200;
-    border-radius: 4px;
+    border-radius: $small-round-edge;
     padding: 1px 4px;
     display: inline-block;
   }
 
   p {
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
+    margin-top: 0.5em;
     overflow-wrap: break-word;
-  }
-
-  p:first-child {
-    margin-top: $content-padding;
-  }
-
-  h2:first-child {
-    margin-top: $content-padding;
   }
 
   .post-highlight-image, .post-tile-did-you-know {
@@ -124,6 +109,7 @@
 
 .post-content-left-pane {
   @include flex-container;
+  @include section-medium-space;
   width: $post-content-width;
 }
 
@@ -149,4 +135,8 @@
 
 .post-content {
   width: $post-content-width;
+}
+
+.post {
+  @include section-medium-space;
 }

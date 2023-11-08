@@ -8,12 +8,10 @@ comments: true
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-content">
-            <p class="badge">{{ page.tags }}</p>
+<!--    TODO Musi wyświetlać się tylko pierwszy "główny" tag        -->
+            <div class="badge">{{ page.tags }}</div>
             <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
             {% include post_metadata.html %}
-            <div class="col-5">
-                {% include language_options.html %}
-            </div>
             <div itemprop="articleBody" class="post-content-container">
                 <div class="post-content-left-pane">
                     <div class="post-content">
@@ -23,19 +21,20 @@ comments: true
                             <img class="modal-content">
                         </div>
                         {{ content }}
-                        {% if post.interpreter %}
-                        {% include translation-details.html %}
-                        {% endif %}
-                        {% if post.afterhours %}
-                        {% include after-hours-box.html %}
-                        {% endif %}
+                        {% include recommended-posts-desktop.html %}
+<!--TODO Czy jest to potrzebne i w jakim celu ?-->
+<!--                        {% if post.interpreter %}-->
+<!--                        {% include translation-details.html %}-->
+<!--                        {% endif %}-->
+<!--                        {% if post.afterhours %}-->
+<!--                        {% include after-hours-box.html %}-->
+<!--                        {% endif %}-->
                     </div>
                 </div>
             </div>
         </div>
         <div class="sidebar">
             {% include latest_posts.html %}
-            {% include recommended-posts-desktop.html %}
             {% include consdata-offers.html %}
         </div>
         <div class="post-post-section-mobile">

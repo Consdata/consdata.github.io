@@ -38,11 +38,6 @@
   min-width: 1px;
 }
 
-@mixin job-offer-text($font-color) {
-  color: $font-color;
-  font-size: 1.2em;
-}
-
 @mixin badge() {
   text-transform: uppercase;
   width: max-content;
@@ -52,13 +47,6 @@
   border-radius: $small-round-edge;
 }
 
-@mixin content-space(){
-  margin-top: $desktop-content-space;
-
-  @include mobile{
-    margin-top: $mobile-content-space;
-  }
-}
 
 @mixin section-space(){
   margin-top: $desktop-section-space;
@@ -68,10 +56,34 @@
   }
 }
 
-@mixin content-small-space(){
-  margin-top: $desktop-content-small-space;
+@mixin section-medium-space(){
+  margin-top: $desktop-section-medium-space;
 
   @include mobile{
-    margin-top: $mobile-content-small-space;
+    margin-top: $mobile-section-medium-space;
+  }
+}
+
+@mixin section-medium-space(){
+  margin-top: $desktop-section-medium-space;
+
+  @include mobile{
+    margin-top: $mobile-section-medium-space;
+  }
+}
+
+@mixin section-small-space(){
+  margin-top: $desktop-section-small-space;
+
+  @include mobile{
+    margin-top: $mobile-section-small-space;
+  }
+}
+
+@mixin section-small-space(){
+  margin-top: $desktop-section-xs-space;
+
+  @include mobile{
+    margin-top: $mobile-section-xs-space;
   }
 }
