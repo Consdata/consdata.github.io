@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Czy wiesz jak należy trzymać powiązane dane w jednym dokumencie w bazie MongoDB?"
+title:     "Czy wiesz, jak należy trzymać powiązane dane w jednym dokumencie w bazie MongoDB?"
 date:      2023-11-17T12:00:00+01:00
 published: true
 didyouknow: true
@@ -14,11 +14,11 @@ tags:
 - bazy danych
 ---
 
-Ważna zasada przy projektowaniu schematu w MongoDB mówi, żeby dane, do których dostęp jest zazwyczaj wspólny, przechowywać razem. Jest to całkowicie sprzeczne z koncepcją normalizacji, podzieleniem danych tak, żeby uniknąć duplikowania i ograniczyć potrzebne miejsce na dane, czyli ze wszystkim tym, co znamy z relacyjnych baz danych.
+Ważna zasada przy projektowaniu schematu w MongoDB mówi, żeby dane, do których dostęp jest zazwyczaj wspólny, przechowywać razem. Jest to całkowicie sprzeczne z koncepcją normalizacji – dzieleniem danych tak, żeby uniknąć duplikowania i ograniczyć potrzebne miejsce na dane – czyli ze wszystkim, co znamy z relacyjnych baz danych.
 
-Warto podkreślić, że odpowiednikiem JOINów w zapytaniu SQL jest operacja `$lookup`, która pozwala łączyć dane z kilku kolekcji. Operacja ta jest jednak wolna i kosztowna, dlatego jest wskazana tylko do rzadko wykonywanych zapytań, na które można długo zaczekać lub zapytań analitycznych, które można wykonać bez limitu czasu (np. na jakimś osobnym przeznaczonym do takich zapytań węźle). Dla zapytań, które mają być wykonywane często i oczekujemy ich wyników szybko, istotne będzie odpowiednie zamodelowanie danych. Pomóc w tym mogą m.in. wzorce *Subset* i *Extended Reference*.
+Warto podkreślić, że odpowiednikiem JOINów w zapytaniu SQL jest operacja `$lookup`, która pozwala łączyć dane z kilku kolekcji. Operacja ta jest jednak wolna i kosztowna, dlatego jest wskazana tylko dla rzadko wykonywanych zapytań, na które można długo zaczekać lub zapytań analitycznych, które można wykonać bez limitu czasu (np. na osobnym przeznaczonym do takich zapytań węźle). Dla zapytań, które mają być wykonywane często i oczekujemy ich wyników szybko, istotne będzie odpowiednie zamodelowanie danych. Pomóc w tym mogą m.in. wzorce *Subset* i *Extended Reference*.
 
-Wyobraźmy sobie, że tworzymy serwis z książkami. Dla każdego autora chcemy szybko zaprezentować jego najnowsze książki (tytuł, rok wydania i zdjęcie okładki bez pozostałych szczegółowych informacji), cytaty (nie będzie ich dużo) oraz najnowsze komentarze na jego temat. Zacznijmy więc od tego, że mamy kolekcję `authors`, kolekcję `books`, kolekcję `comments` i kolekcję `quotes`. Po czym spróbujmy zamodelować dane trochę inaczej.
+Wyobraźmy sobie, że tworzymy serwis z książkami. Dla każdego autora chcemy szybko zaprezentować jego najnowsze książki (tytuł, rok wydania i zdjęcie okładki bez pozostałych szczegółowych informacji), cytaty (nie będzie ich dużo) oraz najnowsze recenzje na jego temat. Mamy więc kolekcję `authors`, kolekcję `books`, kolekcję `comments` i kolekcję `quotes`, ale spróbujmy zamodelować dane trochę inaczej.
 Dane w kolekcjach prezentują się następująco:
 - *authors*
   ```javascript
