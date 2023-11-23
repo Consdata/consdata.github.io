@@ -126,3 +126,5 @@ Postanowiliśmy przeprowadzić testy wydajnościowe w naszej aplikacji. Przy du�
    Długi czas oczekiwania na odpowiedź systemu wynikał z zastosowania nieefektywnego systemu logowania. Każde ze zdarzeń ze wszystkich wątków było wysyłane na strumień standardowego wyjścia a następnie było przekierowane do pliku. W momencie wysłania na standardowe wyjście zakładany był lock tak, aby inny wątek nie wykonał tego w tym samym czasie. Przy tak dużej ilości wątków oraz zdarzeń oczekiwanie na swoją kolej wynosiło ok. 3-4 sekundy co przy kilku-kilkunastu zdarzeniach logowania podczas jednej operacji systemu znacznie obniżyło prędkość jego działania.
 
 ## Wnioski
+
+OpenTelemetry to narzędzie dające wiele możliwości w monitorowaniu, analizie i zarządzaniu dystrybuowanymi systemami, dzięki czemu przydaje się w środowiskach chmurowych, mikrousługach i innych zaawansowanych architekturach systemowych.
