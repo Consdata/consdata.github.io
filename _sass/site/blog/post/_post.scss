@@ -12,9 +12,10 @@ article {
   @import "post-share-bar";
   @import "post-disqus";
   @import "post-languages";
+  @import "recommended-posts";
 }
 
-.post {
+.post-content-sidebar {
   @include flex-container;
   justify-content: space-between;
 }

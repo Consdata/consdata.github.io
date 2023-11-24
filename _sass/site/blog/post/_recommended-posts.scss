@@ -1,0 +1,16 @@
+.recommended-container {
+  border: 1px solid $red-900;
+  border-radius: $round-edge;
+  padding: $mobile-section-xs-space $desktop-section-xs-space;
+
+  .title {
+    margin: 0;
+    color: $red-900;
+    text-align: center;
+  }
+
+  .latest-posts-container {
+    display: flex;
+    margin-top: $desktop-section-xs-space;
+  }
+}

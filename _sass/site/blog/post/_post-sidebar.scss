@@ -5,9 +5,16 @@
 }
 
 .sidebar {
+  @include flex-container;
+  flex-direction: column;
+  gap: $mobile-section-medium-space;
   position: sticky;
-  height: fit-content;
   width: $post-sidebar-content-width;
+  margin-top: $desktop-section-small-space;
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .sidebar-container {
@@ -15,7 +22,7 @@
   flex-direction: column;
   box-sizing: border-box;
   position: sticky;
-  padding: 24px;
+  padding: $mobile-section-xs-space;
   border-radius: $round-edge;
 
   a {

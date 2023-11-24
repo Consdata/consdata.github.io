@@ -23,13 +23,10 @@
 }
 
 @mixin content-container() {
-  max-width: $mobile-content-width;
-
-  padding-right: $content-padding;
-  padding-left: $content-padding;
+  margin: 0 auto;
 
   @include desktop {
-    margin: 0 20%;
+    max-width: $desktop-width;
   }
 }
 

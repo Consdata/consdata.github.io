@@ -1,6 +1,7 @@
 #header-links {
   @include flex-container;
   align-items: center;
+  justify-content: space-between;
 
   .nav {
     @include flex-container;
@@ -13,32 +14,36 @@
   }
 
   .language-switch {
-    display: inline-block;
-    font-size: 18px;
-    margin-left: $small-padding;
+    @include body-semibold;
+    margin-left: 100px;
     cursor: pointer;
   }
-
+  //TODO - tekst skacze po najechaniu trzeba to poprawić
   .nav-link {
-    @include flex-container;
+    @include body;
+    margin-left: 40px;
     min-height: 40px;
-    @include tablet-and-desktop {
-      min-height: 1px;
-      padding: 6px;
-      @include desktop {
-        padding: 8px;
-      }
-    }
-    align-items: center;
+    cursor: pointer;
+    position: relative;
+    color: $gray-900;
 
-    a {
-      color: $gray-900;
-      text-transform: uppercase;
+    &.active,
+    &:hover {
+      color: $red-900;
+      font-weight: bold;
 
-      &.active,
-      &:hover {
-        color: $red-500;
+      &:after {
+        content: "";
+        width: 33%;
+        height: 2px;
+        border-radius: 50%;
+        background: $red-900;
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
   }
 }
+

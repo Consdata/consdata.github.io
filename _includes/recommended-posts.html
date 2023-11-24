@@ -1,0 +1,10 @@
+<div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        {{ site.data.translations['recommendedPosts'][page.lang] }}
+    </h2>
+    <div class="latest-posts-container">
+        {%- for post in posts limit:3 -%}
+            {% include small-post-tile.html post=post %}
+        {%- endfor -%}
+    </div>
+</div>

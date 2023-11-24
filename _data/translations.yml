@@ -58,3 +58,12 @@ search:
 noResults:
   en: "No results :("
   pl: "Brak wyników wyszukiwania :("
+techBlog:
+  en: "Technical blog"
+  pl: "Blog techniczny"
+businessBlog:
+  en: "Business blog"
+  pl: "Blog biznesowy"
+hrDepartment:
+  en: "HR department"
+  pl: "Dział HR"

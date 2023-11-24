@@ -3,9 +3,7 @@
   @import "post-metadata";
   @import "post/post";
 
-  width: $desktop-width;
-  margin: 0 auto;
-  @include section-medium-space
+  @include content-container();
 }
 
 .narrower {

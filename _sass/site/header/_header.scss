@@ -11,9 +11,11 @@ nav {
   top: 0;
   width: 100%;
   height: $navbar-height-mobile;
+  border-bottom: 1px solid $gray-100;
 
   @include tablet-and-desktop {
     height: $navbar-height-desktop;
+    margin-bottom: $desktop-section-small-space;
   }
 
   .header {
