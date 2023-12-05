@@ -36,6 +36,7 @@
 }
 
 @mixin badge() {
+  @include label();
   text-transform: uppercase;
   width: max-content;
   color: $red-900;

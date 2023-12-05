@@ -10,7 +10,7 @@ comments: true
         <div class="post-content-sidebar">
             <div class="post-content">
                 <!--    TODO Musi wyświetlać się tylko pierwszy "główny" tag        -->
-                <div class="badge">{{ page.tags }}</div>
+                <div class="badge">{{ page.tags[0] }}</div>
                 <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
                 {% include post_metadata.html %}
                 <div itemprop="articleBody" class="post-content-container">

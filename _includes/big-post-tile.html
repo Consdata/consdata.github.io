@@ -37,7 +37,7 @@
                 <a href="{{ coauthor.url }}" class="author-name">{{coauthor.name}}</a>
                 {%- endif -%}
                 <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
-                <span>{% include post-date.html date=include.post.date lang=site.active_lang %}</span>
+                <span>{% include post-date.html date=include.post.date lang=site.active_lang short=true%}</span>
             </div>
         </div>
     </div>

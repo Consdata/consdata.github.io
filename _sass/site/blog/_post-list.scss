@@ -7,17 +7,10 @@
   @include flex-container;
   flex-direction: column;
   justify-content: space-between;
-  margin: $post-tile-margin-top $small-padding $post-tile-margin-bottom;
   @include mobile {
     margin: $post-tile-margin-top 0;
   }
   @extend .post-animation;
-}
-
-.post-title {
-  font-weight: bold;
-  font-size: 1.5em;
-  margin-top: 0;
 }
 
 .search-result-tile {
@@ -27,9 +20,30 @@
 .post-tile-content {
   @include flex-container;
   flex-direction: column;
-  justify-content: space-between;
-  padding: $small-padding;
   height: 100%;
+}
+
+.badge, .small-post-image {
+  margin-bottom: 20px;
+
+  @include mobile {
+    margin-bottom: 16px;
+  }
+}
+
+.post-title {
+  margin-top: 0;
+  margin-bottom: 24px;
+
+  @include mobile {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.post-date {
+  @include body-xs;
+  color: $gray-500;
 }
 
 .post-info {
@@ -38,93 +52,74 @@
 }
 
 .post-description {
-  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 32px;
+
+  @include mobile {
+    @include body-xs;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  a {
+    @include small-regular;
+
+    &:hover {
+      color: $gray-900;
+    }
+  }
+
 }
+
 
 .big-post-tile-content {
   @include flex-container;
   flex-direction: column;
   justify-content: flex-start;
-  padding: $small-padding;
-  @include tablet-and-desktop {
-    padding: $content-padding;
-  }
-
-  .post-title {
-    font-size: 1.6em;
-  }
 }
 
 .small-author-image {
   width: $avatar-size;
-  height: auto;
+  height: $avatar-size;
   border-radius: 50%;
-  margin-right: $very-small-padding;
+  margin-right: $small-padding;
 }
 
 .tile-author {
   position: relative;
   @include flex-container;
-  margin-top: $content-padding;
   align-items: center;
 }
 
 .author-name {
-  z-index: 2;
-  font-weight: bold;
+  @include body-small-semibold;
+  color: $gray-500;
 }
 
 .author-name.coauthor {
-  z-index: 1;
   position: absolute;
   left: -15px;
   top: -15px;
 }
 
-.highlight-image {
+.author-name, .author-name.coauthor {
+  &:hover {
+    color: $gray-900;
+  }
+}
+
+.tile-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
 }
 
 .small-post-image {
   min-height: 238px;
   max-height: 238px;
-}
-
-.post-tile-band {
-  overflow: hidden;
-  position: relative;
-
-  &:before {
-    transform: translateX(-45px) translateY(40px) rotate(-45deg);
-    display: block;
-    content: "Czy wiesz, że?";
-    width: 200px;
-    position: absolute;
-    height: 30px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-  }
-}
-
-.post-tile-did-you-know, .big-post-tile-did-you-know {
-  @extend .post-tile-band;
-
-  &:before {
-    content: "Czy wiesz, że?";
-    background-color: $red-500;
-    color: $color-white;
-  }
-}
-
-.post-tile-after-hours, .big-post-tile-after-hours {
-  @extend .post-tile-band;
-
-  &:before {
-    content: "Po godzinach";
-    background-color: $red-500;
-    color: $color-white;
-  }
+  border-radius: $round-edge;
 }

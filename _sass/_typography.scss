@@ -128,6 +128,10 @@ h4 {
   @include font-config(14px, $font-weight-semibold, 26px);
 }
 
+@mixin small-regular() {
+  @include font-config(14px, $font-weight-regular, 26px);
+}
+
 @mixin body-xs() {
   @include font-config(12px, $font-weight-regular, 22px);
 }
