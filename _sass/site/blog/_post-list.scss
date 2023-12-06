@@ -98,8 +98,20 @@
 
 .author-name.coauthor {
   position: absolute;
-  left: -15px;
-  top: -15px;
+  left: 32px;
+
+  .small-author-image {
+    outline: 2px solid $color-white;
+  }
+}
+
+.authors-container {
+  width: 84px;
+  height: $avatar-size;
+}
+
+.author-img {
+  height: $avatar-size;
 }
 
 .author-name, .author-name.coauthor {
