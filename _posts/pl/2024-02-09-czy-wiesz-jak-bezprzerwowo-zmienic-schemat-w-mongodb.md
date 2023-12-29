@@ -32,7 +32,6 @@ Pierwotnie zamodelowaliśmy dane kontaktowe w następujący sposób.
 }
 ```
 
-[//]: # komentarz()
 Minęło trochę czasu, mamy już dużo dokumentów w naszej kolekcji, ale zmieniły się wymagania i musimy przechowywać więcej danych kontaktowych, związanych z nowymi formami komunikacji. Znamy na szczęście {% comment %}Zmienić na link jak już będzie znany[Attribute Pattern]({% post_url pl/2024-01-26-czy-wiesz-czym-jest-attribute-pattern-w-mongodb %}){% endcomment %}Attribute Pattern i decydujemy wprowadzić nie tylko nowe pola, ale i zastosować ten wzorzec - dodajemy pole `contact_method`.
 ```javascript
 "contact_method": [
