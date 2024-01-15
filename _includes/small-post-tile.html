@@ -7,7 +7,9 @@
         <img class="tile-image small-post-image" src="{{ include.post.image }}" alt="post-image"/>
     </a>
     <div class="post-tile-content">
-        <div class="badge">{{ include.post.tags[0] }}</div>
+        <div class="badge-panel">
+            <div class="badge">{{ include.post.tags[0] }}</div>
+        </div>
         <h4 class="post-title no-breaking-word">
             <a href="{{ include.post.url }}">{{ include.post.title }}</a>
         </h4>
