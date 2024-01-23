@@ -34,9 +34,6 @@ privacyPolicy:
 allPosts:
   en: "All posts"
   pl: "Wszystkie wpisy"
-newsletterSignUp:
-  en: "Sign up for a tech newsletter"
-  pl: "Zapisz się na newsletter techniczny"
 cookieConsent:
   en: "We would like to use third party cookies and scripts to improve the functionality of this website."
   pl: "Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony"
@@ -67,3 +64,24 @@ businessBlog:
 hrDepartment:
   en: "HR department"
   pl: "Dział HR"
+signUpFor:
+  en: "Sign up for a"
+  pl: "Zapisz się na"
+technical:
+  en: "technical"
+  pl: "techniczny"
+newsletter:
+  en: "newsletter"
+  pl: "newsletter"
+signUp:
+  en: "Sign up"
+  pl: "Zapisz się"
+newsletterConsent:
+  en: "By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*."
+  pl: "Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*"
+name:
+  en: "Name *"
+  pl: "Imię *"
+email:
+  en: "E-mail"
+  pl: "Adres e-mail *"

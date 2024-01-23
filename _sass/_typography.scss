@@ -144,3 +144,19 @@ h4 {
 @mixin label() {
   @include font-config(10px, $font-weight-semibold, 24px);
 }
+
+@mixin btn-without-bg($width) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  border: 1px solid $red-900;
+  color: $red-900;
+  background: transparent;
+  padding: 12px 24px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $red-900;
+    color: $color-white;
+    @include body-semibold();
+  }
+}

@@ -1,0 +1,137 @@
+$content-space: 30px;
+
+.newsletter-sub-container {
+  @include section-space();
+  h2 {
+    display: inline;
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: $mobile-section-xs-space;
+  }
+}
+
+.newsletter {
+  color: $red-900;
+}
+
+.form-inputs {
+  display: flex;
+  justify-content: space-between;
+
+  input {
+    @include body-small-semibold();
+    border: 1px solid $gray-300;
+    border-radius: $medium-round-edge;
+    color: $gray-500;
+    background: transparent;
+    height: 42px;
+    width: 400px;
+    padding: 0 16px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.newsletter-agreement-form-content {
+  background-color: $gray-200;
+  border-radius: $round-edge;
+  padding: 60px;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-checkbox-container {
+  margin-top: $content-space;
+}
+
+.sign-up-btn {
+  @include btn-without-bg(130px);
+  align-self: flex-end;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-checkbox-container {
+  margin-top: $content-space;
+}
+
+.form-checkbox-label {
+  @include body();
+  color: $gray-500;
+  display: flex;
+  align-items: center;
+}
+
+.form-checkbox *,
+.form-checkbox *::before,
+.form-checkbox *::after {
+  box-sizing: content-box !important;
+}
+
+.form-checkbox input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.form-checkbox span {
+  @include body();
+  color: $gray-500;
+}
+
+.form-checkbox {
+  display: inline-block;
+  position: relative;
+  padding-left: 32px;
+  cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"] ~ .form-checkbox-input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background: transparent;
+  transition: background 250ms;
+  border: 1px solid $gray-300;
+  border-radius: 6px;
+}
+
+.form-checkbox input[type="checkbox"] ~ .form-checkbox-input::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 8px;
+  top: 4px;
+  width: 0.3rem;
+  height: 0.6rem;
+  border: solid $color-white;
+  border-width: 0 2px 2px 0;
+  transition: background 250ms;
+  transform: rotate(45deg);
+}
+
+.form-checkbox input:checked ~ .form-checkbox-input::after {
+  display: block;
+}
+
+.form-checkbox:hover input[type="checkbox"]:not([disabled]):checked ~ .form-checkbox-input,
+.form-checkbox input[type="checkbox"]:checked:focus ~ .form-checkbox-input,
+.form-checkbox input[type="checkbox"]:checked ~ .form-checkbox-input{
+  background: $red-900;
+  border-color: $red-900;
+}
+
+

@@ -1,0 +1,29 @@
+<div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        {% if site.active_lang == "pl" %}
+        <h2>{{ site.data.translations['signUpFor'][page.lang] }} </h2>
+        <h2 class="newsletter">{{ site.data.translations['newsletter'][page.lang] }} </h2>
+        <h2>{{ site.data.translations['technical'][page.lang] }}</h2>
+        {% else %}
+        <h2>{{ site.data.translations['signUpFor'][page.lang] }} </h2>
+        <h2>{{ site.data.translations['technical'][page.lang] }} </h2>
+        <h2 class="newsletter">{{ site.data.translations['newsletter'][page.lang] }}</h2>
+        {% endif %}
+    </div>
+    <div class="newsletter-agreement-form-content">
+        <form class="newsletter-form" onsubmit="">
+            <div class="form-inputs">
+                <input required placeholder="{{ site.data.translations['name'][page.lang] }}"/>
+                <input required type="email" placeholder="{{ site.data.translations['email'][page.lang] }}"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" />
+                    <div class="form-checkbox-input"></div>
+                    <span>{{ site.data.translations['newsletterConsent'][page.lang] }}</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">{{ site.data.translations['signUp'][page.lang] }}</button>
+        </form>
+    </div>
+</div>
