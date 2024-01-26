@@ -7,7 +7,7 @@ didyouknow: true
 lang: pl
 author: bmitan
 image: /assets/img/posts/2024-01-26-czy-wiesz-czym-jest-attribute-pattern-w-mongodb/code.webp
-description: Masz w kolekcji wiele dużych dokumentów z wieloma polami, które cechują się taką samą charakterystyką? Ten wzorzec jest dla Ciebie! 
+description: Masz w kolekcji wiele dużych dokumentów z wieloma polami o tej samej charakterystyce? Ten wzorzec jest dla Ciebie! 
 tags:
 - mongodb
 - attribute pattern
@@ -16,9 +16,9 @@ tags:
 ## Kiedy stosować Attribute Pattern?
 
 Wzorzec warto zastosować, kiedy:
-- mamy wiele dużych dokumentów z wieloma podobnymi polami, ale istnieje pewien podzbiór pól, które cechują się taką samą charakterystyką a chcemy pytać i sortować właśnie po tym podzbiorze pól, lub
+- mamy wiele dużych dokumentów z wieloma podobnymi polami, ale istnieje pewien podzbiór pól o tej samej charakterystyce, a chcemy pytać i sortować właśnie po tym podzbiorze pól, lub
 - tylko niewielka część dokumentów zawiera pola, po których chcemy sortować, lub
-- dwa z powyższych warunków występują naraz.
+- oba powyższe warunki występują jednocześnie.
 
 ### Przykłady:
 
@@ -62,7 +62,7 @@ Chodzi o wydajność zapytań. W pierwszym przykładzie zapytanie po dacie premi
 ```
 
 ## Na czym polega Attribute Pattern?
-Dane można zamodelować inaczej, zamiast wielu osobnych pól wprowadzając jedno pole typu Array, zawierające pary klucz-wartość. Na przykładzie kolekcji filmów, kluczami będą kolejne lokalizacje, a wartościami daty.
+Dane można zamodelować inaczej. Zamiast wielu osobnych pól wystarczy wprowadzić jedno pole typu Array, zawierające pary klucz-wartość. W przykładzie kolekcji filmów, kluczami będą kolejne lokalizacje, a wartościami daty.
 Po zastosowaniu wzorca otrzymamy dokumenty w następującej formie:
 ```javascript
 {
@@ -95,11 +95,11 @@ Po zastosowaniu wzorca otrzymamy dokumenty w następującej formie:
 Plusy takiego rozwiązania to:
 - łatwe dodanie nowych lokalizacji,
 - jeden indeks: `{ "releases.location": 1, "releases.date": 1}`
-- łatwa możliwość dodania kolejnych pól charakteryzujących nasze dane,
+- łatwe dodawanie kolejnych pól charakteryzujących nasze dane,
 - szybsze zapytania.
 
 ## Praktyczny przypadek użycia
-Inny przypadek użycia to kolekcja produktów, posiadających różne charakterystyki w zależności od typu. Przykładowo ubrania mogą mieć rozmiar typu S, M, L.  Natomiast kubki mogą mieć pojemność podaną w różnych jednostkach. Jeszcze inne produkty będą miały wysokość, szerokość, długość, czy masę, również w różnych jednostkach. Niektóre z tych możliwych charakterystyk nie są znane na etapie projektowania aplikacji i mogą zostać wprowadzone później. Załóżmy, że chcemy zapewnić użytkownikowi możliwość wyszukiwania po wielu polach i móc łatwo dodać nowy rodzaj filtra. Tu również wzorzec Attribute Pattern okaże się idealnym rozwiązaniem. Kubek może mieć np. następujące dane:
+Inny przypadek użycia to kolekcja produktów, posiadających różne charakterystyki w zależności od typu. Przykładowo ubrania mogą mieć rozmiar S, M, L.  Natomiast kubki mogą mieć pojemność podaną w różnych jednostkach. Jeszcze inne produkty będą miały wysokość, szerokość, długość, czy masę, również w różnych jednostkach. Niektóre z tych charakterystyk nie są znane na etapie projektowania aplikacji i mogą zostać wprowadzone później. Załóżmy, że chcemy zapewnić użytkownikowi możliwość wyszukiwania po wielu polach i móc łatwo dodać nowy rodzaj filtra. Tu również wzorzec Attribute Pattern okaże się idealnym rozwiązaniem. Kubek może mieć np. następujące dane:
 ```javascript
 "specs": [
     { k: "volume", v: "500", u: "ml" },
