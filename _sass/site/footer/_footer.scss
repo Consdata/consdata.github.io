@@ -4,45 +4,60 @@ footer {
   @import "footer-legals";
   @import "footer-copyright";
 
-  background-color: $gray-900;
-
-  .footer-item {
-    @include flex-container;
-    flex-direction: column;
-    letter-spacing: 1px;
-
-    width: 100%;
-    .label {
-      @include flex-container;
-      color: $color-white;
-      font-size: 20px;
-      align-items: center;
-      height: 30px;
-
-      margin-top: 15px;
-      @include tablet-and-desktop {
-        margin-top: 0;
-        margin-bottom: 10px;
-      }
-    }
-    .item-content {
-      color: $gray-900;
-      font-size: 16px;
-      font-weight: 400;
-    }
-  }
-
   .container {
     @include content-container;
-    @include flex-container;
-    flex-direction: column;
-    @include tablet-and-desktop {
-      flex-direction: row;
-    }
-    justify-content: center;
-    align-items: flex-start;
+    @include section-medium-space;
+    display: flex;
+  }
 
-    padding-top: 30px;
-    padding-bottom: 30px;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-logo {
+    width: 30%;
+  }
+
+  .footer-content {
+    width: 70%;
+  }
+
+  .menu {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .menu li:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-title {
+    @include body-small-semibold;
+    margin: 0 0 16px 0;
+  }
+
+  .submenu {
+    @include body-small;
+  }
+
+  .submenu li{
+    margin-bottom: 8px;
+  }
+
+  .submenu li a {
+    @include body-small;
+    font-weight: 500;
+  }
+
+  .submenu li p {
+    margin: 0;
+  }
+
+  .menu-title a {
+    cursor: pointer;
   }
 }
+

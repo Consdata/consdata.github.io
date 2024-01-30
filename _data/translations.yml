@@ -85,3 +85,12 @@ name:
 email:
   en: "E-mail"
   pl: "Adres e-mail *"
+solutions:
+  en: Solutions
+  pl: Rozwiązania
+office:
+  en: Office
+  pl: Biuro
+contact:
+  en: Contact
+  pl: Kontakt
