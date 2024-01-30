@@ -85,3 +85,6 @@
     margin-top: $mobile-section-xs-space;
   }
 }
+
+@mixin animation-ease(){
+  transition: 0.3s all ease;}

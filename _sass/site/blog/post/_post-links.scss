@@ -4,6 +4,7 @@
     color: $red-500;
 
     &:hover {
+      @include animation-ease;
       color: $gray-900;
     }
   }

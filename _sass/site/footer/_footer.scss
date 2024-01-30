@@ -4,7 +4,9 @@ footer {
   @import "footer-legals";
   @import "footer-copyright";
 
-  .container {
+  @include section-space;
+
+  .container, .small-footer-container {
     @include content-container;
     @include section-medium-space;
     display: flex;
@@ -43,7 +45,7 @@ footer {
     @include body-small;
   }
 
-  .submenu li{
+  .submenu li {
     margin-bottom: 8px;
   }
 
@@ -58,6 +60,51 @@ footer {
 
   .menu-title a {
     cursor: pointer;
+  }
+
+  .small-footer-container {
+    justify-content: space-between;
+    @include section-small-space;
+    margin-bottom: $desktop-section-xs-space;
+
+    @include mobile {
+      margin-bottom: $mobile-section-xs-space;
+    }
+  }
+
+  .small-footer-container span {
+    @include body-small;
+    color: $gray-500;
+    line-height: 1.2em;
+  }
+
+  .small-footer-container span:first-child {
+    border-right: 1px solid $gray-300;
+    margin-right: 20px;
+    padding-right: 20px;
+    display: inline-block;
+  }
+
+  .social-footer a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid $gray-300;
+    margin-left: 16px;
+
+    &:hover {
+      @include animation-ease;
+      border: 1px solid $red-900;
+    }
+  }
+
+  .icon {
+    width: auto;
+    height: 16px;
   }
 }
 

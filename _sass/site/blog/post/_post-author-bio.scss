@@ -62,6 +62,7 @@
   gap: 16px;
 
   &:hover {
+    @include animation-ease;
     cursor: pointer;
     .author-name {
       color: $gray-900;

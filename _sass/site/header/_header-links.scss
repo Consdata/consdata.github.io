@@ -29,6 +29,7 @@
 
     &.active,
     &:hover {
+      @include animation-ease;
       color: $red-900;
       font-weight: bold;
 

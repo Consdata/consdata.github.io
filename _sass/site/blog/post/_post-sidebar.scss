@@ -119,6 +119,7 @@ ul.offers-list > li {
 
 .ad-link-icon {
   &:hover {
+    @include animation-ease;
     opacity: 0.85;
   }
 
@@ -184,6 +185,7 @@ ul.offers-list > li {
   }
 
   &:hover {
+    @include animation-ease;
     .job-salary,
     .job-description,
     .job-title {

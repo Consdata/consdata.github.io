@@ -16,6 +16,7 @@
     }
 
     &:hover {
+      @include animation-ease;
       color: $gray-900;
     }
   }

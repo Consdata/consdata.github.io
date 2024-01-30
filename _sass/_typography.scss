@@ -158,5 +158,6 @@ h4 {
     background-color: $red-900;
     color: $color-white;
     @include body-semibold();
+    @include animation-ease;
   }
 }

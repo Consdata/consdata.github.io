@@ -10,7 +10,8 @@
                         <p class="menu-title">{{ site.data.translations['contact'][page.lang] }}</p>
                         <ul class="submenu">
                             <li>
-                                <a href="mailto:hello@eximee.com">sales@consdata.com</a>
+<!--                                TO DO jaki mail ?-->
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
                             </li>
                             <li>
                                 <p>+48 61 41 51 000</p>
@@ -29,19 +30,41 @@
                         <p class="menu-title">{{ site.data.translations['solutions'][page.lang] }}</p>
                         <ul class="submenu">
                             <li>
-                                <a href="https://eximee.com">Eximee</a>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
                             </li>
                             <li>
-                                <a href="https://kouncil.io">Kouncil</a>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
                             </li>
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <a href="https://blog.consdata.tech/" class="menu-title">Blog</a>
-                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title">{{ site.data.translations['joinUs'][page.lang] }}</a>
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title" target="_blank">{{
+                            site.data.translations['joinUs'][page.lang] }}</a>
                     </li>
                 </ul>
             </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div>
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <!--    TODO jakiś anchor tag do privacy ?-->
+            <span>Privacy Policy & Cookies</span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
         </div>
     </div>
 </footer>

@@ -39,6 +39,7 @@
     }
 
     &:hover {
+      @include animation-ease;
       color: $color-white;
       border-color: $color-white;
     }
