@@ -7,7 +7,7 @@
             <div class="footer-menu">
                 <ul class="menu">
                     <li class="menu-item">
-                        <p class="menu-title">{{ site.data.translations['contact'][page.lang] }}</p>
+                        <p class="menu-title">{{ site.data.translations['contact'][site.active_lang] }}</p>
                         <ul class="submenu">
                             <li>
 <!--                                TO DO jaki mail ?-->
@@ -19,7 +19,7 @@
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <p class="menu-title">{{ site.data.translations['office'][page.lang] }}</p>
+                        <p class="menu-title">{{ site.data.translations['office'][site.active_lang] }}</p>
                         <ul class="submenu">
                             <li>
                                 <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
@@ -27,7 +27,7 @@
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <p class="menu-title">{{ site.data.translations['solutions'][page.lang] }}</p>
+                        <p class="menu-title">{{ site.data.translations['solutions'][site.active_lang] }}</p>
                         <ul class="submenu">
                             <li>
                                 <a href="https://eximee.com" target="_blank">Eximee</a>
@@ -40,7 +40,7 @@
                     <li class="menu-item">
                         <a href="/" class="menu-title">Blog</a>
                         <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title" target="_blank">{{
-                            site.data.translations['joinUs'][page.lang] }}</a>
+                            site.data.translations['joinUs'][site.active_lang] }}</a>
                     </li>
                 </ul>
             </div>
