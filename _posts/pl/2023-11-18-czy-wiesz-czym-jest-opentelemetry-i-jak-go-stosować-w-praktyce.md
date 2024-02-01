@@ -17,7 +17,7 @@ tags:
 
 ## Słowem wstępu
 
-OpenTelemetry to zbiór zestawów SDK i interfejsów API, który pozwala nam gromadzić, generować i eksportować logi, metryki i trace'y aplikacji.
+OpenTelemetry to zbiór SDK i interfejsów API, który pozwala nam gromadzić, generować i eksportować logi, metryki i trace'y aplikacji.
 
 OpenTelemetry umożliwia nam instrumentowanie naszych rozproszonych usług. Instrumentacją nazywamy przechwytywanie danych telemetrycznych ze zdarzeń i operacji w naszym systemie rozproszonym. Jest nam to niezbędne do tego, aby zrozumieć i zbadać zachowanie naszego systemu, znajdować błędy czy debugować problemy związane z wydajnością.
 
@@ -62,7 +62,7 @@ java -javaagent:ścieżka/do/opentelemetry-javaagent.jar -jar moja_aplikacja.jar
 Dla większości przypadków taka instrumentacja out-of-the-box jest całkowicie wystarczająca i nie trzeba nic więcej robić. Czasami jednak jest potrzeba tworzenia ręcznie dedykowanych spanów w kodzie, w tym celu OpenTelemetry dostarcza mechanizm manualnej instrumentacji.
 
 Przykładowy kod:
-```bash
+```java
 import io.opentelemetry.api;
  
 //...
@@ -87,9 +87,7 @@ Przykład obrazujący uruchomienie OpenTelemetry spiętego z Jaegerem:
 ```bash
 OTEL_SERVICE_NAME=my-service OTEL_TRACES_EXPORTER=jaeger OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14250 java -javaagent:./opentelemetry-javaagent.jar -jar moja_aplikacja.jar
 ```
-przy czym:
-
-- OTEL_EXPORTER_JAEGER_ENDPOINT to endpoint pod którym wystawiony został Jaeger
+gdzie `OTEL_EXPORTER_JAEGER_ENDPOINT` to endpoint pod którym wystawiony został Jaeger
 
 
 ## Zastosowanie OpenTelemetry w praktyce
@@ -102,6 +100,7 @@ Zauważyliśmy problem polegający na pewnym długo wykonującym się zapytaniu.
 
 1. W narzędziach deweloperskich przeglądarki, w ruchu sieciowym znaleźliśmy problematyczne, długo wykonujące się zapytanie:
    ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_1_photo_1.png)
+
    Czas jego wykonania wyniósł ok. 20 sekund:
    ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_1_photo_2.png)
 2. Dysponując informacją, które zapytanie stanowi problem mieliśmy dwa wyjścia:
@@ -122,10 +121,12 @@ Postanowiliśmy przeprowadzić testy wydajnościowe w naszej aplikacji. Przy du�
 1. Na początku podpięliśmy Zipkina, OpenTelemetry oraz VisualVM na środowisku, na którym planowaliśmy uruchomić testy wydajnościowe.
 2. Uruchomiliśmy testy - w rezultacie widzieliśmy kilka przypadków, które nie zakończyły się poprawnie z powodu długich czasów zapytań. Poszukaliśmy ich w Zipkinie, w ten sposób byliśmy w stanie namierzyć taki request, trwający niespełna 45 sekund:
    ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_2_photo_1.png)
-3. OpenTelemetry w ramach automatycznej instrumentacji wspiera bardzo wiele bibliotek, frameworków czy serwerów aplikacji ([pełną listę znajdziemy tutaj](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md)). Niestety, w tym przypadku problem znajdował się dość niskopoziomowo, OpenTelemetry nie był w stanie wyłapać bezpośredniego źródła naszych problemów. Tutaj z pomocą przyszło nam narzędzie VisualVM. W Zipkinie widzieliśmy numer wątku, który przetworzył nasze zapytanie (tag "thread.name" w prawym dolnym rogu na zrzucie w punkcie 2), teraz pozostało znaleźć go w VisualVM
-4. Analizując stacktrace'y zapytań wykonywanych na wątku o numerze 223 szybko wyłapaliśmy kilka problemów, m.in. problem spędzenia przez nasz wątek aż 54 sekund na zapisie danych do logowania:
+
+3. OpenTelemetry w ramach automatycznej instrumentacji wspiera bardzo wiele bibliotek, frameworków czy serwerów aplikacji ([pełną listę znajdziemy tutaj](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md)). Niestety, w tym przypadku problem znajdował się na niższym poziomie a OpenTelemetry nie był w stanie wyłapać bezpośredniego źródła naszych problemów. Tutaj z pomocą przyszło nam narzędzie VisualVM. W Zipkinie widzieliśmy numer wątku, który przetworzył nasze zapytanie (tag `thread.name` w prawym dolnym rogu na zrzucie w punkcie 2), teraz pozostało znaleźć go w VisualVM
+4. Analizując stacktrace'y wywołań wykonywanych na wątku o numerze 223 szybko wyłapaliśmy kilka problemów, m.in. problem spędzenia przez nasz wątek aż 54 sekund na zapisie linijki logu:
    ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_2_photo_2.png)
-   Teraz wystarczyło potwierdzić, że długi czas wykonywania metody _writeBytes()_ ma wpływ na nasz problem. Poszukaliśmy więc na wątku o numerze 223 stacktrace'a wykonywanego przez zapytanie wskazane przez Zipkina w punkcie 2 - _/webforms-rest/formservice/getnextpage_. Zagłębiając się w niego, znaleźliśmy w końcu podejrzewaną przez nas o problemy wydajnościowe metodę _writeBytes()_. VisualVM pokazał, że wykonywała się ona kilka sekund:   ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_1_photo_4.png)
+
+   Teraz wystarczyło potwierdzić, że długi czas wykonywania metody `writeBytes()` ma wpływ na nasz problem. Poszukaliśmy więc na wątku o numerze 223 stacktrace'a wykonywanego przez zapytanie wskazane przez Zipkina w punkcie 2 - _/webforms-rest/formservice/getnextpage_. Zagłębiając się w niego, znaleźliśmy w końcu podejrzewaną przez nas o problemy wydajnościowe metodę _writeBytes()_. VisualVM pokazał, że wykonywała się ona kilka sekund:   ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_1_photo_4.png)
    ![](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/case_2_photo_3.png)
 5. Ostatecznie wyciągnęliśmy następujące wnioski:
    Długi czas oczekiwania na odpowiedź systemu wynikał z zastosowania nieefektywnego systemu logowania. Każde ze zdarzeń ze wszystkich wątków było wysyłane na strumień standardowego wyjścia a następnie było przekierowane do pliku. W momencie wysłania na standardowe wyjście zakładany był lock tak, aby inny wątek nie wykonał tego w tym samym czasie. Przy tak dużej ilości wątków oraz zdarzeń oczekiwanie na swoją kolej wynosiło ok. 3-4 sekundy co przy kilku-kilkunastu zdarzeniach logowania podczas jednej operacji systemu znacznie obniżyło prędkość jego działania.
