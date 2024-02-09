@@ -161,3 +161,19 @@ h4 {
     @include animation-ease;
   }
 }
+
+@mixin btn-with-bg($width, $padding) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  color: $color-white;
+  background: $red-900;
+  padding: $padding;
+  cursor: pointer;
+
+  &:hover {
+    color: $red-900;
+    background: $color-white;
+    @include body-semibold();
+    @include animation-ease;
+  }
+}

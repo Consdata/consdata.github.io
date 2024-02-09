@@ -1,33 +1,40 @@
+$icon-size: 18px;
+
 .cookie-notice {
   display: none;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   padding: 0.5rem 1rem;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: calc(100% - 2rem);
-  background: $gray-900;
+  background: $gray-100;
+  border: 1px solid $gray-300;
   z-index: 100;
 
-  span {
-    color: $gray-300;
-    font-weight: $font-weight-bold;
+  @include mobile {
+    span {
+      margin-bottom: 8px;
+    }
   }
+}
+
+.cookie-container {
+  display: flex;
+  margin-bottom: $icon-size;
+  align-items: center;
 
   @include mobile {
-    justify-content: space-between;
+    flex-direction: column;
   }
 }
 
 .cookie-notice a {
   display: inline-block;
   cursor: pointer;
-  font-weight: $font-weight-bold;
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.7);
-  }
+  @include btn-with-bg(100px, 8px)
 }
 
 .consent-button {
@@ -37,21 +44,10 @@
   padding: .35rem .75rem;
   margin-left: .5rem;
 
-  @include mobile {
-    margin-right: 20px;
-  }
 }
 
 .close-consent {
-  position: absolute;
-  font-size: 18px;
+  color: $red-900;
   cursor: pointer;
-  right: 15px;
-  top: 5px;
-  color: white;
-
-  &:hover {
-    opacity: 0.8;
-  }
+  align-self: flex-end;
 }
-
