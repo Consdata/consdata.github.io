@@ -59,51 +59,6 @@
   margin-bottom: 30px;
 }
 
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-.modal-content {
-  display: block;
-  margin: auto;
-  background-color: $color-white;
-  animation-duration: 0.6s;
-  animation-name: zoom;
-}
-
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  cursor: pointer;
-  color: #f1f1f1;
-  font-size: 40px;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-}
-
-@keyframes zoom {
-  from {
-    transform: scale(0)
-  }
-  to {
-    transform: scale(1)
-  }
-}
-
 .post-content-container {
   @include flex-container;
 }

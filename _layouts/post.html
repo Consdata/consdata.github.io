@@ -16,11 +16,6 @@ comments: true
                 <div itemprop="articleBody" class="post-content-container">
                     <div class="post-content-left-pane">
                         <div class="post-content">
-                            <div id="myModal" class="modal">
-                                <i id="modal-close" class="fa fa-times close" aria-hidden="true"
-                                   onclick="closeModal()"></i>
-                                <img class="modal-content">
-                            </div>
                             {{ content }}
                             <!--TODO Czy jest to potrzebne i w jakim celu ?-->
                             <!--                        {% if post.interpreter %}-->
@@ -92,20 +87,7 @@ comments: true
             displayResults(results);
         })
 
-    function zoomImage($event) {
-        const modal = document.getElementById('myModal');
-        modal.getElementsByTagName('img')[0].src = $event.target.src;
-        modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('myModal').style.display = 'none';
-    }
-
     function hideRecommendedPosts() {
         document.getElementById("recommended-posts-container").style.display = 'none';
     }
-
-    const postImages = document.querySelectorAll('.post-content img');
-    postImages.forEach(x => x.addEventListener('click', zoomImage));
 </script>
