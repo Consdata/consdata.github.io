@@ -1,7 +1,4 @@
-.post-animation {
-  transition: 0.2s;
-  animation: ease;
-}
+$small-tile-img-width: 360px;
 
 .post-tile {
   @include flex-container;
@@ -10,7 +7,7 @@
   @include mobile {
     margin: $post-tile-margin-top 0;
   }
-  @extend .post-animation;
+  width: $small-tile-img-width;
 }
 
 .search-result-tile {
@@ -21,10 +18,14 @@
   @include flex-container;
   flex-direction: column;
   height: 100%;
+
+  .badge {
+    margin-bottom: 20px;
+  }
 }
 
-.badge, .small-post-image {
-  margin-bottom: 20px;
+.big-post-tile-content .badge, .small-post-image {
+  margin-bottom: 24px;
 
   @include mobile {
     margin-bottom: 16px;
@@ -52,6 +53,7 @@
 }
 
 .post-description {
+  @include body-small;
   margin-top: 0;
   margin-bottom: 32px;
 
@@ -75,24 +77,29 @@
 .big-post-tile {
   @include flex-container;
   flex-direction: row;
-  &-image {
-    @include flex-container;
-    width: 50%;
-    a, img {
-      width: 100%;
-    }
-    img {
-      border-radius: 24px;
+
+  .big-post-image {
+    width: 592px;
+    height: 435px;
+  }
+  .big-post-image {
+    border-radius: 24px;
+    object-fit: cover;
+
+    &:hover {
+      @include animation-ease;
+      filter: brightness(1.2);
     }
   }
+
   &-content {
     @include flex-container;
     width: 50%;
     flex-direction: column;
     justify-content: flex-start;
-    padding-left: 40px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-left: 48px;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
   &-post-title {
     font-size: $big-font-size;
@@ -100,8 +107,11 @@
   &-author {
     margin-top: auto;
   }
-}
 
+  h2{
+    margin: 0;
+  }
+}
 
 .small-author-image {
   width: $avatar-size;
@@ -159,18 +169,19 @@
 }
 
 .small-post-image {
-  min-height: 238px;
-  max-height: 238px;
+  width: $small-tile-img-width;
+  height: 280px;
   border-radius: $round-edge;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
 .badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: $small-round-edge;
-  font-size: $small-font-size;
-  font-weight: $font-weight-semibold;
-  background-color: $red-100;
-  color: $red-900;
-  text-transform: uppercase;
+  @include badge;
+  margin-bottom: 24px;
+}
+
+.big-post-tile-post-description {
+  @include body;
+  color: $gray-500;
 }

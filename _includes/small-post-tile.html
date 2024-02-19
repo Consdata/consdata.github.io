@@ -2,8 +2,8 @@
 {% assign author = site.authors | where: "short_name", include.post.author | first %}
 {% assign coauthor = site.authors | where: "short_name", include.post.coauthor | first %}
 
-<div class="col-5 post-tile">
-    <a href="{{ include.post.url }}">
+<div class="post-tile">
+    <a class="small-post-image" href="{{ include.post.url }}">
         <img class="tile-image small-post-image" src="{{ include.post.image }}" alt="post-image"/>
     </a>
     <div class="post-tile-content">

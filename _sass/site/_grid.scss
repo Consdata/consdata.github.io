@@ -1,8 +1,9 @@
 .row {
   @include flex-container;
   flex-flow: row wrap;
-  justify-content: flex-start;
   margin-bottom: $double-content-padding;
+  justify-content: space-between;
+  row-gap: 46px;
 }
 
 .first-row {
