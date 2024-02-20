@@ -50,8 +50,8 @@ allJobs:
   en: "Explore open roles"
   pl: "Trwające rekrutacje"
 search:
-  en: "Search..."
-  pl: "Szukaj..."
+  en: "Find an article..."
+  pl: "Znajdź artykuł..."
 noResults:
   en: "No results :("
   pl: "Brak wyników wyszukiwania :("

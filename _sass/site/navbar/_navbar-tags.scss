@@ -7,17 +7,18 @@
   }
 
   a {
-    color: $red-500;
+    @include body;
+    color: $gray-900;
     cursor: pointer;
-    font-size: 1.1em;
-    padding-right: $double-content-padding;
-    @include mobile {
-      padding-right: $content-padding;
-    }
+    text-transform: capitalize;
+    padding: 12px 24px;
+    border-radius: $medium-round-edge;
 
     &:hover {
       @include animation-ease;
-      color: $gray-900;
+      color: $color-white;
+      background: $red-900;
+      cursor: pointer;
     }
   }
 }

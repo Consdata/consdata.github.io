@@ -1,29 +1,22 @@
 .search-input-container {
   @include flex-container;
-  margin-right: $small-padding;
-  height: 100%;
+  width: 360px;
+  height: 45px;
   align-items: center;
   position: relative;
+  background-color: $gray-100;
+  border-radius: 25px;
+  padding: 0 16px;
 }
 
 .search-input {
-  width: 0;
-  visibility: hidden;
-  transition: 0.3s;
-  animation: ease-in-out;
-  position: absolute;
-  margin-right: $very-small-padding;
-  background-color: $color-white;
-  z-index: 999;
+  width: 100%;
   border: none;
+  color: $gray-500;
+  background-color: $gray-100;
 
   &:focus {
     outline: none;
-    border-color: $red-500;
-  }
-
-  @include mobile {
-    background-color: $gray-900;
   }
 }
 
@@ -40,10 +33,6 @@
   cursor: pointer;
   height: auto;
   font-size: 1.3em;
-  color: $red-500;
-
-  @include mobile {
-    font-size: 1.6em;
-    color: $color-white;
-  }
+  color: $gray-500;
+  margin-right: 8px;
 }
