@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Czy wiesz czym jest i jak działa WebWorker?"
+title:     "Czy wiesz, czym jest i jak działa WebWorker?"
 date:      2024-02-23T08:00:00+01:00
 published: true
 didyouknow: true
@@ -42,8 +42,8 @@ Workery mają pewne ograniczenia:
 - obiekt `location` jest tylko do odczytu, nie będziemy mogli z poziomu workera przekierowywać strony, ani tworzyć nowej zakładki,
 - worker nie może istnieć sam w oderwaniu od strony, która go utworzyła.
 
-Poniżej kilka typowych przykładów użyć webworkerów:
-- obliczenia w tle: webworkery są wykorzystywane do wykonywania długo trwających obliczeń w tle, takich jak przetwarzanie dużych zestawów danych czy złożone algorytmy, które mogłyby spowolnić działanie interfejsu użytkownika,
+Poniżej kilka typowych przykładów wykorzystania webworkerów:
+- obliczenia w tle: webworkery są wykorzystywane do wykonywania długotrwałych obliczeń w tle, takich jak przetwarzanie dużych zestawów danych czy złożone algorytmy, które mogłyby spowolnić działanie interfejsu użytkownika,
 - manipulacja na multimediach: webworkery są stosowane do manipulacji obrazami, dźwiękiem i wideo w tle. Mogą pomóc w przetwarzaniu, optymalizacji, tworzeniu miniatur czy konwersji formatów,
 - asynchroniczne żądania sieciowe: webworkery pozwalają na wykonywanie asynchronicznych żądań sieciowych, takich jak pobieranie danych z serwera czy przetwarzanie odpowiedzi HTTP,
 - WebAssembly: webworkery są również używane w połączeniu z WebAssembly, umożliwiając wykonywanie bardziej zaawansowanych obliczeń, które są zoptymalizowane pod kątem wydajności.
