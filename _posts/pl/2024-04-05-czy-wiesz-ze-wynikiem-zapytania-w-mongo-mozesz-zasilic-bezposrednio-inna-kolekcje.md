@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, że wynikiem zapytania w mongo możesz zasilić bezpośrednio inną kolekcję?"
-date:      2024-02-23T08:00:00+01:00
+date:      2024-04-05T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
