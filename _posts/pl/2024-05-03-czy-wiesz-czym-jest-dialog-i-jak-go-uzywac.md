@@ -16,7 +16,7 @@ Okna dialogowe od dawna pełnią istotną rolę na różnorodnych stronach inter
 
 Wspomniany wyżej element HTML `<dialog>` jest używany do tworzenia okien dialogowych. Okna dialogowe są wykorzystywane do wyświetlania treści na wierzchu aktualnej strony, zazwyczaj w celu uzyskania interakcji użytkownika, pobrania informacji lub wykonywania określonych działań.
 
-Co więcej, element ten jest obsługiwany w każdej nowoczesnej przeglądarce, co oznacza, możemy go używać za każdym razem gdy potrzebujemy utworzyć okno dialogowe.
+Co więcej, element ten jest obsługiwany w każdej nowoczesnej przeglądarce, co oznacza, że możemy go używać za każdym razem gdy potrzebujemy utworzyć okno dialogowe.
 
 ## Użycie elementu dialog
 Aby utworzyć okno dialogowe należy wykorzystać tag `<dialog>`.
@@ -155,8 +155,10 @@ Przykładowy kod:
 </script>
 ```
 
+## Playground
+- [https://jsfiddle.net/wstolarski_consdata/cbh5rfo1/21/](https://jsfiddle.net/wstolarski_consdata/cbh5rfo1/21/)
+
 ## Przydatne linki
 - [https://caniuse.com/dialog](https://caniuse.com/dialog)
-- [https://jsfiddle.net/wstolarski_consdata/cbh5rfo1/21/](https://jsfiddle.net/wstolarski_consdata/cbh5rfo1/21/)
 - [https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog)
 - [https://web.dev/learn/html/dialog/](https://web.dev/learn/html/dialog/)
