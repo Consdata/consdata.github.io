@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz na czym polega wzorzec drzewa w MongoDB?"
-date:      2024-04-31T08:00:00+01:00
+date:      2024-05-31T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
