@@ -46,6 +46,7 @@ span {
   font-size: $font-size;
   font-weight: $font-weight;
   line-height: $line-height;
+  text-align: start;
 }
 
 
@@ -98,7 +99,7 @@ h4 {
   margin-bottom: 48px;
 
   @include mobile {
-    @include font-config(10px, $font-weight-semibold, 24px);
+    @include font-config(26px, $font-weight-semibold, 42px);
     margin-top: 16px;
     margin-bottom: 24px;
   }

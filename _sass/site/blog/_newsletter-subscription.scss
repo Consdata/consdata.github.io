@@ -20,6 +20,15 @@ $content-space: 30px;
   display: flex;
   justify-content: space-between;
 
+  @include mobile {
+    flex-direction: column;
+    gap: 30px;
+
+    input {
+      width: auto;
+    }
+  }
+
   input {
     @include body-small-semibold();
     border: 1px solid $gray-300;
@@ -40,6 +49,10 @@ $content-space: 30px;
   background-color: $gray-200;
   border-radius: $round-edge;
   padding: 60px;
+
+  @include mobile {
+    padding: 40px;
+  }
 }
 
 .newsletter-form {
@@ -87,6 +100,10 @@ $content-space: 30px;
 .form-checkbox span {
   @include body();
   color: $gray-500;
+
+  @include mobile {
+    @include body-small();
+  }
 }
 
 .form-checkbox {

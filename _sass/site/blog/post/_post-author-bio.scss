@@ -18,6 +18,10 @@
   margin: 0;
   text-align: center;
   align-self: center;
+
+  @include mobile{
+    @include body-xs-semibold()
+  }
 }
 
 .author-image {
@@ -25,6 +29,11 @@
   height: $avatar-size;
   border-radius: 50%;
   margin: 0;
+
+  @include mobile{
+    width: $avatar-size-mobile;
+    height: $avatar-size-mobile;
+  }
 }
 
 .github-icon {
@@ -37,6 +46,13 @@
   height: 10px;
   border-radius: 50%;
   margin: 0;
+
+  @include mobile{
+    left: 22px;
+    padding: 4px;
+    width: 8px;
+    height: 8px;
+  }
 }
 
 .authors-space {

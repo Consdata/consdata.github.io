@@ -14,6 +14,7 @@
 
 .badge {
   @include badge;
+  margin: 0;
 }
 
 .post-content {
@@ -29,12 +30,22 @@
     border-radius: $small-round-edge;
     padding: 1px 4px;
     display: inline-block;
+
+    @include mobile{
+      font-size: 14px;
+    }
   }
 
   p {
     margin-bottom: 0;
-    margin-top: 0.5em;
+    margin-top: 0;
     overflow-wrap: break-word;
+    @include body();
+
+    @include mobile{
+      @include body-small();
+    }
+
   }
 
   .post-highlight-image, .post-tile-did-you-know {
@@ -67,6 +78,10 @@
   @include flex-container;
   @include section-medium-space;
   width: $post-content-width;
+
+  @include mobile {
+    margin-top: 40px;
+  }
 }
 
 .translation-details {

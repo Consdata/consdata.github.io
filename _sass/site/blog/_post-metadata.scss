@@ -7,20 +7,36 @@
 .metadata {
   @include flex-container;
   gap: 32px;
+
+  @include mobile{
+    gap: 8px;
+  }
 }
 
 .time {
   margin-right: 16px;
+
+  @include mobile{
+    margin-right: 4px;
+  }
 }
 
 .reading-time {
   @include flex-container;
+
+  @include mobile{
+    @include body-xs-semibold()
+  }
 }
 
 .time, .publish-date, .separator {
   @include body-small-semibold();
   text-align: center;
   color: $gray-500;
+
+  @include mobile{
+    @include body-xs-semibold()
+  }
 }
 
 .clock-icon {
@@ -29,4 +45,10 @@
   stroke-width: 2px;
   align-self: center;
   margin: 0;
+
+  @include mobile{
+    @include body-xs-semibold();
+    width: 12px;
+    height: 12px;
+  }
 }
