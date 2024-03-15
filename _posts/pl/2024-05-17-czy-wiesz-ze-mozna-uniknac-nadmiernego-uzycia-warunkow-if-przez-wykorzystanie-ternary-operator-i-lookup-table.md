@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz, że można uniknąć nadmiernego użycia warunków 'if' przez wykorzystanie ternary operator i lookup table?"
-date:      2024-06-114T08:00:00+01:00
+date:      2024-05-17T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2024-06-14-czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table/code.webp
+image: /assets/img/posts/2024-05-17-czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table/code.webp
 tags:
 - javascript
 ---
