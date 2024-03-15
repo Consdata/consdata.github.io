@@ -17,15 +17,15 @@ tags:
 
 ## Słowem wstępu
 
-OpenTelemetry to zbiór SDK i interfejsów API, który pozwala nam gromadzić, generować i eksportować logi, metryki i trace'y aplikacji.
+OpenTelemetry to zbiór SDK i interfejsów API, który pozwala gromadzić, generować i eksportować logi, metryki i trace'y aplikacji.
 
-OpenTelemetry umożliwia nam instrumentowanie naszych rozproszonych usług. Instrumentacją nazywamy przechwytywanie danych telemetrycznych ze zdarzeń i operacji w naszym systemie rozproszonym. Jest nam to niezbędne do tego, aby zrozumieć i zbadać zachowanie naszego systemu, znajdować błędy czy debugować problemy związane z wydajnością.
+OpenTelemetry umożliwia instrumentowanie rozproszonych usług. Instrumentacją nazywamy przechwytywanie danych telemetrycznych ze zdarzeń i operacji w systemie rozproszonym. Jest to niezbędne do tego, aby zrozumieć i zbadać zachowanie systemu, znajdować błędy czy debugować problemy związane z wydajnością.
 
 Dla lepszego zrozumienia OpenTelemetry warto wyjaśnić znaczenie następujących pojęć:
 
-**Span** - reprezentuje akcję/operację, która miała miejsce w naszym systemie, może to być żądanie HTTP lub operacja bazy danych, która rozciąga się w czasie. Span zazwyczaj jest rodzicem/dzieckiem innego spana.
+**Span** - reprezentuje akcję/operację, która miała miejsce w systemie. Może to być żądanie HTTP lub operacja bazy danych, która rozciąga się w czasie. Span zazwyczaj jest rodzicem/dzieckiem innego spana.
 
-**Trace** - reprezentuje drzewo spanów połączonych w relacji dziecko/rodzic. Opisuje postęp żądań w różnych usługach i komponentach w naszym systemie (baza danych, źródła danych, kolejki itp.). Prostym trace'm jest np. zawołanie usługi, które spowodowało wysłanie zapytania do bazy danych.
+**Trace** - reprezentuje drzewo spanów połączonych w relacji dziecko/rodzic. Opisuje postęp żądań w różnych usługach i komponentach w systemie (baza danych, źródła danych, kolejki itp.).
 
 Koncepcję spanów i trace'ów można przedstawić za pomocą diagramu:
 ![Koncepcja span i trace](/assets/img/posts/2023-11-18-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosować-w-praktyce/span_trace.png)
@@ -34,7 +34,7 @@ Koncepcję spanów i trace'ów można przedstawić za pomocą diagramu:
 
 ## Dlaczego warto stosować OpenTelemetry?
 
-Wśród zalet stosowania OpenTelemetry można wyróżnić następujące trzy:
+Wśród zalet stosowania OpenTelemetry można wyróżnić:
 - przechowywanie danych telemetrycznych w jednym miejscu,
 - wykorzystanie automatycznej instrumentacji,
 - łatwa integracja z eksporterem.
@@ -47,7 +47,7 @@ OpenTelemetry służy jako pojedyncza biblioteka gromadząca dane w ramach jedne
 - metryk,
 - trace'ów
 
-wykorzystując do tego jedno narzędzie - OpenTelemetry.
+wykorzystując do tego jedno narzędzie.
 
 
 ### Automatyczna instrumentacja
