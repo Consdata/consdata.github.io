@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?" />
+<meta name="author" content="pstachowiak" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Co to i po co? Aplikacja nie odpowiada, pod leży, baza padła…" />
+<meta property="og:description" content="Co to i po co? Aplikacja nie odpowiada, pod leży, baza padła…" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2022/05/25/resilience.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2022/05/25/resilience.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2022-05-25-resilience/resilience.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-25T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2022-05-25-resilience/resilience.jpg" />
+<meta property="twitter:title" content="Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"pstachowiak"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2022/05/25/resilience.html"},"description":"Co to i po co? Aplikacja nie odpowiada, pod leży, baza padła…","url":"https://blog.consdata.tech/2022/05/25/resilience.html","image":"https://blog.consdata.tech/assets/img/posts/2022-05-25-resilience/resilience.jpg","headline":"Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?","dateModified":"2022-05-25T02:00:00-05:00","datePublished":"2022-05-25T02:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/pstachowiak.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/pstachowiak.jpg" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/pstachowiak.html" class="author-name-metadata">Piotr Stachowiak</a>
+        <span>
+25
+
+maja
+
+
+
+2022
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" big-post-tile-did-you-know  post-highlight-image">
+                        <img src="/assets/img/posts/2022-05-25-resilience/resilience.jpg" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2022/05/25/resilience.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?&url=https://blog.consdata.tech/2022/05/25/resilience.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2022/05/25/resilience.html&title=Czy wiesz czym są Resilience4j, CircuitBreaker, RateLimiter i inne?&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <h2 id="co-to-i-po-co">Co to i po co?</h2>
+<p>Aplikacja nie odpowiada, pod leży, baza padła…</p>
+
+<p>Chyba nikogo nie dziwi, że aplikacje czasem nie działają. Jedną z najlepszych rzeczy, jaką możemy zrobić to przygotować się na taki stan i ograniczyć straty w pozostałych częściach systemu.
+Z pomocą przychodzi nam biblioteka Resilience4j, czyli lekka biblioteka udostępniająca narzędzia dla tworzenia systemów tolerujących awarię, zainspirowana przez Netflix Hystrix, ale zaprojektowana dla Javy 8 i programowania funkcjonalnego.</p>
+
+<p>Główne moduły biblioteki to: CircuitBreaker, Bulkhead, RateLimiter, Retry, TimeLimiter oraz Cache. Biblioteka opiera się na dekoratorach, których możemy użyć na lambdzie, metodzie, lub interfejsie funkcyjnym.
+Zobaczmy, co one oferują i jak można ich użyć.</p>
+
+<h2 id="jak-możemy-tego-użyć">Jak możemy tego użyć?</h2>
+<p>Każdego z modułów można użyć jako osobnej zależności, ale tu przedstawimy najszybszy i najprostszy sposób użycia Resilencje4j w połączeniu ze SpringBoot.</p>
+
+<p>Aby dodać w naszej aplikacji Resilience4j, wystarczy dodać zależność na resilience4j-spring-boot2 (dodatkowo wymagane są  spring-boot-starter-actuator oraz spring-boot-starter-aop).</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.github.resilience4j<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>resilience4j-spring-boot2<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>W ten sposób w aplikacji możemy korzystać z CircuitBreaker, Bulkhead, RateLimiter, Retry oraz TimeLimiter. Funkcjonalności możemy konfigurować w konfiguracji aplikacji oraz dodawać dekoratory za pomocą adnotacji. Możliwa jest także utworzenie i konfiguracja modułów bezpośrednio w kodzie.</p>
+
+<h2 id="circuitbreaker">CircuitBreaker</h2>
+<p>W dosłownym tłumaczeniu bezpiecznik, który otwiera się, gdy wykryje, że funkcjonalność, zwykle zewnętrzna usługa, jest tymczasowo niedostępna. Pozwala to odciążyć usługę i pozwolić jej na powrót do świata żywych.</p>
+
+<p>CircuitBreaker ma 3 stany:</p>
+<ul>
+  <li>zamknięty - normalne działanie, w trakcie którego monitorujemy działanie,</li>
+  <li>otwarty - stan po wykryciu niedostępności, przez określony czas zwracany jest błąd bez wywoływania oznaczonego kodu,</li>
+  <li>w połowie otwarty -  stan występujący po otwarciu w którym sprawdzamy czy funkcjonalność zaczęła działać.</li>
+</ul>
+
+<p>Konfiguracja CircuitBreaker:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">resilience4j.circuitbreaker</span><span class="pi">:</span>
+    <span class="na">instances</span><span class="pi">:</span>
+        <span class="na">backendA</span><span class="pi">:</span>
+            <span class="na">registerHealthIndicator</span><span class="pi">:</span> <span class="no">true</span>
+            <span class="na">slidingWindowSize</span><span class="pi">:</span> <span class="m">100</span>
+        <span class="na">backendB</span><span class="pi">:</span>
+            <span class="na">registerHealthIndicator</span><span class="pi">:</span> <span class="no">true</span>
+            <span class="na">slidingWindowSize</span><span class="pi">:</span> <span class="m">10</span>
+            <span class="na">permittedNumberOfCallsInHalfOpenState</span><span class="pi">:</span> <span class="m">3</span>
+            <span class="na">slidingWindowType</span><span class="pi">:</span> <span class="s">TIME_BASED</span>
+            <span class="na">minimumNumberOfCalls</span><span class="pi">:</span> <span class="m">20</span>
+            <span class="na">waitDurationInOpenState</span><span class="pi">:</span> <span class="s">50s</span>
+            <span class="na">failureRateThreshold</span><span class="pi">:</span> <span class="m">50</span>
+            <span class="na">eventConsumerBufferSize</span><span class="pi">:</span> <span class="m">10</span>
+            <span class="na">recordFailurePredicate</span><span class="pi">:</span> <span class="s">io.github.robwin.exception.RecordFailurePredicate</span>
+</code></pre></div></div>
+
+<p>Najważniejszymi parametrami, które możemy konfigurować, są rodzaj i wielkość okna, w którym sprawdzamy procent błędów, oraz parametr określający, od jakiej ilości błędów otwieramy nasz bezpiecznik. Po skonfigurowaniu instancji CircuitBreakera możemy dodać adnotację na metodzie, która nas interesuje.</p>
+
+<p>Adnotacja:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@CircuitBreaker</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"backendA"</span><span class="o">,</span> <span class="n">fallbackMethod</span> <span class="o">=</span> <span class="s">"fallback"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">method</span><span class="o">(</span><span class="nc">String</span> <span class="n">param1</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Mono</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="k">new</span> <span class="nc">NumberFormatException</span><span class="o">());</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">fallback</span><span class="o">(</span><span class="nc">String</span> <span class="n">param1</span><span class="o">,</span> <span class="nc">IllegalArgumentException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error for backendA"</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="retry">Retry</h2>
+<p>Jeśli usługi, które wywołujemy, są idempotentne i nie jesteśmy pewni czy udało się wywołać daną funkcjonalność, możemy pokusić się o ponowienie takiej operacji, licząc na to, że za chwilę zacznie działać.</p>
+
+<p>Moduł Retry pozwala zrobić to w łatwy sposób.</p>
+
+<p>Konfiguracja Retry:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">resilience4j.retry</span><span class="pi">:</span>
+    <span class="na">instances</span><span class="pi">:</span>
+        <span class="na">backendA</span><span class="pi">:</span>
+            <span class="na">maxAttempts</span><span class="pi">:</span> <span class="m">3</span>
+            <span class="na">waitDuration</span><span class="pi">:</span> <span class="s">10s</span>
+            <span class="na">enableExponentialBackoff</span><span class="pi">:</span> <span class="no">true</span>
+            <span class="na">exponentialBackoffMultiplier</span><span class="pi">:</span> <span class="m">2</span>
+            <span class="na">retryExceptions</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">org.springframework.web.client.HttpServerErrorException</span>
+                <span class="pi">-</span> <span class="s">java.io.IOException</span>
+            <span class="na">ignoreExceptions</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">io.github.robwin.exception.BusinessException</span>
+</code></pre></div></div>
+
+<p>Użycie Retry:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retry</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"backendA"</span><span class="o">,</span> <span class="n">fallbackMethod</span> <span class="o">=</span> <span class="s">"fallback"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">method</span><span class="o">(</span><span class="nc">String</span> <span class="n">param1</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Mono</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="k">new</span> <span class="nc">NumberFormatException</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="time-limitter">Time Limitter</h2>
+<p>Moduł TimeLimiter pozwala nam na ograniczenie maksymalnego czasu trwania żądania.</p>
+
+<p>Konfiguracja Retry:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">resilience4j.timelimiter</span><span class="pi">:</span>
+    <span class="na">instances</span><span class="pi">:</span>
+        <span class="na">backendA</span><span class="pi">:</span>
+            <span class="na">timeoutDuration</span><span class="pi">:</span> <span class="s">2s</span>
+            <span class="na">cancelRunningFuture</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<h2 id="rate-limiter">Rate Limiter</h2>
+<p>Jeśli nie chcemy zbyt mocno obciążać danej części systemu, możemy ograniczyć liczbę wywołań danej metody w czasie.</p>
+
+<p>Konfiguracja Retry</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">resilience4j.ratelimiter</span><span class="pi">:</span>
+    <span class="na">instances</span><span class="pi">:</span>
+        <span class="na">backendA</span><span class="pi">:</span>
+            <span class="na">limitForPeriod</span><span class="pi">:</span> <span class="m">10</span>
+            <span class="na">limitRefreshPeriod</span><span class="pi">:</span> <span class="s">1s</span>
+            <span class="na">timeoutDuration</span><span class="pi">:</span> <span class="m">0</span>
+            <span class="na">registerHealthIndicator</span><span class="pi">:</span> <span class="no">true</span>
+            <span class="na">eventConsumerBufferSize</span><span class="pi">:</span> <span class="m">100</span>
+</code></pre></div></div>
+
+<h2 id="składanie-wielu-dekoratorów">Składanie wielu dekoratorów</h2>
+<p>Wszystkie z wymienionych dekoratorów możemy stosować równocześnie.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@CircuitBreaker</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="no">BACKEND</span><span class="o">,</span> <span class="n">fallbackMethod</span> <span class="o">=</span> <span class="s">"fallback"</span><span class="o">)</span>
+<span class="nd">@RateLimiter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="no">BACKEND</span><span class="o">)</span>
+<span class="nd">@Bulkhead</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="no">BACKEND</span><span class="o">)</span>
+<span class="nd">@Retry</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="no">BACKEND</span><span class="o">,</span> <span class="n">fallbackMethod</span> <span class="o">=</span> <span class="s">"fallback"</span><span class="o">)</span>
+<span class="nd">@TimeLimiter</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="no">BACKEND</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">Mono</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">method</span><span class="o">(</span><span class="nc">String</span> <span class="n">param1</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Mono</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="k">new</span> <span class="nc">NumberFormatException</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+                    
+                    
+                    <div class="did-you-know-box">
+    <span class="highlighted-box-description">
+        💡 "Czy wiesz, że?" to wewnątrzfirmowa inicjatywa, której celem jest szerzenie ciekawostek
+        z różnych obszarów IT. Najlepsze z nich trafiają na bloga dla szerszego grona odbiorców.
+    </span>
+</div>
+
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/pstachowiak.html" class="author-name">
+            <img src="/assets/img/authors/pstachowiak.jpg" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/pstachowiak.html" class="author-name">
+                Piotr Stachowiak
+            </a>
+            
+            <div class="social-buttons">
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/pstachowiak.jpg">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Piotr Stachowiak</div>
+            
+            <div class="social-buttons">
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Fullstack developer, czuje się najlepiej w świecie frontendu, lecz ostatnimi czasy zgłębia zagadnienia związane z bazami danych i integracją.  Po pracy lubi spędzać czas na dwóch kółkach lub z lutownicą w ręku, fan IoT.</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2022/05/25/resilience.html';
+            this.page.identifier = 'https://blog.consdata.tech/2022/05/25/resilience.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Resilience4j CircuitBreaker RateLimiter Java Spring Boot";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

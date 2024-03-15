@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Angular - detekcja zmian strategią onPush | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Angular - detekcja zmian strategią onPush" />
+<meta name="author" content="kgabara" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian." />
+<meta property="og:description" content="Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2019/08/06/angular-onpush-strategy.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-06T01:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.jpeg" />
+<meta property="twitter:title" content="Angular - detekcja zmian strategią onPush" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"kgabara"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html"},"description":"Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian.","url":"https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html","image":"https://blog.consdata.tech/assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.jpeg","headline":"Angular - detekcja zmian strategią onPush","dateModified":"2019-08-06T01:00:00-05:00","datePublished":"2019-08-06T01:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Angular - detekcja zmian strategią onPush</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/kgabara.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/kgabara.jpg" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/kgabara.html" class="author-name-metadata">Konrad Gabara</a>
+        <span>
+6
+
+sierpnia
+
+
+
+2019
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" post-highlight-image">
+                        <img src="/assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.jpeg" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Angular - detekcja zmian strategią onPush&url=https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html&title=Angular - detekcja zmian strategią onPush&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <p>Każda aplikacja rozwijana odpowiednio długi czas może rozrosnąć się do ogromnych rozmiarów, a konkretniej do sporej liczby komponentów, jeżeli mówimy o aplikacji frontendowej pisanej z wykorzystaniem Angulara. Z czasem przyrost kolejnych funkcjonalności może spowodować, że nasz produkt przestanie spełniać oczekiwania odnośnie wydajności. W takim momencie powinniśmy pomyśleć nad możliwościami naprawy tego problemu. W tym artykule pokażemy jedno z możliwych rozwiązań tego problemu - zmiana strategii detekcji zmian.</p>
+
+<h2 id="detekcja-zmian">Detekcja zmian</h2>
+
+<p>Załóżmy, że mamy przed sobą kod aplikacji odpowiedzialnej za zarządzanie hodowlą zwierząt. Przykładowym komponentem odpowiedzialnym za wyświetlanie informacji o krówkach byłby cow-run.component, czyli wybieg krówek, który przekazuje obiekt pojedynczej krówki do cow.component. Z drugiej strony mamy pig-run.component, który spełnia te same założenia co komponent krówek. Przykładowe drzewo komponentów mogłoby wyglądać tak:</p>
+
+<p><img alt="Zobrazowanie drzewa komponentów" src="/assets/img/posts/2019-05-29-angular-onpush-strategy/components.png" /></p>
+
+<p>Angular dla każdego komponentu tworzy odpowiadający jemu (komponentowi) ChangeDetector. Przejdźmy dalej, czyli jak to działa?</p>
+
+<h3 id="jak-to-działa">Jak to działa?</h3>
+<p>Domyślnie ChangeDetector nasłuchuje na każdą zmianę stanu aplikacji - zmianę inputów, zmianę modelu prezentowanego na templatce, wywołania asynchroniczne, zdarzenia DOM, interwały. Każda taka zmiana powoduje porównanie obecnie prezentowanych w drzewie DOM wartości do tych, które przechowuje komponent - w momencie wykrycia różnic komponent oznaczany jest jako “brudny” - proces ten nazywa się “dirty checking”. Następnie dokonywana jest projekcja modelu na drzewo DOM, czyli faktyczne zaktualizowanie widoku.</p>
+
+<p>Detekcja zmian w każdym świeżo utworzonym komponencie ustawiona jest na wartość ChangeDetectionStrategy.Default, co przekłada się na detekcję zmian strategią CheckAlways. Strategia ta sprawia, że podczas każdej zmiany stanu aplikacji - asynchronicznego zapytania wysyłanego do serwera, zdarzenia DOM, interakcji użytkownika z naszą aplikacją sprawdzane jest całe drzewo komponentów. Wyobraźmy sobie sytuację, kiedy zdarzenie DOM zostało wyemitowane przez CowComponent. Angular zanim sprawdziłby komponent, który faktycznie wyemitował zdarzenie, musiałby sprawdzić wszystkie komponenty, zgodnie z utworzonym przez siebie drzewem. Spójrzmy na obrazek:</p>
+
+<p><img alt="Sprawdzanie komponentów przez mechanizm detekcji zmian" src="/assets/img/posts/2019-05-29-angular-onpush-strategy/change-detection.png" /></p>
+
+<p>Strzałki obrazują kierunek przechodzenia przez drzewo mechanizmu detekcji. Jest to prosty przykład, gdyż drzewo jest bardzo małe. Wyobraźmy sobie jednak drzewo zbudowane z setek komponentów. Z każdą zmianą Angular musiałby na nowo przeszukać całe drzewo komponentów celem znalezienia tego komponentu, który wyemitował zmianę. Dość sporo obliczeń, czyż nie?</p>
+
+<h2 id="strategia-onpush">Strategia onPush</h2>
+<p>Na szczęście Angular pozwala nam na zmianę domyślnej strategii detekcji zmian. Jeżeli nie chcemy korzystać z domyślnego mechanizmu, to na ratunek przychodzi nam strategia onPush! Strategia ta mówi nam, że komponent zależny jest tylko i wyłącznie od swoich inputów. Taki komponent nazywamy “czystym”. Zmiana propagowana jest w momencie zmiany referencji inputów komponentu jak i w przypadku wyemitowania zdarzenia DOM w szablonie komponentu (np. kliknięcie w przycisk - event onclick). Co więcej, komponent emitujący zmianę z wykorzystaniem strategii onPush powiadamia mechanizm detekcji Angulara, że to właśnie on wyemitował zmianę! To drastycznie zmniejsza koszt przeszukania drzewa komponentów, gdyż Angular wie, którego komponentu szukać, albo który komponent pominąć. Zdjęcie poniżej pozwoli zobrazować tę sytuację.
+<img alt="Sprawdzanie komponentów przez mechanizm detekcji zmian" src="/assets/img/posts/2019-05-29-angular-onpush-strategy/onpush-detection.png" /></p>
+
+<h3 id="jak-używać">Jak używać?</h3>
+<p>Używanie takiej strategii wymusza na nas zmiany podejścia odnośnie projektowania naszych komponentów. Inputy czystego komponentu powinny być niezmienialne, co oznacza, że wartości naszych inputów powinny być aktualizowane przez zmianę referencji, a nie wartości. Prosty przykład:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">cowDonation</span><span class="p">:</span> <span class="p">{</span> <span class="nl">donation</span><span class="p">:</span> <span class="kr">number</span> <span class="p">};</span>
+
+<span class="nx">onClickUpdateDonation</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">cowDonation</span><span class="p">.</span><span class="nx">donation</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Powyższa zmiana nie zadziała, ponieważ zmieniamy wartość, a nie referencję. Aby strategia onPush zadziałała, wartość dotacji musimy zmienić poprzez zmianę referencji, czyli przykładowo:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">cowDonation</span><span class="p">:</span> <span class="p">{</span> <span class="nl">donation</span><span class="p">:</span> <span class="kr">number</span> <span class="p">};</span>
+
+<span class="nx">updateDonation</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">cowDonation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">donation</span><span class="p">:</span> <span class="mi">500</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Zdarzenia DOM są zdarzeniami asynchronicznymi, więc moglibyśmy wyciągnąć wniosek: detekcja zmian zadziała, kiedy użyjemy takich funkcji asynchronicznych jak setTimeout, setInterval albo subskrypcja do Observable’a zwracanego przez serwis HTTP, prawda? Otóż nie. Na szczęście w przypadku bytów typu Observable Angular przychodzi nam z pomocą i udostępnia AsyncPipe. Dlaczego to działa z użyciem AsyncPipe a nie z manualną subskrypcją? Zajrzyjmy więc w kod:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">_updateLatestValue</span><span class="p">(</span><span class="k">async</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">async</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_latestValue</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_ref</span><span class="p">.</span><span class="nx">markForCheck</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Jak widać powyżej, w momencie aktualizacji wartości wywoływana jest funkcja markForCheck(), która powiadamia mechanizm detekcji zmian o konieczności sprawdzenia danego komponentu.</p>
+
+<h2 id="przejęcie-kontroli-nad-mechanizmem-detekcji-zmian">Przejęcie kontroli nad mechanizmem detekcji zmian</h2>
+<p>Co w przypadku, gdy bardzo potrzebujemy użyć funkcji setInterval lub setTimeout, ale jednocześnie chcielibyśmy również używać strategii onPush? Angular daje nam możliwość wstrzyknięcia dedykowanego ChangeDetectora danemu komponentowi, a potem wywołanie na nim funkcji markForCheck() - analogicznie jak w opisywanym przykładzie z AsyncPipe!
+Przykładowy kod wyglądałby tak:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">cowService</span><span class="p">:</span> <span class="nx">CowService</span><span class="p">,</span> <span class="k">private</span> <span class="nx">changeDetectorRef</span><span class="p">:</span> <span class="nx">ChangeDetectorRef</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">updateCowDonationWithTimeout</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="nx">updateCowDonationWithTimeout</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">cowDonation</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">donation</span><span class="p">:</span> <span class="mi">500</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">changeDetectorRef</span><span class="p">.</span><span class="nx">markForCheck</span><span class="p">();</span>
+    <span class="p">},</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Przy stworzeniu komponentu zostanie wywołana funkcja zmieniająca wartość dotacji dla krowy na 500 po upływie około 500ms, a wszystko dzięki wywołaniu markForCheck() na referencji do detektora zmian komponentu.</p>
+
+<h2 id="na-co-należy-uważać">Na co należy uważać?</h2>
+<p>Przypomnijmy, że przy korzystaniu ze strategii onPush musimy pamiętać o tym, że:</p>
+<ul>
+  <li>zmiany inputów komponentu muszą zachodzić poprzez zmianę referencji, a nie wartości!</li>
+  <li>funkcje asynchroniczne (setTimeout, setInterval, manualna subskrypcja do Observable’a) nie wywołują mechanizmu detekcji zmian.</li>
+</ul>
+
+<h2 id="kilka-słów-na-zakończenie">Kilka słów na zakończenie</h2>
+<p>OnPush wymusza na nas projektowanie komponentów w określony sposób - tak, żeby komponent odpowiedzialny był jedynie za prezentację danych na podstawie otrzymanych inputów. Cała skomplikowana logika mogłaby wtedy być przeniesiona do serwisów. Przeniesienie logiki do serwisu umożliwiłoby też łatwiejsze otestowanie kodu - fajnie jest mieć jakieś potwierdzenie, że nasz kod robi to, co powinien :). Pisanie komponentów niezmienialnych (ang. immutable) i ogółem kodu opartego na niezmienialności to tworzenie dobrych przyzwyczajeń, które mogą być wykorzystane przy adaptacji nowych rozwiązań w projekcie - przykładowo kontrolowanie stanu z wykorzystaniem biblioteki ngRx, która również wymusza na programistach pisanie kodu opartego na niezmienialności. Stosowanie strategii onPush z pewnością może zwiększyć wydajność aplikacji, choć zalecałbym korzystanie z tej strategii w nowo tworzonych komponentach, pisanych od początku z myślą o niezmienialności. Wprowadzanie onPush’a na siłę do już istniejących, czasami mocno rozbudowanych komponentów może doprowadzić do niepożądanych zachowań (a w tym przypadku braku reakcji na zmiany :P), więc trzeba wziąć to pod uwagę adaptując tę strategię do już istniejącego kodu.</p>
+
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/kgabara.html" class="author-name">
+            <img src="/assets/img/authors/kgabara.jpg" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/kgabara.html" class="author-name">
+                Konrad Gabara
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/arg3s"
+                       title="arg3s">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        arg3s</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio">Fullstack developer wannabe. He values personal development whether it's about learning new IT things, reading a book or cooking. A witty dreamer. His jokes are usually funny only to their author, but sometimes cause a laugh of pity from others. He takes coding more seriously than life, and that's something! A fan of both classical and light music.</div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/kgabara.jpg">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Konrad Gabara</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/arg3s"
+                       title="arg3s">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        arg3s</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Fullstack developer wannabe. Ceni sobie rozwój, czy przy komputerze, czy przy książce, czy to w kuchni. Marzyciel z niepoprawnym poczuciem humoru. Ze swoich żartów najcześciej śmieje się tylko on, ewentualnie wymusza śmiech litości. Do kodu podchodzi poważniej niż do życia, a to już coś! Miłośnik muzyki, tej poważnej i niepoważnej też :).</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html';
+            this.page.identifier = 'https://blog.consdata.tech/2019/08/06/angular-onpush-strategy.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "angular frontend";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

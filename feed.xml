@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/" rel="alternate" type="text/html" />
+  <updated>2024-03-15T05:58:31-05:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest OpenTelemetry i jak go stosować w praktyce?</title>
+      <link href="https://blog.consdata.tech/2024/03/15/czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest OpenTelemetry i jak go stosować w praktyce?" />
+      <published>2024-03-15T02:00:00-05:00</published>
+      <updated>2024-03-15T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/03/15/czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Filip Philavong</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="OpenTelemetry" />
+      
+        <category term="tracing" />
+      
+        <category term="span" />
+      
+        <category term="trace" />
+      
+        <category term="Jaeger" />
+      
+
+      
+        <summary type="html">Słowem wstępu</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-03-15-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce/otel.png" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak wyświetlić devtoolsy na telefonie z Androidem?</title>
+      <link href="https://blog.consdata.tech/2024/03/08/czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem.html" rel="alternate" type="text/html" title="Czy wiesz, jak wyświetlić devtoolsy na telefonie z Androidem?" />
+      <published>2024-03-08T01:00:00-06:00</published>
+      <updated>2024-03-08T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/03/08/czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="devtools" />
+      
+        <category term="android" />
+      
+
+      
+        <summary type="html">Często w trakcie naprawy błędów lub implementacji nowych funkcjonalności musimy coś sprawdzić na fizycznym urządzeniu, ponieważ widok mobilny w przeglądarce nie jest dla nas wystarczający (na przykład potrzebujemy skorzystać z natywnego wyboru daty lub dotykowej klawiatury).</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-03-08-czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem/debug-mobile.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak działa WebWorker?</title>
+      <link href="https://blog.consdata.tech/2024/02/23/czy-wiesz-czym-jest-i-jak-dziala-webworker.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak działa WebWorker?" />
+      <published>2024-02-23T01:00:00-06:00</published>
+      <updated>2024-02-23T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/02/23/czy-wiesz-czym-jest-i-jak-dziala-webworker</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+        <category term="webworkers" />
+      
+
+      
+        <summary type="html">JavaScript, który wywołujemy na naszych stronach w postaci skryptów jest jednowątkowy. Jeżeli zdecydujemy się używać go do wykonywania zasobożernych obliczeń, może spowodować to, że interfejs użytkownika stanie się nieresponsywny.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-02-23-czy-wiesz-czym-jest-i-jak-dziala-webworker/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak bezprzerwowo zmienić schemat w MongoDB?</title>
+      <link href="https://blog.consdata.tech/2024/01/26/czy-wiesz-jak-bezprzerwowo-zmienic-schemat-w-mongodb.html" rel="alternate" type="text/html" title="Czy wiesz, jak bezprzerwowo zmienić schemat w MongoDB?" />
+      <published>2024-01-26T01:00:00-06:00</published>
+      <updated>2024-01-26T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/01/26/czy-wiesz-jak-bezprzerwowo-zmienic-schemat-w-mongodb</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Barbara Mitan</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+        <category term="Schema Versioning Pattern" />
+      
+
+      
+        <summary type="html">Wyobraźmy sobie konieczność wprowadzenia zmian w schemacie. Przy tradycyjnym podejściu musielibyśmy zatrzymać aplikację, dokonać migracji bazy i dopiero po jej zakończeniu uruchomić aplikację. Co jeśli nasza kolekcja jest już bardzo duża albo przerwy nie są akceptowalne? Jest też ryzyko, że nastąpi błąd przy migracji, a powrót do poprzedniej wersji w niektórych przypadkach może być dużym problemem. Co proponuje MongoDB? Schema Versioning Pattern.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-02-09-czy-wiesz-jak-bezprzerwowo-zmienic-schemat-w-mongodb/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz czym jest Attribute Pattern w MongoDB?</title>
+      <link href="https://blog.consdata.tech/2024/01/26/czy-wiesz-czym-jest-attribute-pattern-w-mongodb.html" rel="alternate" type="text/html" title="Czy wiesz czym jest Attribute Pattern w MongoDB?" />
+      <published>2024-01-26T01:00:00-06:00</published>
+      <updated>2024-01-26T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/01/26/czy-wiesz-czym-jest-attribute-pattern-w-mongodb</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Barbara Mitan</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+        <category term="attribute pattern" />
+      
+
+      
+        <summary type="html">Kiedy stosować Attribute Pattern?</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-01-26-czy-wiesz-czym-jest-attribute-pattern-w-mongodb/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz co to stylePreprocessorOptions w Angular?</title>
+      <link href="https://blog.consdata.tech/2024/01/12/czy-wiesz-co-to-style-processor-options-w-angular.html" rel="alternate" type="text/html" title="Czy wiesz co to stylePreprocessorOptions w Angular?" />
+      <published>2024-01-12T01:00:00-06:00</published>
+      <updated>2024-01-12T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/01/12/czy-wiesz-co-to-style-processor-options-w-angular</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+        <category term="css" />
+      
+
+      
+        <summary type="html">StylePreprocessorOptions pozwala na dynamiczne dodawanie stylów do aplikacji. Zamiast używać relatywnych ścieżek do pliku ze stylami: // Relatywna ścieżka @import 'libs/feature-theme-A/src/style/palette'; można zaimportować style w taki sposób: // Po dodaniu stylePreprocessorOptions, można tak: @import 'palette';</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-01-12-czy-wiesz-co-to-style-processor-options-w-angular/css.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?</title>
+      <link href="https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html" rel="alternate" type="text/html" title="Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?" />
+      <published>2023-12-29T01:00:00-06:00</published>
+      <updated>2023-12-29T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="typescript" />
+      
+        <category term="literal types" />
+      
+        <category term="union types" />
+      
+
+      
+        <summary type="html">W TypeScript możemy tworzyć swoje własne typy (Literal Types) w następujący sposób: type lang = 'pl' | 'en'; gdzie używamy znaku | aby móc zdefiniować kilka różnych typów (Union Types).</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz czym .includes() różni się od .some()?</title>
+      <link href="https://blog.consdata.tech/2023/12/15/czy-wiesz-czym-include-rozni-sie-od-some.html" rel="alternate" type="text/html" title="Czy wiesz czym .includes() różni się od .some()?" />
+      <published>2023-12-15T01:00:00-06:00</published>
+      <updated>2023-12-15T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2023/12/15/czy-wiesz-czym-include-rozni-sie-od-some</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+
+      
+        <summary type="html">includes() pozwala nam sprawdzić, czy element Y znajduje się w tablicy, np.: const zbior = [1,2,3,4,5,6,7]; const wynik = zbior.includes(3); console.log(wynik); // true, 3 znajduje się w zbiorze liczb</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2023-12-15-czy-wiesz-czym-include-rozni-sie-od-some/javascript.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz jak używać discriminated union w języku TypeScript?</title>
+      <link href="https://blog.consdata.tech/2023/12/01/czy-wiesz-jak-uzywac-discriminated-union-w-jezyku-typescript.html" rel="alternate" type="text/html" title="Czy wiesz jak używać discriminated union w języku TypeScript?" />
+      <published>2023-12-01T01:00:00-06:00</published>
+      <updated>2023-12-01T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2023/12/01/czy-wiesz-jak-uzywac-discriminated-union-w-jezyku-typescript</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Krzysztof Czechowski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="typescript" />
+      
+        <category term="discriminated union" />
+      
+        <category term="literal type" />
+      
+
+      
+        <summary type="html">Discriminated union (pol. unia dyskryminacyjna) to połączenie takich typów, z których każdy posiada jedno wspólne pole, na podstawie którego możemy określić, z jakim z nich mamy do czynienia. Zgodnie z ogólnie przyjętą konwencją jest to pole type, które jest typu Literal Type, czyli jego typ opisuje się za pomocą stringa.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2023-12-01-czy-wiesz-jak-uzywac-discriminated-union-w-jezyku-typescript/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak należy trzymać powiązane dane w jednym dokumencie w bazie MongoDB?</title>
+      <link href="https://blog.consdata.tech/2023/11/17/czy-wiesz-jak-nalezy-trzymac-powiazane-dane-w-jednym-dokumencie-w-bazie-mongodb.html" rel="alternate" type="text/html" title="Czy wiesz, jak należy trzymać powiązane dane w jednym dokumencie w bazie MongoDB?" />
+      <published>2023-11-17T05:00:00-06:00</published>
+      <updated>2023-11-17T05:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2023/11/17/czy-wiesz-jak-nalezy-trzymac-powiazane-dane-w-jednym-dokumencie-w-bazie-mongodb</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Barbara Mitan</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+        <category term="subset" />
+      
+        <category term="extended reference" />
+      
+        <category term="bazy danych" />
+      
+
+      
+        <summary type="html">Ważna zasada przy projektowaniu schematu w MongoDB mówi, żeby dane, do których dostęp jest zazwyczaj wspólny, przechowywać razem. Jest to całkowicie sprzeczne z koncepcją normalizacji – dzieleniem danych tak, żeby uniknąć duplikowania i ograniczyć potrzebne miejsce na dane – czyli ze wszystkim, co znamy z relacyjnych baz danych.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2023-11-17-czy-wiesz-jak-nalezy-trzymac-powiazane-dane-w-jednym-dokumencie-w-bazie-mongodb/data.webp" />
+      
+    </entry>
+  
+</feed>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?" />
+<meta name="author" content="pgrobelny" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Krótki wpis Template Literal Types, czyli o łączeniu Literal Types za pomocą interpolacji ciągów znaków." />
+<meta property="og:description" content="Krótki wpis Template Literal Types, czyli o łączeniu Literal Types za pomocą interpolacji ciągów znaków." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-12-29T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp" />
+<meta property="twitter:title" content="Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"pgrobelny"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html"},"description":"Krótki wpis Template Literal Types, czyli o łączeniu Literal Types za pomocą interpolacji ciągów znaków.","url":"https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html","image":"https://blog.consdata.tech/assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp","headline":"Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?","dateModified":"2023-12-29T01:00:00-06:00","datePublished":"2023-12-29T01:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/pgrobelny.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/pgrobelny.webp" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/pgrobelny.html" class="author-name-metadata">Piotr Grobelny</a>
+        <span>
+29
+
+grudnia
+
+
+
+2023
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" big-post-tile-did-you-know  post-highlight-image">
+                        <img src="/assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?&url=https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html&title=Czy wiesz, że w TypeScript możesz łączyć typy za pomocą interpolacji ciągów znaków?&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <p>W TypeScript możemy tworzyć swoje własne typy (<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types">Literal Types</a>) w następujący sposób:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">lang</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">pl</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">en</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div></div>
+<p>gdzie używamy znaku <code class="language-plaintext highlighter-rouge">|</code> aby móc zdefiniować kilka różnych typów (<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types">Union Types</a>).</p>
+
+<p>W TypeScript 4.1 pojawiła się możliwość łączenia ze sobą typów za pomocą interpolacji ciągów:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">lang</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">pl</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">en</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">type</span> <span class="nx">textType</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">description</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">title</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">type</span> <span class="nx">textType</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">${textType}_${lang};
+</span></code></pre></div></div>
+<p>Dzięki temu możemy otrzymać każdą możliwą kombinację typów w ramach nowego typu. Dla tego przykładu będą to: <code class="language-plaintext highlighter-rouge">description_pl</code>, <code class="language-plaintext highlighter-rouge">description_en</code>, <code class="language-plaintext highlighter-rouge">title_pl</code>, <code class="language-plaintext highlighter-rouge">title_en</code>.</p>
+
+<p>Więcej informacji znajdziecie pod adresem: <a href="https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html">https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html</a></p>
+
+
+                    
+                    
+                    <div class="did-you-know-box">
+    <span class="highlighted-box-description">
+        💡 "Czy wiesz, że?" to wewnątrzfirmowa inicjatywa, której celem jest szerzenie ciekawostek
+        z różnych obszarów IT. Najlepsze z nich trafiają na bloga dla szerszego grona odbiorców.
+    </span>
+</div>
+
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/pgrobelny.html" class="author-name">
+            <img src="/assets/img/authors/pgrobelny.webp" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/pgrobelny.html" class="author-name">
+                Piotr Grobelny
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/porkite"
+                       title="porkite">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        porkite</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/pgrobelny.webp">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Piotr Grobelny</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/porkite"
+                       title="porkite">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        porkite</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Fullstack Developer, starający się odnajdywać balans pomiędzy tym co piękne a tym co działa. Uwielbia poznawać i używać nowe narzędzia, które dobrze rozwiązują konkretne problemy, a nie tworzą nowe. Wielki fan gier video i horrorów.</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html';
+            this.page.identifier = 'https://blog.consdata.tech/2023/12/29/czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "typescript literal types union types";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

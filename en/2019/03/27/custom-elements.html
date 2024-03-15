@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Krótkie wprowadzenie do Custom Elements | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Krótkie wprowadzenie do Custom Elements" />
+<meta name="author" content="mpogorzelski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Custom element, co to takiego? Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM." />
+<meta property="og:description" content="Custom element, co to takiego? Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2019/03/27/custom-elements.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2019/03/27/custom-elements.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2019-03-27-custom-elements/custom-elements.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-27T05:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2019-03-27-custom-elements/custom-elements.png" />
+<meta property="twitter:title" content="Krótkie wprowadzenie do Custom Elements" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mpogorzelski"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2019/03/27/custom-elements.html"},"description":"Custom element, co to takiego? Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.","url":"https://blog.consdata.tech/2019/03/27/custom-elements.html","image":"https://blog.consdata.tech/assets/img/posts/2019-03-27-custom-elements/custom-elements.png","headline":"Krótkie wprowadzenie do Custom Elements","dateModified":"2019-03-27T05:00:00-05:00","datePublished":"2019-03-27T05:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Krótkie wprowadzenie do Custom Elements</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/mpogorzelski.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/mpogorzelski.jpg" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/mpogorzelski.html" class="author-name-metadata">Mateusz Pogorzelski</a>
+        <span>
+27
+
+marca
+
+
+
+2019
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" post-highlight-image">
+                        <img src="/assets/img/posts/2019-03-27-custom-elements/custom-elements.png" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2019/03/27/custom-elements.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Krótkie wprowadzenie do Custom Elements&url=https://blog.consdata.tech/2019/03/27/custom-elements.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2019/03/27/custom-elements.html&title=Krótkie wprowadzenie do Custom Elements&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <h2 id="custom-element-co-to-takiego">Custom element, co to takiego?</h2>
+<p>Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.
+Na Web Components składają sie następujące specyfikacje:</p>
+<ul>
+  <li><strong>Templates</strong> - wprowadza element <code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>, który pozwala na wyrenderowanie jego zawartości dopiero na żądanie stworzenia kopii. Dzięki temu problem z przedwczesnym ładowaniem danych nie występuje,</li>
+  <li><strong>HTML imports</strong> - tworzone komponenty mogą zawierać szablony (<strong>Templates</strong>) i kod (<strong>Custom elements</strong>), specyfikacja ta pozwala wydzielić obie te części do oddzielnego pliku HTML i importować go za pomocą <code class="language-plaintext highlighter-rouge">&lt;link rel="import" href="plik-komponentu.html" /&gt;</code>,</li>
+  <li><strong>Shadow DOM</strong> - specyfikacja ta pozwala na enkapsulację DOM’u oraz styli. Każdy element może mieć swój shadow root, który jest wyświetlany jako jego zawartość, przy czym zawartość ta jest odseparowana logicznie od pozostałych elementów DOM,</li>
+  <li><strong>Custom Elements</strong> - specyfikuje sposób tworzenia własnych elementów DOM oraz dostarcza obiekty do kontrolowania cyklu życia elementu.
+W tym artykule skupimy się jedynie na <strong>Custom Elements</strong> (oraz w mniejszym stopniu na <strong>Shadow DOM</strong>), który jest minimalnym zestawem narzędzi pozwalającym na dodanie własnego elementu HTML niezależnego od wykorzystywanych (lub nie) frameworków czy bibliotek.</li>
+</ul>
+
+<h2 id="wsparcie-przez-główne-przeglądarki">Wsparcie przez główne przeglądarki</h2>
+<div class="img-with-legend">
+<img alt="Wsparcie dla Custom elements przez różne przeglądarki" src="/assets/img/posts/2019-03-27-custom-elements/browser_support.png" />
+<span class="img-legend">Wsparcie custom components przez główne przeglądarki<br />źródło: <a href="https://www.webcomponents.org">www.webcomponents.org</a> - dostęp: 2019-03-16</span>
+</div>
+
+<p>Custom Elements jest wspierany przez większość najpopularniejszych przeglądarek. Na pozostałych implementację zapewniają polyfille:</p>
+<ul>
+  <li><a href="https://github.com/webcomponents/custom-elements">https://github.com/webcomponents/custom-elements</a> lub</li>
+  <li><a href="https://github.com/webcomponents/webcomponentsjs">https://github.com/webcomponents/webcomponentsjs</a></li>
+</ul>
+
+<h2 id="customelementregistry">CustomElementRegistry</h2>
+<p>Obiekt typu <code class="language-plaintext highlighter-rouge">CustomElementRegistry</code> zapewnia metody pozwalające na rejestrowanie oraz pobierania już zarejestrowanych elementów. Instancję klasy <code class="language-plaintext highlighter-rouge">CustomElementRegistry</code> otrzymamy odwołując się do <code class="language-plaintext highlighter-rouge">window.customElements</code>. W klasie tej znajdziemy następujące metody:</p>
+
+<h3 id="customelementregistrydefinelocalname-string-constructor-function-options-extends-string-void"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.define(localName: string, constructor: Function, options?: {extends: string}): void</code></h3>
+<p>Pozwala na zdefiniowanie elementu. Pierwszym parametrem jest nazwa tagu, drugim konstruktor klasy elementu. Dodatkowo, można podać trzeci parametr, który zawiera opcje komponentu. W aktualnej wersji specyfikacji dostępna jest jedynie opcja <code class="language-plaintext highlighter-rouge">extends</code>, której wartością jest nazwa rozszerzanego elementu (wykorzystujemy ją wyłacznie w przypadku rozszerzania już istniejącego elementu).
+Przykładowe zastosowanie:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">,</span> <span class="kd">class</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="nx">connectedCallback</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;strong&gt;hello world&lt;/strong&gt;</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>Tak zdefiniowanego elementu można użyć w następujący sposób:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-element&gt;&lt;/my-element&gt;</span>
+</code></pre></div></div>
+
+<h4 id="ograniczenia-nazwy-tagu">Ograniczenia nazwy tagu</h4>
+<p>Nazwa naszego elementu musi spełniać następujące wyrażenie regularne:</p>
+<pre><code class="language-regexp">^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$
+</code></pre>
+<p>Innymi słowy tag musi zaczynać się od litery, musi zawierać przynajmniej jeden myślnik, a poza tym może zawierać jedynie litery alfabetu łaińskiego oraz następujace znaki: <code class="language-plaintext highlighter-rouge">_</code>, <code class="language-plaintext highlighter-rouge">.</code> i <code class="language-plaintext highlighter-rouge">-</code>. Taka reguła sugeruje aby stosować konwencję nazewniczą <code class="language-plaintext highlighter-rouge">kebab-case</code>.</p>
+
+<p>Dodatkowo, nazwa nie może kolidować z żadną nazw z następującej listy:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">annotation-xml</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">color-profile</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-src</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-uri</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-format</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">font-face-name</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">missing-glyph</code>.</li>
+</ul>
+
+<h3 id="customelementregistrygetname-string-functionundefined"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.get(name: string): Function|undefined</code></h3>
+<p>Metoda <code class="language-plaintext highlighter-rouge">get</code> zwraca constructor utworzonego custom elementu lub <code class="language-plaintext highlighter-rouge">undefined</code>, jeżeli taki nie został znaleziony.
+Przykład:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">myElement</span> <span class="o">=</span> <span class="nx">customElements</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="customelementregistryupgraderoot-node-void"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.upgrade(root: Node): void</code></h3>
+<p>Metoda <code class="language-plaintext highlighter-rouge">upgrade</code> pozwala zainicjować element znajdujący się w DOM po tym jak custom element został zarejestrowany.</p>
+
+<p>Przykład:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">my-element</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">class</span> <span class="nx">MyElement</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{}</span>
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">my-element</span><span class="dl">"</span><span class="p">,</span> <span class="nx">MyElement</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">MyElement</span><span class="p">));</span> <span class="c1">// not yet upgraded</span>
+
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">upgrade</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="nx">el</span> <span class="k">instanceof</span> <span class="nx">MyElement</span><span class="p">);</span>    <span class="c1">// upgraded!</span>
+</code></pre></div></div>
+
+<h3 id="customelementregistrywhendefined-promiseundefined"><code class="language-plaintext highlighter-rouge">CustomElementRegistry.whenDefined(): Promise&lt;undefined&gt;</code></h3>
+<p>Zwraca <a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Promise">Promise</a>, który rozwiązany jest w momencie, gdy element zostanie zarejestrowany.</p>
+
+<p>Przykład:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">customElements</span><span class="p">.</span><span class="nx">whenDefined</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-element</span><span class="dl">'</span><span class="p">).</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="zarządzanie-cyklem-życia-custom-elementu">Zarządzanie cyklem życia custom elementu</h2>
+<p>W każdym custom elemencie możemy wykorzystać jeden z predefiniowanych callbacków:</p>
+<ul>
+  <li><strong>connectedCallback</strong> - wywoływany za każdym razem, gdy custom element jest dołączany do dokumentu,</li>
+  <li><strong>disconnectedCallback</strong> - wywoływany zawsze po odłączeniu custom elementu z DOM,</li>
+  <li><strong>adoptedCallback</strong> - wywoływany po przeniesieniu custom elementu do innego dokumentu,</li>
+  <li><strong>attributeChangedCallback</strong> - wywoływany, gdy atrybuty elementu zostaną dodane, usunięte lub zmodyfikowane - jest wywoływany jedynie dla atrybutów, których nazwy zostaną zwrócone ze statycznego pola <code class="language-plaintext highlighter-rouge">observedAttributes</code>.</li>
+</ul>
+
+<h2 id="custom-elementy-w-akcji">Custom elementy w akcji</h2>
+
+<h3 id="przykładowy-prosty-custom-element">Przykładowy prosty custom element</h3>
+<p>Załóżmy, że w naszej aplikacji chcemy stworzyć komponent obrazka z podpisem. Do tej pory używaliśmy HTMLa o takiej strukturze:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"image-with-caption"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"image"</span> <span class="na">src=</span><span class="s">"obrazek.jpg"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"image-caption"</span><span class="nt">&gt;</span>Podpis obrazka<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;style&gt;</span>
+<span class="nt">img</span><span class="nc">.image</span> <span class="p">{</span>
+   <span class="nl">max-width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+   <span class="nl">max-height</span><span class="p">:</span> <span class="m">500px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.image-caption</span> <span class="p">{</span>
+   <span class="nl">font-size</span><span class="p">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+<p>Chcielibyśmy wydzielić taki fragment kodu, do elementu, który będziemy definiować w następujący sposób:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;image-with-caption</span> <span class="na">src=</span><span class="s">"obrazek.jpg"</span><span class="nt">&gt;</span>Podpis obrazka<span class="nt">&lt;/image-with-caption&gt;</span>
+</code></pre></div></div>
+
+<p>Zacznijmy od stworzenia i zarejestrowania komponentu:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">ImageWithCaption</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">image-with-caption</span><span class="dl">'</span><span class="p">,</span> <span class="nx">ImageWithCaption</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Na tym etapie po dodaniu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption /&gt;</code> zostanie na nim zainicjowany element ImageWithCaption. Zajmijmy się dodaniem obrazka.
+Dodajmy do klasy pole <code class="language-plaintext highlighter-rouge">img</code> typu <code class="language-plaintext highlighter-rouge">HTMLImageElement</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">ImageWithCaption</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">img</span><span class="p">:</span> <span class="nx">HTMLImageElement</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Następnie do konstruktora dopiszmy:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">img</span><span class="dl">'</span><span class="p">);</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">attachShadow</span><span class="p">({</span><span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>W ten sposób dodaliśmy do elementu shadow root (dzięki temu style elementu będą odseparowane od dokumentu).
+A potem dodajmy metodę <code class="language-plaintext highlighter-rouge">connectedCallback</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">connectedCallback</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>W ten sposób przypiszemy źródło obrazka z atrybutu <code class="language-plaintext highlighter-rouge">src</code> elementu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption src="..."&gt;</code>. Na tym etapie po osadzeniu naszego elementu pojawi się obrazek, który wskażemy w atrybucie <code class="language-plaintext highlighter-rouge">src</code>. Niestety jego wartość nie będzie mogła się zmieniać po inicjalizacji elementu. Aby nasłuchiwać na zmiany po inicjalizacji należy zadeklarować, że będziemy nasłuchiwać na zmiany atrybutu <code class="language-plaintext highlighter-rouge">src</code>:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kd">get</span> <span class="nx">observedAttributes</span><span class="p">():</span> <span class="kr">string</span><span class="p">[]</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Następnie należy zdefiniować metodę <code class="language-plaintext highlighter-rouge">attributeChangedCallback</code>, która posłuży do obsługi zmian atrybutu src:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">attributeChangedCallback</span><span class="p">(</span><span class="nx">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">newValue</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Dzięki temu możemy zmieniać wartość atrybutu <code class="language-plaintext highlighter-rouge">src</code> po zainicjowaniu komponentu. Zajmijmy się teraz dodaniem etykiety do obrazka. Do konstruktora dopiszmy następujący kod:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">caption</span><span class="p">:</span> <span class="nx">HTMLDivElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">caption</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;slot&gt;&lt;/slot&gt;</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">caption</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Dodaliśmy do naszego shadow DOM element <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>, którego zawartość zdefiniowaliśmy jako <code class="language-plaintext highlighter-rouge">&lt;slot&gt;&lt;/slot&gt;</code>. Podczas działania aplikacji <code class="language-plaintext highlighter-rouge">&lt;slot&gt;&lt;/slot&gt;</code> zostanie zastąpione zawartością elementu <code class="language-plaintext highlighter-rouge">&lt;image-with-caption&gt;&lt;/image-with-caption&gt;</code>.
+Zostało nam dodanie styli do naszego komponentu. Dopiszmy do konstruktora:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">style</span><span class="p">:</span> <span class="nx">HTMLStyleElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">style</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">style</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`</span><span class="err">
+    img {
+        max-width: 100%;
+        max-height: 500px;
+    }
+    div {
+        font-size: 10px;
+    }
+</span><span class="s2">`</span><span class="p">;</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Dzięki użyciu Shadow DOM style, które właśnie dodaliśmy nie wypływają poza element.</p>
+
+<p>Voilà!</p>
+
+<h3 id="mały-bonus---rozszerzanie-istniejących-elementów">Mały bonus - Rozszerzanie istniejących elementów</h3>
+
+<p>Poza możliwością zdefiniowania nowego elementu specyfikacja Custom Elements pozwala na rozszerzenie już istniejących elementów. Załóżmy, że chcemy dokonać prostej modyfikacji elementu <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> polegającej na tym, że przejście do łącza nastąpi dopiero po potwierdzeniu przez użytkownika. Poniżej kod przykładowego elementu:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">LinkWithConfirmation</span> <span class="kd">extends</span> <span class="nx">HTMLAnchorElement</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nx">connectedCallback</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">MouseEvent</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">confirm</span><span class="p">(</span><span class="dl">'</span><span class="s1">Are you sure?</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">'</span><span class="s1">link-with-confirmation</span><span class="dl">'</span><span class="p">,</span> <span class="nx">LinkWithConfirmation</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">'</span><span class="s1">a</span><span class="dl">'</span> <span class="p">});</span>
+</code></pre></div></div>
+<p>Zwróćmy uwagę, że w ostatnim parametrze metody <code class="language-plaintext highlighter-rouge">define</code> przekazaliśmy obiekt <code class="language-plaintext highlighter-rouge">{ extends: 'a' }</code>, który informuje, że będziemy rozszerzać element <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code>.
+Aby skorzystać z napisanego elementu musimy użyć elementu <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> z atrybutem <code class="language-plaintext highlighter-rouge">is</code> o wartości <code class="language-plaintext highlighter-rouge">link-with-confirmation</code>, a nie <code class="language-plaintext highlighter-rouge">&lt;link-with-confirmation&gt;</code>:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">is=</span><span class="s">"link-with-confirmation"</span> <span class="na">href=</span><span class="s">"https://consdata.com"</span><span class="nt">&gt;</span>consdata.com<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<h2 id="przydatne-linki">Przydatne linki</h2>
+<ul>
+  <li><a href="https://www.webcomponents.org/">www.webcomponents.org</a></li>
+  <li><a href="https://caniuse.com/#feat=custom-elementsv1">Wsparcie dla custom elements</a></li>
+  <li><a href="https://developers.google.com/web/fundamentals/web-components/best-practices">Dobre praktyki z przykładami</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements">O Custom elements na MDN</a></li>
+</ul>
+
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/mpogorzelski.html" class="author-name">
+            <img src="/assets/img/authors/mpogorzelski.jpg" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/mpogorzelski.html" class="author-name">
+                Mateusz Pogorzelski
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/pogoma"
+                       title="pogoma">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        pogoma</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/mpogorzelski.jpg">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Mateusz Pogorzelski</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/pogoma"
+                       title="pogoma">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        pogoma</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Wychowany wśród patch paneli nerd uzależniony od kodu. Absolwent Politechniki Poznańskiej. Na co dzień full stack developer w zespole Eximee. Pasjonat inżynierii wstecznej i przetwarzania języka naturalnego.</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2019/03/27/custom-elements.html';
+            this.page.identifier = 'https://blog.consdata.tech/2019/03/27/custom-elements.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "frontend custom elements web";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

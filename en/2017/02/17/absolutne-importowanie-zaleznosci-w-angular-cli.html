@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Absolutne importowanie zależności w Angular CLI | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Absolutne importowanie zależności w Angular CLI" />
+<meta name="author" content="glipecki" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest Single Responsibility Principle, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat JavaScript’u próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard ES6 pozwolił w pełni zaadaptować takie podejście." />
+<meta property="og:description" content="Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest Single Responsibility Principle, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat JavaScript’u próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard ES6 pozwolił w pełni zaadaptować takie podejście." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/angular-cli.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-02-17T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/angular-cli.jpg" />
+<meta property="twitter:title" content="Absolutne importowanie zależności w Angular CLI" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"glipecki"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html"},"description":"Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest Single Responsibility Principle, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat JavaScript’u próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard ES6 pozwolił w pełni zaadaptować takie podejście.","url":"https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html","image":"https://blog.consdata.tech/assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/angular-cli.jpg","headline":"Absolutne importowanie zależności w Angular CLI","dateModified":"2017-02-17T01:00:00-06:00","datePublished":"2017-02-17T01:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Absolutne importowanie zależności w Angular CLI</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/glipecki.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/glipecki.jpg" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/glipecki.html" class="author-name-metadata">Grzegorz Lipecki</a>
+        <span>
+17
+
+lutego
+
+
+
+2017
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" post-highlight-image">
+                        <img src="/assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/angular-cli.jpg" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Absolutne importowanie zależności w Angular CLI&url=https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html&title=Absolutne importowanie zależności w Angular CLI&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <p>Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest <em><a href="https://en.wikipedia.org/wiki/Singleresponsibilityprinciple">Single Responsibility Principle</a></em>, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat <em>JavaScript’u</em> próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard <em>ES6</em> pozwolił w pełni zaadaptować takie podejście.</p>
+
+<h2 id="modularyzacja-w-es6">Modularyzacja w ES6</h2>
+
+<p>W ramach standardu <em>ES6</em> wprowadzono pojęcie modułu oraz standardowego sposobu wyrażania zależności za pomocą polecenia <em>import</em>.</p>
+
+<p>Za moduł przyjmuje się pojedyczny plik. Wszystkie elementy w nim zdefiniowane są jego własnością i nie zabrudzają globalnej przestrzeni aplikacji. Elementy, które chcemy udostępnić innym modułom należy jawnie wskazać przez oznaczenie ich poleceniem <em>export</em>. Wyeksportowane elementy możemy importować i używać w modułach zależnych poleceniem <em>import</em>.</p>
+
+<p>Przykładowo, możemy zdefiniować zależność pomiędzy modułami:</p>
+
+<p><em>service.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">Service</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p><em>component.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Service</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">Component</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">Service</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="problemy-z-importowaniem-zależności">Problemy z importowaniem zależności</h2>
+
+<p>Standardowo importowane moduły są wyszukiwane względem importującego pliku. W przypadku nietrywialnej struktury może to doprowadzić do pogroszenia czytelności aplikacji.</p>
+
+<p>Wyobraźmy sobie strukturę kodu:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>src
+  \- user
+    \- details
+      user-details.component.ts
+  \- authentication
+    \- authentication.service.ts
+</code></pre></div></div>
+
+<p>Wówczas zawartość pliku <em>user-details.component.ts</em> mogłaby wyglądać:</p>
+
+<p><em>component.ts</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">AuthenticationService</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../../authentication/authentication.service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserDetailsService</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">AuthenticationService</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Utrzymywanie względnych ścieżek importowanych modułów jest trudne. Czytelność istniejących importów jest wątpliwa, a dopisywanie nowych niewygodne. Rozwiązaniem tego problemu może być stosowanie absolutnych ścieżek do modułów, liczonych względem głównego katalogu ze źródłami. Przy takim podejściu dopisywanie nowych importów jest proste (widząc strukturę aplikacji), a czytając jesteśmy w stanie szybko się zorientować jakie zależności właściwie wciągamy.</p>
+
+<h2 id="użycie-absolutnych-ścieżek-zależności">Użycie absolutnych ścieżek zależności</h2>
+
+<p>Na szczęście zalecane podejście do pisania aplikacji w <em>Angular 2</em> zakłada stosowanie kompilatora <em>TypeScript</em>, a ten od dłuższego czasu wspiera stosowanie absolutnych ścieżek przy importowaniu zależności. Dodatkowo, również <em>Angular CLI</em> prawidłowo obsluguje bundlowanie zasobów zbudowanych z wykorzystaniem absolutnych ścieżek.</p>
+
+<p>W tym celu należy zmodyfikować plik konfiguracyjny kompilatora <em>TypeScript</em>. W pliku <em>tsconfig.json</em> dopisujemy atrybut <em>baseUrl: “.”</em></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Od teraz możemy we wszystkich miejscach importować zależności podając ich absolutne ścieżki:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">AuthenticationService</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">authentication/authentication.service</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserDetailsService</span> <span class="p">{</span>
+	<span class="k">private</span> <span class="nx">service</span><span class="p">:</span> <span class="nx">AuthenticationService</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Wprowdzenie modularyzacji do standardu <em>ES6</em> to ogromny krok w stronę poprawy jakości aplikacji. Jednak podawanie względnych ścieżek do zależności może szybko doprowadzić do pogorszenia czytelności kodu i przyprawić niejednego programistę o ból głowy. Na szczęścię kompilator <em>TypeScript</em> pozawala definiować zależności wskazując absolutne ścieżki - wystarczy za pomocą atrybutu <em>baseUrl</em> kompilatora zdefiniować katalog, względem którego chcemy wyszukiwać plików do importowania.</p>
+
+<ul>
+  <li><a href="https://github.com/Microsoft/TypeScript/pull/5728">Wsparcie dla absolutnych importów w kompilatorze TypeScript</a></li>
+  <li><a href="https://github.com/angular/angular-cli/pull/2470">Wsparcie dla konfiguracji baseUrl w Angular CLI</a></li>
+</ul>
+
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/glipecki.html" class="author-name">
+            <img src="/assets/img/authors/glipecki.jpg" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/glipecki.html" class="author-name">
+                Grzegorz Lipecki
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/glipecki"
+                       title="glipecki">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        glipecki</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/glipecki.jpg">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Grzegorz Lipecki</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/glipecki"
+                       title="glipecki">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        glipecki</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Pasjonat nowych technologii, zafascynowany wszystkim od backendu po frontend. Na co dzień full stack developer i wyznawca software craftsmanship. W przerwach chętnie angażuje się w techniczne dyskusje i dzieli się swoją wiedzą. Autor wielu artykułów i prezentacji technicznych. W wolnych chwilach eksperymentuje z nowymi technologiami i gra w gry wideo</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html';
+            this.page.identifier = 'https://blog.consdata.tech/2017/02/17/absolutne-importowanie-zaleznosci-w-angular-cli.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "angular";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Zarządzanie dostępem przy użyciu ACL (Access Control List) | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Zarządzanie dostępem przy użyciu ACL (Access Control List)" />
+<meta name="author" content="pwalaszek" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji." />
+<meta property="og:description" content="Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-07-16-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-16T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-07-16-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.png" />
+<meta property="twitter:title" content="Zarządzanie dostępem przy użyciu ACL (Access Control List)" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"pwalaszek"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html"},"description":"Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.","url":"https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html","image":"https://blog.consdata.tech/assets/img/posts/2021-07-16-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.png","headline":"Zarządzanie dostępem przy użyciu ACL (Access Control List)","dateModified":"2021-07-16T02:00:00-05:00","datePublished":"2021-07-16T02:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Zarządzanie dostępem przy użyciu ACL (Access Control List)</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/pwalaszek.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/pwalaszek.jpg" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/pwalaszek.html" class="author-name-metadata">Paweł Walaszek</a>
+        <span>
+16
+
+lipca
+
+
+
+2021
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" post-highlight-image">
+                        <img src="/assets/img/posts/2021-07-16-zarzadzanie-dostepem-przy-uzyciu-access-control-list/acl.png" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Zarządzanie dostępem przy użyciu ACL (Access Control List)&url=https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html&title=Zarządzanie dostępem przy użyciu ACL (Access Control List)&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <p>W świecie programistów Java, od wielu lat prym wiedzie <strong>Spring Framework</strong>, który błyskawicznie dostosowuje się do panujących trendów. Trudno sobie wyobrazić programistę Java, szczególnie aplikacji internetowych, który nie znałby tego projektu, lub precyzyjniej, zbioru projektów. Jednym z popularnych i bardzo dojrzałych elementów ekosystemu, jest <strong>Spring Security</strong>, który dostarcza gotowe rozwiązania dla różnych zawiłych zagadnień w zakresie bezpieczeństwa.</p>
+
+<p>Kilka lat temu, kiedy zaczynałem przygodę z programowaniem, moim pierwszym komercyjnym projektem do wykonania, było zaimplementowanie aplikacji internetowej, która miała służyć do zarządzania zadaniami. Zadania te były przypisane do konkretnych użytkowników, którzy nie mogli sobie ich nawzajem przeglądać. Problem wydawał się być powszechny. Po krótkim poszukiwaniu, natknąłem się na koncepcję znaną jako <strong>Access Control List</strong> oraz jego realizacją w <strong>Spring Security ACL</strong>, która jest rozszerzeniem Spring Security. To było to, czego szukałem!</p>
+
+<p>W tym artykule wyjaśnię, dlaczego Spring Security jest niewystarczający do zrealizowania wspomnianego wymagania, i dlaczego potrzebujemy rozszerzenia Spring Security ACL. Dodatkowo przedstawię fragmenty kodu, które są istotne w naszym projekcie.</p>
+
+<p>Pełny kod jest dostępny pod adresem <a href="https://github.com/pawelwalaszek/spring-security-acl"><strong>https://github.com/pawelwalaszek/spring-security-acl</strong></a>.</p>
+
+<h2 id="czym-właściwie-jest-access-control-list">Czym właściwie jest Access Control List?</h2>
+
+<p>Krótka definicja brzmi:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Access Control List (ACL) jest listą uprawnień skojarzonych z obiektem.
+</code></pre></div></div>
+
+<p>W naszym przypadku obiektem jest zadanie. Natomiast lista uprawnień jest przechowywana w specjalnych strukturach tabelarycznych znajdujących się w bazie danych, w której są zdefiniowane relacje między obiektem, a użytkownikiem.</p>
+
+<h2 id="dlaczego-spring-security-jest-niewystarczający">Dlaczego Spring Security jest niewystarczający?</h2>
+
+<p><strong>Spring Security</strong> pozwala określić <em>dostęp na poziomie żądania HTTP lub wywołania metody</em>.</p>
+
+<p>Przykład:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PreAuthorize</span><span class="o">(</span><span class="s">"hasRole('TASK')"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Task</span><span class="o">&gt;</span> <span class="nf">getTasksWithoutAcl</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">taskRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W powyższym przykładzie użytkownik z rolą <em>TASK</em> otrzyma pełną listę obiektów <em>Task</em>. Nie jest to zgodne z naszym wymaganiem, ponieważ chcemy, aby użytkownik otrzymał wyselekcjonowaną listę obiektów <em>Task</em>, dokładniej, listę obiektów do których został przypisany.</p>
+
+<p><strong>Spring Security ACL</strong> pozwala określić <em>dostęp na poziomie obiektów</em>.</p>
+
+<p>Przykład:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PreAuthorize</span><span class="o">(</span><span class="s">"hasRole('TASK')"</span><span class="o">)</span>
+<span class="nd">@PostFilter</span><span class="o">(</span><span class="s">"hasPermission(filterObject, 'READ')"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Task</span><span class="o">&gt;</span> <span class="nf">getTasksWithAcl</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">taskRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W powyższym przykładzie użytkownik z rolą <em>TASK</em> otrzyma listę obiektów <em>Task</em>, ale tylko tych, do których otrzymał uprawnienie odczytu.</p>
+
+<p><strong>@PreAuthorize</strong> – sprawdza, czy użytkownik posiada rolę <em>TASK</em>, a w przypadku jej braku generuje wyjątek, który tworzy odpowiedź HTTP ze statusem 403.</p>
+
+<p><strong>@PostFilter</strong> – usuwa obiekty z kolekcji, do których użytkownik nie ma uprawnień.</p>
+
+<p>Kombinacja adnotacji <strong>@PreAuthorize</strong> i <strong>@PostFilter</strong> jest bardzo wygodna, ale żeby taka była, należy odpowiednio przygotować konfigurację w naszej aplikacji zarówno dla Spring Security jak i dla Spring Security ACL.</p>
+
+<h2 id="konfiguracja">Konfiguracja</h2>
+
+<p>a) Konfiguracja dla Spring Security:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">WebSecurity</span> <span class="n">webSecurity</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">webSecurity</span><span class="o">.</span><span class="na">ignoring</span><span class="o">().</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/h2-console/**"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">formLogin</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">httpBasic</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">AuthenticationManagerBuilder</span> <span class="n">auth</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">auth</span><span class="o">.</span><span class="na">inMemoryAuthentication</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withUser</span><span class="o">(</span><span class="s">"admin"</span><span class="o">).</span><span class="na">password</span><span class="o">(</span><span class="n">passwordEncoder</span><span class="o">().</span><span class="na">encode</span><span class="o">(</span><span class="s">"admin"</span><span class="o">)).</span><span class="na">roles</span><span class="o">(</span><span class="s">"ADMINISTRATION"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withUser</span><span class="o">(</span><span class="s">"user1"</span><span class="o">).</span><span class="na">password</span><span class="o">(</span><span class="n">passwordEncoder</span><span class="o">().</span><span class="na">encode</span><span class="o">(</span><span class="s">"user1"</span><span class="o">)).</span><span class="na">roles</span><span class="o">(</span><span class="s">"TASK"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withUser</span><span class="o">(</span><span class="s">"user2"</span><span class="o">).</span><span class="na">password</span><span class="o">(</span><span class="n">passwordEncoder</span><span class="o">().</span><span class="na">encode</span><span class="o">(</span><span class="s">"user2"</span><span class="o">)).</span><span class="na">roles</span><span class="o">(</span><span class="s">"TASK"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">PasswordEncoder</span> <span class="nf">passwordEncoder</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">BCryptPasswordEncoder</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>b) Konfiguracja dla Spring Security ACL. W tym punkcie dokładniej przyjrzyjmy się konfiguracji.</p>
+
+<p>Pierwszym istotnym krokiem jest dodanie klasy <strong>DefaultMethodSecurityExpressionHandler</strong>, która jest wzbogacona o obsługę wyrażeń ACL.
+W tym miejscu dochodzi do załadowania przydzielonych uprawnień oraz skonfrontowanie ich z zabezpieczonymi obiektami. Na potrzeby wspomnianej
+klasy należy dodać klasę <strong>JdbcMutableAclService</strong>, która wchodzi w interakcję z bazą danych. To w tej klasie są zdefiniowane zapytania SQL.
+Dodatkowa klasa <strong>BasicLookupStrategy</strong> określa strategię, która optymalizuje zapytania. W naszym przypadku optymalizacja jest wykonana
+przy założeniu, że użyta baza danych jest zgodna z ANSI SQL.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Autowired</span>
+<span class="kd">private</span> <span class="nc">MethodSecurityExpressionHandler</span> <span class="n">defaultMethodSecurityExpressionHandler</span><span class="o">;</span>
+
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="nc">MethodSecurityExpressionHandler</span> <span class="nf">createExpressionHandler</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">defaultMethodSecurityExpressionHandler</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">MethodSecurityExpressionHandler</span> <span class="nf">defaultMethodSecurityExpressionHandler</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">DefaultMethodSecurityExpressionHandler</span> <span class="n">expressionHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultMethodSecurityExpressionHandler</span><span class="o">();</span>
+    <span class="nc">AclPermissionEvaluator</span> <span class="n">permissionEvaluator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AclPermissionEvaluator</span><span class="o">(</span><span class="n">aclService</span><span class="o">(</span><span class="n">dataSource</span><span class="o">));</span>
+    <span class="n">expressionHandler</span><span class="o">.</span><span class="na">setPermissionEvaluator</span><span class="o">(</span><span class="n">permissionEvaluator</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">expressionHandler</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">JdbcMutableAclService</span> <span class="nf">aclService</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">JdbcMutableAclService</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">lookupStrategy</span><span class="o">(</span><span class="n">dataSource</span><span class="o">),</span> <span class="n">aclCache</span><span class="o">());</span>
+<span class="o">}</span>
+
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">LookupStrategy</span> <span class="nf">lookupStrategy</span><span class="o">(</span><span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">BasicLookupStrategy</span><span class="o">(</span><span class="n">dataSource</span><span class="o">,</span> <span class="n">aclCache</span><span class="o">(),</span> <span class="n">aclAuthorizationStrategy</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">ConsoleAuditLogger</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Klasa <strong>AclAuthorizationStrategyImpl</strong> definiuję strategię, która określa, w jakich warunkach jest przydzielane uprawnienie.
+Jeśli jesteśmy właścicielem obiektu lub mamy uprawnienie administracyjne, wtedy otrzymujemy dostęp do obiektu.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">AclAuthorizationStrategy</span> <span class="nf">aclAuthorizationStrategy</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">AclAuthorizationStrategyImpl</span><span class="o">(</span><span class="k">new</span> <span class="nc">SimpleGrantedAuthority</span><span class="o">(</span><span class="s">"ROLE_TASK"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Klasa <strong>DefaultPermissionGrantingStrategy</strong> definuję dodatkową strategię, która określa, czy jest przydzielane uprawnienie. Jeśli nie jesteśmy
+właścicielem obiektu i nie mamy uprawnienia administracyjnego, ale posiadamy wpisy w bazie definiujące uprawnienie do obiektu,
+to otrzymujemy dostęp do obiektu.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">PermissionGrantingStrategy</span> <span class="nf">permissionGrantingStrategy</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DefaultPermissionGrantingStrategy</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConsoleAuditLogger</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W repozytorium, w konfiguracji ACL znajdują się dodatkowe klasy odpowiedzialne za cache, który zmniejsza ilość zapytań do bazy danych.</p>
+
+<p>c) Struktura schematu dla poszczególnych baz danych jest dostępna w kodach źródłowych Spring Security <a href="https://github.com/spring-projects/spring-security/tree/main/acl/src/main/resources">tutaj</a>. W naszym przypadku DDL jest dla bazy danych H2:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- App schemas</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">tasks</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="n">chapter</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">title</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">description</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
+  <span class="n">creation_date</span> <span class="nb">TIMESTAMP</span> <span class="k">WITH</span> <span class="nb">TIME</span> <span class="k">ZONE</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- ACL schemas</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">acl_sid</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="n">principal</span> <span class="nb">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">sid</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="n">unique_uk_1</span> <span class="p">(</span><span class="n">sid</span><span class="p">,</span><span class="n">principal</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">acl_class</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="k">class</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="n">unique_uk_2</span> <span class="p">(</span><span class="k">class</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">acl_entry</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="n">acl_object_identity</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">ace_order</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">sid</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">mask</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">granting</span> <span class="nb">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">audit_success</span> <span class="nb">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">audit_failure</span> <span class="nb">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="n">unique_uk_4</span> <span class="p">(</span><span class="n">acl_object_identity</span><span class="p">,</span><span class="n">ace_order</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">acl_object_identity</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="n">object_id_class</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">object_id_identity</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">parent_object</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">owner_sid</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">entries_inheriting</span> <span class="nb">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="n">unique_uk_3</span> <span class="p">(</span><span class="n">object_id_class</span><span class="p">,</span><span class="n">object_id_identity</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">acl_entry</span>
+<span class="k">ADD</span> <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">acl_object_identity</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">acl_object_identity</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">acl_entry</span>
+<span class="k">ADD</span> <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">acl_sid</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">acl_object_identity</span>
+<span class="k">ADD</span> <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">parent_object</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">acl_object_identity</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">acl_object_identity</span>
+<span class="k">ADD</span> <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">object_id_class</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">acl_class</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">acl_object_identity</span>
+<span class="k">ADD</span> <span class="k">FOREIGN</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">owner_sid</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">acl_sid</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="przykładowe-dane">Przykładowe dane</h2>
+
+<p>Utworzony schemat należy wypełnić odpowiednimi danymi. W naszej aplikacji mamy dwóch predefiniowanych użytkowników <em>user1</em> i <em>user2</em> z taką samą rolą <em>TASK</em>. Dla tych użytkowników utworzymy 8 zadań i odpowiednio przypiszemy ich do poszczególnych zadań. Użytkownik <em>user1</em> będzie mieć prawo odczytu do zadań z kategorii <em>Security</em>, natomiast użytkownik <em>user2</em> będzie mieć prawo odczytu do pozostałych zadań. W naszym przykładzie ograniczamy się jedynie do prawa odczytu, jednak ACL umożliwia nadawanie uprawnień dla odczytu, zapisu, tworzenia oraz usuwania.</p>
+
+<p>Warto podkreślić, że model aplikacji nie jest bezpośrednio powiązany z tabelami, w których są trzymane informacje o uprawnieniach. Pośrednim powiązaniem między modelem aplikacji, a zdefiniowanymi uprawnieniami, są adnotacje.</p>
+
+<p>W naszej przykładowej aplikacji dodajemy dane bezpośrednio do bazy danych za pomocą DML.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Kilka przykładowych zadań</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'Security'</span><span class="p">,</span> <span class="s1">'tytuł 1'</span><span class="p">,</span> <span class="s1">'opis zadania 1'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'Cloud'</span><span class="p">,</span> <span class="s1">'tytuł 2'</span><span class="p">,</span> <span class="s1">'opis zadania 2'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'Security'</span><span class="p">,</span> <span class="s1">'tytuł 3'</span><span class="p">,</span> <span class="s1">'opis zadania 3'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'Cloud'</span><span class="p">,</span> <span class="s1">'tytuł 4'</span><span class="p">,</span> <span class="s1">'opis zadania 4'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'Frontend'</span><span class="p">,</span> <span class="s1">'tytuł 5'</span><span class="p">,</span> <span class="s1">'opis zadania 5'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">'Security'</span><span class="p">,</span> <span class="s1">'tytuł 6'</span><span class="p">,</span> <span class="s1">'opis zadania 6'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">'Cloud'</span><span class="p">,</span> <span class="s1">'tytuł 7'</span><span class="p">,</span> <span class="s1">'opis zadania 7'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">tasks</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">chapter</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">creation_date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">'Storage'</span><span class="p">,</span> <span class="s1">'tytuł 8'</span><span class="p">,</span> <span class="s1">'opis zadania 8'</span><span class="p">,</span> <span class="k">current_timestamp</span><span class="p">);</span>
+
+<span class="c1">-- ACL - przepisanie uprawnień</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">acl_sid</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">principal</span><span class="p">,</span> <span class="n">sid</span><span class="p">)</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'ROLE_TASK'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'user1'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'user2'</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">acl_class</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="k">class</span><span class="p">)</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'com.consdata.task.model.Task'</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">acl_object_identity</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">object_id_class</span><span class="p">,</span> <span class="n">object_id_identity</span><span class="p">,</span> <span class="n">parent_object</span><span class="p">,</span> <span class="n">owner_sid</span><span class="p">,</span> <span class="n">entries_inheriting</span><span class="p">)</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">acl_entry</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">acl_object_identity</span><span class="p">,</span> <span class="n">ace_order</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">granting</span><span class="p">,</span> <span class="n">audit_success</span><span class="p">,</span> <span class="n">audit_failure</span><span class="p">)</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Opis poszczególnych tabel został przedstawiony <a href="https://docs.spring.io/spring-security/site/docs/current/reference/html5/#domain-acls-key-concepts">tutaj</a>.</p>
+
+<p>Możemy również programowo dodawać uprawnienia do użytkowników. Przykład klasy, która to realizuje:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequiredArgsConstructor</span>
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PermissionService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MutableAclService</span> <span class="n">aclService</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addPermission</span><span class="o">(</span><span class="nc">String</span> <span class="n">username</span><span class="o">,</span> <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="nc">Long</span> <span class="n">id</span><span class="o">,</span> <span class="nc">Permission</span> <span class="n">permission</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ObjectIdentity</span> <span class="n">objectIdentity</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectIdentityImpl</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+        <span class="nc">Sid</span> <span class="n">sid</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrincipalSid</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+        <span class="nc">MutableAcl</span> <span class="n">acl</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">acl</span> <span class="o">=</span> <span class="o">(</span><span class="nc">MutableAcl</span><span class="o">)</span> <span class="n">aclService</span><span class="o">.</span><span class="na">readAclById</span><span class="o">(</span><span class="n">objectIdentity</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">NotFoundException</span> <span class="n">exception</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">acl</span> <span class="o">=</span> <span class="n">aclService</span><span class="o">.</span><span class="na">createAcl</span><span class="o">(</span><span class="n">objectIdentity</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">acl</span><span class="o">.</span><span class="na">insertAce</span><span class="o">(</span><span class="n">acl</span><span class="o">.</span><span class="na">getEntries</span><span class="o">().</span><span class="na">size</span><span class="o">(),</span> <span class="n">permission</span><span class="o">,</span> <span class="n">sid</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="n">aclService</span><span class="o">.</span><span class="na">updateAcl</span><span class="o">(</span><span class="n">acl</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="access-control-list-w-akcji">Access Control List w akcji</h2>
+
+<p>Omówiliśmy już wszystkie niezbędne kwestie. Jesteśmy gotowi uruchomić aplikację i ją przetestować. Pełny kod znajduje się pod adresem <a href="https://github.com/pawelwalaszek/spring-security-acl"><strong>https://github.com/pawelwalaszek/spring-security-acl</strong></a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn spring-boot:run
+</code></pre></div></div>
+
+<p>Uwaga! Dla każdego użytkownika należy zalogować się w osobnym trybie incognito, gdyż pozwoli nam uniknąć problemów z cachowaniem danych dostępowych w przeglądarce internetowej.</p>
+
+<p>Wejście pod adres:</p>
+
+<p><a href="http://localhost:8080/tasks/list-with-acl"><strong>http://localhost:8080/tasks/list-with-acl</strong></a></p>
+
+<p>i zalogowanie się jako <em>user1</em> z hasłem <em>user1</em> spowoduje wyświetlenie zadań tylko z kategorii <em>Security</em>. Natomiast dla użytkownika <em>user2</em> z hasłem <em>user2</em> zostaną wyświetlone zadania z pozostałych kategorii.</p>
+
+<p>Spróbujmy przypisać użytkownikowi <em>user1</em> uprawnienie do odczytywania zadania z identyfikatorem nr 8. Dla tej sytuacji został przygotowany endpoint, który potrafi zrealizować taką operację.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -X PUT -u admin:admin http://localhost:8080/permissions/READ/tasks/8/users/user1/add
+</code></pre></div></div>
+
+<p>Ponowne wejście pod adres:</p>
+
+<p><a href="http://localhost:8080/tasks/list-with-acl"><strong>http://localhost:8080/tasks/list-with-acl</strong></a></p>
+
+<p>i zalogowanie się jako <em>user1</em> z hasłem <em>user1</em> spowoduje wyświetlenie zadań z kategorii <em>Security</em> oraz jedno zadanie z identyfikatorem nr 8, czyli zadanie z kategorii <em>Storage</em>.</p>
+
+<p>Wejście pod adres:</p>
+
+<p><a href="http://localhost:8080/tasks/list-without-acl"><strong>http://localhost:8080/tasks/list-without-acl</strong></a></p>
+
+<p>dowolnym użytkownikiem spowoduje wyświetlenie wszystkich zadań, gdyż dla tego adresu został określony dostęp na poziomie wywołania metody, w tym przypadku, dla użytkowników z rolą <em>TASK</em>.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Czy potrzebujmy Spring Security ACL? To zależy od wymagań:</p>
+<ul>
+  <li>Tak, jeśli potrzebujemy określać dostęp na poziomie obiektów.</li>
+  <li>Nie, jeśli potrzebujemy określać dostęp na poziomie żądania HTTP lub wywołania metody.</li>
+</ul>
+
+<p>Tym artykułem chciałbym zwrócić uwagę na obecność gotowej implementacji Access Control List oraz jaki konkretny problem rozwiązuje. Warto skorzystać z gotowych i dojrzałych rozwiązań, takich jak, Spring Security ACL, gdyż pozwoli nam zaoszczędzić sporo czasu oraz uniknąć potencjalnych błędów podczas tworzenia własnej implementacji.</p>
+
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/pwalaszek.html" class="author-name">
+            <img src="/assets/img/authors/pwalaszek.jpg" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/pwalaszek.html" class="author-name">
+                Paweł Walaszek
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/pawelwalaszek"
+                       title="pawelwalaszek">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        pawelwalaszek</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/pwalaszek.jpg">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Paweł Walaszek</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/pawelwalaszek"
+                       title="pawelwalaszek">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        pawelwalaszek</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Lubi kompleksowe podejście do wytwarzania oprogramowania. Wiodącym obszarem działania jest backend, ale chętnie wychodzi poza jego granice. Gdy wyskoczy ze świata IT, to wskakuje na rower albo w buty do biegania. Pasjonat piłkarski. Niegdyś grający, dziś oglądający. Absolutny relaks? Mecz Champions League.</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html';
+            this.page.identifier = 'https://blog.consdata.tech/2021/07/16/zarzadzanie-dostepem-przy-uzyciu-access-control-list.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "acl access control list spring security acl access control list authorization";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

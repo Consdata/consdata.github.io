@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania! | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!" />
+<meta name="author" content="mkociszewski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech." />
+<meta property="og:description" content="Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-10T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.jpeg" />
+<meta property="twitter:title" content="Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mkociszewski"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html"},"description":"Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech.","url":"https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html","image":"https://blog.consdata.tech/assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.jpeg","headline":"Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!","dateModified":"2021-02-10T01:00:00-06:00","datePublished":"2021-02-10T01:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body>---
+---
+<nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <div class="nav navbar-nav">
+                    <div class="nav-link"><a href="/en/">BLOG.CONSDATA.TECH</a></div>
+                </div>
+
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links" class="mobile-nav">
+                <a class="header-logo" href="https://consdata.com/pl">
+                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
+                </a>
+                <div class="feed-subscribe">
+                    <a href="/en/feed.xml">
+                    <svg class="svg-icon">
+                        <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                    </svg>
+                    </a>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+
+
+
+
+
+<div class="navigation-bar">
+    <div class="row">
+        <div class="col-15 desktop-navbar">
+            <div class="col-2-3 navbar-links">
+                <div class="navigation-tags">
+                    
+                        
+                        <a href="/en/">
+                        
+                        PROGRAMMING
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        SERVERLESS
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        MONGODB
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        GCP
+                        </a>
+                    
+                        
+                        <a href="/en/">
+                        
+                        FRONTEND
+                        </a>
+                    
+                </div>
+                
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Search..." id="search-box" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+    </div>
+</form>
+
+<script>
+    const inputDesktop = document.getElementById("search-box");
+    const expandInputDesktop = () => {
+        inputDesktop.classList.toggle("expanded");
+    };
+</script>
+
+            </div>
+            <div class="col-1-3">
+                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+                   class="newsletter-link">
+                    <div class="newsletter-button">
+                        Sign up for a tech newsletter
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-15 mobile-navbar">
+            <div class="navigation-tags">
+                
+                
+                <a href="/en/">
+                    
+                        PROGRAMMING
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        SERVERLESS
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        MONGODB
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        GCP
+                    </a>
+                    
+                
+                <a href="/en/">
+                    
+                        FRONTEND
+                    </a>
+                    
+            </div>
+            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
+               class="newsletter-link">
+                <div class="newsletter-button">Sign up for a tech newsletter</div>
+            </a>
+        </div>
+    </div>
+</div>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <header>
+            <div class="row back-link-row">
+    <div class="col-15">
+        <a href="/en/" class="main-page-link-container">
+            <i class="fa fa-arrow-left"></i>
+                All posts
+        </a>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-15">
+                    <h1 class="post-big-title p-name" itemprop="name headline">Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-15">
+                    <div class="post-metadata">
+
+    <a href="/en/authors/mkociszewski.html" class="author-name">
+        <img class="big-author-image" src="/assets/img/authors/mkociszewski.webp" alt="author"></a>
+    <div class="post-info"><a href="/en/authors/mkociszewski.html" class="author-name-metadata">Mateusz Kociszewski</a>
+        <span>
+10
+
+lutego
+
+
+
+2021
+</span>
+    </div>
+
+
+</div>
+
+                </div>
+                <div class="col-5">
+                    
+
+                </div>
+            </div>
+        </header>
+        <div itemprop="articleBody" class="post-content-container">
+            <div class="post-content-left-pane">
+                <div class="post-content">
+                    <div class=" post-highlight-image">
+                        <img src="/assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.jpeg" alt="postimage"/>
+                    </div>
+                    <div class="social-media-sharing">
+                        <div id="share-bar">
+    <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Facebooku">
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a href="https://twitter.com/intent/tweet?text=Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!&url=https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na Twitterze">
+            <i class="fa fa-twitter share-button"> </i>
+        </a>
+
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html&title=Domain Driven Design w oparciu o Axon Framework - odpowiedzi na pytania!&source=Consdata - blog techniczny"
+           onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+           title="Podziel się na LinkedIn">
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+    </div>
+
+</div>
+
+                    </div>
+                    <div id="myModal" class="modal">
+                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
+                           onclick="closeModal()"></i>
+                        <img class="modal-content">
+                    </div>
+                    <p>Zgodnie z obietnicą, przyszedł czas odpowiedzieć na pytania, które pozostały bez odpowiedzi podczas naszego minionego eventu - Consdata Tech.</p>
+<iframe class="youtube" src="https://www.youtube.com/embed/-b626JY4d20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<p>Nie przedłużając więc, przejdę do części właściwej. ;)</p>
+
+<h2 id="jeśli-replayevents-jest-wyłączony-to-czy-framework-przy-starcie-aplikacji-potrafi-odczytać-stan-np-issue-z-bazy-danych-i-dalej-na-nim-operować">Jeśli replayEvents jest wyłączony, to czy framework przy starcie aplikacji potrafi odczytać stan np. Issue z bazy danych i dalej na nim operować?</h2>
+<p>Zacznę od pytania, przy którym zatrzymam się trochę dłużej, bo jest tu parę kwestii do omówienia.
+Należałoby na samym początku rozróżnić odtwarzanie zdarzeń na dwie podgrupy:</p>
+<ul>
+  <li>Odtwarzanie stanu agregatu</li>
+  <li>Odtwarzanie stanu systemu (replay)</li>
+</ul>
+
+<p>Pierwszy typ odtwarzania służy do skonstruowania stanu agregatu (na podstawie wszystkich zdarzeń lub snapshota + delty zdarzeń), w momencie, gdy pojawia się nowy command w systemie.
+Jest to konieczne, aby sprawdzić niezmienniki/warunki i w odpowiedzi na command wyemitować zdarzenie, lub też nie.
+Na ten mechanizm nie mamy wpływu i nie da się go wyłączyć.</p>
+
+<p>Drugi typ odtwarzania to właśnie te “replay events”, którego zapewne tyczy się pytanie.
+Tu już jak najbardziej mamy wiele możliwości konfiguracyjnych w Axonie.</p>
+
+<p>Wszystko rozbija się o Event Processory i składowanie Tracking Tokenów w Token Store.
+W momencie, gdy odpalimy aplikację na domyślnej konfiguracji, wszystkie Tokeny trafiają do InMemoryTokenStore, czyli siłą rzeczy po restarcie aplikacji przepadają.
+Ta wiedza pozwoliła mi zaprezentować EventSourcing na ostatniej prelekcji.</p>
+
+<p>Oczywiście domyślne konfiguracje nie są zalecane na produkcji, a dokumentacja jawnie mówi o wymogu dostarczenia implementacji Token Store do konfiguracji.
+Możemy to zrobić samemu lub wykorzystać gotowca, jeśli istnieje (np dla Mongo istnieje taki Token Store).
+W momencie, gdy dostarczymy takową implementację, wówczas Tracking Tokeny zaczną trafiać do bazy.
+Nadal jednak można będzie wykonać replay events (np zapiąć jakiś endpoint na taką akcję), o ile nie wyłączymy tego całkowicie w konfiguracji (opisuję to w kolejnym akapicie).</p>
+
+<h2 id="czy-można-wyłączyć-domyślne-zachowanie-axona-w-kontekście-odtwarzania-eventów-przy-starcie-aplikacji">Czy można wyłączyć domyślne zachowanie Axona w kontekście odtwarzania eventów przy starcie aplikacji?</h2>
+<p>Tak, odpowiedziałem na to pytanie podczas webinaru, lecz w tej chwili mogę wrócić już z konkretnym przykładem w kodzie.
+Podczas transmisji wspominałem o tym, że taka możliwość istnieje i można wręcz wskazać w konfiguracji Event Processor (czyli obiekt odpowiadający za przetwarzanie zdarzeń), który ma być ignorowany podczas odtwarzania.</p>
+
+<p>Event Processory domyślnie dostają nazwę stworzoną na podstawie javowego package, w którym się znajdują (zdaje się, że wyjątkiem są tu Sagi).
+Możemy je też jawnie nazywać z użyciem adnotacji <strong><code class="language-plaintext highlighter-rouge">@ProcessingGroup</code></strong>.
+Mając nazwę processora, w konfiguracji można wykluczyć go z akcji odtwarzania stanu, poprzez sprytne wskazanie, aby Tracking Tokeny dla niego tworzyły się na końcu “jego kolejki”.
+Wygląda to następująco:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AxonConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">customTrackingConfig</span><span class="o">(</span><span class="nc">EventProcessingConfigurer</span> <span class="n">configurer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">trackingProcessorConfig</span> <span class="o">=</span> <span class="nc">TrackingEventProcessorConfiguration</span>
+                <span class="o">.</span><span class="na">forSingleThreadedProcessing</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">andInitialTrackingToken</span><span class="o">(</span><span class="nl">StreamableMessageSource:</span><span class="o">:</span><span class="n">createHeadToken</span><span class="o">);</span>
+
+        <span class="c1">// This prevents from replaying in MovieSaga</span>
+        <span class="n">configurer</span><span class="o">.</span><span class="na">registerTrackingEventProcessor</span><span class="o">(</span><span class="s">"MovieSagaProcessor"</span><span class="o">,</span>
+                <span class="n">org</span><span class="o">.</span><span class="na">axonframework</span><span class="o">.</span><span class="na">config</span><span class="o">.</span><span class="na">Configuration</span><span class="o">::</span><span class="n">eventStore</span><span class="o">,</span>
+                <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">trackingProcessorConfig</span><span class="o">);</span>
+
+        <span class="c1">// This prevents from replaying MultipleMoviesRefreshedEvent in RefreshEventHandler</span>
+        <span class="n">configurer</span><span class="o">.</span><span class="na">registerTrackingEventProcessor</span><span class="o">(</span><span class="s">"com.kociszewski.moviekeeper.notreplayable"</span><span class="o">,</span>
+                <span class="n">org</span><span class="o">.</span><span class="na">axonframework</span><span class="o">.</span><span class="na">config</span><span class="o">.</span><span class="na">Configuration</span><span class="o">::</span><span class="n">eventStore</span><span class="o">,</span>
+                <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">trackingProcessorConfig</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Opisując powyższy kod językiem ludzkim: klasa <strong>MovieSaga</strong> oraz wszystkie klasy obsługujące zdarzenia, które znajdują się w package’u <strong>com.kociszewski.moviekeeper.notreplayable</strong> zostaną pominięte podczas operacji replay events.
+Uwaga! Jeśli wskażecie package za wysoko, to nie zadziała - musi to być nazwa package’u, w którym znajdują się klasy obsługujące zdarzenia (zagnieżdżenia nie będą uwzględniane).</p>
+
+<p>Namiary na projekt podane są na końcu, jest to ten sam projekt, który omawiałem we wcześniejszych <a href="https://blog.consdata.tech/en/authors/mkociszewski.html"><strong>wpisach</strong></a>.</p>
+
+<h2 id="jak-sobie-radzicie-w-consdacie-z-organizacją-event-stormingów-w-czasach-pracy-zdalnej">Jak sobie radzicie w Consdacie z organizacją Event Stormingów w czasach pracy zdalnej?</h2>
+<p>Z pełnym spokojem mogę polecić <a href="https://miro.com"><strong>miro</strong></a> - świetne narzędzie z mnóstwem możliwości.
+Na koncie bezpłatnym można naprawdę wiele zdziałać. 
+Oczywiście to wciąż nie to samo, co ‘realne’ spotkanie w grupie projektującej, ale większość zalet Event Stormingu wyciągniemy nawet w remote.</p>
+
+<h2 id="co-w-momencie-gdy-axon-zacznie-odtwarzać-zdarzenia-z-klasy-która-wrzuca-lub-aktualizuje-coś-w-bazie">Co w momencie, gdy Axon zacznie odtwarzać zdarzenia z klasy, która wrzuca lub aktualizuje coś w bazie?</h2>
+<p>Tutaj jest kilka możliwych rozwiązań. Najprostszym z nich jest opatrzyć klasę/metodę adnotacją <strong><code class="language-plaintext highlighter-rouge">@DisallowReplay</code></strong>, powinno to skutecznie zatrzymać Event Processor.</p>
+
+<p>Jeśli jednak chcielibyśmy, aby klasa/metoda brała udział w odtwarzaniu zdarzeń (przykładowo chcemy móc migrować na inną bazę, ale nie chcemy aby nam się duplikowały krotki w bazie), to widzę tu dwa rozwiązania.
+Jednym z nich jest konfiguracja sterowana profilem - powinno zadziałać, ale nie sprawdzałem.
+Drugi sposób to obsługa takiego przypadku ręcznie, samemu:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieProjection</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@EventHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieSavedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">movieRepository</span><span class="o">.</span><span class="na">findByExternalMovieId</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">().</span><span class="na">getExternalMovieId</span><span class="o">()).</span><span class="na">ifPresentOrElse</span><span class="o">(</span>
+                <span class="n">movie</span> <span class="o">-&gt;</span> <span class="n">handleMovieDuplicate</span><span class="o">(),</span>
+                <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">persistMovie</span><span class="o">(</span><span class="n">event</span><span class="o">));</span>
+    <span class="o">}</span>
+    
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">handleMovieDuplicate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">notifySubscribers</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieDTO</span><span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">ALREADY_ADDED</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>W tym przypadku wywołanie notifySubscribers powoduje wyemitowanie (przy użyciu queryUpdateEmittera) nowego filmu z ustawionym statusem ALREADY_ADDED.
+Pojawienie się filmu o takim statusie jest obsługiwane wyżej i skutkuje zwróceniem kodu błędu 409, mówiącym o konflikcie.</p>
+
+<h2 id="co-dalej">Co dalej?</h2>
+<p>Jeśli szukacie projektów związanych z tematem DDD i Axona, to zerknijcie tu:</p>
+<ul>
+  <li><a href="https://github.com/matty-matt/ddd-helpdesk">Repozytorium, które omawiałem na Consdata Tech</a></li>
+  <li><a href="https://github.com/matty-matt/movie-keeper-core">Repozytorium, które cytuję tutaj</a></li>
+</ul>
+
+
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="sidebar">
+                
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-desktop">
+
+        </ul>
+    </div>
+</div>
+
+                <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="post-post-section-mobile">
+            
+<div class="sidebar-container">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-bottombar">
+    <div class="sidebar-title">
+        Podobne wpisy
+    </div>
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts" id="recommended-posts-mobile">
+
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="post-post-section-mobile">
+            <div class="sidebar-container" id="recommended-posts-sidebar">
+    <div class="sidebar-title">
+        Dołącz do nas
+    </div>
+    <div class="sidebar-last-posts-container">
+        <ul class="sidebar-posts">
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+                   lang="pl">
+                    <div class="job-offer">
+                        <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                        <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                        <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-post no-breaking-word">
+                <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                    <div class="other-job-offers">
+                        <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+        </div>
+        <div class="author-bio">
+    
+    <div class="author-image">
+        <a href="/en/authors/mkociszewski.html" class="author-name">
+            <img src="/assets/img/authors/mkociszewski.webp" alt="author" width="120" height="120">
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            
+            <a href="/en/authors/mkociszewski.html" class="author-name">
+                Mateusz Kociszewski
+            </a>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/matty-matt"
+                       title="matty-matt">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        matty-matt</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="content">
+            
+                
+                    <div class="bio"></div>
+                
+            
+        </div>
+    </div>
+</div>
+<div class="author-bio-mobile">
+    <div class="header">
+        
+        <div class="author-image">
+            <img src="/assets/img/authors/mkociszewski.webp">
+        </div>
+        
+        <div class="name-wrapper">
+            
+            <div class="author-name">Mateusz Kociszewski</div>
+            
+            <div class="social-buttons">
+                
+                <div class="author-github">
+                    <a href="https://github.com/matty-matt"
+                       title="matty-matt">
+                        <svg class="svg-icon grey">
+                            <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                        </svg>
+                        matty-matt</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        
+            
+            
+                <div class="bio">Full Stack Developer stawiający rozwój na szczycie piramidy potrzeb. Tak jak każdy w świecie dostrzega na własnej skórze ograniczoność czasu, lecz pomimo tego stara się być aktywny - na siłowni lub na basenie. Mniej wymagające spędzanie czasu w postaci obejrzenia dobrego filmu czy serialu również nie jest mu obce. Pograć też lubi, cyfrowo jak i planszowo.</div>
+            
+        
+    </div>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {
+        var disqus_config = function () {
+            this.page.url = 'https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html';
+            this.page.identifier = 'https://blog.consdata.tech/2021/02/10/odpowiedzi-na-pytania-cd-tech-5.html';
+        };
+
+        (function () {
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://consdata-tech.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript></article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts-desktop");
+                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                                containerMobile.appendChild(listElement.cloneNode(true));
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "ddd axon consdata tech cdtech#5";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function zoomImage($event) {
+        const modal = document.getElementById('myModal');
+        modal.getElementsByTagName('img')[0].src = $event.target.src;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-sidebar").style.display = 'none';
+        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+    }
+
+    const postImages = document.querySelectorAll('.post-content img');
+    postImages.forEach(x => x.addEventListener('click', zoomImage));
+</script>
+
+</main><footer>
+    <div class="container">
+        <div class="footer-item company">
+            <div class="label">
+                <img src="/assets/img/logo.png"/>
+            </div>
+            <div class="item-content">
+                <p>
+                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
+                    61-825 POZNAŃ<br/>
+                    POLSKA
+                </p>
+                <p>
+                    TEL.:+48 61 41 51 000
+                </p>
+                <p>
+                    NIP: 1822261960<br/>
+                    REGON: 634422180
+                </p>
+            </div>
+        </div>
+        <div class="footer-item legals">
+            <div class="label">
+                INFORMATION
+            </div>
+            <div class="item-content">
+                <p>
+                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">PRIVACY POLICY </a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-item social-buttons">
+            <div class="label">
+                STAY IN TOUCH
+            </div>
+            <div class="item-content">
+                <div class="social-buttons-container">
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
+                           title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank"
+                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="social-button-wrapper">
+                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
+                           title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        Copyrights © 2024 CONSDATA
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <span>
+        
+        Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+    </span>
+    <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
