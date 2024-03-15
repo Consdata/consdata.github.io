@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, że można uniknąć nadmiernego użycia warunków 'if' przez wykorzystanie ternary operator i lookup table?"
-date:      2024-06-14T08:00:00+01:00
+date:      2024-06-114T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
