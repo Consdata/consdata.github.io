@@ -154,12 +154,26 @@ h4 {
   background: transparent;
   padding: 12px 24px;
   cursor: pointer;
+  text-align: center;
 
   &:hover {
     background-color: $red-900;
     color: $color-white;
     @include body-semibold();
     @include animation-ease;
+    text-align: center;
+  }
+
+  @include mobile {
+    @include body-small();
+    padding: 8px 16px;
+    text-align: center;
+
+    &:hover {
+      color: $color-white;
+      @include body-small();
+      text-align: center;
+    }
   }
 }
 
@@ -176,5 +190,6 @@ h4 {
     background: $color-white;
     @include body-semibold();
     @include animation-ease;
+    text-align: center;
   }
 }

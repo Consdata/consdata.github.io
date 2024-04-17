@@ -8,8 +8,17 @@ footer {
 
   .container, .small-footer-container {
     @include content-container;
-    @include section-medium-space;
+
+    @include desktop {
+      @include section-space;
+    }
+
     display: flex;
+
+    @include mobile {
+      flex-direction: column;
+      padding: 0 20px;
+    }
   }
 
   ul {
@@ -20,6 +29,10 @@ footer {
 
   .footer-logo {
     width: 30%;
+
+    @include mobile {
+      margin-bottom: 40px;
+    }
   }
 
   .footer-content {
@@ -29,6 +42,14 @@ footer {
   .menu {
     display: flex;
     justify-content: space-between;
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  .menu-item {
+    margin-bottom: 16px;
   }
 
   .menu li:last-child {
@@ -39,6 +60,16 @@ footer {
   .menu-title {
     @include body-small-semibold;
     margin: 0 0 16px 0;
+
+    @include mobile {
+      margin: 0 0 8px 0;
+    }
+  }
+
+  @include mobile {
+    .menu-title:last-of-type {
+      margin: 0px;
+    }
   }
 
   .submenu {
@@ -47,6 +78,10 @@ footer {
 
   .submenu li {
     margin-bottom: 8px;
+
+    @include mobile {
+      margin-bottom: 0;
+    }
   }
 
   .submenu li a {
@@ -72,17 +107,20 @@ footer {
     }
   }
 
+
   .small-footer-container span {
     @include body-small;
     color: $gray-500;
     line-height: 1.2em;
   }
 
-  .small-footer-container span:first-child {
-    border-right: 1px solid $gray-300;
-    margin-right: 20px;
-    padding-right: 20px;
-    display: inline-block;
+  @include desktop {
+    .small-footer-container span:first-child {
+      border-right: 1px solid $gray-300;
+      margin-right: 20px;
+      padding-right: 20px;
+      display: inline-block;
+    }
   }
 
   .social-footer a {
@@ -94,11 +132,22 @@ footer {
     text-align: center;
     border-radius: 50%;
     border: 1px solid $gray-300;
-    margin-left: 16px;
 
     &:hover {
       @include animation-ease;
       border: 1px solid $red-900;
+    }
+  }
+
+  .social-footer a:not(:first-child) {
+    margin-left: 16px;
+  }
+
+  .footer-copyright {
+    display: block;
+
+    @include mobile {
+      margin-bottom: 40px;
     }
   }
 

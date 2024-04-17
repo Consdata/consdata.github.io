@@ -2,8 +2,13 @@ $content-space: 30px;
 
 .newsletter-sub-container {
   @include section-space();
+
   h2 {
     display: inline;
+
+    @include mobile {
+      @include font-config(26px, $font-weight-semibold, 42px);
+    }
   }
 
   .title {
@@ -36,8 +41,11 @@ $content-space: 30px;
     color: $gray-500;
     background: transparent;
     height: 42px;
-    width: 400px;
     padding: 0 16px;
+
+    @include desktop {
+      width: 400px;
+    }
 
     &:focus {
       outline: none;
@@ -67,6 +75,11 @@ $content-space: 30px;
 .sign-up-btn {
   @include btn-without-bg(130px);
   align-self: flex-end;
+
+  @include mobile {
+    @include btn-without-bg(100px);
+    margin-top: 30px;
+  }
 }
 
 .newsletter-form {
@@ -146,7 +159,7 @@ $content-space: 30px;
 
 .form-checkbox:hover input[type="checkbox"]:not([disabled]):checked ~ .form-checkbox-input,
 .form-checkbox input[type="checkbox"]:checked:focus ~ .form-checkbox-input,
-.form-checkbox input[type="checkbox"]:checked ~ .form-checkbox-input{
+.form-checkbox input[type="checkbox"]:checked ~ .form-checkbox-input {
   background: $red-900;
   border-color: $red-900;
 }
