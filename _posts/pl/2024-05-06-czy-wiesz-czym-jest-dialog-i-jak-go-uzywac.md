@@ -1,20 +1,20 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest dialog i jak go używać?"
-date:      2024-05-03T08:00:00+01:00
+date:      2024-05-06T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2024-05-03-czy-wiesz-czym-jest-dialog-i-jak-go-uzywac/html.webp
+image: /assets/img/posts/2024-05-06-czy-wiesz-czym-jest-dialog-i-jak-go-uzywac/html.webp
 tags:
 - html
 - dialog
 ---
 
-Okna dialogowe od dawna pełnią istotną rolę na różnorodnych stronach internetowych, jednak często ich implementacja niosła za sobą pewne wyzwania. Można było wykorzystać istniejące biblioteki JavaScript, ale wprowadzało to dodatkową złożoność w projekcie i powodowało zwiększenie jego rozmiaru. Z tego względu szczególnie ekscytującym jest wprowadzenie nowego elementu dialogowego do HTML. Dzięki niemu, znacząco uprości się sposób tworzenia dialogów.
+Okna dialogowe od dawna pełnią istotną rolę na różnorodnych stronach internetowych, jednak ich implementacja często niesie za sobą pewne wyzwania. Można wykorzystać istniejące biblioteki JavaScript, ale powoduje to zwiększenie złożoności i rozmiaru projektu. Z tego względu szczególnie ekscytującym jest wprowadzenie nowego elementu dialogowego do HTML. Dzięki niemu, znacząco uprości się sposób tworzenia dialogów.
 
-Wspomniany wyżej element HTML `<dialog>` jest używany do tworzenia okien dialogowych. Okna dialogowe są wykorzystywane do wyświetlania treści na wierzchu aktualnej strony, zazwyczaj w celu uzyskania interakcji użytkownika, pobrania informacji lub wykonywania określonych działań.
+Element HTML `<dialog>` jest używany do tworzenia okien dialogowych. Okna dialogowe wyświetlają treści na wierzchu aktualnej strony, zazwyczaj w celu skłonienia użytkownika do interakcji, pobrania informacji lub wykonywania określonych działań.
 
 Co więcej, element ten jest obsługiwany w każdej nowoczesnej przeglądarce, co oznacza, że możemy go używać za każdym razem gdy potrzebujemy utworzyć okno dialogowe.
 
@@ -33,8 +33,9 @@ Przykładowy kod:
 </dialog>
 ```
 
-### Stylizowanie dialogu
-Stylizowanie dialogu nie różni się niczym innym od stylizowania innych elementów HTML.
+### Stylowanie dialogu
+
+Stylowanie dialogu nie różni się niczym od stylowania innych elementów HTML.
 ```css
 dialog {
   padding: 15px;
@@ -44,7 +45,7 @@ dialog {
 }
 ```
 
-Dodatkowo można stylizować tło, które pojawia się za oknem dialogowym, bez użycia dodatkowego kodu HTML lub JavaScript. Można to zrobić tylko w przypadku modalnego okna dialogowego. W tym celu trzeba wykorzystać pseudoelement `::backdrop`.
+W przypadku modalnego okna dialogowego można dodatkowo stylować tło za oknem bez użycia dodatkowego kodu HTML czy JavaScript. Można to zrobić tylko w przypadku modalnego okna dialogowego. W tym celu trzeba wykorzystać pseudoelement `::backdrop`.
 ```css
 dialog::backdrop {
   background-color: rgba(255, 0, 0, 0.2);
@@ -66,12 +67,13 @@ Istnieją dwa główne rodzaje dialogów:
 - niemodalne
 
 ### Dialogi modalne
+
 W tym trybie można wchodzić w interakcje tylko z zawartością okna dialogowego. Okna dialogowe są wyświetlane nad zawartością strony. Reszta strony jest domyślnie zasłonięta przez półprzezroczyste tło.
-Można go otworzyć za pomocą metody `showModal()`.
-Po otwarciu istnieją trzy sposoby zamknięcia okna dialogowego:
+Można je otworzyć za pomocą metody `showModal()`.
+Okno dialogowe można zamknąć na trzy sposoby:
 - klawiszem `Escape`,
-- zatwierdzenie formularza za pomocą przycisku z ustawionym atrybutem: `method="dialog"`,
-- wywołanie metody `close()`.
+- zzatwierdzając formularz za pomocą przycisku z ustawionym atrybutem: `method="dialog"`,
+- wywołując metodę `close()`.
 
 Przykładowy kod:
 ```html
@@ -104,8 +106,8 @@ Przykładowy kod:
 </script>
 ```
 
-Jako, że typ modalny posiada tło wyświetlane za dialogiem, możne narodzić się pytanie, czy istnieje możliwość zamknięcia dialogu poprzez kliknięcie w tło? Okazuje się, że tak, ale potrzebne jest wykorzystanie JavaScriptu.
-Na dialog musimy dodać listener nasłuchujący na kliknięcie. Następnie użycie metody `getBoundingClientRect()` pozwoli nam otrzymać informacje o rozmiarze i położeniu elementu okna dialogowego w viewpoint. Potem pozostaje sprawdzenie czy kliknięcie było poza dialogiem i wywołanie funkcji `close()`.
+W przypadku typu modalnego tło jest wyświetlane za dialogiem, więc nasuwa się pytanie, czy można zamknąć dialog klikając w tło? Okazuje się, że tak, ale trzeba zastosować JavaScript.
+Na dialog musimy dodać listener nasłuchujący na kliknięcie. Następnie użycie metody `getBoundingClientRect()` pozwoli nam otrzymać informacje o rozmiarze i położeniu elementu okna dialogowego w viewpoint. Potem pozostaje sprawdzić, czy kliknięcie było poza dialogiem i wywołać metodę `close()`.
 Przykładowy kod:
 ```javascript
 dialog.addEventListener("click", event => {
@@ -122,7 +124,7 @@ dialog.addEventListener("click", event => {
 ```
 
 ### Dialogi niemodalne
-W przeciwieństwie do modalnych, można wchodzić w interakcje z zawartością poza oknem dialogowym. Należy pamiętać, że klawisz `Escape` nie zamyka dialogu tego rodzaju.
+W przypadku dialogów niemodalnych, można wchodzić w interakcje z zawartością poza oknem dialogowym. Należy pamiętać, że klawisz `Escape` nie zamyka dialogu tego rodzaju.
 Można go otworzyć za pomocą metody `show()`.
 Przykładowy kod:
 ```html
