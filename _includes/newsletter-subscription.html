@@ -11,14 +11,17 @@
         {% endif %}
     </div>
     <div id="newsletter-form" class="newsletter-agreement-form-content">
-        <form class="newsletter-form" onsubmit="">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
             <div class="form-inputs">
-                <input required placeholder="{{ site.data.translations['name'][site.active_lang] }}"/>
-                <input required type="email" placeholder="{{ site.data.translations['email'][site.active_lang] }}"/>
+                <input required placeholder="{{ site.data.translations['name'][site.active_lang] }}" name="sm-form-name"/>
+                <input required type="email" placeholder="{{ site.data.translations['email'][site.active_lang] }}" name="sm-form-email"/>
             </div>
             <div class="form-checkbox-container">
                 <label class="form-checkbox">
-                    <input required type="checkbox" />
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
                     <div class="form-checkbox-input"></div>
                     <span>{{ site.data.translations['newsletterConsent'][site.active_lang] }}</span>
                 </label>
