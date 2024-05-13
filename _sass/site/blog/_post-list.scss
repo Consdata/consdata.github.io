@@ -8,6 +8,10 @@ $small-tile-img-width: 360px;
     margin: $post-tile-margin-top 0;
   }
   width: $small-tile-img-width;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .search-result-tile {
@@ -181,6 +185,10 @@ $small-tile-img-width: 360px;
   border-radius: $round-edge;
   object-fit: cover;
   margin-bottom: 20px;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .badge {
