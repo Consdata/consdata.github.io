@@ -2,7 +2,7 @@
   border: 1px solid $red-900;
   border-radius: $round-edge;
   padding: $mobile-section-xs-space $desktop-section-xs-space;
-  margin-top: $desktop-section-xs-space;
+  @include section-space();
 
   .arrow {
     display: none;

@@ -39,6 +39,7 @@ span {
   font-weight: $font-weight-regular;
   line-height: $base-line-height;
   color: $gray-900;
+  scroll-behavior: smooth;
 }
 
 
@@ -188,6 +189,24 @@ h4 {
   &:hover {
     color: $red-900;
     background: $color-white;
+    @include body-semibold();
+    @include animation-ease;
+    text-align: center;
+  }
+}
+
+@mixin btn-with-white-bg($width, $padding) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  color: $red-900;
+  background: $color-white;
+  padding: $padding;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-white;
+    background: $red-900;
+    border-color: $color-white;
     @include body-semibold();
     @include animation-ease;
     text-align: center;

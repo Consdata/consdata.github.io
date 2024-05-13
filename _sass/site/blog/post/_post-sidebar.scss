@@ -4,7 +4,7 @@
   margin: 0;
 }
 
-.sidebar {
+.sidebar-desktop {
   @include flex-container;
   flex-direction: column;
   gap: $mobile-section-medium-space;
@@ -13,6 +13,19 @@
   margin-top: $desktop-section-small-space;
 
   @include mobile {
+    display: none;
+  }
+}
+
+.consdata-offers-mobile {
+  margin-top: $desktop-section-space;
+  @include section-space();
+
+  @include mobile {
+    display: block;
+  }
+
+  @include tablet-and-desktop {
     display: none;
   }
 }
@@ -186,6 +199,7 @@ ul.offers-list > li {
 
   &:hover {
     @include animation-ease;
+
     .job-salary,
     .job-description,
     .job-title {
@@ -193,3 +207,40 @@ ul.offers-list > li {
     }
   }
 }
+
+.newsletter-sidebar-tile {
+  @include mobile {
+    display: none;
+  }
+
+  background-color: $red-300;
+  background-image: url($icon-dir + "logo_bg_red.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 110%;
+  align-items: center;
+  justify-content: center;
+  height: 233px;
+
+  .newsletter-tile-title {
+    @include font-config(20px, $font-weight-semibold, 32px);
+    color: $color-white;
+    text-align: center;
+    margin: 0;
+  }
+
+  .newsletter-tile-title:first-child {
+    text-transform: capitalize;
+  }
+
+  .newsletter-tile-title-container {
+    margin-bottom: 12px;
+  }
+
+  .sign-up-btn {
+    align-self: center;
+    @include btn-with-white-bg(100px, 8px);
+  }
+}
+
+
