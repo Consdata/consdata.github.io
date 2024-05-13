@@ -18,7 +18,7 @@
     margin-left: 100px;
     cursor: pointer;
   }
-  //TODO - tekst skacze po najechaniu trzeba to poprawić
+
   .nav-link {
     @include body;
     margin-left: 40px;
@@ -31,19 +31,7 @@
     &:hover {
       @include animation-ease;
       color: $red-900;
-      font-weight: bold;
-
-      &:after {
-        content: "";
-        width: 33%;
-        height: 2px;
-        border-radius: 50%;
-        background: $red-900;
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
+      text-shadow: 0 0 1px $red-900;
     }
   }
 }
