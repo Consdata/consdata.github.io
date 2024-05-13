@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: bmitan
-image: /assets/img/posts/2023-07-14-czy-wiesz-do-czego-sluzy-outlier-pattern-w-mongodb/outlier.webp
+image: /assets/img/posts/2023-07-14-czy-wiesz-do-czego-sluzy-outlier-pattern-w-mongodb/thumbnail.webp
 description: Wzorzec ten jest stosowany, kiedy większość danych można i warto zamodelować w jeden sposób, ale dla niewielkiego odsetka dokumentów, które odstają od normy, będzie to nieakceptowalne lub niemożliwe.
 tags:
 - mongodb

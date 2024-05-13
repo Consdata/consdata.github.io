@@ -5,7 +5,7 @@ date:      2021-02-09 08:00:00 +0100
 published: true
 lang:      pl
 author:    jgoszczurny
-image:     /assets/img/posts/2021-02-09-migracja-schematow-bazy-danych/bird-migrations.jpg
+image:     /assets/img/posts/2021-02-09-migracja-schematow-bazy-danych/thumbnail.webp
 tags:
     - migration
     - database

@@ -5,7 +5,7 @@ date:      2017-12-01 08:00:00 +0100
 published: true
 lang: pl
 author:    aswarcewicz
-image:     /assets/img/posts/2017-12-01-monitoring-serwerow-i-uslug/monitoring-systemow.jpg
+image:     /assets/img/posts/2017-12-01-monitoring-serwerow-i-uslug/thumbnail.webp
 tags:
     - monitoring
     - icinga2

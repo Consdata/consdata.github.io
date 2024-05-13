@@ -7,7 +7,7 @@ didyouknow: true
 lang: pl
 author: pgrobelny
 description: "Niedawno w przeglądarkach pojawiło się wsparcie dla nowego atrybutu w CSS - aspect-ratio. Jak nazwa sugeruje, służy on do określania proporcji elementu..."
-image: /assets/img/posts/2023-11-03-czy-wiesz-czym-jest-aspect-ratio-i-jak-go-uzywac/measure.webp
+image: /assets/img/posts/2023-11-03-czy-wiesz-czym-jest-aspect-ratio-i-jak-go-uzywac/thumbnail.webp
 tags:
 - css
 - aspect-ratio

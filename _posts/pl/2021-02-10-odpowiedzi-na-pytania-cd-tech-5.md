@@ -5,7 +5,7 @@ date:      2021-02-10 08:00:00 +0100
 published: true
 lang:      pl
 author:    mkociszewski
-image:     /assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/lightboard.jpeg
+image:     /assets/img/posts/2021-02-10-odpowiedzi-na-pytania-cd-tech-5/thumbnail.webp
 tags:
 - ddd
 - axon

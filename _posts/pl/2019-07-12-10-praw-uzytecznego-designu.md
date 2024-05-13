@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-07-12 10:00:00 +0100
 author:    pswierzko
-image:     /assets/img/posts/2019-07-12-10-praw-uzytecznego-designu/design-w-it.jpg
+image:     /assets/img/posts/2019-07-12-10-praw-uzytecznego-designu/thumbnail.webp
 tags:
     - ux
     - ui

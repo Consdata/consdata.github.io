@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: pstachowiak
-image: /assets/img/posts/2023-09-08-czy-wiesz-jak-skonfigurowac-relacyjna-baze-danych-przy-uzyciu-testcontainers/containership.jpg
+image: /assets/img/posts/2023-09-08-czy-wiesz-jak-skonfigurowac-relacyjna-baze-danych-przy-uzyciu-testcontainers/thumbnail.webp
 description: Czasem w testach baza H2 nie jest wystarczająca, np. gdy używamy specyficznych dla danej bazy mechanizmów. Wtedy możemy łatwo skonfigurować TestContainers, które dostarczy nam instancje prawdziwej bazy danych na czas testów. Jak to zrobić na przykładzie DB2, Junit5 i Spring?
 tags:
 - testcontainers

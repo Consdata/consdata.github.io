@@ -6,7 +6,7 @@ published: true
 didyouknow: false
 lang: pl
 author: jlavrinovics
-image: /assets/img/posts/2023-02-15-uiux-tools/uiux-tools.jpg
+image: /assets/img/posts/2023-02-15-uiux-tools/thumbnail.webp
 tags:
 
 - ui/ux

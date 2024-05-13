@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-10-06-czy-wiesz-jak-obslugiwac-bledy-w-angular-w-scentralizowany-sposob/error_handling.webp
+image: /assets/img/posts/2023-10-06-czy-wiesz-jak-obslugiwac-bledy-w-angular-w-scentralizowany-sposob/thumbnail.webp
 description: W Angularze istnieje ErrorHandler, jest to hook do scentralizowanej obsługi błędów. Domyślny ErrorHandler wyświetla jedynie błędy na konsoli. Jeżeli chcemy wyłapać i obsłużyć nieobsłużone błędy, należy dodać implementację ErrorHandlera...
 tags:
 - angular

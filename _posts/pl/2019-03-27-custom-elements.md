@@ -5,7 +5,7 @@ date:      2019-03-27 11:00:00 +0100
 published: true
 lang: pl
 author:    mpogorzelski
-image:     /assets/img/posts/2019-03-27-custom-elements/custom-elements.png
+image:     /assets/img/posts/2019-03-27-custom-elements/thumbnail.webp
 tags:
     - frontend
     - custom elements

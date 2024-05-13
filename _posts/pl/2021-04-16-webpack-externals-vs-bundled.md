@@ -5,7 +5,7 @@ date:      2021-04-16 08:00:00 +0100
 published: true
 lang:      pl
 author:    glipecki
-image:     /assets/img/posts/2021-04-16-webpack-externals-vs-bundled/scale.jpeg
+image:     /assets/img/posts/2021-04-16-webpack-externals-vs-bundled/thumbnail.webp
 tags:
     - frontend
     - angular

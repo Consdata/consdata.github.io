@@ -5,7 +5,7 @@ date:      2021-04-30 10:00:00 +0100
 published: true
 lang: pl
 author:    jwilczewski
-image:     /assets/img/posts/2021-04-25-java-darmowa-czy-nie-update/java-darmowa.png
+image:     /assets/img/posts/2021-04-25-java-darmowa-czy-nie-update/thumbnail.webp
 tags:
 - java
 description: "Microsoft dołącza do dystrybutorów JDK. To dobry moment żeby sprawdzić, jak rozwinęła się sytuacja z wydawaniem darmowych dystrybucji od czasu, kiedy Oracle zmienił tryb licencjonowania. Pisaliśmy o tym dwa lata temu w artykule Java darmowa, czy nie?"

@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-11-20 15:00:00 +0100
 author:    kczechowski
-image:      /assets/img/posts/2019-11-20-testowanie-komponentow-i-serwisow/testowanie_frontendu.jpg
+image:      /assets/img/posts/2019-11-20-testowanie-komponentow-i-serwisow/thumbnail.webp
 tags:
     - Jasmine
     - Angular

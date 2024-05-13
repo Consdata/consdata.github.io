@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-07-26 08:00:00 +0100
 author:    mmendlik
-image:     /assets/img/posts/2019-07-25-testy-frontendu-okiem-full-stacka/testy-jednostkowe.jpg
+image:     /assets/img/posts/2019-07-25-testy-frontendu-okiem-full-stacka/thumbnail.webp
 tags:
     - unit test
     - jasmine

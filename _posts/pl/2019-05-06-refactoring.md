@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-05-06 9:15:00 +0100
 author:    sucuncu
-image:     /assets/img/posts/2019-05-06-refactoring/refactoring.jpg
+image:     /assets/img/posts/2019-05-06-refactoring/thumbnail.webp
 tags:
     - refaktoryzacja
     - javascript

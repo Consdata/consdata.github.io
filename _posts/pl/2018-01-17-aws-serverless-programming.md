@@ -5,7 +5,7 @@ date:      2018-01-17 08:00:00 +0100
 published: true
 lang: pl
 author:    jwilczewski
-image:     /assets/img/posts/2018-01-17-aws-serverless-programming/aws.jpg
+image:     /assets/img/posts/2018-01-17-aws-serverless-programming/thumbnail.webp
 tags:
     - aws
     - serverless

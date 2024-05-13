@@ -7,7 +7,7 @@ didyouknow: false
 lang: pl
 lang-ref: kouncil-introduction
 author:    jgrobelny
-image:     /assets/img/posts/2021-08-30-kouncil-introduction/kouncil_dashboard.png
+image:     /assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp
 description: "Kouncil to nowoczesny frontend do Kafki, wyposażony w wiele niezbędnych programiście funkcjonalności."
 tags:
 - kouncil

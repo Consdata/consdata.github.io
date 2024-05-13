@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    pstachowiak
-image:     /assets/img/posts/2022-05-25-resilience/resilience.jpg
+image:     /assets/img/posts/2022-05-25-resilience/thumbnail.webp
 tags:
 - Resilience4j
 - CircuitBreaker
