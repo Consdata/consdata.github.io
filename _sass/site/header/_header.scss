@@ -15,7 +15,6 @@ nav {
 
   @include tablet-and-desktop {
     height: $navbar-height-desktop;
-    margin-bottom: $desktop-section-small-space;
   }
 
   .header {
