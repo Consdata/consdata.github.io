@@ -7,7 +7,7 @@ lang-ref:  rxjs-introduction
 interpreter: Piotr Żurawski
 date:      2020-01-09 08:00:00 +0100
 author:    kgabara
-image:     /assets/img/posts/2020-01-09-rxjs-wstep/RxJS.png
+image:     /assets/img/posts/2020-01-09-rxjs-wstep/thumbnail.webp
 tags:
 - Angular
 - rxjs

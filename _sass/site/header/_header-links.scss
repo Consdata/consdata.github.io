@@ -34,5 +34,11 @@
       text-shadow: 0 0 1px $red-900;
     }
   }
+
+  @include mobile {
+    .nav-link {
+      display: none;
+    }
+  }
 }
 
