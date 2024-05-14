@@ -114,6 +114,10 @@ footer {
     line-height: 1.2em;
   }
 
+  .privacy-policy:hover {
+    color: $red-900;
+  }
+
   @include desktop {
     .small-footer-container span:first-child {
       border-right: 1px solid $gray-300;
