@@ -2,12 +2,14 @@
 layout: search
 ---
 
-<article>
-    {% assign author = site.authors | where: 'short_name', page.short_name | first %}
-    {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
-    {% for forPost in filtered_posts %}
-    <div class="row">
-        {% include big-post-tile.html post=forPost %}
+<div class="home">
+    <div class="blog">
+        {% assign author = site.authors | where: 'short_name', page.short_name | first %}
+        {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
+        {% for forPost in filtered_posts %}
+        <div class="row">
+            {% include small-post-tile.html post=forPost %}
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</article>
+</div>

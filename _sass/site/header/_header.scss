@@ -22,10 +22,14 @@ nav {
     align-items: center;
     height: $navbar-height-mobile;
     @include tablet-and-desktop {
+      width: 100%;
       height: $navbar-height-desktop;
     }
     justify-content: space-between;
-    width: 100%;
+
+    @include mobile {
+      padding: 0 2*$small-padding;
+    }
   }
 
   .container {
