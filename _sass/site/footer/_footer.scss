@@ -108,7 +108,7 @@ footer {
   }
 
 
-  .small-footer-container span {
+  .small-footer-container span, .privacy-policy {
     @include body-small;
     color: $gray-500;
     line-height: 1.2em;
