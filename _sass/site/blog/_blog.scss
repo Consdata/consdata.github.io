@@ -12,3 +12,7 @@
     margin: 0 auto;
   }
 }
+
+.author-tiles-space {
+  @include section-small-xs-space();
+}

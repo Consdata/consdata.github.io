@@ -16,7 +16,8 @@
   }
 
   @include mobile {
-    margin: 0;
+    @include section-small-xs-space();
+
     .big-post-tile {
       display: none;
     }

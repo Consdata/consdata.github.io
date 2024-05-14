@@ -78,7 +78,7 @@
   }
 }
 
-@mixin section-small-space(){
+@mixin section-small-xs-space(){
   margin-top: $desktop-section-xs-space;
 
   @include mobile{
