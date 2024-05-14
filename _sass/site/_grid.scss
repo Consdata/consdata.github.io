@@ -6,6 +6,7 @@
   row-gap: 46px;
 
   @include tablet {
+    margin-top: $double-content-padding;
     justify-content: space-around;
   }
 }
