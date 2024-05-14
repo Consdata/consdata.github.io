@@ -24,4 +24,8 @@ article {
   @include mobile {
     margin-top: $mobile-section-xs-space;
   }
+
+  @include tablet {
+    gap: 24px;
+  }
 }

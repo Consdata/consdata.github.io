@@ -24,6 +24,15 @@
     }
   }
 
+  @include tablet {
+    padding: 16px 24px;
+
+    .arrow {
+      display: block;
+      padding: 8px 4px;
+    }
+  }
+
   .post-tile {
     @include mobile {
       width: auto;
@@ -31,6 +40,34 @@
 
       .post-title {
         @include font-config(20px, $font-weight-semibold, 32px);
+        margin-bottom: 8px;
+      }
+
+      .badge {
+        margin-bottom: 8px;
+      }
+
+      .small-post-image {
+        display: none;
+      }
+
+      .post-tile-content {
+        .tile-author {
+          display: none;
+        }
+      }
+
+      .post-description {
+        margin-bottom: 0;
+      }
+    }
+
+    @include tablet {
+      width: auto;
+      margin: 0;
+
+      .post-title {
+        @include font-config(26px, $font-weight-semibold, 42px);
         margin-bottom: 8px;
       }
 

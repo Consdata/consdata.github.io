@@ -34,6 +34,16 @@ $content-space: 30px;
     }
   }
 
+  @include tablet {
+    flex-direction: column;
+    gap: 30px;
+
+    input {
+      width: auto;
+    }
+
+  }
+
   input {
     @include body-small-semibold();
     border: 1px solid $gray-300;
@@ -61,6 +71,11 @@ $content-space: 30px;
   @include mobile {
     padding: 40px;
   }
+
+  @include tablet {
+    padding: 40px;
+  }
+
 }
 
 .newsletter-form {
@@ -78,6 +93,10 @@ $content-space: 30px;
 
   @include mobile {
     @include btn-without-bg(100px);
+    margin-top: 30px;
+  }
+
+  @include tablet {
     margin-top: 30px;
   }
 }
@@ -115,6 +134,10 @@ $content-space: 30px;
   color: $gray-500;
 
   @include mobile {
+    @include body-small();
+  }
+
+  @include tablet {
     @include body-small();
   }
 }

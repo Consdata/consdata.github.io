@@ -15,7 +15,7 @@ main {
   width: 100%;
   @include mobile {
     box-sizing: border-box;
-    padding: 0 2*$small-padding;
+    padding: $blog-mobile-margin;
   }
 }
 

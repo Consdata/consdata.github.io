@@ -28,6 +28,10 @@
   @include desktop {
     max-width: $desktop-width;
   }
+
+  @include tablet {
+    margin: $blog-mobile-margin;
+  }
 }
 
 @mixin flex-container() {

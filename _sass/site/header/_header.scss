@@ -21,15 +21,18 @@ nav {
     @include flex-container;
     align-items: center;
     height: $navbar-height-mobile;
+
     @include tablet-and-desktop {
       width: 100%;
       height: $navbar-height-desktop;
     }
-    justify-content: space-between;
 
     @include mobile {
-      padding: 0 2*$small-padding;
+      padding: $blog-mobile-margin;
     }
+
+    justify-content: space-between;
+
   }
 
   .container {

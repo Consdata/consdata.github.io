@@ -104,6 +104,12 @@ h4 {
     margin-top: 16px;
     margin-bottom: 24px;
   }
+
+  @include tablet {
+    @include font-config(30px, $font-weight-semibold, 42px);
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
 }
 
 @mixin body-large() {
