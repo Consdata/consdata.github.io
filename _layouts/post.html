@@ -16,13 +16,9 @@ layout: default
                     <div class="post-content-left-pane">
                         <div class="post-content">
                             {{ content }}
-                            <!--TODO Czy jest to potrzebne i w jakim celu ?-->
-                            <!--                        {% if post.interpreter %}-->
-                            <!--                        {% include translation-details.html %}-->
-                            <!--                        {% endif %}-->
-                            <!--                        {% if post.afterhours %}-->
-                            <!--                        {% include after-hours-box.html %}-->
-                            <!--                        {% endif %}-->
+                            {% if post.interpreter %}
+                            {% include translation-details.html %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
