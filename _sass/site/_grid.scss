@@ -9,14 +9,19 @@
 .row.first-row {
   @include desktop {
     margin-bottom: $desktop-section-small-space;
-    .post-tile {
-      display: none;
-    }
   }
+
+  .post-tile {
+    display: none;
+  }
+
   @include mobile {
     margin: 0;
     .big-post-tile {
       display: none;
+    }
+    .post-tile {
+      display: flex
     }
   }
 }
