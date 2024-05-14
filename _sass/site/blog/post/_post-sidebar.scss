@@ -111,66 +111,6 @@ ul.offers-list > li {
   }
 }
 
-.ad-container {
-  @include flex-container;
-  padding: $small-padding;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  background-color: $red-500;
-}
-
-.ad-icons-container {
-  @include flex-container;
-  justify-content: center;
-  align-items: center;
-  max-height: 66px;
-}
-
-.ad-link-icon {
-  &:hover {
-    @include animation-ease;
-    opacity: 0.85;
-  }
-
-  transition: 0.3s all ease;
-}
-
-.ad-titile {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  color: $color-white;
-  line-height: 1.2em;
-}
-
-.ad-date {
-  color: $color-white;
-  font-weight: bold;
-  font-size: 1.1em;
-  text-align: center;
-  margin-bottom: $small-padding;
-}
-
-.ad-event-title {
-  color: $color-white;
-  font-size: 1.2em;
-  font-weight: bold;
-  text-align: center;
-}
-
-.event-icon {
-  font-size: 3em;
-  margin: $very-small-padding;
-}
-
-.fa-meetup {
-  color: $color-white;
-}
-
 .clickable-offer {
   display: block;
 }
