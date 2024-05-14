@@ -26,6 +26,13 @@
   }
 }
 
+.row::after {
+  //fix na to, aby artykuły w ostatnim rzędzie miały poprawne szerokości
+  content: "";
+  flex: none;
+  width: 32%;
+}
+
 .col-5 {
   @include mobile {
     flex: 100%;
