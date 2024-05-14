@@ -4,26 +4,24 @@
   margin-bottom: $double-content-padding;
   justify-content: space-between;
   row-gap: 46px;
+
+  @include tablet {
+    justify-content: space-around;
+  }
+}
+
+@include desktop {
+  .row .post-tile:first-child {
+    display: none;
+  }
 }
 
 .row.first-row {
+  display: none;
+
   @include desktop {
     margin-bottom: $desktop-section-small-space;
-  }
-
-  .post-tile {
-    display: none;
-  }
-
-  @include mobile {
-    @include section-small-xs-space();
-
-    .big-post-tile {
-      display: none;
-    }
-    .post-tile {
-      display: flex
-    }
+    display: flex;
   }
 }
 
