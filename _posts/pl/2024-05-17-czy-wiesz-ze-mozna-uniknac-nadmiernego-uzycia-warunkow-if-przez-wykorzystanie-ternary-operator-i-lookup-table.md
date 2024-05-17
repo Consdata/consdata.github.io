@@ -7,11 +7,12 @@ didyouknow: true
 lang: pl
 author: wstolarski
 image: /assets/img/posts/2024-05-17-czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table/code.webp
+description: Niektórzy uważają, że liczba warunków `if/else` w kodzie powinna być minimalna, co oznacza, że pojedyncze instrukcje `if/else` należy zastępować operatorem ternarnym. Duża liczba warunków `if/else` skutkuje skomplikowaną strukturą i może przyprawić programistów o zawrót głowy...
 tags:
 - javascript
 ---
 
-Niektórzy uważają, że liczba warunków `if/else` w kodzie powinna być minimalizowana, zawsze zastępując przynajmniej pojedyncze instrukcje `if/else` operatorem ternarnym. Duża ilość warunków `if/else` często prowadzi do trudnej w zrozumieniu struktury i może przyprawić programistów o zawrót głowy.
+Niektórzy uważają, że liczba warunków `if/else` w kodzie powinna być minimalna, co oznacza, że pojedyncze instrukcje `if/else` należy zastępować operatorem ternarnym. Duża liczba warunków `if/else` skutkuje skomplikowaną strukturą i może przyprawić programistów o zawrót głowy.
 
 Załóżmy, że mamy kod, który na podstawie wprowadzonej wartości w polu wejściowym (`<input>`), a dokładnie marki samochodu, wyświetla jego opis.
 
@@ -37,11 +38,11 @@ const setCarDescriptionBasedOnBrand = () => {
   document.getElementById('carDescription').innerText = carDesc;
 };
 ```
-Choć `if/else` załatwia sprawę, jesteśmy obciążeni dużą ilością powtarzalnej logiki porównującej `brandInput` i powtarzającym się przypisywaniem `carDesc`.
+Choć `if/else` załatwia sprawę, to jesteśmy obciążeni dużą ilością powtarzalnej logiki porównującej `brandInput` i przypisywanym `carDesc`.
 
 ## Scenariusz switch-case
 
-Jedną z alternatyw zastępowania `if/else` jest użycie `switch-case`. Lepiej pasuje do koncepcji tego, co próbujemy osiągnąć.
+Alternatywą dla `if/else` jest użycie `switch-case`. Lepiej pasuje do koncepcji tego, co próbujemy osiągnąć.
 ```javascript
 const setCarDescriptionBasedOnBrandSwitchCase = () => {
   const brandInput = document.getElementById('switchCaseBrandInput').value;
@@ -68,9 +69,10 @@ const setCarDescriptionBasedOnBrandSwitchCase = () => {
   document.getElementById('carDescription').innerText = carDesc;
 };
 ```
-Jednak kod również nie jest zbyt czytelny i prowadzi do złożoności. Czy da się tego uniknąć? Tak! Rozważmy kolejny scenariusz.
+Kod jednak nadal jest dość złożony i mało czytelny. Czy da się tego uniknąć? Tak! Rozważmy kolejny scenariusz.
 
 ## Scenariusz lookup table
+
 Stwórzmy obiekt przechowujący nazwy marek samochodowych jako klucze i opisy marek jako wartości. Dzięki temu będziemy mogli uzyskać opis marki, korzystając z notacji `obiekt[klucz]`. Dodatkowo dodajemy wartość domyślną, aby obsłużyć scenariusz, kiedy klucz nie zostanie znaleziony.
 ```javascript
 const carBrandsDesctipion = {
@@ -88,7 +90,7 @@ const setCarDescription = () => {
         : carBrandsDesctipion['default'];
 };
 ```
-Teraz mamy kod wykorzystujący lookup table i operator ternarny. Jest on znacznie zwięzły i czytelniejszy niż `if/else` i `switch-case`. Dodatkowo zwiększyliśmy łatwość utrzymania kodu, a jednocześnie zmniejszyliśmy jego złożoność, mając tylko jedno sprawdzenie logiczne dla domyślnego rozwiązania awaryjnego.
+Mamy kod wykorzystujący lookup table i operator ternarny. Jest on znacznie bardziej zwięzły i czytelniejszy niż `if/else` i `switch-case`. Dodatkowo zwiększyliśmy łatwość utrzymania kodu i zmniejszyliśmy jego złożoność, ponieważ jest tylko jedno sprawdzenie logiczne dla domyślnego rozwiązania awaryjnego.
 
 Takim samym sposobem możemy obsłużyć bardziej skomplikowany przypadek wykorzystujący operatory porównania.
 
@@ -110,7 +112,7 @@ const classifyEngine = (horsepower) => {
 ```
 Jak można zauważyć, operatory logiczne ciągle się powtarzają.
 
-Wyodrębnijmy więc nasze dane do tablicy obiektów. Dzięki temu, przeszukamy naszą tablicę w poszukiwaniu obiektu, który spełnia jeden warunek z wykorzystaniem operatora "większe lub równe".
+Wyodrębnijmy więc nasze dane do tablicy obiektów. Umożliwi nam to wyszukanie w tablicy obiektu, który spełnia jeden warunek z wykorzystaniem operatora "większe lub równe".
 ```javascript
 const engineClasification = [
     {minHorsepower: 500, desc: 'High Performance'},
