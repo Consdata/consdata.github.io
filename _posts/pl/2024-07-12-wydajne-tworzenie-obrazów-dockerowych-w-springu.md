@@ -185,25 +185,27 @@ W powyższym przykładzie wydzielimy zależności pakietu javax.xml.bind do osob
         <into layer="application" />
     </application>
     <dependencies>
-        <into layer="snapshot-dependencies">
-            <include>*:*:*SNAPSHOT</include>
-        </into>
         <into layer="jaxb-dependencies">
             <include>javax.xml.bind:*:*</include>
+        </into>
+        <into layer="snapshot-dependencies">
+            <include>*:*:*SNAPSHOT</include>
         </into>
         <into layer="dependencies"/>
     </dependencies>
     <layerOrder>
         <layer>dependencies</layer>
         <layer>spring-boot-loader</layer>
-        <layer>snapshot-dependencies</layer>
         <layer>jaxb-dependencies</layer>
+        <layer>snapshot-dependencies</layer>
         <layer>application</layer>
     </layerOrder>
 </layers>
 ```
 
-2. Do plugina tworzącego warstwowego jarka dodajemy wskazanie na pliku z konfiguracją warstw
+Należy pamiętaj aby przy konfiguracji pliku layers.xml uzupełnić wersję zapisaną pod zmienną _spring-boot-xsd-version_
+
+2.Do plugina tworzącego warstwowego jarka dodajemy wskazanie na pliku z konfiguracją warstw
 
 ```xml
 <plugin>
@@ -231,15 +233,15 @@ tasks {
                 intoLayer("application")
             }
             dependencies {
-                intoLayer("snapshot-dependencies") {
-                    include("*:*:*SNAPSHOT")
-                }
                 intoLayer("jaxb-dependencies") {
                     include( "javax.xml.bind:*:*")
                 }
+                intoLayer("snapshot-dependencies") {
+                    include("*:*:*SNAPSHOT")
+                }
                 intoLayer("dependencies")
             }
-            layerOrder = listOf("dependencies", "spring-boot-loader", "snapshot-dependencies", "application", "jaxb-dependencies")
+            layerOrder = listOf("dependencies", "spring-boot-loader", "jaxb-dependencies", "snapshot-dependencies", "application")
         }
     }
 }
@@ -254,8 +256,8 @@ FROM eclipse-temurin:17.0.11_9-jre-alpine
 WORKDIR /app
 COPY --from=builder /work/dependencies/ ./
 COPY --from=builder /work/spring-boot-loader/ ./
-COPY --from=builder /work/snapshot-dependencies/ ./
 COPY --from=builder /work/jaxb-dependencies/ ./
+COPY --from=builder /work/snapshot-dependencies/ ./
 COPY --from=builder /work/application/ ./
 CMD ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 ```
@@ -274,8 +276,8 @@ docker history service1
 IMAGE          CREATED              CREATED BY                                      SIZE
 53a56b52bb9d   About a minute ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:dd5854b870089072a…   6.32kB
-<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:5e9e8ed2b7656fb9f…   19.6MB
 <​missing>      About an hour ago    /bin/sh -c #(nop) WORKDIR /app                  0B
@@ -304,8 +306,8 @@ docker history service2
 IMAGE          CREATED             CREATED BY                                      SIZE
 0a6326aaf0a6   27 seconds ago      /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:67d2736e371ec6127…   6.22kB
+<​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
 <​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:d10e5e52a40c11567…   126kB
-<​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
 <​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
 <​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
 <​missing>      About an hour ago   /bin/sh -c #(nop) WORKDIR /app                  0B
@@ -322,8 +324,8 @@ IMAGE          CREATED             CREATED BY                                   
 <​missing>      3 months ago        /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
 ```
 
-Widzimy, że podczas tworzenia nowej wersji obrazu trzy ostatnie operacje zostały wykonane ponownie, a operacja kopiowania pozostałych zależności została wykorzystana z cache.
+Widzimy, że podczas tworzenia nowej wersji obrazu cztery ostatnie operacje zostały wykonane ponownie, a operacja kopiowania pozostałych zależności została wykorzystana z cache.
 
 
 ## Podsumowanie 
-Wykorzystanie warstwowego budowania plików jar może pomóc z znacznym zmniejszeniu pamięci dyskowaej wykorzystywanej na przechowywanie gotowych obrazów Docker. Warto pamiętać o prawidłowej kolejności operacji w pliku Dockerfile oraz o możliwości definiowania własnych warstw zależności.
+Wykorzystanie warstwowego budowania plików jar może pomóc ze znacznym zmniejszeniem pamięci dyskowej wykorzystywanej na przechowywanie gotowych obrazów Docker. Warto pamiętać o prawidłowej kolejności operacji w pliku Dockerfile oraz o możliwości definiowania własnych warstw zależności.
