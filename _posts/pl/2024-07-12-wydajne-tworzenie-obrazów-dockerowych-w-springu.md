@@ -1,12 +1,12 @@
 ---
 layout:    post
-title:     "Tworzenie wydajnych obrazów dockerowych w Springu"
+title:     "Wydajne tworzenie obrazów dockerowych w Springu"
 date:      2024-07-12T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: bpietrowiak
-image: /assets/img/posts/2024-07-12-tworzenie-wydajnych-obrazów-dockerowych-w-springu/docker.jpg
+image: /assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/docker.jpg
 description: Sprawdź jak zaoszczędzić miejsce budując kolejne wersje aplikacji.
 tags:
 - spring boot
@@ -21,15 +21,15 @@ Budowanie obrazów Dockerowych polega na tworzeniu niemodyfikowalnych "szablonó
 
 Każdy plik Dockerfile zawiera listę instrukcji wykonywanych w podanej kolejności w momencie budowania obrazu. Docker otrzymaną listę instrukcji konwertuje na warstwy składające się na budowany obraz i posiadające określony rozmiar w przestrzeni dyskowej.
 
-![Schemat budowania obrazu](/assets/img/posts/2024-07-12-tworzenie-wydajnych-obrazów-dockerowych-w-springu/builder.png)
+![Schemat budowania obrazu](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/builder.png)
 
 Podczas uruchomienia budowania builder podejmuję próbę ponownego wykorzystania warstw z poprzednich wersji. Jeśli warstwa obrazu się nie zmieni, builder wyciąga ją z cache, a jeśli warstwa uległa zmianie tworzy ją na nowo.
 Ponowne tworzenie warstwy wiążę się również z unieważnieniem cache dla wszystkich następnych warstw. Jeśli plik .jar ulegnie zmianie, to schemat warstw przedstawia się następująco:
 
-![Schemat budowania obrazu z cache](/assets/img/posts/2024-07-12-tworzenie-wydajnych-obrazów-dockerowych-w-springu/cache.png)
+![Schemat budowania obrazu z cache](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache.png)
 
 W tym wypadku bardzo ważna jest kolejność deklarowania instrukcji tak, aby największa ich ilość była pobierania z cache. Dla powyższego przykładu możemy wykonać optymalizację:
-![Schemat budowania obrazu z cache optymalizacja](/assets/img/posts/2024-07-12-tworzenie-wydajnych-obrazów-dockerowych-w-springu/cache2.png)
+![Schemat budowania obrazu z cache optymalizacja](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache2.png)
 
 Dzięki temu przy następnym budowaniu trzy warstwy zostaną ponownie wykorzystane zamiast dwóch.
 
@@ -37,18 +37,18 @@ Dzięki temu przy następnym budowaniu trzy warstwy zostaną ponownie wykorzysta
 
 W poprzedniej sekcji został pokazany standardowy plik Dockerfile dla zbudowania aplikacji Spring Bootowej. Jedną z zawartych w nim instrukcji jest przekopiowanie pliku .jar do obrazu. Standardowo wykonuje się to za pomocą jednej instrukcji co powoduje, że każda zmiana w jakimkolwiek pliku aplikacji wymaga utworzenia warstwy od nowa. 
 
-Jest to bardzo niekorzystne, ponieważ niesie to za sobą wykorzystywanie nadmiernej przestrzeni dyskowej. Przyjmując, że plik .jar waży około 20 MB (gdzie większość to zależności aplikacji) wykonanie 10 wersji aplikacji zajmie nam 200 MB, pomimo że zmiany, jakie wykonaliśmy, były bardzo niewielkie i dotyczyły tylko kodów źródłowych (ważących kilkanaście KB). 
+Jest to bardzo niekorzystne, ponieważ niesie to za sobą wykorzystywanie nadmiernej przestrzeni dyskowej. Przyjmując, że plik .jar waży około 20 MB (gdzie większość to zależności aplikacji) wykonanie 10 wersji aplikacji zajmie nam 200 MB, pomimo że zmiany, jakie wykonaliśmy, były bardzo niewielkie i dotyczyły tylko kodów źródłowych (ważących przeciętnie kilkanaście KB). 
 
 Tutaj naprzeciw wyszli nam twórcy Spring Boota, dodając od wersji 2.3 możliwość budowania warstwowego pliku jar (eng. **layered jars**).
 
 ## Jak działa Spring Boot layered jar?
-Spring Boot layered jar zmienia sposób budowania pliku .jar, dzieląc jego części na konkretne warstwy. Wykorzystuje w tym celu plik **layers.idx**. Plik ten zawiera listę warts oraz części pliku .jar, które są w niej zawarte. Warstwy w pliku zapisane są w kolejności, w jakiej powinny zostać dodane do obrazu Dockerowego. Domyślnie plik składa się z poniższych warstw:
+Spring Boot layered jar zmienia sposób budowania pliku .jar, dzieląc jego części na konkretne warstwy. Wykorzystuje w tym celu plik **layers.idx**. Plik ten zawiera listę warstw oraz części pliku .jar, które są w niej zawarte. Warstwy w pliku zapisane są w kolejności, w jakiej powinny zostać dodane do obrazu Dockerowego. Domyślnie plik składa się z poniższych warstw:
 - **dependencies** - zawiera zależności aplikacji, które nie są w wersji SNAPSHOT
 - **spring-boot-loader** - zawiera klasy ładujące plik .jar (odpowiadające za uruchomienie aplikacji)
 - **snapshot-dependencies** - zawiera zależności aplikacji, które są w wersji SNAPSHOT
 - **application** - zawiera kod źródłowy aplikacji
 
-Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowania pliku .jar na kilka mniejszych instrukcji i zapewnić wykorzystanie ponownych warstw, gdy zmienimy tylko kod źródłowy aplikacji.
+Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowania pliku .jar na kilka mniejszych instrukcji i zapewnić ponowne wykorzystanie warstw, gdy zmienimy tylko kod źródłowy aplikacji.
 
 ## Jak skonfigurować Spring Boot layered jar?
 1. Modyfikujemy sposób budowania aplikacji:
@@ -90,7 +90,7 @@ Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowani
     COPY --from=builder /work/spring-boot-loader/ ./
     COPY --from=builder /work/snapshot-dependencies/ ./
     COPY --from=builder /work/application/ ./
-    ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+    CMD ["java", "org.springframework.boot.loader.launch.JarLauncher"]
    ```
 
 Jak widać wyżej, budowanie zostało podzielone na dwa etapy:
@@ -111,7 +111,7 @@ docker history service1
 3. Rezultat polecenia:
 ```xml
 IMAGE          CREATED              CREATED BY                                      SIZE
-a59bcc935804   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+a59bcc935804   About a minute ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:bdb78666255cc63e7…   3.71kB
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B  
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
@@ -140,7 +140,7 @@ docker history service2
 6. Rezultat polecenia:
 ```xml
 IMAGE          CREATED          CREATED BY                                      SIZE
-e027785c6f71   34 seconds ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+e027785c6f71   34 seconds ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 "<missing>"    34 seconds ago   /bin/sh -c #(nop) COPY dir:0c4cebea0bf1ba4e8…   3.7kB
 "<missing>"    2 minutes ago    /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
 "<missing>"    2 minutes ago    /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
@@ -256,7 +256,7 @@ COPY --from=builder /work/spring-boot-loader/ ./
 COPY --from=builder /work/snapshot-dependencies/ ./
 COPY --from=builder /work/jaxb-dependencies/ ./
 COPY --from=builder /work/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+CMD ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 ```
 
 ### Rezultat
@@ -271,7 +271,7 @@ docker history service1
 3. Rezultat polecenia:
 ```
 IMAGE          CREATED              CREATED BY                                      SIZE
-"53a56b52bb9d   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+"53a56b52bb9d   About a minute ago   /bin/sh -c #(nop) CMD ["java" "org.s…          0B
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:dd5854b870089072a…   6.32kB
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
 "<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
@@ -301,7 +301,7 @@ docker history service2
 6. Rezultat polecenia:
 ```
 IMAGE          CREATED             CREATED BY                                      SIZE
-0a6326aaf0a6   27 seconds ago      /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+0a6326aaf0a6   27 seconds ago      /bin/sh -c #(nop)  CMD ["java" "org.s…          0B
 "<missing>"    27 seconds ago      /bin/sh -c #(nop) COPY dir:67d2736e371ec6127…   6.22kB
 "<missing>"    27 seconds ago      /bin/sh -c #(nop) COPY dir:d10e5e52a40c11567…   126kB
 "<missing>"    About an hour ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
