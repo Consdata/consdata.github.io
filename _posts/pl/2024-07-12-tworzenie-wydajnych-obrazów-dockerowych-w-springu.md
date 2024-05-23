@@ -53,7 +53,7 @@ Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowani
 ## Jak skonfigurować Spring Boot layered jar?
 1. Modyfikujemy sposób budowania aplikacji:
    - Dla budowania Gradle w zadaniach budujących naszą aplikację dodajemy:
-      ```groovy
+      ```kotlin
      tasks {
         bootJar {
             layered
@@ -220,7 +220,7 @@ W powyższym przykładzie wydzielimy zależności pakietu javax.xml.bind do osob
 
 #### Gradle
 1. Konfigurujemy plugin, określając nowe warstwy. W pliku build.gradle.kts umieszczamy:
-```groovy
+```kotlin
 tasks {
     bootJar {
         layered {
