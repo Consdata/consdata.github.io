@@ -111,7 +111,7 @@ docker history service1
 3. Rezultat polecenia:
 ```
 IMAGE          CREATED              CREATED BY                                      SIZE
-a59bcc935804   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+a59bcc935804       About a minute ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:bdb78666255cc63e7…   3.71kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B  
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
@@ -141,7 +141,7 @@ docker history service2
 6. Rezultat polecenia:
 ```
 IMAGE          CREATED          CREATED BY                                      SIZE
-e027785c6f71   34 seconds ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+e027785c6f71       34 seconds ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      34 seconds ago   /bin/sh -c #(nop) COPY dir:0c4cebea0bf1ba4e8…   3.7kB
 <​missing>      2 minutes ago    /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
 <​missing>      2 minutes ago    /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
@@ -272,7 +272,7 @@ docker history service1
 3. Rezultat polecenia:
 ```
 IMAGE          CREATED              CREATED BY                                      SIZE
-53a56b52bb9d   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+53a56b52bb9d       About a minute ago   /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:dd5854b870089072a…   6.32kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
 <​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
@@ -302,7 +302,7 @@ docker history service2
 6. Rezultat polecenia:
 ```
 IMAGE          CREATED             CREATED BY                                      SIZE
-0a6326aaf0a6   27 seconds ago      /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+0a6326aaf0a6       27 seconds ago      /bin/sh -c #(nop) CMD ["java" "org.s…           0B
 <​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:67d2736e371ec6127…   6.22kB
 <​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:d10e5e52a40c11567…   126kB
 <​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
