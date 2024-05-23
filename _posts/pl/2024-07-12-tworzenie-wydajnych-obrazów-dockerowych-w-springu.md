@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Tworzenie wydajnych obrazów dockerowych w Springu"
-date:      2024-07-12T08:00:00+01:00
+date:      2024-05-22T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
@@ -53,7 +53,7 @@ Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowani
 ## Jak skonfigurować Spring Boot layered jar?
 1. Modyfikujemy sposób budowania aplikacji:
    - Dla budowania Gradle w zadaniach budujących naszą aplikację dodajemy:
-      ```
+      ```groovy
      tasks {
         bootJar {
             layered
@@ -79,7 +79,7 @@ Dzięki takiemu rozwiązaniu jesteśmy w stanie podzielić instrukcję kopiowani
      ```
 2. Modyfikujemy sposób budowania obrazu w pliku Dockerfile:
    - Przykładowy plik wygląda następująco:
-    ```
+    ```dockerfile
     FROM eclipse-temurin:17.0.9_9-jre-alpine as builder
     WORKDIR /work
     COPY dockerfile-example-snapshot.jar application.jar
@@ -101,36 +101,37 @@ Jak widać wyżej, budowanie zostało podzielone na dwa etapy:
 ## Zastosowanie w praktyce
 Do zaprezentowania działania wykorzystam przykładowy plik Dockerfile wskazany powyżej.
 1. Budujemy obraz:
-```
+```shell
 docker build . --tag service1
 ```
 2. Wykonujemy polecenie listujące warstwy:
-```
+```shell
 docker history service1
 ```
 3. Rezultat polecenia:
-```xml
+```
 IMAGE          CREATED              CREATED BY                                      SIZE
 a59bcc935804   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:bdb78666255cc63e7…   3.71kB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B  
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) WORKDIR /app                  0B
-"<missing>"    8 days ago           ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
-"<missing>"    8 days ago           COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     echo "Verifying…   0B
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
-"<missing>"    8 days ago           ENV JAVA_VERSION=jdk-17.0.11+9                  0B
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
-"<missing>"    8 days ago           ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
-"<missing>"    8 days ago           ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
-"<missing>"    8 days ago           ENV JAVA_HOME=/opt/java/openjdk                 0B
-"<missing>"    3 months ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
-"<missing>"    3 months ago         /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:bdb78666255cc63e7…   3.71kB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B  
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
+<​missing>      About a minute ago   /bin/sh -c #(nop) WORKDIR /app                  0B
+<​missing>      8 days ago           ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
+<​missing>      8 days ago           COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     echo "Verifying…   0B
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
+<​missing>      8 days ago           ENV JAVA_VERSION=jdk-17.0.11+9                  0B
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
+<​missing>      8 days ago           ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
+<​missing>      8 days ago           ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
+<​missing>      8 days ago           ENV JAVA_HOME=/opt/java/openjdk                 0B
+<​missing>      3 months ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<​missing>      3 months ago         /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
 ```
+
 4. Wykonujemy zmianę kodu źródłowego aplikacji i ponownie budujemy obraz z nowym tagiem:
-```
+```shell
 docker build . --tag service2
 ```
 5. Wykonujemy polecenie listujące warstwy:
@@ -138,25 +139,25 @@ docker build . --tag service2
 docker history service2
 ```
 6. Rezultat polecenia:
-```xml
+```
 IMAGE          CREATED          CREATED BY                                      SIZE
 e027785c6f71   34 seconds ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
-"<missing>"    34 seconds ago   /bin/sh -c #(nop) COPY dir:0c4cebea0bf1ba4e8…   3.7kB
-"<missing>"    2 minutes ago    /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
-"<missing>"    2 minutes ago    /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
-"<missing>"    2 minutes ago    /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
-"<missing>"    2 minutes ago    /bin/sh -c #(nop) WORKDIR /app                  0B
-"<missing>"    8 days ago       ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
-"<missing>"    8 days ago       COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
-"<missing>"    8 days ago       RUN /bin/sh -c set -eux;     echo "Verifying…   0B
-"<missing>"    8 days ago       RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
-"<missing>"    8 days ago       ENV JAVA_VERSION=jdk-17.0.11+9                  0B
-"<missing>"    8 days ago       RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
-"<missing>"    8 days ago       ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
-"<missing>"    8 days ago       ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
-"<missing>"    8 days ago       ENV JAVA_HOME=/opt/java/openjdk                 0B
-"<missing>"    3 months ago     /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
-"<missing>"    3 months ago     /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
+<​missing>      34 seconds ago   /bin/sh -c #(nop) COPY dir:0c4cebea0bf1ba4e8…   3.7kB
+<​missing>      2 minutes ago    /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
+<​missing>      2 minutes ago    /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
+<​missing>      2 minutes ago    /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
+<​missing>      2 minutes ago    /bin/sh -c #(nop) WORKDIR /app                  0B
+<​missing>      8 days ago       ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
+<​missing>      8 days ago       COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
+<​missing>      8 days ago       RUN /bin/sh -c set -eux;     echo "Verifying…   0B
+<​missing>      8 days ago       RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
+<​missing>      8 days ago       ENV JAVA_VERSION=jdk-17.0.11+9                  0B
+<​missing>      8 days ago       RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
+<​missing>      8 days ago       ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
+<​missing>      8 days ago       ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
+<​missing>      8 days ago       ENV JAVA_HOME=/opt/java/openjdk                 0B
+<​missing>      3 months ago     /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<​missing>      3 months ago     /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
 ```
 
 Na powyższym przykładzie widzimy, że zależności naszej aplikacji ważą około 20 MB. Wykonując drugi obraz, warstwa zależności została pobrana z cache, dzięki czemu zamiast wykorzystania 40 MB na dwa obraz wykorzystamy 20 MB.
@@ -219,7 +220,7 @@ W powyższym przykładzie wydzielimy zależności pakietu javax.xml.bind do osob
 
 #### Gradle
 1. Konfigurujemy plugin, określając nowe warstwy. W pliku build.gradle.kts umieszczamy:
-```
+```groovy
 tasks {
     bootJar {
         layered {
@@ -244,7 +245,7 @@ tasks {
 }
 ```
 W pliku dockerfile dodajemy kopiowanie nowej warstwy:
-```
+```dockerfile
 FROM eclipse-temurin:17.0.11_9-jre-alpine as builder
 WORKDIR /work
 COPY dockerfile-example-snapshot.jar application.jar
@@ -261,64 +262,64 @@ ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
 ### Rezultat
 1. Budujemy obraz:
-```
+```shell
 docker build . --tag service1
 ```
 2. Wykonujemy polecenie listujące warstwy:
-```
+```shell
 docker history service1
 ```
 3. Rezultat polecenia:
 ```
 IMAGE          CREATED              CREATED BY                                      SIZE
-"53a56b52bb9d   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:dd5854b870089072a…   6.32kB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
-"<missing>"    About a minute ago   /bin/sh -c #(nop) COPY dir:5e9e8ed2b7656fb9f…   19.6MB
-"<missing>"    About an hour ago    /bin/sh -c #(nop) WORKDIR /app                  0B
-"<missing>"    8 days ago           ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
-"<missing>"    8 days ago           COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     echo "Verifying…   0B
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
-"<missing>"    8 days ago           ENV JAVA_VERSION=jdk-17.0.11+9                  0B
-"<missing>"    8 days ago           RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
-"<missing>"    8 days ago           ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
-"<missing>"    8 days ago           ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
-"<missing>"    8 days ago           ENV JAVA_HOME=/opt/java/openjdk                 0B
-"<missing>"    3 months ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
-"<missing>"    3 months ago         /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
+53a56b52bb9d   About a minute ago   /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:dd5854b870089072a…   6.32kB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:a0166562a093edeb6…   128kB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
+<​missing>      About a minute ago   /bin/sh -c #(nop) COPY dir:5e9e8ed2b7656fb9f…   19.6MB
+<​missing>      About an hour ago    /bin/sh -c #(nop) WORKDIR /app                  0B
+<​missing>      8 days ago           ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
+<​missing>      8 days ago           COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     echo "Verifying…   0B
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
+<​missing>      8 days ago           ENV JAVA_VERSION=jdk-17.0.11+9                  0B
+<​missing>      8 days ago           RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
+<​missing>      8 days ago           ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
+<​missing>      8 days ago           ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
+<​missing>      8 days ago           ENV JAVA_HOME=/opt/java/openjdk                 0B
+<​missing>      3 months ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<​missing>      3 months ago         /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
 ```
 4. Wykonujemy zmianę wersji zależności z pakietu jaxb.xml.bind i ponownie budujemy obraz z nowym tagiem:
-```
+```shell
 docker build . --tag service2
 ```
 5. Wykonujemy polecenie listujące warstwy:
-```
+```shell
 docker history service2
 ```
 6. Rezultat polecenia:
 ```
 IMAGE          CREATED             CREATED BY                                      SIZE
 0a6326aaf0a6   27 seconds ago      /bin/sh -c #(nop)  ENTRYPOINT ["java" "org.s…   0B
-"<missing>"    27 seconds ago      /bin/sh -c #(nop) COPY dir:67d2736e371ec6127…   6.22kB
-"<missing>"    27 seconds ago      /bin/sh -c #(nop) COPY dir:d10e5e52a40c11567…   126kB
-"<missing>"    About an hour ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
-"<missing>"    About an hour ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
-"<missing>"    About an hour ago   /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
-"<missing>"    About an hour ago   /bin/sh -c #(nop) WORKDIR /app                  0B
-"<missing>"    8 days ago          ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
-"<missing>"    8 days ago          COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
-"<missing>"    8 days ago          RUN /bin/sh -c set -eux;     echo "Verifying…   0B
-"<missing>"    8 days ago          RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
-"<missing>"    8 days ago          ENV JAVA_VERSION=jdk-17.0.11+9                  0B
-"<missing>"    8 days ago          RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
-"<missing>"    8 days ago          ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
-"<missing>"    8 days ago          ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
-"<missing>"    8 days ago          ENV JAVA_HOME=/opt/java/openjdk                 0B
-"<missing>"    3 months ago        /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
-"<missing>"    3 months ago        /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
+<​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:67d2736e371ec6127…   6.22kB
+<​missing>      27 seconds ago      /bin/sh -c #(nop) COPY dir:d10e5e52a40c11567…   126kB
+<​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:f782fe956cf5892f5…   0B
+<​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:3d769b9b5528fa54f…   387kB
+<​missing>      About an hour ago   /bin/sh -c #(nop) COPY dir:24195f786b612de17…   19.5MB
+<​missing>      About an hour ago   /bin/sh -c #(nop) WORKDIR /app                  0B
+<​missing>      8 days ago          ENTRYPOINT ["/__cacert_entrypoint.sh"]          0B
+<​missing>      8 days ago          COPY entrypoint.sh /__cacert_entrypoint.sh #…   1.17kB
+<​missing>      8 days ago          RUN /bin/sh -c set -eux;     echo "Verifying…   0B
+<​missing>      8 days ago          RUN /bin/sh -c set -eux;     ARCH="$(apk --p…   140MB
+<​missing>      8 days ago          ENV JAVA_VERSION=jdk-17.0.11+9                  0B
+<​missing>      8 days ago          RUN /bin/sh -c set -eux;     apk add --no-ca…   17.3MB
+<​missing>      8 days ago          ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_AL…   0B
+<​missing>      8 days ago          ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B
+<​missing>      8 days ago          ENV JAVA_HOME=/opt/java/openjdk                 0B
+<​missing>      3 months ago        /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<​missing>      3 months ago        /bin/sh -c #(nop) ADD file:37a76ec18f9887751…   7.37MB
 ```
 
 Widzimy, że podczas tworzenia nowej wersji obrazu trzy ostatnie operacje zostały wykonane ponownie, a operacja kopiowania pozostałych zależności została wykorzystana z cache.
