@@ -45,28 +45,18 @@ Choć `if/else` załatwia sprawę, to jesteśmy obciążeni dużą ilością pow
 Alternatywą dla `if/else` jest użycie `switch-case`. Lepiej pasuje do koncepcji tego, co próbujemy osiągnąć.
 ```javascript
 const setCarDescriptionBasedOnBrandSwitchCase = () => {
-  const brandInput = document.getElementById('switchCaseBrandInput').value;
- 
-    let carDesc = '';
-   
-  switch (brandInput) {
-    case 'toyota':
-      carDesc = 'Toyota - Reliable and Fuel Efficient';
-      break;
-    case 'ford':
-      carDesc = 'Ford - American Toughness';
-      break;
-    case 'honda':
-      carDesc = 'Honda - Innovative and Efficient';
-      break;
-    case 'bmw':
-      carDesc = 'BMW - Ultimate Driving Machine';
-      break;
-    default:
-      carDesc = 'Unknown Car Brand';
-  }
- 
-  document.getElementById('carDescription').innerText = carDesc;
+    const descByBrand = (brand) => {
+        switch (brand) {
+            case 'toyota': return 'Toyota - Reliable and Fuel Efficient';
+            case 'ford': return 'Ford - American Toughness';
+            case 'honda': return 'Honda - Innovative and Efficient';
+            case 'bmw': return 'BMW - Ultimate Driving Machine';
+            default: return 'Unknown Car Brand';
+        }
+    };
+    const brandInputValue = document.getElementById('switchCaseBrandInput').value;
+    const carDesc = descByBrand(brandInputValue);
+    document.getElementById('carDescription').innerText = carDesc;
 };
 ```
 Kod jednak nadal jest dość złożony i mało czytelny. Czy da się tego uniknąć? Tak! Rozważmy kolejny scenariusz.
