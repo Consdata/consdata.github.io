@@ -1,6 +1,6 @@
 ---
 layout:    post
-title:     "Czy wiesz na czym polega wzorzec drzewa w MongoDB?"
+title:     "Czy wiesz, na czym polega wzorzec drzewa w MongoDB?"
 date:      2024-05-31T08:00:00+01:00
 published: true
 didyouknow: true
@@ -10,12 +10,12 @@ image: /assets/img/posts/2024-05-31-czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mo
 tags:
 - mongodb
 ---
-Bardzo często przechowywane dane w bazie tworzą większe struktury. Przykładowo lista pracowników firmy i ich hierarchia, asortyment w sklepie i kategoria do której przynależy, miasta wraz z województwami, wymieniać można długo. Takie relacje są dla nas bardzo naturalne. W MongoDB możemy taką przynależność jednego obiektu do drugiego przedstawić za pomocą wzorca drzewa. W zależności od implementacji zyskujemy łatwiejsze poruszanie się po dokumentach albo ograniczamy liczbę zapytań do bazy. Trzeba jednak mieć na uwadze, że przedstawienie danych w taki sposób ma swoją cenę. Każdy przechowywany dokument będzie musiał posiadać dodatkowe pole z informacją o swoim dziecku i/lub rodzicu albo potomkach. Taka zmiana oprócz samego rozszerzenia dokumentu wiąże się też z utrzymaniem nowych pól, jednak o tym później. Na razie przyjrzyjmy się jak możemy zaimplementować wzorzec drzewa.
+Dane przechowywane w bazie tworzą często większe struktury. Przykładowo, lista pracowników firmy i ich hierarchia, asortyment produktów w podziale na kategorie, miasta wraz z województwami. Wymieniać można długo. Takie relacje są dla nas bardzo naturalne. W MongoDB możemy taką przynależność jednego obiektu do drugiego przedstawić za pomocą wzorca drzewa. W zależności od implementacji zyskujemy łatwiejsze poruszanie się po dokumentach albo ograniczamy liczbę zapytań do bazy. Trzeba jednak mieć na uwadze, że przedstawienie danych w taki sposób ma swoją cenę. Każdy przechowywany dokument będzie musiał posiadać dodatkowe pole z informacją o swoim dziecku i/lub rodzicu albo potomkach. Taka zmiana oznacza rozszerzenie samego dokumentu oraz konieczność utrzymywania nowych pól. Jednak o tym później. Na razie przyjrzyjmy się, jak zaimplementować wzorzec drzewa.
 
 Spróbujmy skupić się na przykładzie ze sklepem i jego asortymentem. Powiedzmy, że struktura dla wybranych produktów wygląda następująco:
 
 ![Kategorie asortymentu](/assets/img/posts/2024-05-31-czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mongodb/products.png)
-Po samym grafie już widać, że dane tworzą strukturę drzewa. W bazie możemy taką bazę przedstawić na kilka sposobów w zależności od potrzeb.
+Po samym grafie już widać, że dane tworzą strukturę drzewa. W bazie możemy taką strukturę przedstawić na kilka sposobów w zależności od potrzeb.
 
 ## Drzewo z referencją na dzieci
 W tym podejściu każdy obiekt ma dodatkowe pole z powiązanymi do niego kategoriami / produktami. Więc struktura może wyglądać następująco:
@@ -45,7 +45,8 @@ db.getCollection('categories').find({children: "RTV i AGD"})
 ```
 
 ## Drzewo z referencją na rodzica
-W poprzednim podejściu pobierając dokument z wybranym telewizorem niestety nie dostaniemy informacji do jakiej kategorii należy produkt. Konieczne jest przeszukanie wszystkich kategorii czy w dzieciach mają nasz telewizor. By zapobiec dodatkowemu zapytaniu możemy niejako odwrócić strukturę i zamiast referencji na dzieci danego obiektu przechowywać referencje na rodzica.
+W poprzednim podejściu, pobierając dokument z wybranym telewizorem niestety nie dostaniemy informacji, do jakiej kategorii należy produkt. Konieczne jest przeszukanie wszystkich kategorii, czy w dzieciach mają nasz telewizor. By zapobiec dodatkowemu zapytaniu, możemy niejako odwrócić strukturę i zamiast referencji na dzieci danego obiektu przechowywać referencję na rodzica.
+
 ```javascript
 { "_id": "Super TV", "parent": "Telewizory" }
 { "_id": "HD TV", "parent": "Telewizory" }
@@ -57,7 +58,8 @@ W poprzednim podejściu pobierając dokument z wybranym telewizorem niestety nie
 { "_id": "Elektronika", "parent": "Sklep" }
 { "_id": "Sklep", "parent": null }
 ```
-Dzięki takiemu układowi mając obiekt `Super TV` bez dodatkowych żądań wiemy, że znajduje się on w kategorii `Telewizory`.
+Mając obiekt `Super TV`, bez dodatkowych żądań wiemy, że znajduje się on w kategorii `Telewizory`.
+
 ```javascript
 db.getCollection('categories').find({_id: "Super TV"});
 ---
@@ -65,9 +67,10 @@ db.getCollection('categories').find({_id: "Super TV"});
 ```
 
 ## Drzewo z listą przodków
-Referencję tylko na rodzica może być mało pomocna jeśli potrzebujemy pełnej ścieżki do danego obiektu.
+Referencja tylko na rodzica może być mało pomocna, jeśli potrzebujemy pełnej ścieżki do danego obiektu.
 
-By rozwiązać ten problem pole rodzica zastępujemy listą przodków.
+By rozwiązać ten problem, pole rodzica zastępujemy listą przodków.
+
 ```javascript
 { "_id" : "Super TV", "ancestors" : [ "Telewizory", "TV i Video", "RTV i AGD", "Elektronika", "Sklep" ] }
 { "_id" : "HD TV", "ancestors" : [ "Telewizory", "TV i Video", "RTV i AGD", "Elektronika", "Sklep" ] }
@@ -88,12 +91,12 @@ db.getCollection('categories').find({"_id": "Super TV"})
 ```
 
 ## Drzewo z zagnieżdżonymi zbiorami
-Najbardziej specyficzny przykład dla równie specyficznych potrzeb. Możemy go zastosować kiedy zestaw danych jest bardzo rzadko modyfikowany i potrzebujemy wydajnie przeszukiwać i pobierać całe podzbiory naszej struktury. Dokument tym razem rozszerzamy o 3 pola:
+Specyficzny przykład dla równie specyficznych potrzeb. Drzewo z zagnieżdżonymi zbiorami można zastosować, kiedy zestaw danych jest bardzo rzadko modyfikowany i potrzebujemy wydajnie przeszukiwać i pobierać całe podzbiory struktury. Tym razem rozszerzamy dokument o 3 pola:
 - `parent` - definiuje pozycje w strukturze,
 - `left` - używane do wyszukiwania,
 - `right` - używane do wyszukiwania.
 
-Pola `left` i `right` musimy sami wyliczyć przechodząc całe drzewo od korzenia przez wszystkie liście  i z powrotem do korzenia nadając poszczególnym elementom kolejne indeksy.
+Pola `left` i `right` musimy sami wyliczyć, przechodząc całe drzewo od korzenia przez wszystkie liście i z powrotem do korzenia i nadając kolejne indeksy poszczególnym elementom.
 
 ![Kategorie asortymentu z zagnieżdżonymi zbiorami](/assets/img/posts/2024-05-31-czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mongodb/subsets.png)
 
@@ -109,7 +112,7 @@ Pola `left` i `right` musimy sami wyliczyć przechodząc całe drzewo od korzeni
 { "_id" : "Sklep", "parent" : null, "left" : 0.0, "right" : 17.0 }
 ```
 
-Teraz możemy wyszukać całego podzbioru dla kategorii `TV i Video`:
+Teraz możemy wyszukać cały podzbiór dla kategorii `TV i Video`:
 ```javascript
 var kategoria = db.getCollection('categories').findOne( { _id: "TV i Video" } );
 db.categories.find( { left: { $gt: kategoria.left }, right: { $lt: kategoria.right } } );
@@ -121,17 +124,17 @@ db.categories.find( { left: { $gt: kategoria.left }, right: { $lt: kategoria.rig
 
 ## Koszt każdego z rozwiązań
 
-Jak wspomniałem na początku zastosowanie wzorca drzewa ma swoją cenę. Modyfikacje struktury danych mogą być bardzo kosztowne. Musimy pilnować by dodane przez nas pola były spójne z nową strukturą. Powiedzmy, że musimy rozbić dział `RTV i AGD` na dwa osobne `RTV` i `AGD`. Co musimy zrobić dodatkowo by zachować spójność?
+Jak wspomniałem na początku, zastosowanie wzorca drzewa ma swoją cenę. Modyfikacje struktury danych mogą być bardzo kosztowne. Musimy pilnować, by dodane pola były spójne z nową strukturą. Powiedzmy, że musimy rozbić dział `RTV i AGD` na dwa osobne `RTV` i `AGD`. Co musimy dodatkowo zrobić, żeby zachować spójność?
 
-- **drzewo z referencją na dzieci** - szukamy rodzica dla dawnego `RTV i AGD`, usuwamy tę kategorię z dzieci i dodajemy dwie nowe - konieczna będzie modyfikacja dodatkowego jednego dokumentu (rodzica kategorii `RTV i AGD`),
+- **drzewo z referencją na dzieci** - szukamy rodzica dla dawnego `RTV i AGD`, usuwamy tę kategorię z dzieci i dodajemy dwie nowe - konieczna będzie modyfikacja jednego dodatkowego dokumentu (rodzica kategorii `RTV i AGD`),
 - **drzewo z referencją na rodzica** - szukamy dzieci dla dawnego `RTV i AGD` i przypisujemy im nowego rodzica `RTV` lub `AGD` - konieczna będzie modyfikacja wszystkich dzieci kategorii `RTV i AGD`,
 - **drzewo z listą przodków** - szukamy wszystkich potomków i zastępujemy im przodka `RTV i AGD` nowym `RTV` lub `AGD` - konieczna będzie modyfikacja wszystkich potomków kategorii `RTV i AGD`,
-- **drzewo z zagnieżdżonymi zbiorami** - należy dokonać zmian jak dla drzewa z referencją na rodzica i przeliczyć wszystkie indeksy - należy zmodyfikować wszystkie elementy kolekcji.
+- **drzewo z zagnieżdżonymi zbiorami** - należy dokonać zmian jak dla drzewa z referencją na rodzica i przeliczyć wszystkie indeksy oraz zmodyfikować wszystkie elementy kolekcji.
 
-Jak widać liczba dotkniętych zmianą dokumentów może być bardzo duża, z tego powodu wzorzec ten jest używany w przypadkach gdzie struktura jest niezmienna lub zmienia się bardzo rzadko.
+Jak widać, liczba dokumentów dotkniętych zmianą może być bardzo duża. Dlatego wzorzec ten jest używany w przypadkach, gdzie struktura jest niezmienna lub zmienia się bardzo rzadko.
 
 ## Podsumowanie
-Nie ma najlepszej uniwersalnej implementacji tego wzorca. Co będzie najlepsze zależy od naszych potrzeb. Po jakie dane często sięgamy, jak wyszukujemy. Nic nie stoi na przeszkodzie by połączyć wspomniane rozwiązania i rozszerzyć obiekt o listę przodków jak i listę dzieci. Pamiętajmy jednak, że wzorzec ten wymusza dodatkową pracę przy zmianach struktury danych.
+Nie ma jednej najlepszej implementacji tego wzorca. Co będzie najlepsze, zależy od naszych potrzeb i od tego, po jakie dane najczęściej sięgamy i jak je wyszukujemy. Nic nie stoi na przeszkodzie, by połączyć rozwiązania i rozszerzyć obiekt zarówno o listę przodków jak i o listę dzieci. Pamiętajmy jednak, że wzorzec ten wymusza dodatkową pracę przy zmianach struktury danych.
 
 ## Przydatne linki
 - [https://www.mongodb.com/blog/post/building-with-patterns-the-tree-pattern](https://www.mongodb.com/blog/post/building-with-patterns-the-tree-pattern)
