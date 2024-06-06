@@ -15,4 +15,11 @@
 
 .author-tiles-space {
   @include section-small-xs-space();
+
+  @include desktop {
+    .row .post-tile:first-child {
+      display: flex;
+    }
+  }
+
 }
