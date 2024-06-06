@@ -85,7 +85,8 @@ $small-tile-img-width: 360px;
 
   .big-post-image {
     width: 592px;
-    height: 435px;
+    height: calc(100% - 48px);
+    margin: 24px 0;
   }
 
   .big-post-image {
