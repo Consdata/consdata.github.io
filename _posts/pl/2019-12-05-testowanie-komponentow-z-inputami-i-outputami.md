@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-12-04 08:00:00 +0100
 author:    pgrobelny
-image:     /assets/img/posts/2019-12-05-testowanie-komponentow-z-inputami-i-outputami/frontend-test.jpg
+image:     /assets/img/posts/2019-12-05-testowanie-komponentow-z-inputami-i-outputami/thumbnail.webp
 tags:
     - Jasmine
     - Angular

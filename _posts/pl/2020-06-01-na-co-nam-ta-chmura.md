@@ -5,7 +5,7 @@ date:      2020-06-01 08:00:00 +0100
 published: true
 lang: pl
 author:    mhoja
-image:     /assets/img/posts/2020-06-01-na-co-nam-ta-chmura/cloud.jpg
+image:     /assets/img/posts/2020-06-01-na-co-nam-ta-chmura/thumbnail.webp
 tags:
     - cloud
     - google cloud platform

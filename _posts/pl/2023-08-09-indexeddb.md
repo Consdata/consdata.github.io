@@ -6,7 +6,7 @@ published: true
 didyouknow: false
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/post_img.jpg
+image: /assets/img/posts/2023-08-09-czy-wiesz-czym-jest-indexeddb/thumbnail.webp
 description:
 tags:
   - indexeddb

@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: pgrobelny
-image: /assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/code.webp
+image: /assets/img/posts/2023-12-29-czy-wiesz-ze-w-typescript-mozesz-laczyc-typy-za-pomoca-interpolacji-ciagow-znakow/thumbnail.webp
 description: Krótki wpis Template Literal Types, czyli o łączeniu Literal Types za pomocą interpolacji ciągów znaków.
 tags:
 - typescript

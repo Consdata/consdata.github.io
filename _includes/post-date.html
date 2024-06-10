@@ -2,34 +2,34 @@
 {{ include.date | date: "%-d" }}
 {% unless include.lang == 'en' %}
 {% case m %}
-{% when '1' %}stycznia
-{% when '2' %}lutego
-{% when '3' %}marca
-{% when '4' %}kwietnia
-{% when '5' %}maja
-{% when '6' %}czerwca
-{% when '7' %}lipca
-{% when '8' %}sierpnia
-{% when '9' %}września
-{% when '10' %}października
-{% when '11' %}listopada
-{% when '12' %}grudnia
+{% when '1' %}{% if include.short %}sty{% else %}stycznia{% endif %}
+{% when '2' %}{% if include.short %}lut{% else %}lutego{% endif %}
+{% when '3' %}{% if include.short %}mar{% else %}marca{% endif %}
+{% when '4' %}{% if include.short %}kwi{% else %}kwietnia{% endif %}
+{% when '5' %}{% if include.short %}maj{% else %}maja{% endif %}
+{% when '6' %}{% if include.short %}cze{% else %}czerwca{% endif %}
+{% when '7' %}{% if include.short %}lip{% else %}lipca{% endif %}
+{% when '8' %}{% if include.short %}sie{% else %}sierpnia{% endif %}
+{% when '9' %}{% if include.short %}wrz{% else %}września{% endif %}
+{% when '10' %}{% if include.short %}paź{% else %}października{% endif %}
+{% when '11' %}{% if include.short %}lis{% else %}listopada{% endif %}
+{% when '12' %}{% if include.short %}gru{% else %}grudnia{% endif %}
 {% endcase %}
 {% endunless %}
 {% if include.lang == 'en' %}
 {% case m %}
-{% when '1' %}Jan
-{% when '2' %}Feb
-{% when '3' %}Mar
-{% when '4' %}Apr
-{% when '5' %}May
-{% when '6' %}Jun
-{% when '7' %}Jul
-{% when '8' %}Aug
-{% when '9' %}Sep
-{% when '10' %}Oct
-{% when '11' %}Nov
-{% when '12' %}Dec
+{% when '1' %}{% if include.short %}Jan{% else %}January{% endif %}
+{% when '2' %}{% if include.short %}Feb{% else %}February{% endif %}
+{% when '3' %}{% if include.short %}Mar{% else %}March{% endif %}
+{% when '4' %}{% if include.short %}Apr{% else %}April{% endif %}
+{% when '5' %}{% if include.short %}May{% else %}May{% endif %}
+{% when '6' %}{% if include.short %}Jun{% else %}June{% endif %}
+{% when '7' %}{% if include.short %}Jul{% else %}July{% endif %}
+{% when '8' %}{% if include.short %}Aug{% else %}August{% endif %}
+{% when '9' %}{% if include.short %}Sep{% else %}September{% endif %}
+{% when '10' %}{% if include.short %}Oct{% else %}October{% endif %}
+{% when '11' %}{% if include.short %}Nov{% else %}November{% endif %}
+{% when '12' %}{% if include.short %}Dec{% else %}December{% endif %}
 {% endcase %}
 {% endif %}
 {{ include.date | date: "%Y" }}

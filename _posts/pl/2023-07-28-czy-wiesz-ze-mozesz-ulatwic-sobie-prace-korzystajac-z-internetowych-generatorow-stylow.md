@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: pgrobelny
-image: /assets/img/posts/2023-07-28-czy-wiesz-ze-mozesz-ulatwic-sobie-prace-korzystajac-z-internetowych-generatorow-stylow/css.jpg
+image: /assets/img/posts/2023-07-28-czy-wiesz-ze-mozesz-ulatwic-sobie-prace-korzystajac-z-internetowych-generatorow-stylow/thumbnail.webp
 tags:
 - css
 - generator

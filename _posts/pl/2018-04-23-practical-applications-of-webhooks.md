@@ -6,7 +6,7 @@ published: true
 lang: pl
 lang-ref:  practical-applications-of-webhooks
 author:    bradlinski
-image:     /assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/webhook.png
+image:     /assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/thumbnail.webp
 tags:
     - sonarqube
     - webhook

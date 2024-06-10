@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: bmitan
-image: /assets/img/posts/2023-08-25-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/sequence.webp
+image: /assets/img/posts/2023-08-25-czy-wiesz-czym-sa-sekwencje-i-jak-ich-uzywac/thumbnail.webp
 tags:
 - sekwencje
 - bazy danych

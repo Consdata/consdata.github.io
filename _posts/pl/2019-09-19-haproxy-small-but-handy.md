@@ -6,7 +6,7 @@ lang: pl
 lang-ref:  haproxy-small-handy
 date:      2019-09-16 08:00:00 +0100
 author:    tlewandowski
-image:     /assets/img/posts/2019-09-19-haproxy-mala-rzecz-a-cieszy/haproxy.jpg
+image:     /assets/img/posts/2019-09-19-haproxy-mala-rzecz-a-cieszy/thumbnail.webp
 tags:
   - programming
   - load-balancing

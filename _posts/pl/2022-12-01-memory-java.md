@@ -7,7 +7,7 @@ didyouknow: false
 lang: pl
 author: mmergo
 coauthor: jwizla
-image:     /assets/img/posts/2022-12-01-memory-java/memory.jpg
+image:     /assets/img/posts/2022-12-01-memory-java/thumbnail.webp
 tags:
 
 - Java

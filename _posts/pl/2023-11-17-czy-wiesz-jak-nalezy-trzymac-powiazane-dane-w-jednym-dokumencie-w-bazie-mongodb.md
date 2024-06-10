@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: bmitan
-image: /assets/img/posts/2023-11-17-czy-wiesz-jak-nalezy-trzymac-powiazane-dane-w-jednym-dokumencie-w-bazie-mongodb/data.webp
+image: /assets/img/posts/2023-11-17-czy-wiesz-jak-nalezy-trzymac-powiazane-dane-w-jednym-dokumencie-w-bazie-mongodb/thumbnail.webp
 tags:
 - mongodb
 - subset

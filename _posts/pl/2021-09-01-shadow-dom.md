@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    pgrobelny
-image:     /assets/img/posts/2021-09-01-shadow-dom/shadow.webp
+image:     /assets/img/posts/2021-09-01-shadow-dom/thumbnail.webp
 tags:
 - javascript
 ---

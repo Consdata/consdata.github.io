@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    fphilavong
-image:     /assets/img/posts/2021-12-14-http-idempotency/http-idempotency.jpg
+image:     /assets/img/posts/2021-12-14-http-idempotency/thumbnail.webp
 tags:
 - http
 - idempotency

@@ -8,7 +8,7 @@ lang:      en
 lang-ref:  kafla-retry-dlq
 interpreter: Piotr Żurawski
 author:    jgrobelny
-image:     /assets/img/posts/2021-09-13-kafka-retry-dlq/kafka-retry-dlq4.png
+image:     /assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp
 description: "Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?"
 tags:
 - kouncil

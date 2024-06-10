@@ -1,16 +1,30 @@
 article {
   @import "post-syntax-highlighting";
-  @import "post-headers";
   @import "post-images";
   @import "post-blockquote";
   @import "post-author-bio";
-  @import "post-author-bio-mobile";
   @import "post-youtube";
   @import "post-links";
   @import "post-lists";
   @import "post-content";
   @import "post-sidebar";
   @import "post-share-bar";
-  @import "post-disqus";
-  @import "post-languages";
+  @import "recommended-posts";
+}
+
+.post-content-sidebar {
+  @include flex-container;
+  justify-content: space-between;
+
+  @include tablet-and-desktop {
+    margin-top: $desktop-section-small-space;
+  }
+
+  @include mobile {
+    margin-top: $mobile-section-xs-space;
+  }
+
+  @include tablet {
+    gap: 24px;
+  }
 }

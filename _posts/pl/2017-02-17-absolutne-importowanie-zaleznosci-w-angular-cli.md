@@ -5,7 +5,7 @@ date:      2017-02-17 08:00:00 +0100
 published: true
 lang: pl
 author:    glipecki
-image:     /assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/angular-cli.jpg
+image:     /assets/img/posts/2017-02-17-absolutne-importowanie-zaleznosci-w-angular-cli/thumbnail.webp
 tags:
     - angular
 description: "Odpowiedzialny programista tworząc aplikacje przestrzega powszechnie uznanych zasad tworzenia oprogramowania. Jedną z takich zasad jest Single Responsibility Principle, która uczy nas, że każdy moduł powinien mieć jedno, jasno zdefiniowane zadanie. Przenosząc tę zasadę na strukturę aplikacji powinniśmy, co najmniej, wydzielić każdą tworzoną klasę do osobnego pliku. O ile świat JavaScript’u próbował wielokrotnie zmierzyć się z problemem modularyzacji aplikacji, to jednak dopiero standard ES6 pozwolił w pełni zaadaptować takie podejście."

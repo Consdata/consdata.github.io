@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2020-02-14 08:00:00 +0100
 author:    dmejer
-image:     /assets/img/posts/2020-02-14-angular-app-initializer/app_initializer.png
+image:     /assets/img/posts/2020-02-14-angular-app-initializer/thumbnail.webp
 tags:
     - Angular
     - APP_INITIALIZER

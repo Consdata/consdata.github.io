@@ -5,7 +5,7 @@ date:      2020-11-04 08:00:00 +0100
 published: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2020-11-04-nowa-forma-meetupu/consdata_tech_webinar.jpeg
+image:     /assets/img/posts/2020-11-04-nowa-forma-meetupu/thumbnail.webp
 tags:
     - consdatatech
     - meetup

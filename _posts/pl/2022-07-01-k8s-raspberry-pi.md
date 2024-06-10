@@ -7,7 +7,7 @@ didyouknow: false
 lang:      pl
 author:    bradlinski
 afterhours: true
-image: /assets/img/posts/2022-10-03-k8s-raspberry-pi/cluster.jpg
+image: /assets/img/posts/2022-10-03-k8s-raspberry-pi/thumbnail.webp
 tags:
 - k8s
 - kubernetes
