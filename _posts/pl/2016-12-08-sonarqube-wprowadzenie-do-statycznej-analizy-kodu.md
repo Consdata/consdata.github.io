@@ -5,7 +5,7 @@ date:      2016-12-08 08:00:00 +0100
 published: true
 lang: pl
 author:    jgrobelny
-image:     /assets/img/posts/2016-12-08-sonarqube-wprowadzenie-do-statycznej-analizy-kodu/sonarqube.png
+image:     /assets/img/posts/2016-12-08-sonarqube-wprowadzenie-do-statycznej-analizy-kodu/thumbnail.webp
 tags:
     - sonarqube
     - jakość kodu

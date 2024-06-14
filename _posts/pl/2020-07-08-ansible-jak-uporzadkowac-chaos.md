@@ -5,7 +5,7 @@ date:      2020-07-08 08:00:00 +0100
 published: true
 lang: pl
 author:    rmastalerek
-image:     /assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/chaos.jpg
+image:     /assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/thumbnail.webp
 tags:
     - ansible
     - automation

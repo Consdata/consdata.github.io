@@ -1,77 +1,38 @@
 ---
 layout: default
-comments: true
 ---
 {% assign post = page %}
 {% assign author = site.authors | where: "short_name", post.author | first %}
 {% assign coauthor = site.authors | where: "short_name", post.coauthor | first %}
 <div class="blog">
     <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-        <header>
-            {% include main-page-link.html %}
-            <div class="row">
-                <div class="col-15">
-                    <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">{{ page.tags[0] }}</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+                {% include post_metadata.html %}
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            {{ content }}
+                            {% if post.interpreter %}
+                            {% include translation-details.html %}
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-15">
-                    {% include post_metadata.html %}
-                </div>
-                <div class="col-5">
-                    {% include language_options.html %}
-                </div>
-            </div>
-        </header>
-        <div itemprop="articleBody" class="post-content-container">
-            <div class="post-content-left-pane">
-                <div class="post-content">
-                    <div class="{% if post.didyouknow %} big-post-tile-did-you-know {% elsif post.afterhours %} big-post-tile-after-hours {% endif %} post-highlight-image">
-                        <img src="{{post.image}}" alt="postimage"/>
-                    </div>
-                    <div class="social-media-sharing">
-                        {% include share_bar.html %}
-                    </div>
-                    <div id="myModal" class="modal">
-                        <i id="modal-close" class="fa fa-times close" aria-hidden="true"
-                           onclick="closeModal()"></i>
-                        <img class="modal-content">
-                    </div>
-                    {{ content }}
-                    {% if post.interpreter %}
-                    {% include translation-details.html %}
-                    {% endif %}
-                    {% if post.didyouknow %}
-                    {% include did-you-know-box.html %}
-                    {% endif %}
-                    {% if post.afterhours %}
-                    {% include after-hours-box.html %}
-                    {% endif %}
-                </div>
-            </div>
-            <div class="sidebar">
+            <div class="sidebar-desktop">
                 {% include latest_posts.html %}
-                {% include recommended-posts-desktop.html %}
                 {% include consdata-offers.html %}
+                {% include newsletter-sidebar-tile.html %}
             </div>
         </div>
-        <div class="post-post-section-mobile">
-            {% include latest_posts.html %}
-        </div>
-        <div class="post-post-section-mobile">
-            {% include recommended-posts-mobile.html %}
-        </div>
-        <div class="post-post-section-mobile">
+        {% include recommended-posts.html %}
+        <div class="consdata-offers-mobile">
             {% include consdata-offers.html %}
         </div>
-        {% include author_bio.html %}
-        {%- if post.coauthor -%}
-            {% assign author = site.authors | where: "short_name", post.coauthor | first %}
-            {% include author_bio.html %}
-        {%- endif -%}
-        {%- if site.disqus.shortname -%}
-            {%- include disqus_comments.html -%}
-        {%- endif -%}
+        {% include newsletter-subscription.html %}
     </article>
 </div>
 <script>
@@ -82,8 +43,7 @@ comments: true
         .then(store => {
             function displayResults(results) {
                 if (results.length > 0) {
-                    const container = document.getElementById("recommended-posts-desktop");
-                    const containerMobile = document.getElementById("recommended-posts-mobile");
+                    const container = document.getElementById("recommended-posts");
                     results
                         .forEach(result => {
                             const item = store[result.ref];
@@ -98,7 +58,6 @@ comments: true
                                 anchor.appendChild(postTitle);
                                 listElement.appendChild(anchor);
                                 container.appendChild(listElement);
-                                containerMobile.appendChild(listElement.cloneNode(true));
                             }
                         });
                     if (container.children.length < 1) {
@@ -126,21 +85,7 @@ comments: true
             displayResults(results);
         })
 
-    function zoomImage($event) {
-        const modal = document.getElementById('myModal');
-        modal.getElementsByTagName('img')[0].src = $event.target.src;
-        modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('myModal').style.display = 'none';
-    }
-
     function hideRecommendedPosts() {
-        document.getElementById("recommended-posts-sidebar").style.display = 'none';
-        document.getElementById("recommended-posts-bottombar").style.display = 'none';
+        document.getElementById("recommended-posts-container").style.display = 'none';
     }
-
-    const postImages = document.querySelectorAll('.post-content img');
-    postImages.forEach(x => x.addEventListener('click', zoomImage));
 </script>

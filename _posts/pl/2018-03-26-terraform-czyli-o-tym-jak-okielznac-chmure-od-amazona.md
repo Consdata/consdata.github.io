@@ -5,7 +5,7 @@ date:      2018-03-26 08:00:00 +0100
 published: true
 lang: pl
 author:    jgrobelny
-image:     /assets/img/posts/2018-03-26-terraform-czyli-o-tym-jak-okielznac-chmure-od-amazona/terraform.png
+image:     /assets/img/posts/2018-03-26-terraform-czyli-o-tym-jak-okielznac-chmure-od-amazona/thumbnail.webp
 tags:
     - terraform
     - aws

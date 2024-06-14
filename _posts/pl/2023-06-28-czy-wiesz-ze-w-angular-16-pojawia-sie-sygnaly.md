@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-06-28-czy-wiesz-ze-w-angular-16-pojawia-sie-sygnaly/angular.png
+image: /assets/img/posts/2023-06-28-czy-wiesz-ze-w-angular-16-pojawia-sie-sygnaly/thumbnail.webp
 description: Sygnały to nowa koncepcja w Angular, upraszcza ona tworzenie reaktywnych komponentów. Mogą one w przyszłości doprowadzić do usunięcia Zone.js z Angular.
 tags:
 - angular

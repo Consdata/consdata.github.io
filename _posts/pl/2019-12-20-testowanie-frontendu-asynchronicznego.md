@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-12-19 08:00:00 +0100
 author:    amarszalek
-image:     /assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/testowanie-frontendu-asynch.jpg
+image:     /assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/thumbnail.webp
 tags:
     - Jasmine
     - Angular

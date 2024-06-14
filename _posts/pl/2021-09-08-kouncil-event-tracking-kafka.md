@@ -7,7 +7,7 @@ didyouknow: false
 lang: pl
 lang-ref:   kouncil-event-tracking
 author:    mmergo
-image:     /assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/route.jpeg
+image:     /assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp
 description: "Event tracking pozwala na prześledzenie oraz wizualizację drogi danego eventu, czy też procesu, przez topiki na Kafce."
 tags:
 - kouncil

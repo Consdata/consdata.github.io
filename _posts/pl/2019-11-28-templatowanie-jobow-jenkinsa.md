@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-11-28 08:00:00 +0100
 author:    dkubiak
-image:     /assets/img/posts/2019-11-28-templatowanie-jobow-jenkinsa/jenkins-job.jpg
+image:     /assets/img/posts/2019-11-28-templatowanie-jobow-jenkinsa/thumbnail.webp
 tags:
     - jenkins job
     - jenkins template

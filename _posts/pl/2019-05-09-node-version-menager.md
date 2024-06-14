@@ -5,7 +5,7 @@ date:      2019-05-09 17:00:00 +0100
 published: true
 lang: pl
 author:    kczechowski
-image:     /assets/img/posts/2019-05-09-node-version-menager/Node-Version-Manager.jpg
+image:     /assets/img/posts/2019-05-09-node-version-menager/thumbnail.webp
 tags:
     - nvm
     - node

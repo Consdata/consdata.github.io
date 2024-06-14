@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-09-05 08:00:00 +0100
 author:    jgrobelny
-image:     /assets/img/posts/2019-09-05-kafka-retry-dlq/apache-kafka.png
+image:     /assets/img/posts/2019-09-05-kafka-retry-dlq/thumbnail.webp
 tags:
   - programming
   - kafka

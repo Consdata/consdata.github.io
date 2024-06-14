@@ -5,7 +5,7 @@ date:      2020-08-27 08:00:00 +0100
 published: true
 lang: pl
 author:    mkociszewski
-image:     /assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/axontest.jpg
+image:     /assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/thumbnail.webp
 tags:
     - java
     - microservices

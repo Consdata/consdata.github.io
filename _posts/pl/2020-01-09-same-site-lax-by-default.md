@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2020-01-09 08:00:00 +0100
 author:    mpogorzelski
-image:     /assets/img/posts/2020-01-09-same-site-lax-by-default/samesite.jpg
+image:     /assets/img/posts/2020-01-09-same-site-lax-by-default/thumbnail.webp
 tags:
   - cookies
   - security

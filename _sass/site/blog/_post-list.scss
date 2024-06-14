@@ -1,29 +1,17 @@
-.post-animation {
-  transition: 0.2s;
-  animation: ease;
-
-  &:hover {
-    transform: translate3d(0, -1px, 0);
-    box-shadow: $post-tile-hover-shadow;
-  }
-}
+$small-tile-img-width: 360px;
 
 .post-tile {
   @include flex-container;
   flex-direction: column;
   justify-content: space-between;
-  margin: $post-tile-margin-top $small-padding $post-tile-margin-bottom;
   @include mobile {
     margin: $post-tile-margin-top 0;
   }
-  @extend .post-animation;
-}
+  width: $small-tile-img-width;
 
-.post-title {
-  font-weight: bold;
-  font-size: 1.5em;
-  letter-spacing: $general-letter-spacing;
-  margin-top: 0;
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .search-result-tile {
@@ -33,9 +21,34 @@
 .post-tile-content {
   @include flex-container;
   flex-direction: column;
-  justify-content: space-between;
-  padding: $small-padding;
   height: 100%;
+
+  .badge {
+    margin-bottom: 20px;
+  }
+}
+
+.big-post-tile-content .badge, .small-post-image {
+  margin-bottom: 24px;
+
+  @include mobile {
+    margin-bottom: 16px;
+  }
+}
+
+.post-title {
+  margin-top: 0;
+  margin-bottom: 24px;
+
+  @include mobile {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.post-date {
+  @include body-xs;
+  color: $gray-500;
 }
 
 .post-info {
@@ -44,94 +57,147 @@
 }
 
 .post-description {
-  font-size: 1.2em;
-  letter-spacing: $general-letter-spacing;
-}
+  @include body-small;
+  margin-top: 0;
+  margin-bottom: 32px;
 
-.big-post-tile-content {
-  @include flex-container;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: $small-padding;
-  @include tablet-and-desktop {
-    padding: $content-padding;
+  @include mobile {
+    @include body-xs;
+    margin-top: 0;
+    margin-bottom: 20px;
   }
 
-  .post-title {
-    font-size: 1.6em;
+  a {
+    @include small-regular;
+
+    &:hover {
+      @include animation-ease;
+      color: $gray-900;
+    }
+  }
+
+}
+
+.big-post-tile {
+  @include section-space;
+  @include flex-container;
+  flex-direction: row;
+
+  .big-post-image {
+    width: 592px;
+    height: calc(100% - 48px);
+    margin: 24px 0;
+  }
+
+  .big-post-image {
+    border-radius: 24px;
+    object-fit: cover;
+
+    &:hover {
+      @include animation-ease;
+      filter: brightness(1.2);
+    }
+  }
+
+  &-content {
+    @include flex-container;
+    width: 50%;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 48px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background-image: url($icon-dir + "logo_bg.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  &-post-title {
+    font-size: $big-font-size;
+  }
+
+  &-author {
+    margin-top: auto;
+  }
+
+  h2 {
+    margin: 0;
   }
 }
 
 .small-author-image {
-  width: $medium-author-image-size;
-  height: auto;
+  width: $avatar-size;
+  height: $avatar-size;
   border-radius: 50%;
-  margin-right: $very-small-padding;
+  margin-right: $small-padding;
 }
 
 .tile-author {
   position: relative;
   @include flex-container;
-  margin-top: $content-padding;
   align-items: center;
+  margin-top: auto;
 }
 
 .author-name {
-  z-index: 2;
-  font-weight: bold;
+  @include body-small-semibold;
+  color: $gray-500;
 }
 
 .author-name.coauthor {
-  z-index: 1;
   position: absolute;
-  left: -15px;
-  top: -15px;
+  left: 32px;
+
+  .small-author-image {
+    outline: 2px solid $color-white;
+  }
 }
 
-.highlight-image {
+.authors-container {
+  width: 84px;
+  height: $avatar-size;
+}
+
+.author-img {
+  height: $avatar-size;
+}
+
+.author-name, .author-name.coauthor {
+  &:hover {
+    @include animation-ease;
+    color: $gray-900;
+  }
+}
+
+.tile-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  &:hover {
+    @include animation-ease;
+    filter: brightness(1.2);
+  }
 }
 
 .small-post-image {
-  min-height: 238px;
-  max-height: 238px;
-}
+  width: $small-tile-img-width;
+  height: 280px;
+  border-radius: $round-edge;
+  object-fit: cover;
+  margin-bottom: 20px;
 
-.post-tile-band {
-  overflow: hidden;
-  position: relative;
-
-  &:before {
-    transform: translateX(-45px) translateY(40px) rotate(-45deg);
-    display: block;
-    content: "Czy wiesz, że?";
-    width: 200px;
-    position: absolute;
-    height: 30px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+  @include mobile {
+    width: 100%;
   }
 }
 
-.post-tile-did-you-know, .big-post-tile-did-you-know {
-  @extend .post-tile-band;
-
-  &:before {
-    content: "Czy wiesz, że?";
-    background-color: $color-logo-red;
-    color: $color-white;
-  }
+.badge {
+  @include badge;
+  margin-bottom: 24px;
 }
 
-.post-tile-after-hours, .big-post-tile-after-hours {
-  @extend .post-tile-band;
-
-  &:before {
-    content: "Po godzinach";
-    background-color: $color-highlight-blue;
-    color: $color-white;
-  }
+.big-post-tile-post-description {
+  @include body;
+  color: $gray-500;
 }

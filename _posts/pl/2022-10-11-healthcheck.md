@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    kczarnecki
-image:     /assets/img/posts/2022-10-11-healthcheck/healthcheck.jpg
+image:     /assets/img/posts/2022-10-11-healthcheck/thumbnail.webp
 tags:
 
 - liveness probe

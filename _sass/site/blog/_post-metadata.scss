@@ -1,47 +1,54 @@
 .post-metadata {
-  $field-margin: 5px;
-
   @include flex-container;
-  color: $color-light-gray;
   align-items: center;
+  justify-content: space-between;
+}
 
-  .article-author {
-    @include flex-container;
-    align-items: center;
+.metadata {
+  @include flex-container;
+  gap: 32px;
+
+  @include mobile{
+    gap: 8px;
   }
+}
 
-  .author-name {
-    width: 85px;
-    height: 75px;
-    position: relative;
+.time {
+  margin-right: 16px;
+
+  @include mobile{
+    margin-right: 4px;
   }
+}
 
-  .author-name-metadata {
-    font-size: 1.3em;
-    letter-spacing: $general-letter-spacing;
-    font-weight: bold;
+.reading-time {
+  @include flex-container;
+
+  @include mobile{
+    @include body-xs-semibold()
   }
+}
 
-  .author-separator {
-    margin-left: $field-margin;
+.time, .publish-date, .separator {
+  @include body-small-semibold();
+  text-align: center;
+  color: $gray-500;
+
+  @include mobile{
+    @include body-xs-semibold()
   }
+}
 
-  .author-image {
-    margin-left: $field-margin;
-    width: $small-author-image-size;
-    height: $small-author-image-size;
-    border-radius: 50%;
-    overflow: hidden;
+.clock-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
+  align-self: center;
+  margin: 0;
 
-    img {
-      max-width: $small-author-image-size;
-      max-height: $small-author-image-size;
-    }
+  @include mobile{
+    @include body-xs-semibold();
+    width: 12px;
+    height: 12px;
   }
-
-  .coauthors {
-    @include flex-container;
-    align-items: center;
-  }
-
 }

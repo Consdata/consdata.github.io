@@ -6,7 +6,7 @@ published:  true
 didyouknow: false
 lang:       pl
 author:     mhoja
-image:      /assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/clouds.jpg
+image:      /assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/thumbnail.webp
 tags:
     - google cloud function
     - google cloud platform

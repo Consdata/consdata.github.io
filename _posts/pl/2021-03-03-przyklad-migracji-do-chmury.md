@@ -5,7 +5,7 @@ date:      2021-03-03 08:00:00 +0100
 published: true
 lang:      pl
 author:    mhoja
-image:     /assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/clouds.jpeg
+image:     /assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/thumbnail.webp
 tags:
     - cloud
     - serverless

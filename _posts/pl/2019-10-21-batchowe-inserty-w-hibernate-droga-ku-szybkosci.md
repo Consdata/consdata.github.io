@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-10-21 08:00:00 +0100
 author:    rrudko
-image:     /assets/img/posts/2019-10-21-batchowe-inserty-w-hibernate-droga-ku-szybkosci/inserty-w-hibernate.jpg
+image:     /assets/img/posts/2019-10-21-batchowe-inserty-w-hibernate-droga-ku-szybkosci/thumbnail.webp
 tags:
   - programming
   - hibernate

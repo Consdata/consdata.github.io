@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2021-05-31-slowo-kluczowe-volatile/volatile.jpeg
+image:     /assets/img/posts/2021-05-31-slowo-kluczowe-volatile/thumbnail.webp
 tags:
     - java
 description: "Słowo kluczowe volatile wydaje się jednym z najrzadziej stosowanych, ale też najbardziej tajemniczych i najsłabiej poznanych słów kluczowych w Javie. Do czego więc służy i czy jest się czego bać?"
