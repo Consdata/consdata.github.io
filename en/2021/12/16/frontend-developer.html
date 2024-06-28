@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Frontend Developer | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Frontend Developer" />
+<meta name="author" content="glipecki" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! 🙂" />
+<meta property="og:description" content="Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! 🙂" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2021/12/16/frontend-developer.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/12/16/frontend-developer.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-12-17-frontend-developer/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-16T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-12-17-frontend-developer/thumbnail.webp" />
+<meta property="twitter:title" content="Frontend Developer" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"glipecki"},"headline":"Frontend Developer","dateModified":"2021-12-16T01:00:00-06:00","datePublished":"2021-12-16T01:00:00-06:00","@type":"BlogPosting","description":"Czy Frontend Developer w Consdata robi stronki? Przeczytaj kim jest, czym się zajmuje i jak doszliśmy do obecnego kształtu tej roli. W bonusie krótki przegląd naszych projektów i opowieść dlaczego mamy frontendowca obok full-stacka?! 🙂","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/12/16/frontend-developer.html"},"url":"https://blog.consdata.tech/2021/12/16/frontend-developer.html","image":"https://blog.consdata.tech/assets/img/posts/2021-12-17-frontend-developer/thumbnail.webp","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2021/12/16/frontend-developer.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">frontend</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Frontend Developer</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/glipecki.html">
+        <img class="author-image" src="/assets/img/authors/glipecki.webp" alt="author">
+        <span class="author-name">Grzegorz Lipecki</span>
+        <a class="author" href="https://github.com/glipecki">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+16
+
+
+December
+
+
+2021
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Ostatnio ktoś mnie zapytał o naszą ofertę na Frontend Developera słowami “<em>To co, robicie stronki?</em>”.</p>
+
+<p>Czy Frontend Developer w Consdata robi stronki? #takżetego 😀</p>
+
+<p>Korzystając z okazji, chciałbym przybliżyć trochę projekty, którymi się zajmujemy i opowiedzieć, jak wygląda przeciętny sprint frontend/fullstack developera. Przełom roku to dla wielu moment postanowień i zmian - może poniższy opis to impuls, którego właśnie szukasz? 😉</p>
+
+<h2 id="frontend-developer-czyli-kto">Frontend developer, czyli kto?</h2>
+
+<p>Czym właściwie zajmuje się frontend developer w Consdata? Jeżeli obstawiałeś, że praca na froncie to głównie pisanie CSSków to muszę Cię rozczarować (albo uspokoić, różnie ludzie na to patrzą 😉). Wielu naszych developerów może przez całe sprinty nie dotykać HTMLa czy CSSów, a nadal być pewnym, że robią zadania na froncie.</p>
+
+<p>Jakieś 15 lat temu świat był prosty. Jak się chciało mieć aplikację web to zapewne była to statycznie generowana strona HTML+CSS podparta backendem i jakąś formą budowania HTMLa po stronie serwera. Wtedy większość z nas ignorowała cały obszar frontu, zostawiając to komuś kto jest “gdzieś” i zajmuje się takimi rzeczami. Dobrze było, jak ktoś od frontu był w ogóle na miejscu, równie często mogła być to osoba spoza firmy wskakująca na praktycznie gotowy fragment systemu. Powiedzmy, że “ktoś później wpadnie zrobić CSSki” 😉</p>
+
+<p>Kolejne kilka lat i okazało się, że świat nie kończy się na użytkownikach oglądających białe ekrany w oczekiwaniu na załadowanie kolejnej strony. Część z nas odkryła, że w przeglądarce da się wykonać kod i istnieje coś takiego jak JavaScript. Oczywiście na naukę nowych rzeczy szkoda nam było czasu, a JavaScript coś podobnie brzmi jak Java i radośnie wskoczyliśmy w GWT. Niby to fronty ale jednak w większości programiści Java nie specjalnie przejmowali się czy to Swing, czy GWT, w końcu autorzy postarali się o zbliżone API i wszystko było po staremu. Frontendowiec nadal był gdzieś obok, tylko miał trudniej. Trudniej uruchomić, trudniej ogarnąć strukturę, trudniej dopisać wstawkę w JSie. Nadal można było funkcjonować w modelu “ktoś później wpadnie zrobić CSSki” 😉</p>
+
+<p>Zapewne domyślasz się jaki jest efekt takiego podziału? Backend developerzy produkują coś, co nie jest do końca tym czym miało być, a frontend developerzy radzą sobie z tym jak mogą, osiągając jedynie fragment jakości potencjalnego rozwiązania. Brak komunikacji, zrozumienia potrzeb i ograniczeń “drugiej strony” wprost prowadzi do systemów niskiej jakości. Z obu stron “coś wyszło” i jakoś trzeba to zgrać w ramach QA 😉</p>
+
+<p>To co, do trzech razy sztuka? Za trzecim podejściem w końcu pogodziliśmy się, że z tematem należy się zmierzyć i nie taki diabeł straszny jak go malują. Obecnie aplikacje webowe mogą mieć znacznie więcej kodu niż wspierające je usługi. Od rozbudowanego backendu ze szczątkowym UI dochodzimy do miejsca, w którym to UI jest rozbudowany, a usługi są upraszczane i służą jedynie zaspokojeniu potrzeb frontu.</p>
+
+<p>Złożoność aplikacji doprowadziła nawet do dalszego rozróżniania specjalizacji!</p>
+
+<ul>
+  <li>programista (java/type/coffe/…)script, frontend developer,</li>
+  <li>programista ui,</li>
+</ul>
+
+<p>Tak, to te stanowiska potocznie nazywane frontendem i backendem frontendu. Dinozaury z serwerowymi korzeniami nie odpuszczają łatwo swoich nazw stanowisk 😉</p>
+
+<p>Skuteczny frontend developer łączy nie tylko te dwie funkcje, ale też potrafi sięgnąć głębiej i pracować z backendem. Takie holistyczne podejście pozwala mu swobodnie podejmować decyzje dążące do optymalnej realizacji oraz świadomie wybierać konkretne rozwiązania, znając ich konsekwencje i zalety. Dzięki temu swobodnie żongluje technikami backendu i frontendu, żeby osiągnąć zamierzony efekt i nigdy nie da sobie powiedzieć “tak musi być” czy “nie da się inaczej”. Mimo lekkiego tonu, warto jednak zapamiętać tę myśl, bo zdarza się, że znając tylko jedną stronę równania dążymy do rozwiązywania wszystkiego znanymi sobie narzędziami. Tak jak ten cieśla, który mając młotek wszędzie widzi gwoździe, tak i nam zdarzyło się wszędzie widzieć fabryki obiektów zamiast po prostu zmienić interfejs DTO 😉</p>
+
+<h2 id="odpowiedzialności-frontend-developera-w-świecie-full-stacków">Odpowiedzialności Frontend developera w świecie Full-Stacków</h2>
+
+<p>Czyli muszę znać UI, architekturę aplikacji i jeszcze backend? Przecież mamy też full-stacków, to jaka jest różnica?</p>
+
+<p>Bycie full-stackiem oznacza bycie wszechstronnym i zdolnym do podjęcia wszystkich wyzwań stawianych przed zespołem (w uproszczeniu, bo taki wątek poboczny zdominowałby cały wpis, a już <a href="https://porozmawiajmyoit.pl/poit-069-full-stack-developer/">byłem gościem podcastu na ten temat</a> 🙂).</p>
+
+<p>To znaczy, że w zależności od specjalizacji i zainteresowań, full-stack swobodnie porusza się we froncie w zakresie pracy, nazwijmy to, użytkowej. Umiejętność rozwoju zastanego kodu, realizacja tematów o znanym sposobie rozwiązania czy okazjonalne rozwiązywanie problemów z gatunku x-files, o ile szalenie ważna dla samodzielności zespołu, nadal nie zapewnia kompletu kompetencji.</p>
+
+<p>Frontend developer to osoba specjalizująca się w tworzeniu aplikacji web. Potrafi wyznaczyć długoterminową roadmapę rozwoju, określić kierunek technologiczny i dobrać najlepsze rozwiązania do napotkanych problemów. W gestii frontend developera jest dbanie o ciągły rozwój technologiczny, budowanie rozwiązań referencyjnych i wskazywanie innym sposobu pracy tam, gdzie kończą się znane przykłady i rozwiązania.</p>
+
+<p>To, czego możemy nauczyć się z krótkiej historii frontendu z początku artykułu to to, że silne rozdzielanie odpowiedzialności i stawianie jasnej granicy między frontend a backend developerami nie jest najlepszym pomysłem. Dlatego frontend-developer w Consdata w praktyce jest stanowiskiem zbieżnym z full-stackiem, jednak o nacisku położonym na część “ponad RESTem”. Tak jak od full-stacka oczekujemy, że poradzi sobie z typowymi tematami frontu, tak samo liczymy, że frontendowiec nie będzie się czuł zagubiony przy przeciętnych zagadnieniach backendu.</p>
+
+<p>Zrozumienie obu stron problemu jest kluczowe w zapobieganiu przerzucania się “u mnie działa” (ew. unikania sytuacji <a href="https://www.youtube.com/watch?v=USaxePzTmTs">“szach mat frontendowcy”</a> ;)).</p>
+
+<h2 id="ok-nie-csski-to-co">Ok, nie CSSki, to co?</h2>
+
+<p>Padło już wiele okrągłych zdań próbujących opisowo wytłumaczyć kontekst i motywację, pora zatem na kilka reprezentatywnych przykładów typowych zadań.</p>
+
+<ul>
+  <li>Rozbudowa aplikacji o współdzielony pomiędzy komponentami stan:
+    <ul>
+      <li>integracja biblioteki NgRx z aplikacją Angular,</li>
+      <li>przygotowanie konfiguracji lokalnej i produkcyjnej,</li>
+      <li>referencyjna implementacja obsługi stanu w jednym z modułów funkcjonalnych,</li>
+      <li>wypracowanie utili i wytycznych określających zalecany sposób implementacji i dobre praktyki,</li>
+      <li>przedstawienie implementacji zespołom i wskazanie materiałów poszerzających wiedzę.</li>
+    </ul>
+  </li>
+  <li>Wsparcie równoległej pracy wielu użytkowników nad pojedynczym elementem domeny:
+    <ul>
+      <li>zbudowanie mechanizmu wprowadzania zmian sterowanego zdarzeniami,</li>
+      <li>przygotowanie synchronizacji delt zmian klient-serwer,</li>
+      <li>podsystemu redukowania zdarzeń do projekcji bieżącego stanu po stronie aplikacji klienckiej,</li>
+      <li>propagowanie wiedzy i edukacja zespołu w zakresie wykorzystania rozwiązania.</li>
+    </ul>
+  </li>
+  <li>Możliwość rozbudowy aplikacji rozszerzeniami funkcjonalnymi dostarczanymi przez klienta w runtime:
+    <ul>
+      <li>określenie api i specyfikacji osadzania webcomponentów,</li>
+      <li>implementacja ładowania i obsługi cyklu życia komponentów klienta,</li>
+      <li>rekomendacje i współpraca w budowaniu gateway dla webcomponentów z uwzlędnieniem modelu uprawnień,</li>
+      <li>przygotowanie przykładów komponentów w oparciu o LitElement,</li>
+      <li>eksponowanie elementów UI aplikacji nadrzędnej jako webcomponenty dostępne dla komponentów rozszerzeń.</li>
+    </ul>
+  </li>
+  <li>Budowanie kreatora wieloetapowej akceptacji operacji asynchronicznych:
+    <ul>
+      <li>przygotowanie generycznego mechanizmu wieloetapowej akceptacji na wiele rąk,</li>
+      <li>referencyjna implementacja funkcjonalności potwierdzania paczek transakcji,</li>
+      <li>uogólnienie kodu na potrzeby przyszłych funkcjonalności i przygotowanie funkcjonalnych prototypów Storybook.</li>
+    </ul>
+  </li>
+  <li>Komponent tworzenia wiadomości oferujący funkcjonalność formatowania treści:
+    <ul>
+      <li>opracowanie komponentu edytora WYSIWYG z przykładami w UI guideline,</li>
+      <li>wykorzystanie komponentu na ekranie tworzenia wiadomości,</li>
+      <li>integracja wysyłki z istniejącą usługą REST z uwzględnieniem praktyk UI/UX i optymistycznego potwierdzania operacji.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>I tak dalej. To tylko kilka z przykładów kompetencji i umiejętności których szukamy u osób specjalizujących się w obszarze Frontend Developer.</p>
+
+<h2 id="czym-można-się-zająć-w-consdata">Czym można się zająć w Consdata?</h2>
+
+<p>W Consdata, w zależności od zespołu, możesz pracować przy jednej lub kilku z naszych kluczowych aplikacji web. W kolejnych punktach przejrzymy razem co, i w jakiej skali, budujemy dla naszych klientów.</p>
+
+<p>W zależności od wybranego projektu, pojawiające się w nim wyzwania będą bliżej domeny lub stosowanej technologii.</p>
+
+<p><img src="/assets/img/posts/2021-12-17-frontend-developer/os-projektow.webp" alt="Projekty Consdata" />
+<span class="img-legend">Projekty Consdata z uwzględnieniem charakterystyki nacisku na domenę lub technologię</span></p>
+
+<h3 id="ibiznes">iBiznes</h3>
+
+<p>iBiznes to złożony system bankowości elektronicznej do obsługi klienta korporacyjnego. Głównym wyznacznikiem projektu jest jego złożoność biznesowa.</p>
+
+<p>Mimo że dziedzina stanowi główne wyzwanie, to jednak nie brakuje w nim wyzwań technologicznych, takich jak np. wielomodułowa architektura zbudowana z myślą o niezależnych wdrożeniach obszarów funkcjonalnych, równoczesna praca wielu klientów nad pojedynczymi obiektami domeny czy optymalizacja z badaniami UX/UI i dbanie o czytelność złożonych biznesowo operacji.</p>
+
+<p>Jeżeli szukasz wyzwania w projekcie, który skupia się na domenie i jego złożoność leży w implementowanych funkcjonalnościach, to iBiznes jest właśnie dla Ciebie!</p>
+
+<p>iBiznes w liczbach to ~300k linii kodu TypeScript i ~30k linii SASS samego frontendu napisanego w Angularze!</p>
+
+<h3 id="mailbox">Mailbox</h3>
+
+<p>Skłaniasz się bardziej w stronę <em>cutting edge</em> technologii, o których tyle słyszysz na konferencjach? Twój wzrok powinien paść na projekty Mailbox. Nie da się mówić o Mailbox nie mówiąc o skali! Codzienna komunikacja z milionami klientów uczy nowego spojrzenia na nawet najprostsze problemy (zdziwiłbyś się ile daje optymalizacja aktualizacji licznika nieprzeczytanych wiadomości o, w praktyce, nieograniczonej liczbie użytkowników).</p>
+
+<p>Udział w projekcie Mailbox oferuje zrównoważoną dawkę złożoności biznesowej i wyzwań technologicznych.</p>
+
+<p>Dodatkowym atutem jest możliwość pochwalenia się znajomym i rodzinie co się ostatnio robiło, wystarczy, że są klientami jednego z naszych klientów, a że klienci duzi to i szansa na bycie ich klientem spora 😉</p>
+
+<p>~45k linii TypeScript z ~8k linii SASS stojących na froncie przed klastrem Kafki i Solara brzmi kusząco? Mailbox jest dla Ciebie!</p>
+
+<h3 id="eximee">Eximee</h3>
+
+<p>Praca z domeną Cię nie kręci? Zawsze od tematów biznesowych bardziej kręciły Cię wyzwania czysto technologiczne?</p>
+
+<p>Może warto spojrzeć na nasz system obsługi wniosków i procesów? Eximee na każdym kroku projektowane jest jako framework, z którego nasi klienci korzystają budując własne rozwiązania biznesowe.</p>
+
+<p>W Eximee nigdy nie ma jednego słusznego rozwiązania problemu, wszystko jest warunkowe, “zależy” i “oczywiście, że można zrobić inaczej”. Podstawą pracy jest, z jednej stronie naginanie tego co założyli twórcy, a z drugiej projektowanie systemu podatnego na naginanie. Skala systemu leży w jego generyczności i rozszerzalności. Samo Eximee jest uruchomione w kilkunastu wariantach wdrożeniowych u różnych klientów, często w wielu kanałach równolegle!</p>
+
+<p>Wszystko to sprawia, że Eximee to głównie wyzwanie technologiczne i poligon nowych rozwiązań testowanych u klientów w publicznie dostępnych systemach!</p>
+
+<p>Ale to nie wszystko, w projekcie budujemy też narzędzia graficznego projektowania procesów i wniosków, obsługi backoffice i inne. Poznaj potrzeby systemu spełniającego oczekiwania od klienta, przez obsługę backoffice, po pracę programistów oraz projektantów tworzących biznesowe rozwiązania oparte o dostarczaną przez Ciebie platformę.</p>
+
+<p>Twoi znajomi pewnie już korzystali z systemu który tworzysz, zapewne nie raz 😉</p>
+
+<p>Być może Eximee z ~250k linii TypeScript i ~130k linii SASS frameworku to coś dla Ciebie.</p>
+
+<h3 id="consdata-oss">Consdata OSS</h3>
+
+<p>Gdy nabierzesz ochoty na eksperymenty, prototypu i ogólnie luźniejsze podejście, zawsze możesz zaplanować swój czas na rozwój lub budżet chapterowy na wsparcie jednego z naszych projektów open source skupionych na GitHub: <a href="https://github.com/orgs/Consdata/repositories">https://github.com/orgs/Consdata/repositories</a>.</p>
+
+<p>Tylko z nazwy warto wspomnieć o:</p>
+
+<ul>
+  <li><a href="https://github.com/Consdata/kouncil">kouncil</a> - ui do Kafki zbudowany na bazie doświadczeń naszych i naszych klientów,</li>
+  <li><a href="https://github.com/Consdata/sonarqube-companion">sonarqube-companion</a> - agregat naruszeń SonarQube rozumiejący strukturę zespołów i śledzący trendy analizy statycznej,</li>
+  <li>inne narzędzia jak logger, aplikacje intranetowe do newsletterów, rezerwacji parkingu, czy śledzenia feedbacku i zbierania ankiet.</li>
+</ul>
+
+<p>W Open Source nie ograniczamy się żadnymi wytycznymi, to nasze poligony. Firebase? Angular czy React? Node czy Java? Spring czy Quarkus? Nie ma znaczenia! Zrealizuj funkcjonalność i powiedz innym jak poszło.</p>
+
+<h2 id="dołączysz">Dołączysz?</h2>
+
+<p>Czujesz, że frontend to może być miejsce dla Ciebie? Zainteresował Cię któryś z naszych projektów? Czujesz, że podołasz? Chcesz uczestniczyć w wyznaczaniu architektury i projektowaniu aplikacji web z szerokiego portoflio?</p>
+
+<p>Sprawdź nasze oferty, u nas każdy znajdzie coś dla siebie 😉</p>
+
+<p>Prowadzimy obecnie rekrutację na stanowisko Frontend Developer. Poszukujemy osób biegłych w tworzeniu aplikacji web, które pomogą nam wyznaczyć dalszy kierunek rozwoju i rozpędzić toczące się już zmiany w naszych aplikacjach. Kluczowa jest dla nas wiedza z poziomu projektowania aplikacji, wierzymy, że braki w tworzeniu komponentów czy jedynie ogólne wyczucie “tych backendów” to tematy, nad którymi możemy już pracować razem.</p>
+
+<p>Jeśli tylko czujesz się na siłach, a w backendzie chociaż “wiesz co piszczy”, to nie czekaj dłużej, daj mi się zaprosić na rozmowę rekrutacyjną ;)</p>
+
+<p><a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-frontend-fullstack-developer-angular">https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-frontend-fullstack-developer-angular</a></p>
+
+<p>PS. Jeśli masz jakiekolwiek pytania - nie wahaj się znaleźć mnie LinkedIn i pisać w dowolnej sprawie.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "frontend pogadajmy";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/" rel="alternate" type="text/html" />
+  <updated>2024-06-28T04:21:04-05:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Wydajne tworzenie obrazów dockerowych w Springu</title>
+      <link href="https://blog.consdata.tech/2024/06/28/wydajne-tworzenie-obraz%C3%B3w-dockerowych-w-springu.html" rel="alternate" type="text/html" title="Wydajne tworzenie obrazów dockerowych w Springu" />
+      <published>2024-06-28T02:00:00-05:00</published>
+      <updated>2024-06-28T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/06/28/wydajne-tworzenie-obraz%C3%B3w-dockerowych-w-springu</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartosz Pietrowiak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="spring boot" />
+      
+        <category term="java" />
+      
+        <category term="gradle" />
+      
+        <category term="maven" />
+      
+        <category term="docker" />
+      
+
+      
+        <summary type="html">Jak działa budowanie obrazów dockerowych? Budowanie obrazów dockerowych polega na tworzeniu niemodyfikowalnych “szablonów” aplikacji i zależności, które mogą być uruchamiane w izolowanych kontenerach. Proces ten jest zautomatyzowany za pomocą plików o nazwie Dockerfile.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-06-28-wydajne-tworzenie-obraz%C3%B3w-dockerowych-w-springu/docker.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak działa Scroll Snap?</title>
+      <link href="https://blog.consdata.tech/2024/06/14/czy-wiesz-czym-jest-i-jak-dziala-scroll-snap.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak działa Scroll Snap?" />
+      <published>2024-06-14T02:00:00-05:00</published>
+      <updated>2024-06-14T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/06/14/czy-wiesz-czym-jest-i-jak-dziala-scroll-snap</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="css" />
+      
+
+      
+        <summary type="html">Scroll-snap-type to atrybut CSS, który powoduje, że scroll nie zatrzymuje się w miejscu, gdzie przestaliśmy scrollować, a przylega do elementu, który mu wskażemy. Aby skorzystać z tego zachowania najpierw na kontenerze, który scrollujemy, ustawiamy atrybut scroll-snap-type: .container { scroll-snap-type: x; } x oznacza, że będziemy zatrzymywać się na osi x. Parametr może też przybierać wartości: y, block, inline, both. Więcej szczegółów w dokumentacji).</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-06-14-czy-wiesz-czym-jest-i-jak-dziala-scroll-snap/mouse.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, na czym polega wzorzec drzewa w MongoDB?</title>
+      <link href="https://blog.consdata.tech/2024/05/31/czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mongodb.html" rel="alternate" type="text/html" title="Czy wiesz, na czym polega wzorzec drzewa w MongoDB?" />
+      <published>2024-05-31T02:00:00-05:00</published>
+      <updated>2024-05-31T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/05/31/czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mongodb</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Krzysztof Bocer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+
+      
+        <summary type="html">Dane przechowywane w bazie tworzą często większe struktury. Przykładowo, lista pracowników firmy i ich hierarchia, asortyment produktów w podziale na kategorie, miasta wraz z województwami. Wymieniać można długo. Takie relacje są dla nas bardzo naturalne. W MongoDB możemy taką przynależność jednego obiektu do drugiego przedstawić za pomocą wzorca drzewa. W zależności od implementacji zyskujemy łatwiejsze poruszanie się po dokumentach albo ograniczamy liczbę zapytań do bazy. Trzeba jednak mieć na uwadze, że przedstawienie danych w taki sposób ma swoją cenę. Każdy przechowywany dokument będzie musiał posiadać dodatkowe pole z informacją o swoim dziecku i/lub rodzicu albo potomkach. Taka zmiana oznacza rozszerzenie samego dokumentu oraz konieczność utrzymywania nowych pól. Jednak o tym później. Na razie przyjrzyjmy się, jak zaimplementować wzorzec drzewa.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-05-31-czy-wiesz-na-czym-polega-wzorzec-drzewa-w-mongodb/tree.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że można uniknąć nadmiernego użycia warunków ‘if’ przez wykorzystanie ternary operator i lookup table?</title>
+      <link href="https://blog.consdata.tech/2024/05/17/czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table.html" rel="alternate" type="text/html" title="Czy wiesz, że można uniknąć nadmiernego użycia warunków 'if' przez wykorzystanie ternary operator i lookup table?" />
+      <published>2024-05-17T02:00:00-05:00</published>
+      <updated>2024-05-17T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/05/17/czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Stolarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+
+      
+        <summary type="html">Niektórzy uważają, że liczba warunków if/else w kodzie powinna być minimalna, co oznacza, że pojedyncze instrukcje if/else należy zastępować operatorem ternarnym. Duża liczba warunków if/else skutkuje skomplikowaną strukturą i może przyprawić programistów o zawrót głowy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-05-17-czy-wiesz-ze-mozna-uniknac-nadmiernego-uzycia-warunkow-if-przez-wykorzystanie-ternary-operator-i-lookup-table/code.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest dialog i jak go używać?</title>
+      <link href="https://blog.consdata.tech/2024/05/06/czy-wiesz-czym-jest-dialog-i-jak-go-uzywac.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest dialog i jak go używać?" />
+      <published>2024-05-06T02:00:00-05:00</published>
+      <updated>2024-05-06T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/05/06/czy-wiesz-czym-jest-dialog-i-jak-go-uzywac</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Stolarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="html" />
+      
+        <category term="dialog" />
+      
+
+      
+        <summary type="html">Okna dialogowe od dawna pełnią istotną rolę na różnorodnych stronach internetowych, jednak ich implementacja często niesie za sobą pewne wyzwania. Można wykorzystać istniejące biblioteki JavaScript, ale powoduje to zwiększenie złożoności i rozmiaru projektu. Z tego względu szczególnie ekscytującym jest wprowadzenie nowego elementu dialogowego do HTML. Dzięki niemu, znacząco uprości się sposób tworzenia dialogów.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-05-06-czy-wiesz-czym-jest-dialog-i-jak-go-uzywac/html.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak używać operatorów “?” i “!” w JavaScript i TypeScript?</title>
+      <link href="https://blog.consdata.tech/2024/04/19/czy-wiesz-jak-uzywac-operatorow-w-javascripcie-i-typescripcie.html" rel="alternate" type="text/html" title="Czy wiesz, jak używać operatorów &quot;?&quot; i &quot;!&quot; w JavaScript i TypeScript?" />
+      <published>2024-04-19T02:00:00-05:00</published>
+      <updated>2024-04-19T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/04/19/czy-wiesz-jak-uzywac-operatorow-w-javascripcie-i-typescripcie</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+        <category term="typescript" />
+      
+
+      
+        <summary type="html">Wykrzykniki i znaki zapytania mogą czasami wprawić w zakłopotanie, ponieważ dalece im w kodzie od swojego interpunkcyjnego znaczenia.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-04-19-czy-wiesz-jak-uzywac-operatorow-w-javascripcie-i-typescripcie/question-marks.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że wynikiem zapytania w MongoDB możesz zasilić bezpośrednio inną kolekcję?</title>
+      <link href="https://blog.consdata.tech/2024/04/05/czy-wiesz-ze-wynikiem-zapytania-w-mongo-mozesz-zasilic-bezposrednio-inna-kolekcje.html" rel="alternate" type="text/html" title="Czy wiesz, że wynikiem zapytania w MongoDB możesz zasilić bezpośrednio inną kolekcję?" />
+      <published>2024-04-05T02:00:00-05:00</published>
+      <updated>2024-04-05T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/04/05/czy-wiesz-ze-wynikiem-zapytania-w-mongo-mozesz-zasilic-bezposrednio-inna-kolekcje</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Stachowiak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+        <category term="merge" />
+      
+
+      
+        <summary type="html">MongoDB w wersji 4.2 udostępnił nowy etap potoku agregacji (ang. aggregation pipeline) - $merge. Pozwala on na zapisanie wyniku agregacji do określonej kolekcji.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-04-05-czy-wiesz-ze-wynikiem-zapytania-w-mongo-mozesz-zasilic-bezposrednio-inna-kolekcje/leaf.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest OpenTelemetry i jak go stosować w praktyce?</title>
+      <link href="https://blog.consdata.tech/2024/03/15/czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest OpenTelemetry i jak go stosować w praktyce?" />
+      <published>2024-03-15T02:00:00-05:00</published>
+      <updated>2024-03-15T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/03/15/czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Filip Philavong</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="OpenTelemetry" />
+      
+        <category term="tracing" />
+      
+        <category term="span" />
+      
+        <category term="trace" />
+      
+        <category term="Jaeger" />
+      
+
+      
+        <summary type="html">Słowem wstępu</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-03-15-czy-wiesz-czym-jest-opentelemetry-i-jak-go-stosowa%C4%87-w-praktyce/otel.png" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak wyświetlić devtoolsy na telefonie z Androidem?</title>
+      <link href="https://blog.consdata.tech/2024/03/08/czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem.html" rel="alternate" type="text/html" title="Czy wiesz, jak wyświetlić devtoolsy na telefonie z Androidem?" />
+      <published>2024-03-08T01:00:00-06:00</published>
+      <updated>2024-03-08T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/03/08/czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="devtools" />
+      
+        <category term="android" />
+      
+
+      
+        <summary type="html">Często w trakcie naprawy błędów lub implementacji nowych funkcjonalności musimy coś sprawdzić na fizycznym urządzeniu, ponieważ widok mobilny w przeglądarce nie jest dla nas wystarczający (na przykład potrzebujemy skorzystać z natywnego wyboru daty lub dotykowej klawiatury).</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-03-08-czy-wiesz-jak-wyswietlic-devtoolsy-na-telefonie-z-androidem/debug-mobile.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak działa WebWorker?</title>
+      <link href="https://blog.consdata.tech/2024/02/23/czy-wiesz-czym-jest-i-jak-dziala-webworker.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak działa WebWorker?" />
+      <published>2024-02-23T01:00:00-06:00</published>
+      <updated>2024-02-23T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/02/23/czy-wiesz-czym-jest-i-jak-dziala-webworker</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+        <category term="webworkers" />
+      
+
+      
+        <summary type="html">JavaScript, który wywołujemy na naszych stronach w postaci skryptów jest jednowątkowy. Jeżeli zdecydujemy się używać go do wykonywania zasobożernych obliczeń, może spowodować to, że interfejs użytkownika stanie się nieresponsywny.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-02-23-czy-wiesz-czym-jest-i-jak-dziala-webworker/code.webp" />
+      
+    </entry>
+  
+</feed>
