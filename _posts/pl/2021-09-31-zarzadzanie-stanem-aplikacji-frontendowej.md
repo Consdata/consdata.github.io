@@ -6,7 +6,7 @@ published:  true
 didyouknow: false
 lang:       pl
 author:     mchrapkowicz
-image:      /assets/img/posts/2021-09-31-zarzadzanie-stanem-aplikacji-frontendowej/ngrx.jpeg
+image:      /assets/img/posts/2021-09-31-zarzadzanie-stanem-aplikacji-frontendowej/thumbnail.webp
 description: "W miarę rozwijania złożonych aplikacji webowych ważnym i nieoczywistym zagadnieniem staje się projektowanie przepływu informacji pomiędzy komponentami. W tym artykule poznamy jedną z implementacji architektury Redux wykorzystującej koncepcję globalnego stanu aplikacji oraz pokażemy przykład jej zastosowania w bibliotece NgRx."
 tags:
 - frontend

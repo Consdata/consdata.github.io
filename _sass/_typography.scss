@@ -1,42 +1,31 @@
-@font-face {
-  font-family: "Roboto Condensed";
-  font-style: normal;
-  font-weight: 300;
-  src: url("/assets/fonts/RobotoCondensed-Light.ttf") format('truetype');
-}
+@import "mixins";
 
 @font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 300;
-  src: url("/assets/fonts/RobotoCondensed-LightItalic.ttf") format('truetype');
-}
-
-@font-face {
-  font-family: "Roboto Condensed";
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 400;
-  src: url("/assets/fonts/RobotoCondensed-Regular.ttf") format('truetype');
+  src: url("/assets/fonts/Manrope-Regular.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 400;
-  src: url("/assets/fonts/RobotoCondensed-Italic.ttf") format('truetype');
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  src: url("/assets/fonts/Manrope-Medium.ttf") format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto Condensed";
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  src: url("/assets/fonts/Manrope-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 700;
-  src: url("/assets/fonts/RobotoCondensed-Bold.ttf") format('truetype');
-}
-@font-face {
-  font-family: "Roboto Condensed";
-  font-style: italic;
-  font-weight: 700;
-  src: url("/assets/fonts/RobotoCondensed-BoldItalic.ttf") format('truetype');
+  src: url("/assets/fonts/Manrope-Bold.ttf") format('truetype');
 }
 
 html,
@@ -46,10 +35,186 @@ input,
 div,
 span {
   font-size: $default-font-size;
-  font-family: "Roboto Condensed", Helvetica, Arial, sans-serif;
+  font-family: "Manrope";
   font-weight: $font-weight-regular;
   line-height: $base-line-height;
-  color: $color-dark-gray;
+  color: $gray-900;
+  scroll-behavior: smooth;
 }
 
 
+@mixin font-config($font-size, $font-weight, $line-height) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  text-align: start;
+}
+
+
+h1 {
+  @include font-config(52px, $font-weight-semibold, 64px);
+
+  @include mobile {
+    @include font-config(26px, $font-weight-semibold, 42px);
+  }
+}
+
+h2 {
+  @include font-config(40px, $font-weight-semibold, 60px);
+  margin-top: 40px;
+  margin-bottom: 16px;
+
+  @include mobile {
+    @include font-config(20px, $font-weight-semibold, 32px);
+    margin-top: 20px;
+    margin-bottom: 12px;
+  }
+}
+
+h3 {
+  @include font-config(30px, $font-weight-semibold, 42px);
+  margin-top: 22px;
+  margin-bottom: 8px;
+
+  @include mobile {
+    @include font-config(16px, $font-weight-semibold, 30px);
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+h4 {
+  @include font-config(20px, $font-weight-semibold, 32px);
+  margin-top: 10px;
+  margin-bottom: 8px;
+
+  @include mobile {
+    @include font-config(16px, $font-weight-semibold, 24px);
+    margin-bottom: 6px;
+  }
+}
+
+@mixin title(){
+  @include font-config(56px, $font-weight-semibold, 64px);
+  margin-top: 32px;
+  margin-bottom: 48px;
+
+  @include mobile {
+    @include font-config(26px, $font-weight-semibold, 42px);
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  @include tablet {
+    @include font-config(30px, $font-weight-semibold, 42px);
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+}
+
+@mixin body-large() {
+  @include font-config(18px, $font-weight-semibold, 28px);
+}
+
+@mixin body() {
+  @include font-config(16px, $font-weight-regular, 30px);
+}
+
+@mixin body-semibold() {
+  @include font-config(16px, $font-weight-semibold, 30px);
+}
+
+@mixin body-small() {
+  @include font-config(14px, $font-weight-regular, 26px);
+}
+
+@mixin body-small-medium() {
+  @include font-config(14px, $font-weight-medium, 26px);
+}
+
+@mixin body-small-semibold() {
+  @include font-config(14px, $font-weight-semibold, 26px);
+}
+
+@mixin small-regular() {
+  @include font-config(14px, $font-weight-regular, 26px);
+}
+
+@mixin body-xs() {
+  @include font-config(12px, $font-weight-regular, 22px);
+}
+
+@mixin body-xs-semibold() {
+  @include font-config(12px, $font-weight-semibold, 22px);
+}
+
+
+@mixin label() {
+  @include font-config(10px, $font-weight-semibold, 24px);
+}
+
+@mixin btn-without-bg($width) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  border: 1px solid $red-900;
+  color: $red-900;
+  background: transparent;
+  padding: 12px 24px;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    background-color: $red-900;
+    color: $color-white;
+    @include body-semibold();
+    @include animation-ease;
+    text-align: center;
+  }
+
+  @include mobile {
+    @include body-small();
+    padding: 8px 16px;
+    text-align: center;
+
+    &:hover {
+      color: $color-white;
+      @include body-small();
+      text-align: center;
+    }
+  }
+}
+
+@mixin btn-with-bg($width, $padding) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  color: $color-white;
+  background: $red-900;
+  padding: $padding;
+  cursor: pointer;
+
+  &:hover {
+    color: $red-900;
+    background: $color-white;
+    @include body-semibold();
+    @include animation-ease;
+    text-align: center;
+  }
+}
+
+@mixin btn-with-white-bg($width, $padding) {
+  width: $width;
+  border-radius: $medium-round-edge;
+  color: $red-900;
+  background: $color-white;
+  padding: $padding;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-white;
+    background: $red-900;
+    border-color: $color-white;
+    @include body-semibold();
+    @include animation-ease;
+    text-align: center;
+  }
+}

@@ -7,9 +7,6 @@ sass:
   style: compressed
   sourcemap: never
 
-disqus:
-  shortname: consdata-tech
-
 collections:
   authors:
     output: true

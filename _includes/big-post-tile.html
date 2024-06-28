@@ -1,44 +1,52 @@
 {% assign assets = include.post.path | remove: "_posts/" | remove: ".md" %}
-<div class="col-15 post-animation">
-    <div class="col-2-3 {% if include.post.didyouknow %} big-post-tile-did-you-know {% elsif include.post.afterhours %} big-post-tile-after-hours {% endif %}">
-        <a href="{{ include.post.url }}">
-            <img class="highlight-image" src="{{include.post.image}}"
-                 alt="postimage"/>
-        </a>
-    </div>
-    <div class="col-1-3 big-post-tile-content">
+<div class="big-post-tile">
+    <a href="{{ include.post.url }}">
+        <img class="big-post-image" src="{{include.post.image}}" alt="postimage"/>
+    </a>
+    <div class="big-post-tile-content">
         {% assign author = site.authors | where: "short_name", include.post.author | first %}
         {% assign coauthor = site.authors | where: "short_name", include.post.coauthor | first %}
+        <div class="badge-panel">
+            <div class="badge">{{ include.post.tags[0] }}</div>
+        </div>
         <a href="{{ include.post.url }}">
-            <p class="post-title no-breaking-word">
+            <h2 class="no-breaking-word">
                 {{ include.post.title }}
-            </p>
-            <p class="post-description no-breaking-word">
-                {% if include.post.description %}
-                {{include.post.description}}
-                {% else %}
-                {{include.post.content | strip_html | truncatewords: 50}}
-                {% endif %}
-            </p>
+            </h2>
         </a>
+        <p class="big-post-tile-post-description no-breaking-word">
+            {% if include.post.description %}
+            {{include.post.description}}
+            {% else %}
+            {{include.post.content | strip_html | truncatewords: 50}}
+            {% endif %}
+        </p>
         <div class="tile-author">
             {%- if include.post.coauthor -%}
-            <a href="{{ coauthor.url }}" class="author-name coauthor">
-                <img class="small-author-image" src="/assets/img/authors/{{coauthor.image}}" alt="coauthor" width="50"
-                     height="50">
-            </a>
-            {%- endif -%}
-            <a href="{{ author.url }}" class="author-name">
-                <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author" width="50"
-                     height="50">
+            <div class="authors-container">
+                <a href="{{ author.url }}" class="author-name author-img">
+                    <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
+                </a>
+                <a href="{{ coauthor.url }}" class="author-name coauthor author-img">
+                    <img class="small-author-image" src="/assets/img/authors/{{coauthor.image}}" alt="coauthor">
+                </a>
+            </div>
+            <div class="post-info">
+                <div>
+                    <a href="{{ coauthor.url }}" class="author-name">{{author.name | split: ' ' | first}},</a>
+                    <a href="{{ author.url }}" class="author-name">{{coauthor.name | split: ' ' | first}}</a>
+                </div>
+                <span class="post-date">{% include post-date.html date=include.post.date lang=site.active_lang short=true%}</span>
+            </div>
+            {%- else -%}
+            <a href="{{ author.url }}" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/{{author.image}}" alt="author">
             </a>
             <div class="post-info">
-                {%- if include.post.coauthor -%}
-                <a href="{{ coauthor.url }}" class="author-name">{{coauthor.name}}</a>
-                {%- endif -%}
                 <a href="{{ author.url }}" class="author-name">{{author.name}}</a>
-                <span>{% include post-date.html date=include.post.date lang=site.active_lang %}</span>
+                <span class="post-date">{% include post-date.html date=include.post.date lang=site.active_lang short=true%}</span>
             </div>
+            {%- endif -%}
         </div>
     </div>
 </div>

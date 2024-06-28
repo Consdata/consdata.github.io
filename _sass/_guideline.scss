@@ -1,53 +1,59 @@
 // Assets
 $images-dir: '/assets/img/';
+$icon-dir: '/assets/icon/';
 
 // Viewport
 $desktop-breakpoint: 1200px;
-$desktop-content-width: 1170px;
+$desktop-width: 1200px;
+$post-content-width:870px;
+$post-sidebar-content-width:280px;
+
 $mobile-content-width: 100%;
 $tablet-content-width: 100%;
 $tablet-breakpoint: 900px;
 $app-min-width: 320px;
 $navbar-height-mobile: 42px;
-$navbar-height-desktop: 67px;
-$header-z-index: 99;
+$navbar-height-desktop: 80px;
 $narrower-side-margins-desktop: 25%;
 $blog-side-margins-desktop: 20%;
 $blog-side-margins-tablet: 15%;
 
 // Paddings, margins
-$double-content-padding: 30px;
-$post-end-bottom-margin: 25px;
-$post-tile-margin-bottom: 40px;
-$post-tile-margin-top: 20px;
-$content-padding: 15px;
-$small-padding: 10px;
-$very-small-padding: 5px;
+$desktop-section-space: 120px;
+$mobile-section-space: 72px;
+
+$desktop-section-medium-space: 72px;
+$mobile-section-medium-space: 36px;
+
+$desktop-section-small-space: 64px;
+$mobile-section-small-space: 48px;
+
+$desktop-section-xs-space: 48px;
+$mobile-section-xs-space: 24px;
+
 
 // Typography
-$base-line-height: 1.45;
-$post-content-line-height: 1.65;
 $font-weight-bold: 700;
-$font-weight-semibold: 500;
+$font-weight-semibold: 600;
+$font-weight-medium: 500;
 $font-weight-regular: 400;
 $font-weight-light: 300;
-$post-title-font-size-desktop: 5em;
-$post-title-font-size-mobile: 2em;
-$post-font-size: 1.2em;
-$general-letter-spacing: 1px;
-$default-font-size: 14px;
-$small-font-size: 12px;
-$post-title-desktop-line-height: 80px;
+
+$default-font-size: 16px;
+$big-font-size: 24px;
+$base-line-height: 30px;
+
 
 // Specific
-$search-icon-width: 14px;
-$first-post-bottom-margin: 40px;
-$big-author-image-size: 75px;
-$medium-author-image-size: 50px;
-$small-author-image-size: 24px;
-$separator-border: 3px solid $color-logo-red;
-$inactive-input-bottom-border: 2px solid $color-dark-gray;
-$post-tile-hover-shadow: rgba(0, 0, 0, 0.22) 0 19px 30px;
+$round-edge: 24px;
+$medium-round-edge: 12px;
+$small-round-edge: 8px;
+$main-card-img-tile-width: 592px;
+$main-card-img-tile-height: 435px;
+$card-img-tile-width: 360px;
+$card-img-tile-height: 280px;
+$avatar-size: 42px;
+$avatar-size-mobile: 32px;
 
 $header-image-width-mobile: 151px;
 $header-image-height-mobile: 15px;
@@ -55,6 +61,14 @@ $header-image-height-mobile: 15px;
 $header-image-width-desktop: 172px;
 $header-image-height-desktop: 17px;
 
-$expanded-input-width-desktop: 135px;
-$expanded-input-width-mobile: 200px;
+$small-padding: 10px;
+$blog-mobile-margin: 0 20px;
 $svg-icon-size: 16px;
+$double-content-padding: 30px;
+$small-font-size: 12px;
+
+
+$post-tile-margin-bottom: 40px;
+$post-tile-margin-top: 20px;
+$content-padding: 15px;
+$very-small-padding: 5px;

@@ -5,7 +5,7 @@ date:      2019-08-06 07:00:00 +0100
 published: true
 lang: pl
 author:    kgabara
-image:     /assets/img/posts/2019-05-29-angular-onpush-strategy/angular-onpush.jpeg
+image:     /assets/img/posts/2019-05-29-angular-onpush-strategy/thumbnail.webp
 tags:
     - angular
     - frontend

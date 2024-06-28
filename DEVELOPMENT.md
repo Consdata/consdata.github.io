@@ -1,3 +1,4 @@
+## Odpalanie budowanka
 ```bash
 mkdir -p "$HOME/.jekyll/tmp_bundle" \
 && docker run \
@@ -10,4 +11,9 @@ mkdir -p "$HOME/.jekyll/tmp_bundle" \
     --volume="$HOME/.jekyll/tmp_bundle:/usr/local/bundle" \
     --volume="$PWD:/srv/jekyll" \
     jekyll/jekyll:3.8 bash -c 'bundle install && jekyll serve --livereload'
+```
+
+## Konwertowanie Thumbnail:
+```
+convert SOURCE.jpg -resize 1080x720 -quality 60 thumbnail.webp
 ```

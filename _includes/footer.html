@@ -1,63 +1,72 @@
 <footer>
     <div class="container">
-        <div class="footer-item company">
-            <div class="label">
-                <img src="/assets/img/logo.png"/>
-            </div>
-            <div class="item-content">
-                <p>
-                    K9OFFICE, UL. KRYSIEWICZA 9/17<br/>
-                    61-825 POZNAŃ<br/>
-                    POLSKA
-                </p>
-                <p>
-                    TEL.:+48 61 41 51 000
-                </p>
-                <p>
-                    NIP: 1822261960<br/>
-                    REGON: 634422180
-                </p>
-            </div>
-        </div>
-        <div class="footer-item legals">
-            <div class="label">
-                {{ site.data.translations['info'][site.active_lang] }}
-            </div>
-            <div class="item-content">
-                <p>
-                    <a href="https://consdata.com/pl/polityka-prywatnosci" target="_blank">{{ site.data.translations['privacyPolicy'][site.active_lang]}} </a>
-                </p>
-            </div>
-        </div>
-        <div class="footer-item social-buttons">
-            <div class="label">
-                {{ site.data.translations['stayInTouch'][site.active_lang] }}
-            </div>
-            <div class="item-content">
-                <div class="social-buttons-container">
-                    <div class="social-button-wrapper">
-                        <a class="social-btn" target="_blank" href="https://www.facebook.com/consdatacom"
-                           title="Facebook">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </div>
-                    <div class="social-button-wrapper">
-                        <a class="social-btn" target="_blank"
-                           href="https://www.youtube.com/channel/UCv4d_uCiLdDkOFk8NtDsU_w" title="Youtube">
-                            <i class="fa fa-youtube"></i>
-                        </a>
-                    </div>
-                    <div class="social-button-wrapper">
-                        <a class="social-btn" target="_blank" href="https://www.linkedin.com/company/1456906"
-                           title="Linkedin">
-                            <i class="fa fa-linkedin"></i>
-                        </a>
-                    </div>
-                </div>
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">{{ site.data.translations['contact'][site.active_lang] }}</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">{{ site.data.translations['office'][site.active_lang] }}</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">{{ site.data.translations['solutions'][site.active_lang] }}</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">{{
+                            site.data.translations['joinUs'][site.active_lang] }}</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="copyright">
-        Copyrights © {{ 'now' | date: "%Y" }} CONSDATA
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
     </div>
 </footer>

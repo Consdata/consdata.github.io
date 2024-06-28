@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-04-05-zarzadzanie-wersjami-w-package-json/keyboard.jpg
+image: /assets/img/posts/2023-04-05-zarzadzanie-wersjami-w-package-json/thumbnail.webp
 tags:
 - package.json
 - npm

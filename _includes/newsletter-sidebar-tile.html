@@ -1,0 +1,13 @@
+{% assign posts = site.posts | where:"lang", site.active_lang %}
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        {% if site.active_lang == "pl" %}
+        <h2 class="newsletter-tile-title">{{ site.data.translations['newsletter'][site.active_lang] }}</h2>
+        <h2 class="newsletter-tile-title">{{site.data.translations['technical'][site.active_lang] }}</h2>
+        {% else %}
+        <h2 class="newsletter-tile-title">{{site.data.translations['technical'][site.active_lang] }}</h2>
+        <h2 class="newsletter-tile-title">{{ site.data.translations['newsletter'][site.active_lang] }}</h2>
+    {% endif %}
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">{{ site.data.translations['signUp'][site.active_lang] }}</a>
+</div>

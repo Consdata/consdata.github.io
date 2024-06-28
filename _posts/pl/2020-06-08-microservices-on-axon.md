@@ -5,7 +5,7 @@ date:      2020-06-09 08:00:00 +0100
 published: true
 lang: pl
 author:    mkociszewski
-image:     /assets/img/posts/2020-06-08-microservices-on-axon/axon.jpg
+image:     /assets/img/posts/2020-06-08-microservices-on-axon/thumbnail.webp
 tags:
     - java
     - microservices

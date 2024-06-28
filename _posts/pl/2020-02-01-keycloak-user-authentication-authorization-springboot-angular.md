@@ -6,7 +6,7 @@ lang:      pl
 lang-ref:  keycloak-user-auth
 date:      2020-02-01 08:00:00 +0100
 author:    mhoja
-image:     /assets/img/posts/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular/Keycloak.png
+image:     /assets/img/posts/2020-02-01-keycloak-uwierzytelnianie-autoryzacja-springboot-angular/thumbnail.webp
 tags:
     - angular
     - spring boot

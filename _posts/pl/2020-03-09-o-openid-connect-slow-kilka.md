@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2020-03-09 08:00:00 +0100
 author:    mhoja
-image:     /assets/img/posts/2020-03-09-o-openid-connect-slow-kilka/oauth.jpg
+image:     /assets/img/posts/2020-03-09-o-openid-connect-slow-kilka/thumbnail.webp
 tags:
     - openid connect
     - oauth 2

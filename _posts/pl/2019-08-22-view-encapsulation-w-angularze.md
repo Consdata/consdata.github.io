@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-08-22 08:00:00 +0100
 author:    mhoja
-image:     /assets/img/posts/2019-08-22-view-encapsulation-w-angularze/View-Encapsulation.jpg
+image:     /assets/img/posts/2019-08-22-view-encapsulation-w-angularze/thumbnail.webp
 tags:
     - angular
     - view encapsulation

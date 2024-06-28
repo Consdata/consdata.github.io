@@ -5,7 +5,7 @@ date:      2018-08-07 08:00:00 +0100
 published: true
 lang: pl
 author:    sucuncu
-image:     /assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/algorytmy-rekomendacyjne.jpg
+image:     /assets/img/posts/2018-08-07-algorytmy-rekomendacyjne-przyklad-implementacji-w-pythonie/thumbnail.webp
 tags:
     - algorytmy rekomendacyjne
     - python

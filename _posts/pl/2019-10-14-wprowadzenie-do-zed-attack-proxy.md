@@ -5,7 +5,7 @@ published: true
 lang: pl
 date:      2019-10-14 03:00:00 +0100
 author:    amak
-image:     /assets/img/posts/2019-10-14-wprowadzenie-do-zed-attack-proxy/zed-attack-proxy.jpeg
+image:     /assets/img/posts/2019-10-14-wprowadzenie-do-zed-attack-proxy/thumbnail.webp
 tags:
   - programming
   - pentest

@@ -5,7 +5,7 @@ date:      2018-12-13 08:00:00 +0100
 published: true
 lang: pl
 author:    mmergo
-image:     /assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na-pytanie/consdatatech.jpg
+image:     /assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na-pytanie/thumbnail.webp
 tags:
     - consdata.tech
     - event sourcing

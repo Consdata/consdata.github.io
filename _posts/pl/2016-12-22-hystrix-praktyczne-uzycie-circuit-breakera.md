@@ -5,7 +5,7 @@ date:      2016-12-22 08:00:00 +0100
 published: true
 lang:      pl
 author:    jwilczewski
-image:     /assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breakera/hystrix.jpg
+image:     /assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breakera/thumbnail.webp
 tags:
     - hystrix
     - circuit breaker

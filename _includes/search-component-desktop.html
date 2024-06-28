@@ -4,14 +4,7 @@
 <form action="/search.html" method="get">
 {% endif %}
     <div class="search-input-container">
-        <input type="text" placeholder="{{ site.data.translations['search'][site.active_lang] }}" id="search-box" name="query" class="search-input" autocomplete="off">
-        <i class="fa fa-search search-icon" onclick="expandInputDesktop()"></i>
+        <img class="search-icon" src="/assets/icon/search.svg">
+        <input type="text" placeholder="{{ site.data.translations['search'][site.active_lang] }}" name="query" class="search-input" autocomplete="off">
     </div>
 </form>
-
-<script>
-    const inputDesktop = document.getElementById("search-box");
-    const expandInputDesktop = () => {
-        inputDesktop.classList.toggle("expanded");
-    };
-</script>

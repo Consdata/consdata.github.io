@@ -7,8 +7,9 @@
 
   a {
     text-decoration: none;
-    color: $color-stormgray;
+    color: $gray-900;
     &:hover {
+      @include animation-ease;
       color: $color-white;
     }
   }
