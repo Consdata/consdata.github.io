@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Wydajne tworzenie obrazów dockerowych w Springu"
-date:      2024-05-22T08:00:00+01:00
+date:      2024-06-28T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: bpietrowiak
-image: /assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/docker.jpg
+image: /assets/img/posts/2024-06-28-wydajne-tworzenie-obrazów-dockerowych-w-springu/docker.webp
 description: Sprawdź jak zaoszczędzić miejsce budując kolejne wersje aplikacji.
 tags:
 - spring boot
@@ -21,15 +21,15 @@ Budowanie obrazów dockerowych polega na tworzeniu niemodyfikowalnych "szablonó
 
 Każdy plik Dockerfile zawiera listę instrukcji wykonywanych w podanej kolejności w momencie budowania obrazu. Docker konwertuje otrzymaną listę instrukcji na warstwy, które składają się na budowany obraz i mają określony rozmiar w przestrzeni dyskowej.
 
-![Schemat budowania obrazu](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/builder.png)
+![Schemat budowania obrazu](/assets/img/posts/2024-06-28-wydajne-tworzenie-obrazów-dockerowych-w-springu/builder.png)
 
 Podczas uruchomienia budowania builder podejmuję próbę ponownego wykorzystania warstw z poprzednich wersji. Jeśli warstwa obrazu jest niezmieniona, builder wyciąga ją z cache. Jeśli warstwa uległa zmianie, tworzy ją na nowo.
 Ponowne tworzenie warstwy wiążę się również z unieważnieniem cache dla wszystkich następnych warstw. Jeśli plik .jar ulegnie zmianie, to schemat warstw przedstawia się następująco:
 
-![Schemat budowania obrazu z cache](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache.png)
+![Schemat budowania obrazu z cache](/assets/img/posts/2024-06-28-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache.png)
 
 Aby z cache była pobierana jak największa liczba warstw, bardzo ważna jest kolejność deklarowania instrukcji. Dla powyższego przykładu możemy wykonać optymalizację:
-![Schemat budowania obrazu z cache optymalizacja](/assets/img/posts/2024-07-12-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache2.png)
+![Schemat budowania obrazu z cache optymalizacja](/assets/img/posts/2024-06-28-wydajne-tworzenie-obrazów-dockerowych-w-springu/cache2.png)
 
 Dzięki temu, przy następnym budowaniu, builder ponownie wykorzysta trzy, a nie tylko dwie warstwy.
 
@@ -41,7 +41,7 @@ Jest to bardzo niekorzystne, ponieważ wiąże się z wykorzystaniem nadmiernej 
 Tutaj naprzeciw wyszli nam twórcy Spring Boota, dodając od wersji 2.3 możliwość budowania warstwowego pliku jar (eng. **layered jars**).
 
 ## Jak działa Spring Boot layered jar?
-Spring Boot layered jar zmienia sposób budowania pliku .jar, dzieląc jego części na konkretne warstwy. Wykorzystuje do tego plik layers.idx, który zawiera listę warstw oraz części pliku .jar zawarte w każdej z nich. Warstwy w pliku zapisane są w kolejności, w jakiej powinny zostać dodane do obrazu dockerowego. Domyślnie plik składa się z poniższych warstw:
+Spring Boot layered jar zmienia sposób budowania pliku .jar, dzieląc jego części na konkretne warstwy. Wykorzystuje do tego plik `layers.idx`, który zawiera listę warstw oraz części pliku .jar zawarte w każdej z nich. Warstwy w pliku zapisane są w kolejności, w jakiej powinny zostać dodane do obrazu dockerowego. Domyślnie plik składa się z poniższych warstw:
 - **dependencies** - zawiera wszystkie zależności aplikacji, które nie są w wersji SNAPSHOT
 - **spring-boot-loader** - zawiera klasy ładujące plik .jar (odpowiadające za uruchomienie aplikacji)
 - **snapshot-dependencies** - zawiera zależności aplikacji w wersji SNAPSHOT
@@ -170,7 +170,7 @@ Jeżeli domyślna konfiguracja warstw nie jest wystarczająca, to możemy okreś
 W powyższym przykładzie wydzielimy zależności pakietu javax.xml.bind do osobnej warstwy.
 
 #### Maven
-1. W katalogu /src/resources tworzymy plik layers.xml określający strukturę warstw naszego pliku .jar:
+1. W katalogu `/src/resources` tworzymy plik `layers.xml` określający strukturę warstw naszego pliku .jar:
 
 ```xml
 <layers xmlns="http://www.springframework.org/schema/boot/layers"
@@ -202,7 +202,7 @@ W powyższym przykładzie wydzielimy zależności pakietu javax.xml.bind do osob
 </layers>
 ```
 
-Należy pamiętać, aby przy konfiguracji pliku layers.xml uzupełnić wersję zapisaną pod zmienną _spring-boot-xsd-version_
+Należy pamiętać, aby przy konfiguracji pliku `layers.xml` uzupełnić wersję zapisaną pod zmienną _spring-boot-xsd-version_
 
 2. W konfiguracji plugina tworzącego warstwowy .jar wskazujemy plik z konfiguracją warstw:
 
@@ -220,7 +220,7 @@ Należy pamiętać, aby przy konfiguracji pliku layers.xml uzupełnić wersję z
 ```
 
 #### Gradle
-1. Konfigurujemy plugin, określając nowe warstwy. W pliku build.gradle.kts umieszczamy:
+1. Konfigurujemy plugin, określając nowe warstwy. W pliku `build.gradle.kts` umieszczamy:
 ```kotlin
 tasks {
     bootJar {
@@ -245,7 +245,7 @@ tasks {
     }
 }
 ```
-W pliku Dockerfile dodajemy kopiowanie nowej warstwy:
+W pliku `Dockerfile` dodajemy kopiowanie nowej warstwy:
 ```dockerfile
 FROM eclipse-temurin:17.0.11_9-jre-alpine as builder
 WORKDIR /work
