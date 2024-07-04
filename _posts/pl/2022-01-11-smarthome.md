@@ -5,7 +5,7 @@ date:       2022-02-15 08:00:00 +0100
 published:  true
 lang:       pl
 author:     aswarcewicz
-image:      /assets/img/posts/2022-02-05-smarthome/smarthome.jpg
+image:      /assets/img/posts/2022-02-05-smarthome/thumbnail.webp
 afterhours: true
 tags:
     - smarthome

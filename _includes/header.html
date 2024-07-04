@@ -1,34 +1,24 @@
----
----
 <nav class="site-header">
     <div class="container">
         <div class="header navbar-default" role="navigation">
             <div class="header-brand">
-                <div class="nav navbar-nav">
-                    <div class="nav-link"><a href="/">BLOG.CONSDATA.TECH</a></div>
-                </div>
-
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
                 <div class="mobile-search">
                     {% include search-component-mobile.html %}
                 </div>
             </div>
-            <div id="header-links" class="mobile-nav">
-                <a class="header-logo" href="https://consdata.com/pl">
-                    <img src="/assets/img/logo-nowe.png" alt="consdata.com">
-                </a>
-                <div class="feed-subscribe">
-                    <a href="{{ "/feed.xml" | relative_url }}">
-                    <svg class="svg-icon">
-                        <use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use>
-                    </svg>
-                    </a>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">{{ site.data.translations['techBlog'][site.active_lang] }}</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">{{ site.data.translations['businessBlog'][site.active_lang] }}</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">{{ site.data.translations['hrDepartment'][site.active_lang] }}</a>
                 </div>
-                {% if page.layout != "post" %}
-                    {% if site.active_lang == "en" %}
-                        <a class="language-switch" onclick="navigate(' {{ page.url }}')">PL</a>
-                    {% else %}
-                        <a class="language-switch" onclick="navigate('/en{{ page.url }}')">EN</a>
-                    {% endif %}
+                {% if site.active_lang == "en" %}
+                <a class="language-switch" onclick="navigate(' {{ page.url }}')">PL</a>
+                {% else %}
+                <a class="language-switch" onclick="navigate('/en{{ page.url }}')">EN</a>
                 {% endif %}
             </div>
 

@@ -5,7 +5,7 @@ date:      2021-01-11 08:00:00 +0100
 published: true
 lang:      pl
 author:    bradlinski
-image:     /assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/top.jpeg
+image:     /assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/thumbnail.webp
 tags:
     - intellij
     - ide

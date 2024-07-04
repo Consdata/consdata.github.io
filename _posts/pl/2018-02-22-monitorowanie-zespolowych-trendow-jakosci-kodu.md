@@ -5,7 +5,7 @@ date:      2018-02-22 08:00:00 +0100
 published: true
 lang: pl
 author:    glipecki
-image:     /assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/monitorowanie-kodu.jpg
+image:     /assets/img/posts/2018-02-22-monitorowanie-zespolowych-trendow-jakosci-kodu/thumbnail.webp
 tags:
     - sonarqube
     - sonarqube companion

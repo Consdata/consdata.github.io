@@ -8,32 +8,8 @@
 {% endfor %}
 {% assign uniqueTags = sorted_tags | uniq %}
 <div class="navigation-bar">
-    <div class="row">
-        <div class="col-15 desktop-navbar">
-            <div class="col-2-3 navbar-links">
-                <div class="navigation-tags">
-                    {% for tag in uniqueTags | limit: 5 %}
-                        {% if site.active_lang == "en" %}
-                        <a href="/">
-                        {% else %}
-                        <a href="/search.html?query={{ tag }}">
-                        {% endif %}
-                        {{ tag | upcase }}
-                        </a>
-                    {% endfor %}
-                </div>
-                {% include search-component-desktop.html %}
-            </div>
-            <div class="col-1-3">
-                <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
-                   class="newsletter-link">
-                    <div class="newsletter-button">
-                        {{ site.data.translations['newsletterSignUp'][site.active_lang] }}
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-15 mobile-navbar">
+    <div class="desktop-navbar">
+        <div class="navbar-links">
             <div class="navigation-tags">
                 {% for tag in uniqueTags | limit: 5 %}
                 {% if site.active_lang == "en" %}
@@ -41,14 +17,24 @@
                     {% else %}
                     <a href="/search.html?query={{ tag }}">
                         {% endif %}
-                        {{ tag | upcase }}
+                        {{ tag }}
                     </a>
                     {% endfor %}
             </div>
-            <a href="https://app2.salesmanago.pl/mscf/e7yrrpjmxbm7bahc/default/Landing_page_newsletter_techniczny.htm"
-               class="newsletter-link">
-                <div class="newsletter-button">{{ site.data.translations['newsletterSignUp'][site.active_lang] }}</div>
-            </a>
+            {% include search-component-desktop.html %}
+        </div>
+    </div>
+    <div class="col-15 mobile-navbar">
+        <div class="navigation-tags">
+            {% for tag in uniqueTags | limit: 5 %}
+            {% if site.active_lang == "en" %}
+            <a href="/">
+                {% else %}
+                <a href="/search.html?query={{ tag }}">
+                    {% endif %}
+                    {{ tag }}
+                </a>
+                {% endfor %}
         </div>
     </div>
 </div>

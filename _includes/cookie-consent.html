@@ -1,11 +1,13 @@
 <div class="cookie-notice" id="cookie-notice">
-    <span>
-        {% assign lang = page.lang | default: site.lang | default: 'pl' %}
-        {{ site.data.translations['cookieConsent'][lang] }}
-    </span>
-    <a id="cookie-notice-accept" class="consent-button">{{ site.data.translations['cookieConsentApprove'][lang] }}</a>
     <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
-    <noscript><img height="1" width="1" style="display:none"
+    <div class="cookie-container">
+        <span>
+            {% assign lang = page.lang | default: site.lang | default: 'pl' %}
+            {{ site.data.translations['cookieConsent'][lang] }}
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">{{ site.data.translations['cookieConsentApprove'][lang] }}</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
                    src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
     /></noscript>
 </div>

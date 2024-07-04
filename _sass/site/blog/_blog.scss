@@ -2,18 +2,24 @@
   @import "post-list";
   @import "post-metadata";
   @import "post/post";
+  @import "newsletter-subscription";
 
-  @include desktop {
-    margin: 0 $blog-side-margins-desktop;
-  }
-
-  @include tablet {
-    margin: 0 $blog-side-margins-tablet;
-  }
+  @include content-container();
 }
 
 .narrower {
   @include desktop {
-    margin: 0 $narrower-side-margins-desktop;
+    margin: 0 auto;
   }
+}
+
+.author-tiles-space {
+  @include section-small-xs-space();
+
+  @include desktop {
+    .row .post-tile:first-child {
+      display: flex;
+    }
+  }
+
 }

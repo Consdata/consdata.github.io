@@ -6,7 +6,7 @@ published: true
 didyouknow: false
 lang: pl
 author:    rmastalerek
-image:     /assets/img/posts/2022-01-25-transactions/transactions.jpg
+image:     /assets/img/posts/2022-01-25-transactions/thumbnail.webp
 tags:
 - transactions
 - spring

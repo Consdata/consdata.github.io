@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    jgoszczurny
-image:     /assets/img/posts/2021-08-20-stun-server/handshake.jpeg
+image:     /assets/img/posts/2021-08-20-stun-server/thumbnail.webp
 tags:
 - webrtc
 - stun

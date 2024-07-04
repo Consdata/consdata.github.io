@@ -1,23 +1,20 @@
 @import "navbar-desktop";
 @import "navbar-mobile";
-@import "navbar-newsletter";
 @import "navbar-search";
 @import "navbar-tags";
 
 .navigation-bar {
-  margin: $navbar-height-desktop + $content-padding $blog-side-margins-desktop $double-content-padding;
-  @include tablet {
-    margin: $navbar-height-desktop + $content-padding $blog-side-margins-tablet $content-padding;
+  @include desktop {
+    width: $desktop-breakpoint;
   }
-  @include mobile {
-    margin: $navbar-height-mobile + $content-padding $small-padding $content-padding;
-  }
+  margin-right: auto;
+  margin-left: auto;
 
   .navigation-tags {
-    display: block;
+    justify-content: space-between;
     overflow: auto;
     white-space: nowrap;
-    margin: auto $small-padding auto 0;
+    margin-right: 50px;
     -ms-overflow-style: none;
 
     &::-webkit-scrollbar {

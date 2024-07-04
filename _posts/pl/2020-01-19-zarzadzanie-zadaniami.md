@@ -5,7 +5,7 @@ date:       2020-01-19
 published:  true
 lang:       pl
 author:     mstolarski
-image:      /assets/img/posts/2020-01-19-zarzadzanie-zadaniami/zarzadzanie_zadaniami.jpg
+image:      /assets/img/posts/2020-01-19-zarzadzanie-zadaniami/thumbnail.webp
 tags:
   - Personal Tasks
   - Time Management

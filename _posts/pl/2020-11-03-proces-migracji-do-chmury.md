@@ -5,7 +5,7 @@ date:      2020-11-03 08:00:00 +0100
 published: true
 lang: pl
 author:    mhoja
-image:     /assets/img/posts/2020-11-03-proces-migracji-do-chmury/clouds.jpeg
+image:     /assets/img/posts/2020-11-03-proces-migracji-do-chmury/thumbnail.webp
 tags:
     - cloud
     - serverless

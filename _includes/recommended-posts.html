@@ -1,0 +1,30 @@
+<div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        {{ site.data.translations['recommendedPosts'][page.lang] }}
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+        {%- for post in posts limit:3 -%}
+        {% include small-post-tile.html post=post %}
+        {%- endfor -%}
+    </div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>

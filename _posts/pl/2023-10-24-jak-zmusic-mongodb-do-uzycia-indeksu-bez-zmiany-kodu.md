@@ -6,7 +6,7 @@ published: true
 didyouknow: false
 lang: pl
 author: jwilczewski
-image: /assets/img/posts/2023-10-24-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/mongodb.webp
+image: /assets/img/posts/2023-10-24-jak-zmusic-mongodb-do-uzycia-indeksu-bez-zmiany-kodu/thumbnail.webp
 tags:
 - mongodb
 - index

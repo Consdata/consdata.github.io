@@ -1,17 +1,36 @@
 .row {
   @include flex-container;
   flex-flow: row wrap;
-  justify-content: flex-start;
   margin-bottom: $double-content-padding;
+  justify-content: space-between;
+  row-gap: 46px;
+
+  @include tablet {
+    margin-top: $double-content-padding;
+    justify-content: space-around;
+  }
 }
 
-.first-row {
+@include desktop {
+  .row .post-tile:first-child {
+    display: none;
+  }
+}
+
+.row.first-row {
+  display: none;
+
   @include desktop {
-    margin-bottom: $first-post-bottom-margin;
+    margin-bottom: $desktop-section-small-space;
+    display: flex;
   }
-  @include mobile {
-    margin: 0;
-  }
+}
+
+.row::after {
+  //fix na to, aby artykuły w ostatnim rzędzie miały poprawne szerokości
+  content: "";
+  flex: none;
+  width: 32%;
 }
 
 .col-5 {
@@ -31,6 +50,11 @@
     flex-direction: column;
     height: fit-content;
   }
+}
+
+.col-1-2 {
+  @include flex-container;
+  flex: 50%;
 }
 
 .col-1-3 {

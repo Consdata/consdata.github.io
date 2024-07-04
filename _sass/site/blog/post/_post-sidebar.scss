@@ -1,9 +1,31 @@
-.sidebar {
+@mixin separator($color) {
+  width: 100%;
+  border: 1px solid $color;
+  margin: 0;
+}
+
+.sidebar-desktop {
+  @include flex-container;
+  flex-direction: column;
+  gap: $mobile-section-medium-space;
   position: sticky;
-  height: fit-content;
-  top: 80px;
-  width: 33%;
+  width: $post-sidebar-content-width;
+  margin-top: $desktop-section-small-space;
+
   @include mobile {
+    display: none;
+  }
+}
+
+.consdata-offers-mobile {
+  margin-top: $desktop-section-space;
+  @include section-space();
+
+  @include mobile {
+    display: block;
+  }
+
+  @include tablet-and-desktop {
     display: none;
   }
 }
@@ -13,24 +35,74 @@
   flex-direction: column;
   box-sizing: border-box;
   position: sticky;
-  @include tablet-and-desktop {
-    margin-left: $double-content-padding;
+  padding: $mobile-section-xs-space;
+  border-radius: $round-edge;
+
+  a {
+    font-weight: normal;
   }
 }
 
 .sidebar-title {
-  font-weight: bold;
-  font-size: 1.4em;
-  margin-bottom: $small-padding;
-  letter-spacing: $general-letter-spacing;
-  border-bottom: $separator-border;
+  @include font-config(20px, $font-weight-semibold, 32px);
+  margin: 0 0 20px;
+}
+
+.offers-title {
+  color: $color-white;
+}
+
+.latest-posts-separator {
+  @include separator($gray-100)
+}
+
+.sidebar-posts {
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar-post {
-  font-size: 1.2em;
-  letter-spacing: $general-letter-spacing;
-  margin-bottom: $content-padding;
+  @include body-xs;
+  margin-top: 20px;
+  margin-bottom: 0;
 }
+
+li.star-icon {
+  list-style-type: none;
+  padding-left: 32px;
+  position: relative;
+
+  &:before {
+    content: url($icon-dir + 'star.svg');
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.latest-posts {
+  background-color: $gray-200;
+}
+
+.offers {
+  background-color: $gray-500;
+  color: $color-white;
+}
+
+.offers-list {
+  list-style: none;
+}
+
+.offers-separator {
+  @include separator($color-white)
+}
+
+ul.offers-list > li {
+  list-style: none;
+}
+
 
 .post-post-section-mobile {
   margin-bottom: $content-padding;
@@ -39,125 +111,76 @@
   }
 }
 
-.ad-container {
-  @include flex-container;
-  padding: $small-padding;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  background-color: $color-logo-red;
-}
-
-.ad-icons-container {
-  @include flex-container;
-  justify-content: center;
-  align-items: center;
-  max-height: 66px;
-}
-
-.ad-link-icon {
-  &:hover {
-    opacity: 0.85;
-  }
-
-  transition: 0.3s all ease;
-}
-
-.ad-titile {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  color: $color-white;
-  line-height: 1.2em;
-}
-
-.ad-date {
-  color: $color-white;
-  font-weight: bold;
-  font-size: 1.1em;
-  text-align: center;
-  margin-bottom: $small-padding;
-}
-
-.ad-text {
-  @extend .ad-date;
-  margin-bottom: $small-padding;
-}
-
-.ad-event-title {
-  color: $color-white;
-  font-size: 1.2em;
-  font-weight: bold;
-  text-align: center;
-}
-
-.event-icon {
-  font-size: 3em;
-  margin: $very-small-padding;
-}
-
-.fa-meetup {
-  color: $color-white;
-}
-
 .clickable-offer {
   display: block;
-  margin-bottom: $small-padding;
-}
-
-.job-offer-highlighted {
-  display: flex;
-  flex-direction: column;
-  background-color: $color-logo-red;
-  padding: $very-small-padding;
-
-  &:hover {
-    background-color: $color-logo-red-dark;
-  }
-
-  .job-title {
-    @include job-offer-text(white);
-    font-weight: bold;
-  }
-
-  .job-description {
-    @include job-offer-text(white);
-  }
-
-  .job-salary {
-    @include job-offer-text(white);
-    font-weight: lighter;
-  }
 }
 
 .job-offer, .other-job-offers {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: $very-small-padding;
 
-  &:hover {
-    .job-salary,
-    .job-description,
-    .job-title {
-      color: $color-logo-red-dark;
-    }
-  }
-
-  .job-salary {
-    @include job-offer-text($color-dark-gray);
-    font-weight: lighter;
-  }
-
-  .job-description {
-    @include job-offer-text($color-dark-gray);
+  .job-title, .job-description {
+    @include body-small-semibold;
   }
 
   .job-title {
-    @include job-offer-text($color-dark-gray);
-    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .job-salary {
+    @include body-xs;
+    padding-left: 24px;
+  }
+
+  .job-description, .job-salary, .job-title {
+    color: $color-white;
+  }
+
+  &:hover {
+    @include animation-ease;
+
+    .job-salary,
+    .job-description,
+    .job-title {
+      color: $gray-300;
+    }
   }
 }
+
+.newsletter-sidebar-tile {
+  @include mobile {
+    display: none;
+  }
+
+  background-color: $red-300;
+  background-image: url($icon-dir + "logo_bg_red.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 110%;
+  align-items: center;
+  justify-content: center;
+  height: 233px;
+
+  .newsletter-tile-title {
+    @include font-config(20px, $font-weight-semibold, 32px);
+    color: $color-white;
+    text-align: center;
+    margin: 0;
+  }
+
+  .newsletter-tile-title:first-child {
+    text-transform: capitalize;
+  }
+
+  .newsletter-tile-title-container {
+    margin-bottom: 12px;
+  }
+
+  .sign-up-btn {
+    align-self: center;
+    @include btn-with-white-bg(100px, 8px);
+  }
+}
+
+

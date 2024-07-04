@@ -2,17 +2,16 @@
 layout: search
 ---
 
-<article>
-    {% assign author = site.authors | where: 'short_name', page.short_name | first %}
-    <div class="row">
-        <div class="col-15 with-bottom-separator">
-            {% include author_bio.html %}
+<div class="home">
+    <div class="blog author-tiles-space">
+        {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
+        <div class="row">
+            {% assign author = site.authors | where: 'short_name', page.short_name | first %}
+            {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
+            {% for forPost in filtered_posts %}
+                {% include small-post-tile.html post=forPost %}
+            {% endfor %}
         </div>
+        {% include newsletter-subscription.html %}
     </div>
-    {% assign filtered_posts = site.posts | where: 'lang', site.active_lang | where: 'author', page.short_name %}
-    {% for forPost in filtered_posts %}
-    <div class="row">
-        {% include big-post-tile.html post=forPost %}
-    </div>
-    {% endfor %}
-</article>
+</div>

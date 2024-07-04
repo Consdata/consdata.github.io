@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author:    pgrobelny
-image:     /assets/img/posts/2021-08-02-sredniki-w-js/semicolon.jpg
+image:     /assets/img/posts/2021-08-02-sredniki-w-js/thumbnail.webp
 tags:
 - javascript
 ---

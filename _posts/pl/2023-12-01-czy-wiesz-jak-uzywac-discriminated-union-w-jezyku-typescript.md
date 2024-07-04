@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: kczechowski
-image: /assets/img/posts/2023-12-01-czy-wiesz-jak-uzywac-discriminated-union-w-jezyku-typescript/code.webp
+image: /assets/img/posts/2023-12-01-czy-wiesz-jak-uzywac-discriminated-union-w-jezyku-typescript/thumbnail.webp
 description: "Discriminated union to połączenie takich typów, z których każdy posiada jedno wspólne pole, po którym możemy określić, z którym z nich mamy do czynienia..."
 tags:
 - typescript

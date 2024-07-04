@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+<!--TODO odkrycie navbar-->
+<!--{%- include navbar.html -%}-->
 
 <div class="home">
     {%- if page.title -%}
@@ -15,12 +17,12 @@ layout: default
         </div>
         {% assign rows = site.posts.size | divided_by: 3.0 | ceil %}
         <div class="row">
-            {% assign postsWithoutFirst = site.posts | where:"lang", site.active_lang | shift %}
-            {% for forPost in postsWithoutFirst%}
+            {% assign posts = site.posts | where:"lang", site.active_lang %}
+            {% for forPost in posts%}
             {% include small-post-tile.html post=forPost %}
             {% endfor %}
 
-            {% assign moduloValue = postsWithoutFirst.size | modulo: 3 %}
+            {% assign moduloValue = posts.size | modulo: 3 %}
             {% if moduloValue > 0 %}
             {% assign missingPosts = 3 | minus: moduloValue %}
             {% for i in (1..missingPosts) %}
@@ -28,5 +30,6 @@ layout: default
             {% endfor %}
             {% endif %}
         </div>
+        {% include newsletter-subscription.html %}
     </div>
 </div>

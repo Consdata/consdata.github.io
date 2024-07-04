@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2023-12-15-czy-wiesz-czym-include-rozni-sie-od-some/javascript.webp
+image: /assets/img/posts/2023-12-15-czy-wiesz-czym-include-rozni-sie-od-some/thumbnail.webp
 description: "Jeśli nie wiesz, to zapraszamy do przeczytania artykułu :)"
 tags:
 - javascript

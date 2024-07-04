@@ -5,7 +5,7 @@ date:      2021-12-16 08:00:00 +0100
 published: true
 lang:      pl
 author:    glipecki
-image:     /assets/img/posts/2021-12-17-frontend-developer/frontend.webp
+image:     /assets/img/posts/2021-12-17-frontend-developer/thumbnail.webp
 tags:
     - frontend
     - pogadajmy

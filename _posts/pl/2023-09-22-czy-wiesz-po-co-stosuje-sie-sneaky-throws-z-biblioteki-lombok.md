@@ -6,7 +6,7 @@ published: true
 didyouknow: true
 lang: pl
 author: kdudek
-image: /assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/sneaky.jpg
+image: /assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/thumbnail.webp
 tags:
 - java
 - lombok

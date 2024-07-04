@@ -7,17 +7,18 @@
   }
 
   a {
-    color: $color-logo-red;
+    @include body;
+    color: $gray-900;
     cursor: pointer;
-    font-size: 1.1em;
-    padding-right: $double-content-padding;
-    letter-spacing: $general-letter-spacing;
-    @include mobile {
-      padding-right: $content-padding;
-    }
+    text-transform: capitalize;
+    padding: 12px 24px;
+    border-radius: $medium-round-edge;
 
     &:hover {
-      color: $color-dark-gray;
+      @include animation-ease;
+      color: $color-white;
+      background: $red-900;
+      cursor: pointer;
     }
   }
 }

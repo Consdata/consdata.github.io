@@ -5,7 +5,7 @@ date:      2020-03-18 14:00:00 +0100
 published: true
 lang: pl
 author:    jwilczewski
-image:     /assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/Tomcat.jpeg
+image:     /assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/thumbnail.webp
 tags:
     - java
     - tomcat
