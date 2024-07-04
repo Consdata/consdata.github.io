@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Czy wiesz, jak obsługiwać błedy w rxjs?
-date:      2024-07-26T08:00:00+01:00
+date:      2024-06-26T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
@@ -14,7 +14,7 @@ tags:
 
 Biblioteka rxjs dostarcza nam kilka mechanizmów, które ułatwiają nam reagowanie na nieprzewidziane sytuacje występujące podczas procesowania strumienia danych w naszej aplikacji.
 
-## Operator `catchError`
+## Operator catchError
 
 Jednym z najpopularniejszych jest operator `catchError`. Operator ten pozwala nam zareagować na sytuację, kiedy w strumieniu z jakiegoś powodu nagle wystąpi błąd. Zamiast brzydkiego błędu w konsoli możemy w `catchError` dostarczyć `Observable`, który będzie przetwarzany dalej w strumieniu.
 
@@ -46,7 +46,7 @@ of(1, 2, 3, 4, 5)
 ```
 Jak widać błąd został złapany i nigdy nie wpadł w obsługę `error observera`.
 
-## Operator `retry`
+## Operator retry
 
 Kolejnym operatorem pozwalającym na obsługę błędów jest operator `retry`. Jak sama nazwa mówi operator ten pozwala na ponowienie operacji, co jest przydatne jeżeli zakładamy, że operacja w strumieniu może się zakończyć niepowodzeniem z przyczyn niezależnych od użytkownika np. niedostępności usługi. `Retry` ponowi wtedy obsługę zaczynając od początku strumienia.
 
