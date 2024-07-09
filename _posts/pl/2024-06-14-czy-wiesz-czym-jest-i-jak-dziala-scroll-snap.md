@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Czy wiesz, czym jest i jak działa Scroll Snap?
-description: Scroll-snap-type to atrybut CSS, który powoduje, że scroll nie zatrzymuje się w miejscu, gdzie przestaliśmy scrollować, a przylega do elementu, który mu wskażemy.
+description: Atrybut CSS scroll-snap-type powoduje, że scroll nie zatrzymuje się w miejscu, gdzie przestaliśmy scrollować, a przylega do elementu, który mu wskażemy.
 date:      2024-06-14T08:00:00+01:00
 published: true
 didyouknow: true
@@ -12,7 +12,7 @@ tags:
 - css
 ---
 
-`Scroll-snap-type` to atrybut CSS, który powoduje, że scroll nie zatrzymuje się w miejscu, gdzie przestaliśmy scrollować, a przylega do elementu, który mu wskażemy. Aby skorzystać z tego zachowania najpierw na kontenerze, który scrollujemy, ustawiamy atrybut `scroll-snap-type`:
+Atrybut CSS `scroll-snap-type` powoduje, że scroll nie zatrzymuje się w miejscu, gdzie przestaliśmy scrollować, a przylega do elementu, który mu wskażemy. Aby skorzystać z tego zachowania najpierw na kontenerze, który scrollujemy, ustawiamy atrybut `scroll-snap-type`:
 ```css
 .container {
     scroll-snap-type: x;
