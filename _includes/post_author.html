@@ -2,17 +2,21 @@
     <a class="author" href="{{author.url}}">
         <img class="author-image" src="/assets/img/authors/{{author.image}}" alt="author">
         <span class="author-name">{{author.name}}</span>
+        {%- if author.github -%}
         <a class="author" href="https://github.com/{{author.github}}">
             <img class="github-icon" src="/assets/icon/github.svg">
         </a>
+        {% endif %}
     </a>
     {%- if coauthor -%}
     <a class="author authors-space" href="{{coauthor.url}}">
         <img class="author-image" src="/assets/img/authors/{{coauthor.image}}" alt="author">
         <span class="author-name">{{coauthor.name}}</span>
+        {%- if coauthor.github -%}
         <a class="author" href="https://github.com/{{coauthor.github}}">
             <img class="github-icon" src="/assets/icon/github.svg">
         </a>
+        {% endif %}
     </a>
     {% endif %}
 </div>
