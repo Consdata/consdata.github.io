@@ -12,13 +12,13 @@ tags:
 - javascript
 ---
 
-Biblioteka rxjs dostarcza nam kilka mechanizmów, które ułatwiają nam reagowanie na nieprzewidziane sytuacje występujące podczas procesowania strumienia danych w naszej aplikacji.
+Biblioteka rxjs dostarcza kilka mechanizmów, które ułatwiają reagowanie na nieprzewidziane sytuacje występujące podczas procesowania strumienia danych w aplikacji.
 
 ## Operator catchError
 
 Jednym z najpopularniejszych jest operator `catchError`. Operator ten pozwala nam zareagować na sytuację, kiedy w strumieniu z jakiegoś powodu nagle wystąpi błąd. Zamiast brzydkiego błędu w konsoli możemy w `catchError` dostarczyć `Observable`, który będzie przetwarzany dalej w strumieniu.
 
-Ważne, aby `catchError` znajdował się po operacji, w której wystąpi błąd, inaczej ten nie zostanie przechwycony.
+Ważne, aby `catchError` znajdował się po operacji, w której wystąpi błąd. Inaczej nie nie zostanie przechwycony.
 
 Przykładowy kod:
 ```javascript
@@ -44,13 +44,13 @@ of(1, 2, 3, 4, 5)
 // Złapano błąd Error: test
 // completed
 ```
-Jak widać błąd został złapany i nigdy nie wpadł w obsługę `error observera`.
+Jak widać, błąd został złapany i nigdy nie wpadł w obsługę `error observera`.
 
 ## Operator retry
 
-Kolejnym operatorem pozwalającym na obsługę błędów jest operator `retry`. Jak sama nazwa mówi operator ten pozwala na ponowienie operacji, co jest przydatne jeżeli zakładamy, że operacja w strumieniu może się zakończyć niepowodzeniem z przyczyn niezależnych od użytkownika np. niedostępności usługi. `Retry` ponowi wtedy obsługę zaczynając od początku strumienia.
+Kolejnym operatorem pozwalającym na obsługę błędów jest operator `retry`. Jak sama nazwa wskazuje, operator ten pozwala na ponowienie operacji. Jest to przydatne, jeżeli zakładamy, że operacja w strumieniu może się zakończyć niepowodzeniem z przyczyn niezależnych od użytkownika, np. niedostępności usługi. `retry` ponowi wtedy obsługę, zaczynając od początku strumienia.
 
-Retry nie tylko pozwala nam zdefiniować liczbę (`count`) ponownych wywołań, lecz także odstęp między nimi (`delay`). Parametr `delay` może przyjmować wartość w milisekundach między wywołaniami lub funkcje zwracającą strumień.
+Retry nie tylko pozwala nam zdefiniować liczbę (`count`) ponownych wywołań, lecz także odstęp między nimi (`delay`). Parametr `delay` może przyjmować wartość w milisekundach między wywołaniami lub funkcję zwracającą strumień.
 - Jeżeli strumień w `delay` wyemituje wartość lub zakończy się bez emitowania wartości - `retry` ponowi operacje.
 - Jeżeli strumień w `delay` zakończy się błędem - `retry` przerwie ponawianie operacji.
 
