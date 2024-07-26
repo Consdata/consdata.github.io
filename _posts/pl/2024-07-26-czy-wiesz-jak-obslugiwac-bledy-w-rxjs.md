@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Czy wiesz, jak obsługiwać błedy w rxjs?
-date:      2024-06-26T08:00:00+01:00
+date:      2024-07-26T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
