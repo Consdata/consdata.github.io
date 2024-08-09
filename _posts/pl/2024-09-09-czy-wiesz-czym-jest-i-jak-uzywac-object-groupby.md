@@ -23,7 +23,7 @@ Jako przykład posłuży nam poniższa lista książek:
 const books = [
   {title: '1984', genre: 'Dystopian fiction', year: 1949},
   {title: 'To Kill a Mockingbird', genre: 'Classic literature', year: 1960},
-  {title: 'The Great Gatsby', genre: 'Dystopian fiction', year: 1925},
+  {title: 'The Great Gatsby', genre: 'Modernist novel', year: 1925},
   {title: 'The Catcher in the Rye', genre: 'Classic literature', year: 1951},
   {title: 'Pride and Prejudice', genre: 'Romance novel', year: 1813}
 ];
@@ -37,7 +37,6 @@ Object.groupBy(books, ({ genre }) => genre)
 {
   "Dystopian fiction": [
       {"title": "1984", "genre": "Dystopian fiction", "year": 1949},
-      {"title": "The Great Gatsby", "genre": "Dystopian fiction", "year": 1925}
   ],
   "Classic literature": [
       {"title": 'To Kill a Mockingbird', "genre": 'Classic literature', "year": 1960},
@@ -45,11 +44,14 @@ Object.groupBy(books, ({ genre }) => genre)
   ],
   "Romance novel": [
       {"title": 'Pride and Prejudice', "genre": 'Romance novel', "year": 1813}
+  ], 
+  "Modernist novel": [
+      {"title": "The Great Gatsby", "genre": "Modernist novel", "year": 1925}
   ]
 }
 ```
 
-Bardziej zaawansowanym przykładem może być podział listy na grupy obajmujące nowe książeki (wydane po 1900 roku) i stare (pozostałe):
+Bardziej zaawansowanym przykładem może być podział listy na grupy obejmujące nowe książki (wydane po 1900 roku) i stare (pozostałe):
 ```javascript
 Object.groupBy(books, ({year}) => year > 1900 ? "new" : "old")
 
@@ -57,7 +59,7 @@ Object.groupBy(books, ({year}) => year > 1900 ? "new" : "old")
 {
   "new": [
       {"title": "1984", "genre": "Dystopian fiction", "year": 1949},
-      {"title": "The Great Gatsby", "genre": "Dystopian fiction", "year": 1925},
+      {"title": "The Great Gatsby", "genre": "Modernist novel", "year": 1925},
       {"title": 'To Kill a Mockingbird', "genre": 'Classic literature', "year": 1960},
       {"title": 'The Catcher in the Rye', "genre": 'Classic literature', "year": 1951},
   ],
