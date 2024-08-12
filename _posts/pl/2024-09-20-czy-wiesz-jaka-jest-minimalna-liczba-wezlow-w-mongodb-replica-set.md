@@ -13,7 +13,7 @@ tags:
 - replica set
 ---
 
-Odpowiedź na to pytanie jest znana - aby skorzystać z korzyści, które daje replica set potrzebne są przynajmniej trzy węzły. Warto jednak wyjaśnić dlaczego tak jest. Taka sytuacja jest ściśle powiązana z algorytmem wyboru nowego węzła `PRIMARY` w replice. W replice MongoDB jeden z węzłów pełni rolę węzła `PRIMARY` i tylko on obsługuje operacje zapisu. Pozostałe węzły (`SECONDARY`) odczytują zapisane operacje z operation loga i nanoszą je na swoje zbiory danych.
+Aby skorzystać z korzyści, które daje replica set potrzebne są przynajmniej trzy węzły. Warto jednak wyjaśnić dlaczego tak jest. Taka sytuacja jest ściśle powiązana z algorytmem wyboru nowego węzła `PRIMARY` w replice. W replice MongoDB jeden z węzłów pełni rolę węzła `PRIMARY` i tylko on obsługuje operacje zapisu. Pozostałe węzły (`SECONDARY`) odczytują zapisane operacje z operation loga i nanoszą je na swoje zbiory danych.
 
 Wybór nowego węzła `PRIMARY` następuje w przypadku:
 - dodania nowego węzła do repliki,
