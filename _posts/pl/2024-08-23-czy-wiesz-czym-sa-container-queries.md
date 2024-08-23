@@ -13,9 +13,9 @@ tags:
 - container queries
 ---
 
-*Container queries* to mechanizm analogiczny do *media queries* działający na elementach DOM a nie parametrach przeglądarki. Pozwala odpytać o parametry kontenera i względem tych parametrów, ostylować element w nim zawarty.
+*Container queries* to mechanizm analogiczny do *media queries*, działający na elementach DOM, a nie parametrach przeglądarki. Pozwala odpytać o parametry kontenera i ostylować zawarty w nim element zgodnie z tymi parametrami.
 
-Aby oznaczyć element jako wspomniany wcześniej kontener, należy ustawić mu regułę `container-type`. Do dyspozycji mamy tutaj 3 wartości:
+Aby oznaczyć element jako kontener, należy ustawić regułę `container-type`. Do dyspozycji mamy 3 wartości:
 - `size` - podczas stylowania względem tego kontenera będzie brana zarówno szerokość jak i wysokość elementu oraz jego style,
 - `inline-size` - podczas stylownia będzie brany pod uwagę tylko wymiar inline-size (czyli szerokość przy domyślnie ustawionym [writing-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode)),
 - `normal` - podczas stylowania będą brane pod uwagę jedynie style kontenera.
@@ -51,11 +51,11 @@ element `.box` może zostać ostylowany względem aktualnej szerokości kontener
   }
 }
 ```
-W tym przypadku, gdy kontener będzie miał rozmiar większy niż 400px element `box` pozostanie żółty, jednak gdy szerokość kontenera przekroczy tę granicę, kolor elementu `box` zmieni się na czerwony.
+W tym przypadku, jeśli kontener będzie większy niż 400px, element `box` pozostanie żółty. Jeśli kontener będzie szerszy, kolor elementu `box` zmieni się na czerwony.
 
-### Co jeżeli jednak mamy wiele zagnieżdżonych kontenerów i chcemy odwołać się do któregoś konkretnego?
+### Co jeżeli mamy wiele zagnieżdżonych kontenerów i chcemy odwołać się do któregoś konkretnego?
 
-Domyślnie pod uwagę brany jest kontekst najbliższego kontenera, jednak można to zmienić poprzez ustawienie reguły `container-name` z wybraną przez nas nazwą kontenera. Przykładowo:
+Domyślnie pod uwagę brany jest kontekst najbliższego kontenera, jednak można to zmienić poprzez ustawienie reguły `container-name` z wybraną nazwą kontenera. Przykładowo:
 ```css
 .container {
   container-type: size;
