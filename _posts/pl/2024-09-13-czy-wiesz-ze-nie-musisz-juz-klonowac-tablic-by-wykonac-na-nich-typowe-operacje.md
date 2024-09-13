@@ -7,7 +7,7 @@ published: true
 didyouknow: true
 lang: pl
 author: mbartosik
-image: /assets/img/posts/2024-09-06-czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-by-wykonac-na-nich-typowe-operacje/thumbnail.webp
+image: /assets/img/posts/2024-09-13-czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-by-wykonac-na-nich-typowe-operacje/thumbnail.webp
 tags:
 - javascript
 ---
