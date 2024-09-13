@@ -7,7 +7,7 @@ published: true
 didyouknow: true
 lang: pl
 author: pgrobelny
-image: /assets/img/posts/2024-09-09-czy-wiesz-czym-jest-i-jak-uzywac-object-groupby/thumbnail.webp
+image: /assets/img/posts/2024-08-09-czy-wiesz-czym-jest-i-jak-uzywac-object-groupby/thumbnail.webp
 tags:
 - javascript
 ---

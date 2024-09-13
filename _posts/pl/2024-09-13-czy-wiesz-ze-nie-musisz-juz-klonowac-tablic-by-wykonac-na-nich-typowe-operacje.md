@@ -1,7 +1,7 @@
 ---
 layout:    post
-title:     Czy wiesz, że już nie musisz klonować tablic by wykonać na nich typowe operacje?
-description: "Metody toReversed(), toSplice(), toSorted() oraz with() stanowią grupę metod operujących na tablicach, które rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane."
+title:     Czy wiesz, że już nie musisz klonować tablic, by wykonać na nich typowe operacje?
+description: "Metody toReversed(), toSplice(), toSorted() oraz with() stanowią grupę metod operujących na tablicach. Rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane."
 date:      2024-09-06T08:00:00+01:00
 published: true
 didyouknow: true
@@ -11,8 +11,8 @@ image: /assets/img/posts/2024-09-06-czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-
 tags:
 - javascript
 ---
-Metody `toReversed()`, `toSplice()`, `toSorted()` oraz `with()` stanowią grupę metod operujących na tablicach, które rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane.
-Omawiane metody nie modyfikują tablic, na których zostały wywołane, w przeciwieństwie do tradycyjnych `sort()`, `splice()` czy `reverse()`.
+Metody `toReversed()`, `toSplice()`, `toSorted()` oraz `with()` stanowią grupę metod operujących na tablicach. Rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane.
+W przeciwieństwie do tradycyjnych metod takich jak `sort()`, `splice()` czy `reverse()`, metody te nie modyfikują tablic, na których zostały wywołane.
 
 ### toReversed()
 Metoda `toReversed()` odpowiada `reverse()`. Zwraca nową tablicę z elementami w odwrotnej kolejności.
@@ -40,7 +40,7 @@ const c = a.toSpliced(1, 1);        // c: [3, 5, 6]
 ```
 
 ### with()
-Metoda `with()` odpowiada notacji `[<index>]`. Zwraca nową tablicę z zmienionym elementem pod wskazanym indeksem.
+Metoda `with()` odpowiada notacji `[<index>]`. Zwraca nową tablicę ze zmienionym elementem pod wskazanym indeksem.
 ```javascript
 const a = [3, 1, 5, 6];
 const b = Array.from(a);
