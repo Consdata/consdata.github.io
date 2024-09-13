@@ -2,7 +2,7 @@
 layout:    post
 title:     Czy wiesz, że już nie musisz klonować tablic, by wykonać na nich typowe operacje?
 description: "Metody toReversed(), toSplice(), toSorted() oraz with() stanowią grupę metod operujących na tablicach. Rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane."
-date:      2024-09-06T08:00:00+01:00
+date:      2024-09-13T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
