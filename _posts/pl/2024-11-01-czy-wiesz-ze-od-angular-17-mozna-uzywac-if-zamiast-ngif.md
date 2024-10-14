@@ -2,18 +2,18 @@
 layout:    post
 title:     Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngIf?
 description: ""
-date:      2024-10-11T08:00:00+01:00
+date:      2024-11-01T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2024-10-11-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp
+image: /assets/img/posts/2024-11-01-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp
 tags:
 - javascript
 ---
-W Angular 17 pojawiło się *built-it control flow*, a w 18 zostało ustabilizowane. Są to zamienniki dyrektyw `*ngIf`, `*ngFor`, `*ngSwitch`.
+W Angular 17 pojawiło się *built-it control flow*, które zostało ustabilizowane w wersji 18. Są to zamienniki dyrektyw `*ngIf`, `*ngFor`, `*ngSwitch`.
 
-`@if` jest odpowiednikiem `*ngIf`, przykładowe wykorzystanie:
+`@if` jest odpowiednikiem `*ngIf`. Przykładowe wykorzystanie:
 ```
 // *ngIf - if-else
 <div *ngIf="a > b; then aGreaterBlock else aLessOrEqualBlock"></div>
@@ -30,7 +30,7 @@ W Angular 17 pojawiło się *built-it control flow*, a w 18 zostało ustabilizow
 }
 ```
 
-`@if` można używać również z `async pipe`, przykład wykorzystania:
+`@if` można używać również z `async pipe`. Przykład wykorzystania:
 ```
 // *ngIf - async pipe
 <ng-container *ngIf="vm$ | async as viewModel">
@@ -43,7 +43,7 @@ W Angular 17 pojawiło się *built-it control flow*, a w 18 zostało ustabilizow
 }
 ```
 
-`@if` poprawia czytelność szablonów, oddziela logikę od tagów html oraz oferuje klauzulę, która zostanie wykonana `@else`, gdy zdefiniowany warunek nie będzie spełniony.
+`@if` poprawia czytelność szablonów, oddziela logikę od tagów html oraz oferuje klauzulę `@else`, która będzie wykonana, jeśli zdefiniowany warunek nie zostanie spełniony.
 
 ## Dokumentacja
 - [https://angular.dev/guide/templates/control-flow](https://angular.dev/guide/templates/control-flow)
