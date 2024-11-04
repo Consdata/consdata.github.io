@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Practical applications of webhooks | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Practical applications of webhooks" />
+<meta name="author" content="bradlinski" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Sooner or later every developer will have to deal with some form of API - an interface through which two independent applications can communicate. In this article I will present an approach to this type of communication that is a bit different from the traditional one." />
+<meta property="og:description" content="Sooner or later every developer will have to deal with some form of API - an interface through which two independent applications can communicate. In this article I will present an approach to this type of communication that is a bit different from the traditional one." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2018/04/23/practical-applications-of-webhooks.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2018/04/23/practical-applications-of-webhooks.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-04-23T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/thumbnail.webp" />
+<meta property="twitter:title" content="Practical applications of webhooks" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"bradlinski"},"image":"https://blog.consdata.tech/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/thumbnail.webp","@type":"BlogPosting","headline":"Practical applications of webhooks","description":"Sooner or later every developer will have to deal with some form of API - an interface through which two independent applications can communicate. In this article I will present an approach to this type of communication that is a bit different from the traditional one.","dateModified":"2018-04-23T02:00:00-05:00","datePublished":"2018-04-23T02:00:00-05:00","url":"https://blog.consdata.tech/2018/04/23/practical-applications-of-webhooks.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2018/04/23/practical-applications-of-webhooks.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+    
+    
+    
+  
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2018/04/23/practical-applications-of-webhooks.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">sonarqube</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Practical applications of webhooks</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/bradlinski.html">
+        <img class="author-image" src="/assets/img/authors/bradlinski.webp" alt="author">
+        <span class="author-name">Bartosz Radliński</span><a class="author" href="https://github.com/m87">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+23
+
+
+April
+
+
+2018
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Sooner or later every developer will have to deal with some form of API - an interface through which two independent applications can communicate. In this article I will present an approach to this type of communication that is a bit different from the traditional one.</p>
+
+<h2 id="what-are-webhooks">What are webhooks?</h2>
+<p>Let’s assume you have written some application A and you want it to be able to display some data from application B, e.g. a list of active users. For this purpose, application B gives you access to an API that enables downloading the list of active users. In a conventional approach you would need to request application B for an up-to-date list of active users, but it would be much more convenient if application B informed your application about any changes in the list. This is what webhooks can help you achieve.</p>
+
+<p>Webhooks enable a different approach to communication between applications. The webhook mechanism is often called Reverse API because it usually does not require interaction from the client side (in our example, application A). In simpler terms, webhooks allow the client application to be notified when certain events occur.</p>
+
+<p>Webhooks are easy to implement because they actually consist in sending a request with a defined structure, to a defined address, as a result of some event. Integrating the client application comes down to defining the address to which the request is to be sent.</p>
+
+<p>Summing up, webhooks are very useful in situations when you expect information from an external application in the case of an event as they allow you to avoid active waiting on your application’s side.</p>
+
+<p>However, there are two disadvantages of webhooks that should be mentioned:</p>
+<ul>
+  <li>when an error occurs in the application, external data can be lost because there is no certainty that the external application will in any way respond to the error that you report - in the case of a classic API you could retry to query the external application;</li>
+  <li>when handling webhooks, you must take into account that the events which you are notified about may occur very frequently - usually you do not have control over it.</li>
+</ul>
+
+<h2 id="integration-example">Integration example</h2>
+<p>Using our open-source project, SonarQube Companion, as an example, I will explain how several applications can be easily integrated with webhooks.</p>
+
+<p>Let’s integrate SonarQube Companion with the Slack messenger. The result of the integration will be a message on a Slack channel stating how the number of a team’s violations has changed over the last day.</p>
+
+<h3 id="prerequisites">Prerequisites:</h3>
+<ul>
+  <li>familiarize yourself with the article about SonarQube Companion,</li>
+  <li>configure SonarQube Companion,</li>
+  <li>get Slack.</li>
+</ul>
+
+<p>First, you need to configure a webhook on Slack’s side. To do this, go to the messenger’s integration settings, add the “Incoming WebHooks” app configuration and define which channel you want to send messages to:</p>
+
+<p><img src="/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/1.png" alt="Slack configuration" /></p>
+
+<p>After a successful configuration, you should see a notification in the channel:</p>
+
+<p><img src="/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/2.png" alt="Slack notification" /></p>
+
+<p>The next step is to configure the webhook on SonarQube Companion’s side, which is a little bit more complex. Each of the defined groups may contain its own definition of webhooks. The definition of a webhook consists of three basic elements:</p>
+
+<ul>
+  <li><strong>action</strong> – a certain event/behavior that is to be executed,</li>
+  <li><strong>trigger</strong> – defines when an action is to be executed,</li>
+  <li><strong>callback</strong> – determines in what way the client application is to be informed about the action’s results.</li>
+</ul>
+
+<p>A full documentation of available actions, triggers and callbacks is located in <a href="https://github.com/Consdata/sonarqube-companion/wiki/Webhooks">this GitHub repository</a></p>
+
+<p>As an example, let’s define a webhook that will check how the number of violations within a team has changed over the last day. Depending on the result, an appropriate message will be sent to the messenger’s channel.</p>
+
+<p>First, define what action should result in sending the message. To do this, define an action for a new webhook in the webhooks node:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"webhooks"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NO_IMPROVEMENT"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"period"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DAILY"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"severity"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"blockers"</span><span class="p">,</span><span class="w"> </span><span class="s2">"criticals"</span><span class="p">,</span><span class="w"> </span><span class="s2">"majors"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre></div></div>
+<p>In this way, you have defined an action that will check whether the number of violations in the group’s projects has improved during the last day. Additionally, it will take into account only the violations with the following priorities: blocker, critical and major.</p>
+
+<p>The next step is to define an action trigger. In our example, for simplicity, we would like the action to be executed every minute. To achieve that, define a CRON-type trigger:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"trigger"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CRON"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"definition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 */1 * * * *"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Finally, you need to define the actual integration with the messenger. To do that, define a POST-type callback, including the URL obtained from the “Webhook URL” field of Slack’s configuration panel.</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"callbacks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"POST"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://hooks.slack.com/services/*/*"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"body"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"no_improvement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'http://gph.is/1RFg2r3 Brak poprawy'}"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"improvement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'http://gph.is/1a7RlDR Poprawiono ${diff}'"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"clean"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'https://gph.is/1IH3RW6 Czysto'}"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In the body section you need to define the content of the message to be sent depending on the state of the group. For example, if the state of violations has improved (the “improvement” response), a gif will be sent along with a short comment containing a predefined action variable - ${diff}. In this way, the channel will show information about the number of corrected violations during the last day.</p>
+
+<p>The whole configuration looks as follows:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"webhooks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NO_IMPROVEMENT"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"period"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DAILY"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"severity"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"blockers"</span><span class="p">,</span><span class="w"> </span><span class="s2">"criticals"</span><span class="p">,</span><span class="w"> </span><span class="s2">"majors"</span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"trigger"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CRON"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"definition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 */1 * * * *"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"callbacks"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"POST"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://hooks.slack.com/services/*/*"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"body"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"no_improvement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'http://gph.is/1RFg2r3 Brak poprawy'}"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"improvement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'http://gph.is/1a7RlDR Poprawiono ${diff}'"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"clean"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{ 'text': 'https://gph.is/1IH3RW6 Czysto'}"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+<p>In this way, SonarQube Companion will check the state of the group’s violations every minute and, depending on the result, will send the relevant message to the messenger’s channel.</p>
+
+<p>As a result, a message about the lack of improvement of any violations appears in the channel:
+<img src="/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/3.png" alt="Slack message" /></p>
+
+<p>After one violation has been corrected, the relevant message will be generated in the next minute:
+<img src="/assets/img/posts/2018-04-23-praktyczne-zastosowanie-webhook/4.png" alt="Slack message" /></p>
+
+<p>In this way, you have integrated two independent applications using the webhooks mechanism, without having to write a single line of code.</p>
+
+<h2 id="summary">Summary</h2>
+<p>In this article I presented the concept of webhooks and showed you how to integrate two independent applications in a simple and quick way. We are going to gradually extend SonarQube Companion with new actions, e.g. sending weekly reports about violations to particular users so I recommend staying tuned to the project’s website.</p>
+
+<h2 id="useful-links">Useful links:</h2>
+<ul>
+  <li><a href="https://github.com/Consdata/sonarqube-companion">https://github.com/Consdata/sonarqube-companion</a></li>
+  <li><a href="https://github.com/Consdata/sonarqube-companion/wiki/Webhooks">https://github.com/Consdata/sonarqube-companion/wiki/Webhooks</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Similar posts
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "sonarqube webhook";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            We would like to use third party cookies and scripts to improve the functionality of this website.
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Approve</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
