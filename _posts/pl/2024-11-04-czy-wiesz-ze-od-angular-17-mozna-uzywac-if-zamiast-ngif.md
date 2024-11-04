@@ -7,7 +7,7 @@ published: true
 didyouknow: true
 lang: pl
 author: dmejer
-image: /assets/img/posts/2024-11-01-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp
+image: /assets/img/posts/2024-11-04-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp
 tags:
 - javascript
 ---
