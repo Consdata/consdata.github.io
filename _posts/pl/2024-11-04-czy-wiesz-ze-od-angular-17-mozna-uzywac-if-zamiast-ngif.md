@@ -9,7 +9,7 @@ lang: pl
 author: dmejer
 image: /assets/img/posts/2024-11-04-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp
 tags:
-- javascript
+- angular
 ---
 W Angular 17 pojawiło się *built-it control flow*, które zostało ustabilizowane w wersji 18. Są to zamienniki dyrektyw `*ngIf`, `*ngFor`, `*ngSwitch`.
 
