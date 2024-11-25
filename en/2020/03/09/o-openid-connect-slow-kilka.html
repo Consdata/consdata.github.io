@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>O OpenID Connect słów kilka | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="O OpenID Connect słów kilka" />
+<meta name="author" content="mhoja" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji są OAuth 2.0, OpenID Connect oraz SAML. O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać OAuth 2.0 oraz JWT." />
+<meta property="og:description" content="Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji są OAuth 2.0, OpenID Connect oraz SAML. O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać OAuth 2.0 oraz JWT." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2020/03/09/o-openid-connect-slow-kilka.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/03/09/o-openid-connect-slow-kilka.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-03-09-o-openid-connect-slow-kilka/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-09T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-03-09-o-openid-connect-slow-kilka/thumbnail.webp" />
+<meta property="twitter:title" content="O OpenID Connect słów kilka" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mhoja"},"image":"https://blog.consdata.tech/assets/img/posts/2020-03-09-o-openid-connect-slow-kilka/thumbnail.webp","@type":"BlogPosting","headline":"O OpenID Connect słów kilka","description":"Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji są OAuth 2.0, OpenID Connect oraz SAML. O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać OAuth 2.0 oraz JWT.","dateModified":"2020-03-09T02:00:00-05:00","datePublished":"2020-03-09T02:00:00-05:00","url":"https://blog.consdata.tech/2020/03/09/o-openid-connect-slow-kilka.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/03/09/o-openid-connect-slow-kilka.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2020/03/09/o-openid-connect-slow-kilka.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">openid connect</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">O OpenID Connect słów kilka</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/mhoja.html">
+        <img class="author-image" src="/assets/img/authors/mhoja.webp" alt="author">
+        <span class="author-name">Michał Hoja</span><a class="author" href="https://github.com/Michuu93">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+9
+
+
+March
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>W nawiązaniu do mojego poprzedniego wpisu pt.:<br />
+<a href="/en/2020/02/01/keycloak-user-authentication-authorization-springboot-angular.html"><strong>“Keycloak - uwierzytelnianie i autoryzacja użytkownika w aplikacji Angular/Spring Boot”</strong> 🔗</a><br />
+chciałbym krótko opisać standard <a href="https://openid.net/connect/">OpenID Connect</a>, który został wykorzystany podczas logowania do aplikacji przy użyciu serwera uwierzytelniania <a href="https://www.keycloak.org/">Keycloak</a>.</p>
+
+<h2 id="wstęp">Wstęp</h2>
+
+<p>Najpopularniejszymi standardami wykorzystywanymi do uwierzytelniania/autoryzacji są <code class="language-plaintext highlighter-rouge">OAuth 2.0</code>, <code class="language-plaintext highlighter-rouge">OpenID Connect</code> oraz <code class="language-plaintext highlighter-rouge">SAML</code>.<br />
+O OAuth 2.0 zostało już napisanych wiele artykułów, których nie ma sensu powielać. Jednak aby przedstawić OpenID Connect, musiałbym opisać <a href="https://oauth.net/2/">OAuth 2.0</a> oraz <a href="https://jwt.io/">JWT</a>.</p>
+
+<p>W celu zapoznania się ze standardem OAuth 2.0 odeślę do artykułu pt.:<br />
+<a href="https://sekurak.pl/oauth-2-0-jak-dziala-jak-testowac-problemy-bezpieczenstwa/"><strong>“OAuth 2.0 – jak działa / jak testować / problemy bezpieczeństwa”</strong> 🔗</a><br />
+autorstwa Marcina Pioska z portalu <a href="https://sekurak.pl/">Sekurak</a>, w którym została opisana terminologia, sposoby pozyskiwania tokenu oraz zasada działania standardu.</p>
+
+<p>O JWT natomiast możemy przeczytać w dokumencie <a href="https://tools.ietf.org/html/rfc7519">RFC7519</a>.</p>
+
+<p>Dlaczego więc do integracji naszej aplikacji z serwerem uwierzytelniania Keycloak użyliśmy OpenID Connect?</p>
+
+<h2 id="uwierzytelnianie-a-autoryzacja">Uwierzytelnianie a autoryzacja</h2>
+
+<p>Poruszając temat zabezpieczania zasobów i dostępu do nich, mówimy o takich pojęciach jak <strong>uwierzytelnianie</strong> (ang. authentication) oraz <strong>autoryzacja</strong> (ang. authorization).</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">uwierzytelnianie</code> to proces polegający na potwierdzeniu tożsamości, czyli w skrócie - <em>kim jestem?</em>;</li>
+  <li><code class="language-plaintext highlighter-rouge">autoryzacja</code> to proces nadawania uprawnień (dostępu do zasobu), czyli w skrócie - <em>co mogę zrobić?</em>.</li>
+</ul>
+
+<p>OAuth 2.0, według oficjalnej dokumentacji, nie powinien służyć do uwierzytelniania, a jedynie do autoryzacji (<a href="https://oauth.net/articles/authentication/">źródło 🔗</a>):</p>
+<blockquote>
+  <p>OAuth 2.0 is not an authentication protocol.</p>
+</blockquote>
+
+<p>Jeśli potrzebujemy mechanizmu pozwalającego na poprawne zaimplementowanie uwierzytelniania, z pomocą przychodzi OpenID Connect.</p>
+
+<h2 id="openid-connect">OpenID Connect</h2>
+
+<p>OpenID Connect jest prostą warstwą tożsamości opartą na OAuth 2.0.<br />
+Umożliwia klientom weryfikację tożsamości użytkownika końcowego na podstawie uwierzytelnienia przeprowadzonego przez serwer autoryzacji, a także uzyskanie podstawowych informacji o jego profilu. Rozszerza OAuth 2.0, umożliwiając <strong>uwierzytelnianie stowarzyszone</strong> (ang. federated authentication):</p>
+
+<ul>
+  <li><strong>Federated Authentication</strong> - użytkownik loguje się do serwisu Spotify przy użyciu konta na portalu Facebook (<code class="language-plaintext highlighter-rouge">OpenID Connect</code>);</li>
+  <li><strong>Delegated Authorization</strong> - Spotify próbuje uzyskać dostęp do listy znajomych na Facebooku, aby zaimportować ją do swojej bazy danych (<code class="language-plaintext highlighter-rouge">OAuth 2.0</code>).</li>
+</ul>
+
+<p>Przepływ procesu jest podobny do OAuth 2.0, ale dodatkowo w procesie bierze udział <strong>ID Token</strong>.</p>
+
+<h2 id="id-token">ID Token</h2>
+
+<p>ID Token przypomina koncepcję dowodu osobistego w formacie JWT, podpisanego przez dostawcę OpenID (OP). Spełnia założenia standardu JWT, więc składa się z nagłówka, zawartości oraz
+sygnatury. Jego zawartość może więc wyglądać następująco:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jti"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e78b5f41-e769-4353-8874-44302f4a17c3"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"exp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1583205992</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"nbf"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iat"</span><span class="p">:</span><span class="w"> </span><span class="mi">1583169992</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iss"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:8180/auth/realms/SpringBootAngular"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"aud"</span><span class="p">:</span><span class="w"> </span><span class="s2">"developer"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c3c3755a-e499-4782-b119-a19bede0ace8"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"typ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Serialized-ID"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"02c0b033-bfac-4030-a317-c18aec3cb2db"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"auth_time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1583169991</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"acr"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"session_state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8b66127b-4474-41bd-8e36-5d18286df73f"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"state_checker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HZZmC4no-TEqiCf31Mk1MtONDqyxkk81ZXZCwANQb9Y"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jan Nowak"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jan.nowak@example.pl"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>W skrócie, ID Token m.in.:</strong></p>
+
+<ul>
+  <li>potwierdza tożsamość użytkownika, zwanego podmiotem w OpenID (<code class="language-plaintext highlighter-rouge">sub</code>);</li>
+  <li>określa organ wydający (<code class="language-plaintext highlighter-rouge">iss</code>);</li>
+  <li>jest generowany dla określonej grupy odbiorców - klienta (<code class="language-plaintext highlighter-rouge">aud</code>);</li>
+  <li>może zawierać losowy ciąg służący do identyfikowania pochodzenia żądania (<code class="language-plaintext highlighter-rouge">nonce</code>);</li>
+  <li>może określać kiedy (<code class="language-plaintext highlighter-rouge">auth time</code>) i jak, pod względem siły (<code class="language-plaintext highlighter-rouge">acr</code>) użytkownik został uwierzytelniony;</li>
+  <li>posiada znacznik czasu wydania (<code class="language-plaintext highlighter-rouge">iat</code>) oraz czas ważności (<code class="language-plaintext highlighter-rouge">exp</code>);</li>
+  <li>może zawierać dodatkowe informacje takie jak imię, nazwisko (<code class="language-plaintext highlighter-rouge">name</code>) oraz adres email (<code class="language-plaintext highlighter-rouge">email</code>);</li>
+  <li>jest podpisany cyfrowo, dzięki czemu może zostać zweryfikowany;</li>
+  <li>opcjonalnie może zostać zaszyfrowany w celu zapewnienia poufności danych.</li>
+</ul>
+
+<p>Więcej informacji na ten temat znajdziemy w <a href="https://openid.net/specs/openid-connect-core-1_0.html#CodeIDToken">oficjalnej dokumentacji 🔗</a>.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Dzięki wykorzystaniu <code class="language-plaintext highlighter-rouge">ID Token</code>, OpenID Connect nadaje się do uwierzytelniania użytkownika, w przeciwieństwie do OAuth 2.0, który najlepiej sprawdzi się podczas autoryzacji dwóch aplikacji komunikujących się między sobą przez API.</p>
+
+<p>Wiemy już, że Federated Authentication ma zastosowanie, kiedy użytkownik loguje się do serwisu przy użyciu wspólnego konta.<br />
+OpenID Connect wydaje się więc być naturalnym kandydatem do uwierzytelniania użytkowników w różnego rodzaju serwisach społecznościowych czy aplikacjach internetowych (<a href="/en/2020/02/01/keycloak-user-authentication-authorization-springboot-angular.html">jak w przykładzie logowania do aplikacji za pośrednictwem Keycloaka</a>).</p>
+
+<p>Delegated Authorization natomiast ma zastosowanie, kiedy klient (aplikacja) próbuje uzyskać dostęp do zasobów innej aplikacji. Użytkownik musi jedynie zaakceptować uprawnienia przyznawane aplikacji klienckiej, czyli np. odczyt listy znajomych na Facebooku, o który ubiega się Spotify.<br />
+Tutaj do autoryzacji Spotify w Facebooku najlepiej spisze się OAuth 2.0.</p>
+
+<p><strong>Standardy wymienione we wstępie można podsumować następująco:</strong></p>
+
+<ul>
+  <li><strong>OAuth 2.0</strong> - stworzony w 2006 roku przy współpracy Twittera i Google, otwarty standard autoryzacji oparty o format JSON. Główne zastosowanie to autoryzacja API między dwoma aplikacjami;</li>
+  <li><strong>OpenID Connect 1.0</strong> - stworzony w 2014 roku przez OpenID Foundation, otwarty standard uwierzytelniania oparty o format JSON. Główne zastosowanie to SSO dla aplikacji konsumenckich;</li>
+  <li><strong>SAML 2.0</strong> - stworzony w 2001 roku przez OASIS, otwarty standard autoryzacji i uwierzytelniania oparty o format XML. Główne zastosowanie to SSO dla aplikacji enterprise.</li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "openid connect oauth 2 keycloak uwierzytelnianie użytkownika";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
