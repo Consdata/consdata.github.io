@@ -24,16 +24,16 @@ W Angular 17 pojawiło się *built-it control flow*, które zostało ustabilizow
 }
 ```
 
-`track`, tak jak wcześniej, łączy dane z konkretnym węzłem w DOM. Powoduje to wzrost wydajności przy operacjach na kolekcji. Ustawienie `trackBy` było opcjonalne w `*ngFor`, natomiast `track` w `@for` jest obowiązkowy.
+`track`, tak jak wcześniej, łączy dane z konkretnym węzłem w DOM. Powoduje to wzrost wydajności przy operacjach na kolekcji. W `*ngFor` ustawienie `trackBy` było opcjonalne, natomiast w `@for` `track` jest obowiązkowy.
 
-W ramach `@for` można używać dodatkowych zmiennych np. `$index`, `$event`, `$last` (więcej w dokumentacji)
+W ramach `@for` można używać dodatkowych zmiennych np. `$index`, `$event`, `$last` (więcej informacji na ten temat znajduje się w dokumentacji)
 ```
 @for (product of products; track product.id; let i = $index, last = $last) {
   <li>#{{ i }}: {{ product.name }}, last row: {{ last }}</li>
 }
 ```
 
-`@for` oferuje dodatkowy blok `@empty`, który pojawia się gdy kolekcja przekazana do `@for` jest pusta:
+`@for` oferuje dodatkowy blok `@empty`, który pojawia się, gdy kolekcja przekazana do `@for` jest pusta:
 ```
 @for (item of items; track item.id) {
   <li> {{ item.id }}</li>
