@@ -72,7 +72,7 @@ Aby bramki były czytelne:
 Trzymaj główną ścieżkę procesu („happy path”) w centrum diagramu, utrzymując proste i czytelne sekwencje przepływów. Jej przejrzystość ułatwia analizę i projektowanie. Procesy z chaotycznym przepływem mogą utrudnić identyfikację głównej ścieżki, co zwiększa ryzyko przeoczenia kluczowych kroków.
 
 
-#### **Unikaj modelowania ponowień**
+#### Unikaj modelowania ponowień
 Często jest pokusa modelowania ponowień, co ciekawe jest to traktowane jako anty pattern i należy tego unikać. Modelowanie ponowień może niepotrzebnie komplikować proces. Unikanie modelowania ponowień chroni nas przed nadmiernym rozbudowaniem diagramu, które utrudnia jego zrozumienie, poniżej przykładowy antypattern
 ![Ponowienia](/assets/img/posts/2025-01-27-wstep-do-tworzenia-czytelnych-modeli-bpmn/BPMNRetriesHandle.webp)
 
