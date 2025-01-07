@@ -1,32 +1,32 @@
 ---
 layout:    post
 title:     Czy wiesz czym jest partycjonowanie?
-date:      2025-01-06T08:00:00+01:00
+date:      2025-01-07T08:00:00+01:00
 published: true
 didyouknow: true
 description: ""
 lang: pl
 author: rmastalerek
-image: /assets/img/posts/2025-01-06-czy-wiesz-czym-jest-partycjonowanie/thumbnail.webp
+image: /assets/img/posts/2025-01-07-czy-wiesz-czym-jest-partycjonowanie/thumbnail.webp
 tags:
 - databases
 ---
 
-Partycjonowanie tabel to technika projektowania bazy danych, która pozwala podzielić dużą tabelę na mniejsze, bardziej zarządzalne kawałki zwane partycjami.  Każda partycja to oddzielna tabela przechowująca podzbiór oryginalnych danych. 
+Partycjonowanie tabel to technika projektowania bazy danych, która pozwala podzielić dużą tabelę na mniejsze, łatwiejsze w zarządzaniu kawałki zwane partycjami.  Każda partycja to oddzielna tabela przechowująca podzbiór oryginalnych danych. 
 
 ## Korzyści
 - Poprawa wydajności zapytań - partycjonowanie pozwala bazie danych zawęzić dane do konkretnej partycji, zmniejszając ilość danych, które muszą być przeszukane
-- Łatwiejsze zarządzanie danymi - dzięki podziałowi na mniejsze zestawy danych zarządzanie jest prostsze
+- Łatwiejsze zarządzanie danymi - dzięki podziałowi na mniejsze zestawy danych zarządzanie nimi jest prostsze
 - Szybsze ładowanie danych i indeksowanie - podczas ładowania danych do partycjonowanej tabeli proces może być zrównoleglony, co prowadzi do szybszego pobierania danych
-- Tańsze przechowywanie danych - partycjonowanie pozwala przechowywać starsze lub rzadziej używane dane na tańszych nośnikach pamięci, jednocześnie utrzymując często używane dane na szybszych urządzeniach pamięci
+- Tańsze przechowywanie danych - partycjonowanie pozwala przechowywać starsze lub rzadziej używane dane na tańszych nośnikach pamięci, jednocześnie utrzymując często używane dane na szybszych urządzeniach
 
 ## Wady
-- Złożoność - partycjonowanie może uczynić bazę danych bardziej złożoną, ponieważ wymaga tworzenia wielu tabel i partycji oraz zarządzania nimi. To z kolei negatywnie może wpłynąć na jej rozumienie i utrzymanie
-- Partycjonowanie narzutowe - może zwiększyć obciążenie bazy danych, ponieważ wymaga większej liczby zasobów do zarządzania wieloma partycjami. Efektem może być spowolnione działanie, szczególnie podczas dodawania lub aktualizowania danych
-- Złożoność zapytań - zapytania obejmujące wiele partycji mogą być bardziej złożone, ponieważ mogą wymagać łączenia danych z wielu źródeł. Efektem może być wolniejsze wykonywanie zapytań
+- Złożoność - partycjonowanie może sprawić, że bazy danych będą o wiele bardziej złożone, ponieważ wymaga tworzenia wielu tabel i partycji oraz zarządzania nimi. To z kolei może negatywnie wpłynąć na ich utrzymywanie, zrozumienie ich oraz nawigowanie po ich strukturze
+- Partycjonowanie narzutowe - może zwiększyć obciążenie bazy danych, ponieważ wymaga większej liczby zasobów do zarządzania wieloma partycjami. Efektem (takiego działania) może być spowolnione działanie, szczególnie podczas dodawania lub aktualizowania danych
+- Złożoność zapytań - zapytania obejmujące wiele partycji mogą być bardziej złożone, ponieważ mogą wymagać łączenia danych z wielu źródeł. To z kolei może doprowadzić do wolniejszego wykonywania zapytań
 - Spójność danych - partycjonowanie może utrudnić zapewnienie spójności danych, ponieważ dane są rozproszone na wielu partycjach. Może to utrudnić utrzymanie ograniczeń i zapewnienie integralności danych
-- Migracja danych - jeżeli zajdzie potrzeba zmiany strategii partycjonowania lub przeniesienia danych pomiędzy partycjami, może to być proces złożony i czasochłonny
-- Brak elastyczności - strategie partycjonowania opierają się zwykle na określonej kolumnie lub zestawienie kolumn i ich zmiana lub dostosowanie w przypadku zmiany danych lub wymagań może być trudne
+- Migracja danych - jeżeli zajdzie potrzeba zmiany strategii partycjonowania lub przeniesienia danych pomiędzy partycjami, to w takim środowisku może to być złożony i czasochłonny proces
+- Brak elastyczności - strategie partycjonowania opierają się zwykle na określonej kolumnie lub zestawie kolumn, a ich zmiana lub dostosowanie w przypadku zmiany danych lub wymagań może być trudne
 
 ## Metody partycjonowania na przykładzie PostgreSQL
 
@@ -183,6 +183,6 @@ SELECT * FROM orders WHERE customer_id = 103;
 
 ## Podsumowanie
 
-Warto zauważyć, że partycjonowanie nie zawsze jest najlepszym rozwiązaniem dla każdego przypadku użycia i ważne jest, aby przeanalizować kompromisy i zdecydować, czy jest to właściwe podejście w konkretnym scenariuszu. Ponadto ważne jest dokładne zaplanowanie i przetestowanie strategii partycjonowania przed wdrożeniem jej w środowisku produkcyjnym.
+Warto zauważyć, że partycjonowanie nie zawsze musi być najlepszym rozwiązaniem. Należy pamiętać o tym, aby przeanalizować wszystkie potencjalne wady i zalety wdrożenia tego rozwiązania i na tej podstawie zdecydować, czy jest to właściwe podejście w konkretnym scenariuszu. Ponadto, ważne jest także dokładne zaplanowanie i przetestowanie strategii partycjonowania przed wdrożeniem jej w środowisku produkcyjnym.
 
 W kolejnym wpisie przyjrzymy się bliżej narzędziu do automatyzacji procesu partycjonowania: PostgreSQL Partition Manager
