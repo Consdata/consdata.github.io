@@ -23,8 +23,22 @@ We wpisie [Czy wiesz czym jest partycjonowanie?]({% post_url pl/2025-01-06-czy-w
 ```sql
 CREATE EXTENSION pg_partman;
 ```
+- Wykonanie tego polecenia powoduje instalację rozszerzenia `pg_partman` w bazie danych, jeśli to nie zostało wcześniej w tej bazie dodane.
+PostgreSQL tworzy odpowiednie wpisy w katalogach systemowych (np. `pg_extension`). 
+- Następnie, PostgreSQL tworzy zestaw funkcji, procedur, widoków, tabel i innych obiektów potrzebnych do działania rozszerzenia. Wszystkie te obiekty są instalowane w schemacie, w którym uruchomiono polecenie (zazwyczaj `public`).
+- Instalowana jest domyślna wersja rozszerzenia, która znajduje się w katalogu rozszerzeń PostgreSQL (pliki `.control` i `.sql`). Jeżeli później zajdzie potrzeba, można zaktualizować rozszerzenie za pomocą polecenia `ALTER EXTENSION ... UPDATE`.
 
 ### Utworzenie tabeli i konfiguracja do partycjonowania
+Wyobraźmy sobie tabelę `public_logs`, która służyć będzie do przechowywania logów systemowych lub logów z aplikacji. Tabela będzie potrzebna do monitorowania działania aplikacji, generowania raportów o wydajności i problemach, itp.
+
+Logi są zazwyczaj generowane w bardzo dużej ilości, szczególnie w aplikacjach o dużym ruchu. Bez odpowiedniej optymalizacji, zapytania do tabeli z milionami lub miliardami wierszy mogą stać się mało wydajne. Partycjonowanie pomaga rozwiązać ten problem.
+
+**Zalety:**
+- Dzięki podziałowi tabeli na partycje (np. miesięczne, dzienne, itp.), zapytania mogą być kierowane tylko do wybranych partycji zamiast całej tabeli.
+- Logi starsze niż określony okres (np. 3 miesiące) mogą być łatwo usuwane przez usunięcie całej partycji, zamiast kasowania poszczególnych wierszy
+- Możliwe jest archiwizowanie starych partycji na innych nośnikach
+- Partycjonowanie ułatwia reorganizację danych, np. odtworzenie partycji po awarii
+
 ```sql
 CREATE TABLE public_logs (
     id serial PRIMARY KEY,
@@ -34,10 +48,19 @@ CREATE TABLE public_logs (
 ) PARTITION BY RANGE (log_date);
 ```
 
-### Konfiguracja pg_partman do zarządzania partycjami
+Wykonanie powyższego polecenia spowoduje: 
+- Utworzenie przez PostgreSQL **nadrzędnej** tabeli `public_logs` (_partitioned_table_), która ma strukturę określoną w poleceniu. W odróżnieniu od zwykłych tabel, tabela nadrzędna nie przechowuje danych. Jest tylko szablonem, który pozwala na logiczne grupowanie partycji.
+- Określenie metody partycjonowania: w tym przypadku `PARTITION BY RANGE (log_date)`. Oznacza to, że dane w tej tabeli będą przechowywane w partycjach na podstawie wartości kolumny `log_date`. Każda partycja natomiast będzie odpowiadała pewnemu zakresowi wartości (np. tygodniowi, miesiącowi, itd.).
+
+### Konfiguracja pg_partman do zarządzania partycjami 
 ```sql
 SELECT partman.create_parent('public_logs', 'log_date', 'monthly');
 ```
+Wykonanie powyższego polecenia spowoduje:
+- Oznaczenie tabeli `public_logs` jako tabeli nadrzędnej dla partycjonowania zarządzanego przez `pg_partman`.
+- Automatyczne utworzenie metody partycjonowania (`RANGE` na podstawie kolumny `log_date`)
+- Utworzenie pierwszych partycji zgodnie z określonym interwałem (`monthly`)
+- Zarejestrowanie tabeli w konfiguracji `pg_partman`, aby była zarządzana automatycznie 
 
 ### Automatyczne tworzenie partycji
 `pg_partman` umożliwia automatyczne tworzenie nowych partycji na podstawie harmonogramu. Aby wykonać taką partycję wystarczy wykonać poniższe polecenie. Można wykonać je również w zadaniu cron, aby regularnie tworzyć nowe partycje i usuwać stare.
