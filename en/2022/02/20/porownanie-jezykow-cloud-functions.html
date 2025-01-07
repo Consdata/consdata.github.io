@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy język programowania i region mają wpływ na wydajność Google Cloud Functions? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy język programowania i region mają wpływ na wydajność Google Cloud Functions?" />
+<meta name="author" content="mhoja" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="W jakim języku programowania pisać funkcje w Google Cloud? Które środowisko uruchomieniowe jest najszybsze i czy ma na to wpływ region? Czy języki interpretowane mają mniejszy cold start?" />
+<meta property="og:description" content="W jakim języku programowania pisać funkcje w Google Cloud? Które środowisko uruchomieniowe jest najszybsze i czy ma na to wpływ region? Czy języki interpretowane mają mniejszy cold start?" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2022/02/20/porownanie-jezykow-cloud-functions.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2022/02/20/porownanie-jezykow-cloud-functions.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-20T23:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/thumbnail.webp" />
+<meta property="twitter:title" content="Czy język programowania i region mają wpływ na wydajność Google Cloud Functions?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mhoja"},"image":"https://blog.consdata.tech/assets/img/posts/2022-02-porownanie-jezykow-programowania-cloud-functions/thumbnail.webp","@type":"BlogPosting","headline":"Czy język programowania i region mają wpływ na wydajność Google Cloud Functions?","description":"W jakim języku programowania pisać funkcje w Google Cloud? Które środowisko uruchomieniowe jest najszybsze i czy ma na to wpływ region? Czy języki interpretowane mają mniejszy cold start?","dateModified":"2022-02-20T23:00:00-06:00","datePublished":"2022-02-20T23:00:00-06:00","url":"https://blog.consdata.tech/2022/02/20/porownanie-jezykow-cloud-functions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2022/02/20/porownanie-jezykow-cloud-functions.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2022/02/20/porownanie-jezykow-cloud-functions.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">google cloud function</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Czy język programowania i region mają wpływ na wydajność Google Cloud Functions?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/mhoja.html">
+        <img class="author-image" src="/assets/img/authors/mhoja.webp" alt="author">
+        <span class="author-name">Michał Hoja</span><a class="author" href="https://github.com/Michuu93">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+20
+
+
+February
+
+
+2022
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Jeżeli chociaż raz zastanawiałeś się, w jakim języku programowania napisać funkcję w Google Cloud, to w tym wpisie postaram się pomóc w podjęciu tej decyzji.</p>
+
+<p>Na warsztat weźmiemy wszystkie dostępne na ten moment środowiska uruchomieniowe dla Google Cloud Functions i porównamy czasy odpowiedzi oraz zimne starty (tzw. cold starts).
+Porównamy nie tylko środowiska uruchomieniowe, ale również regiony w których osadzone są funkcje.</p>
+
+<h2 id="motywacja">Motywacja</h2>
+
+<p>Pisząc swoją pierwszą funkcję w GCP zastanawiałem się, w jakim języku ją napisać? Przecież to prosta funkcja, mogę ją napisać w każdym dostępnym języku. Pisać w Javie, której używam na co dzień? A może w Node.js? Przecież TypeScript też jest dla mnie codziennością…</p>
+
+<p>Motywacją do przeprowadzenia testów był przede wszystkim brak odpowiedzi na moje pytania oraz brak porównań środowisk uruchomieniowych dla Cloud Functions w Internecie.</p>
+
+<h2 id="środowisko-testowe">Środowisko testowe</h2>
+
+<p>Google co chwilę rozszerza listę obsługiwanych środowisk uruchomieniowych, dlatego zależało mi na tym, żeby porównanie funkcji było łatwe do przeprowadzenia w przyszłości, z uwzględnieniem nowych języków. Chcąc zautomatyzować całą procedurę i środowisko testowe, wraz z kolegą Jackiem Grobelnym przygotowaliśmy projekt pt. <a href="https://github.com/Michuu93/google-cloud-function-comparison"><strong>Google Coud Functions Comparison</strong></a>.</p>
+
+<p>Do automatyzacji wykorzystany został Terraform, za pomocą którego przygotowywane jest całe środowisko testowe. Wszystkie osadzane funkcje są definiowane w konfiguracji, dlatego w prosty sposób można uruchomić środowisko testujące wybrane języki oraz regiony.</p>
+
+<p>Testy czasów odpowiedzi zostały napisane w Gatlingu, który listę funkcji odczytuje z tej samej konfiguracji, przez co nie wymaga żadnej dodatkowej ingerencji. Testy zimnych startów wykonywane są natomiast bezpośrednio przez kod napisany w Scali, a wyniki wyświetlane są w formie tabeli ASCII.</p>
+
+<p>Kody wszystkich funkcji znajdują się w folderze <code class="language-plaintext highlighter-rouge">/functions</code> i są to podstawowe funkcje odpowiadające <em>“Hello World”</em>, takie same jak przykładowe funkcje tworzone z poziomu Cloud Console.</p>
+
+<p>Projekt znajduję się na GitHubie - <a href="https://github.com/Michuu93/google-cloud-function-comparison">link do repozytorium.</a></p>
+
+<h2 id="metodyka-testowania">Metodyka testowania</h2>
+
+<p>W testach wykorzystałem funkcje uruchomione w następujących środowiskach uruchomieniowych:</p>
+
+<ul>
+  <li>.NET Core 3.1</li>
+  <li>Go 1.13</li>
+  <li>Java 11</li>
+  <li>Node.js 14</li>
+  <li>PHP 7.4</li>
+  <li>Python 3.9</li>
+  <li>Ruby 2.7</li>
+</ul>
+
+<p>Każda funkcja posiadała maksymalnie jedną instancję, przydzieloną pamięć 128 MB i została uruchomiona w regionach:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">europe-west3</code> (Frankfurt, Germany, Europe)</li>
+  <li><code class="language-plaintext highlighter-rouge">us-central1</code> (Council Bluffs, Iowa, North America)</li>
+  <li><code class="language-plaintext highlighter-rouge">asia-east2</code> (Hong Kong, APAC)</li>
+</ul>
+
+<p>W celu porównania czasów odpowiedzi, każda funkcja była wywoływana przez 10 minut i 20 równoległych użytkowników. Ilość wykonanych żądań jest zatem uzależniona od samej funkcji oraz Gatlinga (a w zasadzie, to mojego laptopa).</p>
+
+<p>Testy zimnych startów zostały wykonane z zapewnieniem braku istnienia aktywnej instancji. Test polegał na wykonaniu 10 żądań do każdej z funkcji, a następnie porównaniu czasu pierwszej odpowiedzi do średniej arytmetycznej czasów pozostałych 9 odpowiedzi.</p>
+
+<p>Każdy test uruchomiłem dwa razy, o tej samej godzinie czasu polskiego dla wszystkich regionów oraz o tej samej godzinie czasu lokalnego w danym regionie. Wszystkie żądania były wykonywane z mojej stacji roboczej w Poznaniu.</p>
+
+<p>Przyjąłem nazewnictwo <em>język interpretowany</em> dla języków skryptowych i kompilowanych (nie korzystających z maszyny wirtualnej) oraz <em>język uruchamiany w maszynie wirtualnej</em> dla języków kompilowanych i uruchamianych w maszynie wirtualnej.</p>
+
+<h2 id="czasy-odpowiedzi">Czasy odpowiedzi</h2>
+
+<link href="https://blog.consdata.tech/assets/css/tabs.css" rel="stylesheet" type="text/css" />
+
+<link href="https://blog.consdata.tech/assets/css/simple-datatables.css" rel="stylesheet" type="text/css" />
+
+<script src="https://blog.consdata.tech/assets/js/simple-datatables.js"></script>
+
+<h2 id="godziny-uruchomienia-testów">Godziny uruchomienia testów</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Run #1</code> - środek tygodnia, 17-23 czasu polskiego</li>
+  <li><code class="language-plaintext highlighter-rouge">Run #2</code> - środek tygodnia, 20:00 czasu lokalnego w danym regionie:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">europe-west3</code> (Frankfurt, Germany, Europe) - 20:00 o 20:00 czasu polskiego</li>
+      <li><code class="language-plaintext highlighter-rouge">us-central1</code> (Council Bluffs, Iowa, North America) - 20:00 o 03:00 czasu polskiego (-7h)</li>
+      <li><code class="language-plaintext highlighter-rouge">asia-east2</code> (Hong Kong, APAC) - 20:00 o 13:00 czasu polskiego (+7h)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wyniki">Wyniki</h2>
+
+<div>
+    <button class="tablinks responsetimes" onclick="showResponsetimesTable(event, 'responsetimes1')" id="defaultOpenResponseTimes">Run #1</button>
+    <button class="tablinks responsetimes" onclick="showResponsetimesTable(event, 'responsetimes2')">Run #2</button>
+</div>
+
+<div id="responsetimes1" class="tabcontent responsetimes">
+    <table id="responsetimes1_table">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Region</th>
+                <th>Requests</th>
+                <th>Min [ms]</th>
+                <th>95th pct [ms]</th>
+                <th>Max [ms]</th>
+                <th>Mean [ms]</th>
+                <th>Std Dev [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>nodejs14</td>
+                <td>europe-west3</td>
+                <td>20796</td>
+                <td>85</td>
+                <td>909</td>
+                <td>1591</td>
+                <td>576</td>
+                <td>182</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>europe-west3</td>
+                <td>25681</td>
+                <td>83</td>
+                <td>856</td>
+                <td>7607</td>
+                <td>466</td>
+                <td>213</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>europe-west3</td>
+                <td>20408</td>
+                <td>83</td>
+                <td>1078</td>
+                <td>2675</td>
+                <td>587</td>
+                <td>259</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>europe-west3</td>
+                <td>20810</td>
+                <td>83</td>
+                <td>893</td>
+                <td>1601</td>
+                <td>575</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>europe-west3</td>
+                <td>25818</td>
+                <td>82</td>
+                <td>711</td>
+                <td>1791</td>
+                <td>464</td>
+                <td>156</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>europe-west3</td>
+                <td>17489</td>
+                <td>84</td>
+                <td>1003</td>
+                <td>3912</td>
+                <td>685</td>
+                <td>218</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>europe-west3</td>
+                <td>25162</td>
+                <td>84</td>
+                <td>793</td>
+                <td>1494</td>
+                <td>476</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>us-central1</td>
+                <td>16341</td>
+                <td>192</td>
+                <td>1100</td>
+                <td>2789</td>
+                <td>733</td>
+                <td>244</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>us-central1</td>
+                <td>19738</td>
+                <td>192</td>
+                <td>1017</td>
+                <td>1757</td>
+                <td>607</td>
+                <td>213</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>us-central1</td>
+                <td>16545</td>
+                <td>190</td>
+                <td>1400</td>
+                <td>7796</td>
+                <td>724</td>
+                <td>339</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>us-central1</td>
+                <td>14907</td>
+                <td>192</td>
+                <td>1200</td>
+                <td>2302</td>
+                <td>804</td>
+                <td>248</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>us-central1</td>
+                <td>17968</td>
+                <td>193</td>
+                <td>1091</td>
+                <td>3559</td>
+                <td>667</td>
+                <td>229</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>us-central1</td>
+                <td>14444</td>
+                <td>192</td>
+                <td>1197</td>
+                <td>3407</td>
+                <td>830</td>
+                <td>240</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>us-central1</td>
+                <td>16172</td>
+                <td>193</td>
+                <td>1104</td>
+                <td>2088</td>
+                <td>741</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>asia-east2</td>
+                <td>25112</td>
+                <td>352</td>
+                <td>780</td>
+                <td>2086</td>
+                <td>477</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>asia-east2</td>
+                <td>28831</td>
+                <td>350</td>
+                <td>587</td>
+                <td>1604</td>
+                <td>415</td>
+                <td>112</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>asia-east2</td>
+                <td>22617</td>
+                <td>352</td>
+                <td>1093</td>
+                <td>5098</td>
+                <td>530</td>
+                <td>292</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>asia-east2</td>
+                <td>20441</td>
+                <td>373</td>
+                <td>889</td>
+                <td>1786</td>
+                <td>586</td>
+                <td>146</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>asia-east2</td>
+                <td>28630</td>
+                <td>349</td>
+                <td>589</td>
+                <td>1872</td>
+                <td>418</td>
+                <td>106</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>asia-east2</td>
+                <td>21549</td>
+                <td>364</td>
+                <td>896</td>
+                <td>3197</td>
+                <td>556</td>
+                <td>184</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>asia-east2</td>
+                <td>26001</td>
+                <td>351</td>
+                <td>715</td>
+                <td>1786</td>
+                <td>461</td>
+                <td>140</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="responsetimes2" class="tabcontent responsetimes">
+    <table id="responsetimes2_table">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Region</th>
+                <th>Requests</th>
+                <th>Min [ms]</th>
+                <th>95th pct [ms]</th>
+                <th>Max [ms]</th>
+                <th>Mean [ms]</th>
+                <th>Std Dev [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>nodejs14</td>
+                <td>europe-west3</td>
+                <td>20487</td>
+                <td>80</td>
+                <td>992</td>
+                <td>1516</td>
+                <td>585</td>
+                <td>191</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>europe-west3</td>
+                <td>26846</td>
+                <td>83</td>
+                <td>796</td>
+                <td>2314</td>
+                <td>446</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>europe-west3</td>
+                <td>22988</td>
+                <td>82</td>
+                <td>906</td>
+                <td>2400</td>
+                <td>521</td>
+                <td>224</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>europe-west3</td>
+                <td>21902</td>
+                <td>85</td>
+                <td>806</td>
+                <td>1496</td>
+                <td>547</td>
+                <td>155</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>europe-west3</td>
+                <td>27023</td>
+                <td>82</td>
+                <td>703</td>
+                <td>2064</td>
+                <td>443</td>
+                <td>163</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>europe-west3</td>
+                <td>17760</td>
+                <td>85</td>
+                <td>995</td>
+                <td>2800</td>
+                <td>675</td>
+                <td>189</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>europe-west3</td>
+                <td>22418</td>
+                <td>82</td>
+                <td>890</td>
+                <td>1712</td>
+                <td>534</td>
+                <td>167</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>us-central1</td>
+                <td>18468</td>
+                <td>188</td>
+                <td>1006</td>
+                <td>1625</td>
+                <td>649</td>
+                <td>197</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>us-central1</td>
+                <td>20845</td>
+                <td>185</td>
+                <td>905</td>
+                <td>1805</td>
+                <td>575</td>
+                <td>183</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>us-central1</td>
+                <td>17753</td>
+                <td>188</td>
+                <td>1290</td>
+                <td>3199</td>
+                <td>675</td>
+                <td>303</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>us-central1</td>
+                <td>16048</td>
+                <td>188</td>
+                <td>1197</td>
+                <td>2322</td>
+                <td>747</td>
+                <td>232</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>us-central1</td>
+                <td>18306</td>
+                <td>185</td>
+                <td>1013</td>
+                <td>2020</td>
+                <td>655</td>
+                <td>218</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>us-central1</td>
+                <td>17756</td>
+                <td>187</td>
+                <td>1153</td>
+                <td>3825</td>
+                <td>676</td>
+                <td>290</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>us-central1</td>
+                <td>16902</td>
+                <td>188</td>
+                <td>1098</td>
+                <td>2102</td>
+                <td>709</td>
+                <td>199</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>asia-east2</td>
+                <td>22854</td>
+                <td>349</td>
+                <td>835</td>
+                <td>2309</td>
+                <td>524</td>
+                <td>157</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>asia-east2</td>
+                <td>28844</td>
+                <td>346</td>
+                <td>594</td>
+                <td>1749</td>
+                <td>415</td>
+                <td>112</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>asia-east2</td>
+                <td>21243</td>
+                <td>347</td>
+                <td>1109</td>
+                <td>5398</td>
+                <td>564</td>
+                <td>316</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>asia-east2</td>
+                <td>21013</td>
+                <td>367</td>
+                <td>805</td>
+                <td>1902</td>
+                <td>570</td>
+                <td>147</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>asia-east2</td>
+                <td>27958</td>
+                <td>343</td>
+                <td>604</td>
+                <td>1849</td>
+                <td>428</td>
+                <td>127</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>asia-east2</td>
+                <td>21802</td>
+                <td>357</td>
+                <td>887</td>
+                <td>3104</td>
+                <td>549</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>asia-east2</td>
+                <td>25581</td>
+                <td>348</td>
+                <td>711</td>
+                <td>2224</td>
+                <td>468</td>
+                <td>151</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var activeResponsetimesDataTable;
+
+    function showResponsetimesTable(evt, tabId) {
+        var i, tabcontentResponseTimes, tablinksResponseTimes;
+        tabcontentResponseTimes = document.getElementsByClassName("tabcontent responsetimes");
+        for (i = 0; i < tabcontentResponseTimes.length; i++) {
+            tabcontentResponseTimes[i].style.display = "none";
+        }
+        tablinksResponseTimes = document.getElementsByClassName("tablinks responsetimes");
+        for (i = 0; i < tablinksResponseTimes.length; i++) {
+            tablinksResponseTimes[i].className = tablinksResponseTimes[i].className.replace(" active", "");
+        }
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.className += " active";
+
+        if (activeResponsetimesDataTable) {
+            activeResponsetimesDataTable.destroy();
+        }
+        const options = {
+            searchable: false,
+            paging: false,
+            info: false
+        };
+        activeResponsetimesDataTable = new simpleDatatables.DataTable("#" + tabId + "_table", options);
+    }
+
+    document.getElementById("defaultOpenResponseTimes").click();
+</script>
+
+<h3 id="regiony">Regiony</h3>
+
+<p>Wyniki pierwszego testu nieco mnie zaskoczyły, ponieważ bardzo dobrze wypadły tutaj funkcje osadzone w Azji (a nie najbliżej mojej geolokalizacji, jak się spodziewałem).</p>
+
+<p>Dlatego postanowiłem wykonać test ponownie, aby wykluczyć różnice w czasie (ponieważ o godzinie 20:00 czasu Polskiego, w Hong Kongu była godzina 03:00). Dzięki temu mogłem sprawdzić, czy wpływ na wyniki ma tutaj fakt, że w środku nocy obciążenie centrum danych może być mniejsze.</p>
+
+<p>Drugi test wykluczył jednak kwestie godziny w danym regionie, ponieważ i tym razem Azja wypadła najlepiej. Z powodu odległości można zaobserwować znacznie wyższe minimalne i maksymalne czasy odpowiedzi, jednak średnio były one i tak nieco niższe niż w przypadku Frankfurtu. W ciągu 10 minut udało się wykonać sumarycznie więcej żądań.</p>
+
+<p>Najgorzej wypadł region w USA, gdzie pomimo niższych minimalnych czasów odpowiedzi, średnio były one znacznie wyższe (co idealnie pokazuje kolumna z 95 percentylem). W efekcie funkcje uruchomione w USA obsłużyły zauważalnie mniejszą liczbę żądań.</p>
+
+<p>Testy starałem się wykonać w środku tygodnia, aby były jak najbardziej wiarygodne. Pod uwagę należy wziąć jednak fakt, że funkcje były bardzo prymitywne - jedyne co robiły, to odpowiadały “Hello World”. Całkiem możliwe, że w przypadku funkcji do których wysyłamy lub które zwracają jakieś dane, wyniki byłyby zupełnie inne. Zależało mi jednak na sprawdzeniu prostych funkcji, ponieważ w tym przypadku łatwo jest porównać środowiska uruchomieniowe (w przypadku bardziej złożonych implementacji duży wpływ na wydajność mogłyby mieć wykorzystane zewnętrzne zależności czy biblioteki).</p>
+
+<p>Podsumowując, gdybym chciał uruchomić prostą funkcję i zależałoby mi na tym, aby obsłużyła jak największy ruch, prawdopodobnie wybrałbym któryś z regionów w Azji.</p>
+
+<h3 id="środowiska-uruchomieniowe">Środowiska uruchomieniowe</h3>
+
+<p>W przypadku środowisk uruchomieniowych spodziewałem się, że języki interpretowane dają lepsze wyniki niż języki uruchamiane w wirtualnej maszynie.</p>
+
+<p>Wyniki testu częściowo potwierdziły moje podejrzenia, ponieważ najszybciej odpowiadały funkcje napisane w Go, Ruby czy PHP. Dużym zaskoczeniem były dla mnie wyniki Node.js, które są dość przeciętne. Spodziewałem się że JavaScript uplasuje się w czołówce, jednak wyniki były bardziej zbliżone do języków uruchamianych w maszynie wirtualnej.</p>
+
+<p>Kompletnie nie zdziwiły mnie za to wyniki funkcji napisanych w Javie czy .NET, jednak nie spisywałbym ich na straty. Środowiska uruchomieniowe wykorzystujące maszyny wirtualne (takie jak właśnie Java - JVM, czy .NET - CLR) potrafią optymalizować uruchomiony kod, jednak nie zrobią tego od razu, ponieważ potrzebują w tym celu zebrać odpowiednią ilość statystyk. Całkiem możliwe, że funkcje które obsługują bardzo dużo żądań w czasie ciągłym (czyli takim, dzięki któremu instancja funkcji będzie żyła bardzo długo) osiągnęłyby z czasem lepsze wyniki.</p>
+
+<p>Jakie z tego wnioski? Jeżeli piszemy prostą funkcję i nie zależy nam na wydajności (albo spodziewamy się małego ruchu), śmiało możemy napisać ją w języku programowania, który znamy najlepiej. Jeżeli jednak zależy nam na obsłudze jak największej ilości żądań (i jednocześnie wiemy, że instancja funkcji nie będzie długowieczna), najlepszym wyborem będą języki, które nie są uruchamiane w wirtualnej maszynie.</p>
+
+<h2 id="zimne-starty">Zimne starty</h2>
+
+<h2 id="godziny-uruchomienia-testów-1">Godziny uruchomienia testów</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Run #1</code> - środek tygodnia, 22 czasu polskiego</li>
+  <li><code class="language-plaintext highlighter-rouge">Run #2</code> - środek tygodnia, 20:00 czasu lokalnego w danym regionie:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">europe-west3</code> (Frankfurt, Germany, Europe) - 20:00 o 20:00 czasu polskiego</li>
+      <li><code class="language-plaintext highlighter-rouge">us-central1</code> (Council Bluffs, Iowa, North America) - 20:00 o 03:00 czasu polskiego (-7h)</li>
+      <li><code class="language-plaintext highlighter-rouge">asia-east2</code> (Hong Kong, APAC) - 20:00 o 13:00 czasu polskiego (+7h)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wyniki-1">Wyniki</h2>
+
+<div>
+    <button class="tablinks coldstarts" onclick="showColdstartTable(event, 'coldstarts1')" id="defaultOpenColdstarts">Run #1</button>
+    <button class="tablinks coldstarts" onclick="showColdstartTable(event, 'coldstarts2')">Run #2</button>
+</div>
+
+<div id="coldstarts1" class="tabcontent coldstarts">
+    <table id="coldstarts1_table">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Region</th>
+                <th>1st time [ms]</th>
+                <th>avg remaining [ms]</th>
+                <th>diff [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>nodejs14</td>
+                <td>europe-west3</td>
+                <td>1176</td>
+                <td>49</td>
+                <td>1127</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>europe-west3</td>
+                <td>447</td>
+                <td>43</td>
+                <td>404</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>europe-west3</td>
+                <td>54</td>
+                <td>101</td>
+                <td>-47</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>europe-west3</td>
+                <td>895</td>
+                <td>59</td>
+                <td>836</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>europe-west3</td>
+                <td>997</td>
+                <td>41</td>
+                <td>956</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>europe-west3</td>
+                <td>1054</td>
+                <td>95</td>
+                <td>959</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>europe-west3</td>
+                <td>679</td>
+                <td>45</td>
+                <td>634</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>us-central1</td>
+                <td>1123</td>
+                <td>250</td>
+                <td>873</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>us-central1</td>
+                <td>922</td>
+                <td>227</td>
+                <td>695</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>us-central1</td>
+                <td>1638</td>
+                <td>284</td>
+                <td>1354</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>us-central1</td>
+                <td>1254</td>
+                <td>259</td>
+                <td>995</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>us-central1</td>
+                <td>1430</td>
+                <td>193</td>
+                <td>1237</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>us-central1</td>
+                <td>1536</td>
+                <td>261</td>
+                <td>1275</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>us-central1</td>
+                <td>1271</td>
+                <td>211</td>
+                <td>1060</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>asia-east2</td>
+                <td>1228</td>
+                <td>381</td>
+                <td>847</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>asia-east2</td>
+                <td>869</td>
+                <td>375</td>
+                <td>494</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>asia-east2</td>
+                <td>1227</td>
+                <td>398</td>
+                <td>829</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>asia-east2</td>
+                <td>1433</td>
+                <td>375</td>
+                <td>1058</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>asia-east2</td>
+                <td>1126</td>
+                <td>388</td>
+                <td>738</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>asia-east2</td>
+                <td>1023</td>
+                <td>410</td>
+                <td>613</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>asia-east2</td>
+                <td>904</td>
+                <td>420</td>
+                <td>484</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="coldstarts2" class="tabcontent coldstarts">
+    <table id="coldstarts2_table">
+        <thead>
+            <tr>
+                <th>Runtime</th>
+                <th>Region</th>
+                <th>1st time [ms]</th>
+                <th>avg remaining [ms]</th>
+                <th>diff [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>nodejs14</td>
+                <td>europe-west3</td>
+                <td>409</td>
+                <td>49</td>
+                <td>360</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>europe-west3</td>
+                <td>61</td>
+                <td>46</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>europe-west3</td>
+                <td>164</td>
+                <td>120</td>
+                <td>44</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>europe-west3</td>
+                <td>98</td>
+                <td>53</td>
+                <td>45</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>europe-west3</td>
+                <td>53</td>
+                <td>45</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>europe-west3</td>
+                <td>325</td>
+                <td>95</td>
+                <td>230</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>europe-west3</td>
+                <td>169</td>
+                <td>43</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>us-central1</td>
+                <td>1214</td>
+                <td>203</td>
+                <td>1011</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>us-central1</td>
+                <td>269</td>
+                <td>230</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>us-central1</td>
+                <td>819</td>
+                <td>284</td>
+                <td>535</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>us-central1</td>
+                <td>411</td>
+                <td>249</td>
+                <td>162</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>us-central1</td>
+                <td>310</td>
+                <td>215</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>us-central1</td>
+                <td>1022</td>
+                <td>284</td>
+                <td>738</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>us-central1</td>
+                <td>1004</td>
+                <td>240</td>
+                <td>764</td>
+            </tr>
+            <tr>
+                <td>nodejs14</td>
+                <td>asia-east2</td>
+                <td>880</td>
+                <td>496</td>
+                <td>384</td>
+            </tr>
+            <tr>
+                <td>go113</td>
+                <td>asia-east2</td>
+                <td>394</td>
+                <td>409</td>
+                <td>-15</td>
+            </tr>
+            <tr>
+                <td>java11</td>
+                <td>asia-east2</td>
+                <td>409</td>
+                <td>454</td>
+                <td>-45</td>
+            </tr>
+            <tr>
+                <td>python39</td>
+                <td>asia-east2</td>
+                <td>406</td>
+                <td>387</td>
+                <td>19</td>
+            </tr>
+            <tr>
+                <td>ruby27</td>
+                <td>asia-east2</td>
+                <td>405</td>
+                <td>409</td>
+                <td>-4</td>
+            </tr>
+            <tr>
+                <td>dotnet3</td>
+                <td>asia-east2</td>
+                <td>510</td>
+                <td>450</td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <td>php74</td>
+                <td>asia-east2</td>
+                <td>448</td>
+                <td>398</td>
+                <td>50</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var activeColdstartDataTable;
+
+    function showColdstartTable(evt, tabId) {
+        var i, tabcontentColdstarts, tablinksColdstarts;
+        tabcontentColdstarts = document.getElementsByClassName("tabcontent coldstarts");
+        for (i = 0; i < tabcontentColdstarts.length; i++) {
+            tabcontentColdstarts[i].style.display = "none";
+        }
+        tablinksColdstarts = document.getElementsByClassName("tablinks coldstarts");
+        for (i = 0; i < tablinksColdstarts.length; i++) {
+            tablinksColdstarts[i].className = tablinksColdstarts[i].className.replace(" active", "");
+        }
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.className += " active";
+
+        if (activeColdstartDataTable) {
+            activeColdstartDataTable.destroy();
+        }
+        const options = {
+            searchable: false,
+            paging: false,
+            info: false
+        };
+        activeColdstartDataTable = new simpleDatatables.DataTable("#" + tabId + "_table", options);
+    }
+
+    document.getElementById("defaultOpenColdstarts").click();
+</script>
+
+<h3 id="regiony-1">Regiony</h3>
+
+<p>W odróżnieniu od wyników czasów odpowiedzi, w przypadku zimnych startów najlepiej wypadł region, który był najbliżej mojej geolokalizacji. Zarówno pierwsza odpowiedź oraz średnia pozostałych, była najniższa w przypadku funkcji osadzonych we Frankfurcie. Najgorzej natomiast wypadła Azja, co pokrywałoby się z poprzednim testem, ponieważ funkcje w Azji miały najwyższy minimalny czas odpowiedzi.</p>
+
+<p>Podobnie jak w poprzednim teście, różnice w czasie między regionami nie miały żadnego znaczenia.</p>
+
+<p>Na co się zdecydować, biorąc pod uwagę wyniki tych testów? Jeżeli potrzebujemy funkcji, która jest rzadko wywoływana (jej instancja jest krótko żyjąca) i zależy nam na jak najszybszej odpowiedzi, najlepiej powinny sprawdzić się funkcje uruchomione najbliżej geolokalizacji użytkownika końcowego. Dzięki bliskości centrum danych, nie tracimy czasu na przesyłanie żądania i odpowiedzi, a wąskim gardłem jest tutaj zimny start, czyli czas potrzebny na uruchomienie instancji funkcji.</p>
+
+<h3 id="środowiska-uruchomieniowe-1">Środowiska uruchomieniowe</h3>
+
+<p>Tak samo jak w poprzednim teście, w przypadku różnic między środowiskami uruchomieniowymi spodziewałem się lepszych wyników w przypadku funkcji napisanych w językach interpretowanych, od tych uruchamianych w maszynie wirtualnej. Wyniki jednak mnie zaskoczyły, ponieważ czasami jakieś środowisko uruchomieniowe wypadało bardzo dobrze, a czasami dużo gorzej.</p>
+
+<p>W przypadku zimnych startów na pewno większą rolę odgrywa region, w którym osadzimy funkcję, niż język w którym ją napiszemy. Języki programowania, po których spodziewałem się lepszych wyników (Python i Ruby) nie wypadły wcale lepiej od Javy i .NET, które w teorii powinny potrzebować więcej czasu na uruchomienie.</p>
+
+<p>Patrząc na wyniki testu, nie potrafię jednoznacznie stwierdzić w jakim języku napisałbym funkcję, aby zapewnić jak najkrótszy zimny start. Sytuacja mogłaby ulec zmianie w przypadku bardziej złożonych implementacji i wykorzystania zewnętrznych zależności/bibliotek, ponieważ ich rozmiar i implementacja mogłyby odgrywać tutaj kluczową rolę.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+
+<p>Na zakończenie chciałbym zaznaczyć, że wykonane przeze mnie testy dotyczyły jedynie prostych implementacji funkcji, a wyniki mogłyby być inne w przypadku bardziej złożonych implementacji lub przesyłania większej ilości danych. Mimo wszystko najczęściej spotykam się z bardzo prostymi funkcjami i z tego też powodu przeprowadziłem takie testy. Starając się porównać środowiska uruchomieniowe, musiałem zapewnić zbliżoną implementację funkcji, aby wykluczyć wpływ dostępnych bibliotek i zależności na wyniki.</p>
+
+<p>Zachęcam również do przeprowadzania własnych testów za pomocą narzędzia <a href="https://github.com/Michuu93/google-cloud-function-comparison"><strong>Google Coud Functions Comparison</strong></a>, ponieważ jak widać, wyniki potrafią być zaskakujące i nieoczywiste.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "google cloud function google cloud platform gcp cold start googlecloud serverless";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

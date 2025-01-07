@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Migracja schematów bazy danych | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Migracja schematów bazy danych" />
+<meta name="author" content="jgoszczurny" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych." />
+<meta property="og:description" content="Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych." />
+<link rel="canonical" href="https://blog.consdata.tech/2021/02/09/migracja-schematow-bazy-danych.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/02/09/migracja-schematow-bazy-danych.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-02-09-migracja-schematow-bazy-danych/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-09T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-02-09-migracja-schematow-bazy-danych/thumbnail.webp" />
+<meta property="twitter:title" content="Migracja schematów bazy danych" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"jgoszczurny"},"image":"https://blog.consdata.tech/assets/img/posts/2021-02-09-migracja-schematow-bazy-danych/thumbnail.webp","@type":"BlogPosting","headline":"Migracja schematów bazy danych","description":"Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych.","dateModified":"2021-02-09T01:00:00-06:00","datePublished":"2021-02-09T01:00:00-06:00","url":"https://blog.consdata.tech/2021/02/09/migracja-schematow-bazy-danych.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/02/09/migracja-schematow-bazy-danych.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2021/02/09/migracja-schematow-bazy-danych.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">migration</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Migracja schematów bazy danych</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/jgoszczurny.html">
+        <img class="author-image" src="/assets/img/authors/jgoszczurny.webp" alt="author">
+        <span class="author-name">Jakub Goszczurny</span><a class="author" href="https://github.com/szczurmys">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+9
+
+lutego
+
+
+
+2021
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Niemożliwe jest rozwijanie aplikacji bez równoczesnego rozwijania schematu bazy danych.</p>
+
+<p>Tak jak podczas rozwijania naszej aplikacji, stosujemy wzorce projektowe przy pisaniu kodu, tak w przypadku rozwijania schematów baz danych również powinniśmy stosować się do takich wytycznych, aby rozwijanie bazy danych było przyjemnością, a nie ostatecznością.</p>
+
+<h2 id="migracja-schematu-czyli-ewolucyjny-projekt-bazy-danych-ang-evolutionary-database-design">Migracja schematu, czyli ewolucyjny projekt bazy danych (ang. Evolutionary Database Design)</h2>
+<p>Aby umożliwić proste rozwijanie naszej bazy danych, możemy skorzystać z przetestowanego już zbioru zaleceń <a href="https://www.martinfowler.com/articles/evodb.html">🔗¹</a> <a href="https://en.wikipedia.org/wiki/Evolutionary_database_design">🔗²</a>, dzięki którym zmiany będą mniej inwazyjne, a nawet bezprzerwowe (zero downtime deployment).</p>
+
+<h3 id="przechowywanie-zmian-w-repozytorium-kodów">Przechowywanie zmian w repozytorium kodów</h3>
+<p>Podobnie jak kod aplikacji, schemat bazy danych jest częścią tworzonego systemu i dobrą praktyką jest przechowywanie go w repozytorium. 
+Jako że zmiany schematu bazy danych są przyrostowe, to repozytorium powinno zawierać wszystkie zmiany umożliwiające odtworzenie zawsze tej samej bazy danych.
+Dzięki temu uzyskamy szereg korzyści:</p>
+<ul>
+  <li>możliwość zweryfikowania zmian,</li>
+  <li>prostsze utrzymywanie kolejności zmian schematu bazy danych, dzięki utrzymywaniu zmian w jednym miejscu,</li>
+  <li>bezproblemowe odtworzenie zawsze dokładnie takiej samej bazy danych (np. lokalnie do celów testowych).</li>
+</ul>
+
+<p>Jeśli kilka projektów korzysta z bazy, to mimo wszystko zmiany powinny odbywać się tylko na jednym głównym repozytorium (nawet na osobnym).</p>
+
+<h3 id="każda-zmiana-schematu-powinna-być-migracją">Każda zmiana schematu powinna być migracją</h3>
+<p>Każdorazowe modyfikowanie schematu, powinno odbywać się za pomocą migracji, którą zapiszemy w repozytorium, unikając ręcznego modyfikowania schematu.</p>
+
+<p>Dzięki temu nie będzie sytuacji, w której po odtworzeniu bazy, będzie się ona różnić od oryginału.</p>
+
+<p>Dodatkowo zmiany wykonane ręcznie (z pominięciem migracji), mogą wpłynąć na jego późniejsze wykonanie za pomocą migracji, np. gdy wykonujemy CREATE TABLE bezpośrednio na bazie, a później dodajemy migrację schematu, która to procesuje, to w takim wypadku otrzymamy błąd informujący o tym, że taka tabela już istnieje.</p>
+
+<h3 id="wersjonowanie-rosnące-każdej-zmiany">Wersjonowanie (rosnące) każdej zmiany</h3>
+<ul>
+  <li>Każda zmiana powinna być wersjonowana, np. w osobnych plikach, w których zachowanie kolejności będzie wykonane za pomocą podbijania licznika lub dodania znacznika czasu do nazwy pliku.
+Jest to bardzo ważne, ponieważ inna kolejność uruchomienia migracji schematów bazy danych może całkowicie zmienić jej sens albo nawet całkowicie ją uniemożliwić.</li>
+  <li>Zalecane jest, aby każda zmiana była jak najmniejsza i najlepiej możliwa do odwrócenia. 
+Przykładowo tworząc indeksy na istniejących tabelach, najlepiej rozbić ich tworzenie do osobnych wersji.
+Jeśli nie zostaną one wykonane w osobnych migracjach schematu, wtedy narażamy się na ryzyko takie jak opisane niżej:
+    <ul>
+      <li>w tej samej migracji schematu bazy danych tworzymy indeks A oraz indeks B,</li>
+      <li>stworzenie indeksu A zajmuje 5 minut i przebiega poprawnie,</li>
+      <li>stworzenie indeksu B zajmuje ponad 5 minut i powoduje błąd TimeoutException,</li>
+      <li>oba indeksy zostają wycofane i indeks A musi być ponownie założony,</li>
+      <li>w przypadku, gdyby tworzenie indeksów było rozdzielone na osobne migracje, wtedy nie będzie konieczności ponownego tworzenia indeksu A (i ponownego poświęcania 5 minut na ten cel).</li>
+    </ul>
+  </li>
+  <li>Wykonywane zmiany powinny być przyrostowe, czyli zmiana dla danej wersji powinna być uruchomiona tylko raz.</li>
+</ul>
+
+<h4 id="przykładowe-biblioteki">Przykładowe biblioteki</h4>
+<ul>
+  <li>SQL
+    <ul>
+      <li>Liquibase
+        <ul>
+          <li><a href="https://www.liquibase.org/">liquibase.org</a></li>
+        </ul>
+      </li>
+      <li>FlywayDB
+        <ul>
+          <li><a href="https://flywaydb.org/">flywaydb.org</a></li>
+        </ul>
+      </li>
+      <li>MyBatis Migration
+        <ul>
+          <li><a href="https://mybatis.org/migrations">mybatis.org/migrations</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>NoSQL
+    <ul>
+      <li>Mongock
+        <ul>
+          <li><a href="https://github.com/cloudyrock/mongock">github.com/cloudyrock/mongock</a></li>
+          <li><a href="https://www.mongock.io">mongock.io</a></li>
+        </ul>
+      </li>
+      <li>Migrate-mongo
+        <ul>
+          <li><a href="https://www.npmjs.com/package/migrate-mongo">npmjs.com/package/migrate-mongo</a></li>
+          <li><a href="https://github.com/seppevs/migrate-mongo">github.com/seppevs/migrate-mongo</a></li>
+        </ul>
+      </li>
+      <li>liquibase-mongodb
+        <ul>
+          <li><a href="https://github.com/liquibase/liquibase-mongodb">github.com/liquibase/liquibase-mongodb</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>w powyższych bibliotekach tworzenie i uruchamianie przyrostowe zmian jest wbudowane.</p>
+
+<h3 id="zmiany-powinny-być-kompatybilne-wstecz">Zmiany powinny być kompatybilne wstecz</h3>
+<p>Jest to szczególnie ważne, jeśli chcemy bezprzerwowo aktualizować naszą bazę danych, w takim wypadku aktualizacja bazy danych nie powinna spowodować, że starsza wersja aplikacji przestanie działać.</p>
+
+<p>Przykładowo nowa kolumna powinna mieć domyślną wartość lub przyjmować null-e.</p>
+
+<p>Zmiana nazwy kolumny lub jej usunięcie powinno być rozbite na kilka etapów, tak aby jej prawdziwe usunięcie było wykonane nie w docelowej wersji, tylko np. w następnej iteracji, gdy będziemy pewni, że żadna aplikacja z niej nie korzysta.</p>
+
+<h2 id="aplikowanie-zmian">Aplikowanie zmian</h2>
+<p>Aplikowanie zmian wykonanych w ramach ewolucyjnej bazy danych jest już zależne od konkretnego przypadku.</p>
+
+<p>Jeśli baza danych jest ściśle związana z jedną aplikacją, to możemy ją uruchamiać bezpośrednio z kodu <a href="https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#running-migrations-on-application-startup">🔗⁵</a> .</p>
+
+<p>W przypadku gdy aplikacja jest rozproszona i nie chcemy blokować wszystkich instancji aplikacji na czas migracji schematu lub gdy kilka różnych aplikacji korzysta z tej bazy danych, możemy uruchamiać migrację niezależnie od aplikacji.
+W tym przypadku mamy następujące możliwości:</p>
+<ul>
+  <li>Wykonywanie zmian uruchamianych za pomocą CI/CD (np. automatycznie po otrzymaniu nowej wersji).
+Na repozytorium wykonujemy merge z migracjami schematu bazy danych, Jenkins wykrywa zmianę na repozytorium i wykonuje ją na bazie wskazanej w konfiguracji.</li>
+  <li>Z wykorzystaniem mechanizmów dostarczonych przez platformę, na której będzie to uruchamiane. Przykładowo dla Kubernetesa możemy:
+    <ul>
+      <li>wykorzystać initContainers, celem odpalenia migracji schematu bazy danych przed uruchomieniem docelowego kontenera z aplikacją 
+(w takim wypadku każda replika uruchomi migrację schematu, a to mechanizm migracji musi zapewnić, że zmiany zostaną wykonane wszystkie na jednym kontenerze i do tego jednorazowo) <a href="https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#init-containers">🔗⁵</a> ,</li>
+      <li>wykorzystać do tego celu Joby, które jednorazowo uruchomią migrację (a w przypadku problemów, wykonają automatyczne ponowienie n-razy) <a href="https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2">🔗³</a> <a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">🔗⁴</a> <a href="https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#jobs">🔗⁵</a> ,</li>
+      <li>wykorzystać dwa powyższe mechanizmy <a href="https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/#combining-jobs-and-init-containers-to-handle-migrations">🔗⁵</a>,
+uruchomić joba, aby wykonał migrację schematu bazy danych, oraz initContainers tak, aby poczekał na zakończenie migracji schematu
+(a jeśli wszystkie migracje schematu wymagane przez aplikację, są już zaaplikowane, to uruchomienie docelowego kontenera).</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="przykłady---kubernetes">Przykłady - Kubernetes</h3>
+<p>Przykładowe rozwiązanie łączące mechanizm initContainer oraz job-a, dla różnych bibliotek do migracji schematów bazy danych:</p>
+<ul>
+  <li><a href="https://github.com/Consdata/blog-database-migration-example/tree/master/liquibase" title="Example Liquibase migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> Liquibase</a></li>
+  <li><a href="https://github.com/Consdata/blog-database-migration-example/tree/master/flyway" title="Example Flyway migration in GitHub project in consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> FlywayDB</a></li>
+  <li><a href="https://github.com/Consdata/blog-database-migration-example/tree/master/mybatis-migration" title="Example MyBatis migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> MyBatis Migration</a></li>
+  <li><a href="https://github.com/Consdata/blog-database-migration-example/tree/master/migrate-mongo" title="Example Migrate-Mongo migration in GitHub project consdata/blog-database-migration-example"><svg class="svg-icon" style="color: #586069"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> Migrate-mongo</a></li>
+</ul>
+
+<h2 id="bibliografia">Bibliografia</h2>
+<ol>
+  <li><a href="https://www.martinfowler.com/articles/evodb.html">https://www.martinfowler.com/articles/evodb.html</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Evolutionary_database_design">https://en.wikipedia.org/wiki/Evolutionary_database_design</a></li>
+  <li><a href="https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2">https://cloud.google.com/solutions/addressing-continuous-delivery-challenges-in-a-kubernetes-world#related_kubernetes_concepts_2</a></li>
+  <li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">https://kubernetes.io/docs/concepts/workloads/controllers/job/</a></li>
+  <li><a href="https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/">https://andrewlock.net/deploying-asp-net-core-applications-to-kubernetes-part-7-running-database-migrations/</a></li>
+</ol>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/01/07/czy-wiesz-czym-jest-partycjonowanie.html" lang="pl">Czy wiesz czym jest partycjonowanie?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor.html" lang="pl">Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngFor?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript.html" lang="pl">Czy wiesz, jak używać slice w JavaScript?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/01/07/czy-wiesz-czym-jest-partycjonowanie.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-01-07-czy-wiesz-czym-jest-partycjonowanie/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">databases</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/01/07/czy-wiesz-czym-jest-partycjonowanie.html">Czy wiesz czym jest partycjonowanie?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/01/07/czy-wiesz-czym-jest-partycjonowanie.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/rmastalerek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/rmastalerek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/rmastalerek.html" class="author-name">Robert Mastalerek</a>
+                <span class="post-date">
+7
+
+sty
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2024-12-16-czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">angular</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor.html">Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngFor?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/dmejer.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/dmejer.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/dmejer.html" class="author-name">Dorian Mejer</a>
+                <span class="post-date">
+16
+
+gru
+
+
+
+2024
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2024-11-25-czy-wiesz-jak-uzywac-slice-w-javascript/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">javascript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript.html">Czy wiesz, jak używać slice w JavaScript?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/dmejer.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/dmejer.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/dmejer.html" class="author-name">Dorian Mejer</a>
+                <span class="post-date">
+25
+
+lis
+
+
+
+2024
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "migration database liquibase flyway kubernetes job initContainers";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
