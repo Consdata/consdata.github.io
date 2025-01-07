@@ -87,3 +87,6 @@ Po wykonaniu operacji `INSERT` PostgreSQL automatycznie przypisuje dane do odpow
 
 ### Podsumowanie
 PostgreSQL Partition Manager (pg_partman) to potężne narzędzie do zarządzania partycjami w dużych tabelach. Dzięki automatyzacji i elastyczności pozwala na efektywne zarządzanie danymi, poprawiając wydajność systemu. Warto rozważyć je tam, gdzie wydajność i skalowalność są kluczowe, zwłaszcza w porównaniu z natywnymi rozwiązaniami PostgreSQL i innymi narzędziami dostępnymi na rynku.
+
+### Dokumentacja
+https://github.com/pgpartman/pg_partman
