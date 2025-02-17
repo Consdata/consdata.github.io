@@ -12,7 +12,7 @@ tags:
 - databases
 ---
 
-We wpisie [Czy wiesz czym jest partycjonowanie?]({% post_url pl/2025-01-06-czy-wiesz-czym-jest-partycjonowanie %}) dowiedzieliśmy się już czym jest partycjonowanie, do czego służy i jak może ułatwić pracę. W tym wpisie poznamy narzędzie, które upraszcza nam tworzenie i zarządzanie partycjami w PostgreSQL o nazwie PostgreSQL Partition Manager (pg_partman). W skrócie PostgreSQL Partition Manager to rozszerzenie dla PostgreSQL, które automatyzuje proces zarządzania partycjami w bazie danych.
+We wpisie [Czy wiesz czym jest partycjonowanie?]({% post_url pl/2025-01-07-czy-wiesz-czym-jest-partycjonowanie %}) dowiedzieliśmy się już czym jest partycjonowanie, do czego służy i jak może ułatwić pracę. W tym wpisie poznamy narzędzie, które upraszcza nam tworzenie i zarządzanie partycjami w PostgreSQL o nazwie PostgreSQL Partition Manager (pg_partman). W skrócie PostgreSQL Partition Manager to rozszerzenie dla PostgreSQL, które automatyzuje proces zarządzania partycjami w bazie danych.
 
 ### Korzyści z używania pg_partman
 - Automatyczne tworzenie, rotacja i usuwanie partycji
