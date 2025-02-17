@@ -2,7 +2,7 @@
 layout:    post
 title:    Czy wiesz jak korzystać z narzędzia do partycjonowania pg_partman?
 description: ""
-date:      2024-02-17T08:00:00+01:00
+date:      2025-02-17T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
