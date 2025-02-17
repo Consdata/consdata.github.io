@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/en/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/en/" rel="alternate" type="text/html" />
+  <updated>2025-02-17T02:41:26-06:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz jak korzystać z narzędzia do partycjonowania pg_partman?</title>
+      <link href="https://blog.consdata.tech/en/2025/02/17/czy-wiesz-jak-korzystac-z-narzedzia-do-partycjonowania-pg-partman.html" rel="alternate" type="text/html" title="Czy wiesz jak korzystać z narzędzia do partycjonowania pg_partman?" />
+      <published>2025-02-17T01:00:00-06:00</published>
+      <updated>2025-02-17T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/02/17/czy-wiesz-jak-korzystac-z-narzedzia-do-partycjonowania-pg-partman</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Robert Mastalerek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="databases" />
+      
+
+      
+        <summary type="html">We wpisie Czy wiesz czym jest partycjonowanie? dowiedzieliśmy się już czym jest partycjonowanie, do czego służy i jak może ułatwić pracę. W tym wpisie poznamy narzędzie, które upraszcza nam tworzenie i zarządzanie partycjami w PostgreSQL o nazwie PostgreSQL Partition Manager (pg_partman). W skrócie PostgreSQL Partition Manager to rozszerzenie dla PostgreSQL, które automatyzuje proces zarządzania partycjami w bazie danych.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-02-17-czy-wiesz-jak-korzystac-z-narzedzia-do-partycjonowania-pg-partman/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Wstęp do tworzenia czytelnych modeli BPMN</title>
+      <link href="https://blog.consdata.tech/en/2025/01/27/wstep-do-tworzenia-czytelnych-modeli-bpmn.html" rel="alternate" type="text/html" title="Wstęp do tworzenia czytelnych modeli BPMN" />
+      <published>2025-01-27T01:00:00-06:00</published>
+      <updated>2025-01-27T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/01/27/wstep-do-tworzenia-czytelnych-modeli-bpmn</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Tadeusz Woźniak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="bpmn" />
+      
+
+      
+        <summary type="html">BPMN (Business Process Model and Notation) to graficzna notacja służąca do opisywania procesów biznesowych, stworzona przez OMG (Object Management Group). Jej główną zaletą jest prostota i zrozumiałość dla wszystkich interesariuszy – pod warunkiem, że procesy są modelowane zgodnie z najlepszymi praktykami. Tylko czym są te najlepsze praktyki?</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-01-27-wstep-do-tworzenia-czytelnych-modeli-bpmn/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz czym jest partycjonowanie?</title>
+      <link href="https://blog.consdata.tech/en/2025/01/07/czy-wiesz-czym-jest-partycjonowanie.html" rel="alternate" type="text/html" title="Czy wiesz czym jest partycjonowanie?" />
+      <published>2025-01-07T01:00:00-06:00</published>
+      <updated>2025-01-07T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/01/07/czy-wiesz-czym-jest-partycjonowanie</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Robert Mastalerek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="databases" />
+      
+
+      
+        <summary type="html">Partycjonowanie tabel to technika projektowania bazy danych, która pozwala podzielić dużą tabelę na mniejsze, łatwiejsze w zarządzaniu kawałki zwane partycjami. Każda partycja to oddzielna tabela przechowująca podzbiór oryginalnych danych.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-01-07-czy-wiesz-czym-jest-partycjonowanie/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngFor?</title>
+      <link href="https://blog.consdata.tech/en/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor.html" rel="alternate" type="text/html" title="Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngFor?" />
+      <published>2024-12-16T01:00:00-06:00</published>
+      <updated>2024-12-16T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/12/16/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">W Angular 17 pojawiło się built-it control flow, które zostało ustabilizowane w wersji 18. Są to zamienniki dyrektyw *ngIf (opisaliśmy to tutaj), *ngFor, *ngSwitch.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-12-16-czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngfor/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak używać slice w JavaScript?</title>
+      <link href="https://blog.consdata.tech/en/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript.html" rel="alternate" type="text/html" title="Czy wiesz, jak używać slice w JavaScript?" />
+      <published>2024-11-25T01:00:00-06:00</published>
+      <updated>2024-11-25T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2024/11/25/czy-wiesz-jak-uzywac-slice-w-javascript</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+
+      
+        <summary type="html">Slice zwraca płytką kopię obiektów w Array. Płytka kopia obiektu to kopia, która posiada te same referencje na wartości. Zmiana w skopiowanym obiekcie spowoduje zmianę pierwotnego obiektu.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-11-25-czy-wiesz-jak-uzywac-slice-w-javascript/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngIf?</title>
+      <link href="https://blog.consdata.tech/en/2024/11/01/czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif.html" rel="alternate" type="text/html" title="Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngIf?" />
+      <published>2024-11-01T02:00:00-05:00</published>
+      <updated>2024-11-01T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/11/01/czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">W Angular 17 pojawiło się built-it control flow, które zostało ustabilizowane w wersji 18. Są to zamienniki dyrektyw *ngIf, *ngFor, *ngSwitch.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-11-04-czy-wiesz-ze-od-angular-17-mozna-uzywac-if-zamiast-ngif/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jaka jest minimalna liczba węzłów w MongoDB replica set?</title>
+      <link href="https://blog.consdata.tech/en/2024/10/14/czy-wiesz-jaka-jest-minimalna-liczba-wezlow-w-mongodb-replica-set.html" rel="alternate" type="text/html" title="Czy wiesz, jaka jest minimalna liczba węzłów w MongoDB replica set?" />
+      <published>2024-10-14T02:00:00-05:00</published>
+      <updated>2024-10-14T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/10/14/czy-wiesz-jaka-jest-minimalna-liczba-wezlow-w-mongodb-replica-set</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Jakub Wilczewski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="mongodb" />
+      
+        <category term="replica set" />
+      
+
+      
+        <summary type="html">Aby skorzystać z korzyści, które daje replica set potrzebne są przynajmniej trzy węzły. Warto jednak wyjaśnić dlaczego tak jest. Taka sytuacja jest ściśle powiązana z algorytmem wyboru nowego węzła PRIMARY w replice. W replice MongoDB jeden z węzłów pełni rolę węzła PRIMARY i tylko on obsługuje operacje zapisu. Pozostałe węzły (SECONDARY) odczytują zapisane operacje z operation loga i nanoszą je na swoje zbiory danych.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-10-14-czy-wiesz-jaka-jest-minimalna-liczba-wezlow-w-mongodb-replica-set/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że już nie musisz klonować tablic, by wykonać na nich typowe operacje?</title>
+      <link href="https://blog.consdata.tech/en/2024/09/13/czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-by-wykonac-na-nich-typowe-operacje.html" rel="alternate" type="text/html" title="Czy wiesz, że już nie musisz klonować tablic, by wykonać na nich typowe operacje?" />
+      <published>2024-09-13T02:00:00-05:00</published>
+      <updated>2024-09-13T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/09/13/czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-by-wykonac-na-nich-typowe-operacje</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Mariusz Bartosik</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+
+      
+        <summary type="html">Metody toReversed(), toSplice(), toSorted() oraz with() stanowią grupę metod operujących na tablicach. Rozszerzają tradycyjne operacje, pozwalając na uzyskanie zmodyfikowanych kopii tablic, na których zostały wywołane. W przeciwieństwie do tradycyjnych metod takich jak sort(), splice() czy reverse(), metody te nie modyfikują tablic, na których zostały wywołane.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-09-13-czy-wiesz-ze-nie-musisz-juz-klonowac-tablic-by-wykonac-na-nich-typowe-operacje/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym są container queries?</title>
+      <link href="https://blog.consdata.tech/en/2024/08/23/czy-wiesz-czym-sa-container-queries.html" rel="alternate" type="text/html" title="Czy wiesz, czym są container queries?" />
+      <published>2024-08-23T02:00:00-05:00</published>
+      <updated>2024-08-23T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/08/23/czy-wiesz-czym-sa-container-queries</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Tatarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="css" />
+      
+        <category term="container queries" />
+      
+
+      
+        <summary type="html">Container queries to mechanizm analogiczny do media queries, działający na elementach DOM, a nie parametrach przeglądarki. Pozwala odpytać o parametry kontenera i ostylować zawarty w nim element zgodnie z tymi parametrami.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-08-23-czy-wiesz-czym-sa-container-queries/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak używać Object.groupBy()?</title>
+      <link href="https://blog.consdata.tech/en/2024/08/09/czy-wiesz-czym-jest-i-jak-uzywac-object-groupby.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak używać Object.groupBy()?" />
+      <published>2024-08-09T02:00:00-05:00</published>
+      <updated>2024-08-09T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2024/08/09/czy-wiesz-czym-jest-i-jak-uzywac-object-groupby</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="javascript" />
+      
+
+      
+        <summary type="html">Object.groupBy() to statyczna metoda pozwalająca grupować elementy. Jej składnia jest następująca: Object.groupBy(items, callbackFn) gdzie items jest listą, którą będziemy grupować, a callbackFn jest funkcją, którą będziemy wywoływać dla każdego elementu z listy. Funkcja ta będzie określać grupę, do której element ma trafić na nowej liście. Jako przykład posłuży nam poniższa lista książek: const books = [ {title: '1984', genre: 'Dystopian fiction', year: 1949}, {title: 'To Kill a Mockingbird', genre: 'Classic literature', year: 1960}, {title: 'The Great Gatsby', genre: 'Modernist novel', year: 1925}, {title: 'The Catcher in the Rye', genre: 'Classic literature', year: 1951}, {title: 'Pride and Prejudice', genre: 'Romance novel', year: 1813} ];</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2024-08-09-czy-wiesz-czym-jest-i-jak-uzywac-object-groupby/thumbnail.webp" />
+      
+    </entry>
+  
+</feed>
