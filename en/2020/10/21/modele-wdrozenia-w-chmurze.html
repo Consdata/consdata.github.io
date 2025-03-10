@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych" />
+<meta name="author" content="glipecki" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!" />
+<meta property="og:description" content="Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2020/10/21/modele-wdrozenia-w-chmurze.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/10/21/modele-wdrozenia-w-chmurze.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-21T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/thumbnail.webp" />
+<meta property="twitter:title" content="W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"glipecki"},"image":"https://blog.consdata.tech/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/thumbnail.webp","@type":"BlogPosting","headline":"W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych","description":"Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!","dateModified":"2020-10-21T02:00:00-05:00","datePublished":"2020-10-21T02:00:00-05:00","url":"https://blog.consdata.tech/2020/10/21/modele-wdrozenia-w-chmurze.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/10/21/modele-wdrozenia-w-chmurze.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2020/10/21/modele-wdrozenia-w-chmurze.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">cloud</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">W chmurze czyli jak? O możliwych kierunkach rozwoju aplikacji chmurowych</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/glipecki.html">
+        <img class="author-image" src="/assets/img/authors/glipecki.webp" alt="author">
+        <span class="author-name">Grzegorz Lipecki</span><a class="author" href="https://github.com/glipecki">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+21
+
+
+October
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Co to znaczy być w chmurze? Co to właściwie jest IaaS, PaaS, CaaS, FaaS? Jak przenieść się do chmury? Czy jestem już wystarczająco zachmurzony? Jeżeli nie znasz odpowiedzi na którekolwiek z powyższych pytań, to ten wpis jest stworzony specjalnie dla Ciebie!</p>
+
+<p>Czym właściwie jest chmura? W uproszczeniu możemy powiedzieć, że to dowolna usługa (lub zestaw usług), która dostarcza mechanizmy automatycznego tworzenia zasobów na żądanie i rozliczania ich zgodnie z faktycznym ich wykorzystaniem (<a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf">The NIST Definition of Cloud Computing</a>). Sama definicja jest rozległa i możemy pod nią umieścić wiele skrajnie różnych rozwiązań. W kolejnych akapitach przyjrzymy się krótkiej charakterystyce podejść oferowanych przez wiodących dostawców chmur publicznych.</p>
+
+<h2 id="on-premises---własna-infrastruktura">On-premises - własna infrastruktura</h2>
+
+<p>Zanim omówimy podejścia do migracji w chmurze, określmy zgrubnie punkt wyjścia, do którego będziemy odnosić kolejne modele wdrożeniowe:</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-on-premises.png" alt="Charakterystyka wdrożeń on-premises" /></p>
+
+<p>Powyższy diagram przedstawia uproszczony model elementów, za które jesteś odpowiedzialny wdrażając system we własnej serwerowni.</p>
+
+<h2 id="iaas---infrastructure-as-a-service">IaaS - Infrastructure as a service</h2>
+
+<p>Dostawca chmury przejmuje odpowiedzialność za fizyczny sprzęt potrzebny do uruchomienia infrastruktury. Użytkownik zarządza systemem na poziomie konkretnych maszyn wirtualnych.</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-iaas.png" alt="Charakterystyka wdrożeń IaaS" /></p>
+
+<p>W najbardziej oczywistym aspekcie mówimy o zakupie serwerów, ale należy uwzględnić też fizyczną ochronę serwerowni, serwis i utrzymanie sprzętu, budowę sieci, koszty pomieszczeń, opłat bieżących i licencji. Do tego dochodzi koszt zatrudnienia i szkolenia administratorów o odpowiednich kompetencjach, koszt wypracowania standardów i konfiguracji, kończąc na takich kwestiach, jak procedury migracji, disaster recovery czy tworzenie strategii rozwoju uwzględniających zakup sprzętu potencjalnie potrzebnego w przyszłości.</p>
+
+<p>W uproszczeniu, IaaS zdejmuje z Ciebie takie zmartwienia, jak umierające dyski SSD czy telefon w środku nocy (bo  np. zabrakło prądu lub włączył się alarm przeciwpożarowy) oraz ograniczenia sprzętowe przy eksperymentowaniu czy planowaniu nowych produktów.</p>
+
+<p>W praktyce oznacza to, że na żądanie możesz tworzyć dowolnie skonfigurowane instancje maszyn wirtualnych spiętych w wirtualne sieci o dowolnej topologii. Dla maszyn, poza technicznymi parametrami, możesz określać dostępność w sieci czy szczegółowe uprawnienia dostępu.</p>
+
+<p>Migrując w modelu IaaS zyskujesz:</p>
+<ul>
+  <li>fizyczne zabezpieczenie serwerowni,</li>
+  <li>bezpieczeństwo i ciągłość działania serwerów,</li>
+  <li>bezpieczny storage,</li>
+  <li>stabilność i bezpieczeństwo sieci,</li>
+  <li>audytowalność zmian i monitoring infrastruktury,</li>
+  <li>skalowanie liczby i rozmiaru maszyn pod bieżące potrzeby.</li>
+</ul>
+
+<p>Nadal jednak musisz zajmować się bezpieczeństwem, aktualizacjami i konfiguracją systemów operacyjnych wdrożonych maszyn wirtualnych.</p>
+
+<p>W przypadku migracji systemu do modelu IaaS mówimy o podejściu rehosting i jest to najprostszy model wdrożenia do chmury. Zakłada jedynie przerzucenie (czy nawet import) systemów z aplikacjami do infrastruktury dostawcy. Koszt migracji jest minimalny, a dla legacy systemów drastycznie niższy niż w pozostałych modelach wdrożenia. Pomimo pierwszych zalet, w modelu IaaS trudno mówić o wdrożeniu chmurowym. Nadal nie wykorzystujesz w pełni możliwości niskokosztowej i skalowalnej infrastruktury.</p>
+
+<p>Model IaaS może być prostym pierwszym krokiem, który pozwoli szybko wskoczyć do publicznej chmury i otworzyć możliwości szerszej integracji z systemami dostawcy i przyrostowych zmian we wdrażanym systemie (ewolucja przez refaktoring, podmiana pojedynczych elementów czy integracja z konkretnymi usługami zamiast długotrwałego przepisywania całego systemu od podstaw).</p>
+
+<h2 id="caas---container-as-a-service">CaaS - Container as a service</h2>
+
+<p>Dostawca chmury przejmuje odpowiedzialność za utrzymanie maszyn wirtualnych obsługujących infrastrukturę. Użytkownik zarządza systemem na poziomie kontenerów aplikacji.</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-caas.png" alt="Charakterystyka wdrożeń CaaS" /></p>
+
+<p>Najpopularniejszym rozwiązaniem w tej kategorii jest klaster Kubernetes w pełni zarządzany przez dostawcę chmury. W praktyce zarządzanie maszynami wirtualnymi zostaje ograniczone do zdefiniowania ich rozmiaru i liczby, a czasem wręcz do określenia limitów minimalnej i maksymalnej liczby węzłów. Aktualizację, konfigurację, zabezpieczenie czy  monitorowanie systemów maszyn wirtualnych oddajesz w ręce specjalistów. Dzięki temu możesz skupić się na tworzeniu niezawodnego oprogramowania.</p>
+
+<p>Migrując w modelu CaaS zyskujesz:</p>
+<ul>
+  <li>aktualizacje i konfiguracje systemów maszyn wirtualnych,</li>
+  <li>bezpieczeństwo zainstalowanych na maszynach systemów operacyjnych,</li>
+  <li>aktualizacje, konfiguracje i bezpieczeństwo klastra dostarczanego przez dostawcę,</li>
+  <li>równoważenie obciążenia hostów klastra i optymalizację kosztów działania systemu,</li>
+  <li>możliwości skalowania i niezawodność systemu wynikające z łatwego powielania instancji aplikacji i węzłów klastra.</li>
+</ul>
+
+<p>Dzięki abstrakcji na infrastrukturę, którą zapewnia konteneryzacja aplikacji możesz skorzystać z gotowych usług dostarczanych przez dostawcę chmury. W zależności od operatora dostępne będą np. load balancer z firewallem i ochroną przed DDoS, bezpieczny storage w postaci persistent volumes czy centralne zarządzanie logami lub metrykami działania systemu. Dodatkowo, takie mechanizmy, jak kontrola uprawnień czy skalowanie systemu, są już w standardzie.</p>
+
+<p>Jednym z najważniejszych ograniczeń w przypadku CaaS jest konieczność pełnej obsługi stosu aplikacyjnego. Przykładowo, udostępniając usługi HTTP musisz zadbać o uruchomienie, konfigurację i bezpieczeństwo serwera WWW, kontrolę dostępu do usługi czy poprawną konfigurację liczby wątków i połączenia do bazy danych, a nawet definicję odpowiednich portów serwera i przygotowanie certyfikatów SSL. Migrowane aplikacje często będą wymagały zmiany w konfiguracji, czy nawet kodzie źródłowym, w celu dostosowania do infrastruktury i dostępnych usług. Bez tych zmian nie będzie możliwe pełne wykorzystanie potencjału wdrożenia w chmurze.</p>
+
+<p>Dodatkowo należy pamiętać, że po stronie użytkownika pozostaje zapewnienie bezpieczeństwa i stabilności dostarczanego kontenera. Przykładowo: przeprowadzanie analizy kontenerów pod kątem znanych podatności, aktualizowanie oprogramowania i obrazów bazowych oraz rozwiązywanie problemów wynikających z błędnie zdefiniowanych obrazów i deskryptorów wdrożenia.</p>
+
+<p>W przypadku modelu CaaS możemy już mówić o strategii migracji typu refactoring. Nawet jeżeli unikniesz zmian funkcjonalnych w kodzie, będziesz modyfikował sposób wdrażania aplikacji. W ramach migracji należy przeprowadzić konteneryzację przenoszonych aplikacji i przygotować deskryptory wdrożenia. Koszt migracji jest większy niż w przypadku modelu IaaS, ale możliwe jest przygotowanie się do migracji w ramach istniejących wdrożeń przed rozpoczęciem faktycznych migracji w chmury. Należy oczywiście zauważyć, że systemy już wdrażane w kontenerach lub klastrach Kubernetes dostają możliwość migracji do chmury przy minimalnych kosztach zmian.</p>
+
+<p>Model CaaS pozwala w praktyce wdrożyć wiele rozwiązań kojarzonych z publicznymi chmurami obliczeniowymi - skalowanie, niezawodność, szybkość zmian. Dla wielu będzie to docelowy model wdrożenia w chmurze, optymalnie łączący koszt i zakres zmian z natychmiastowymi zyskami i możliwościami dalszego rozwoju. Ewolucyjna natura podejścia, możliwość migracji do innego dostawcy czy nawet powrót do wdrożeń <em>on-premises</em> będą przemawiać za modelem CaaS.</p>
+
+<h2 id="paas---platform-as-a-service">PaaS - Platform as a service</h2>
+
+<p>Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie aplikacji. Użytkownik zarządza systemem na poziomie pojedynczych aplikacji.</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-paas.png" alt="Charakterystyka wdrożeń PaaS" /></p>
+
+<p>W modelu PaaS to dostawca chmury odpowiedzialny jest za budowanie i osadzanie aplikacji oraz utrzymanie kompletnej infrastruktury. Platforma dostarcza rozszerzenia zapewniające prostą konfigurację i integrację tworzonych aplikacji z usługami dostępnymi w chmurze. Osadzana usługa będzie miała zapewnione wsparcie dla monitorowania, uwierzytelniania czy komunikacji HTTPS na poziomie platformy (bez zmian w samej osadzanej aplikacji).</p>
+
+<p>Aplikacje są automatycznie zarządzane przez platformę. Wersjonowanie, load balancing i automatyczne skalowanie to tylko niektóre z dostępnych funkcjonalności. Jako użytkownik nie musisz zarządzać procesem budowania aplikacji. W przypadku platformy PaaS możemy myśleć jedynie o aplikacjach, a wszystkie aspekty ich wdrożenia i klastrowania są zarządzane przez systemy chmury.</p>
+
+<p>Migrując w modelu PaaS zyskujesz:</p>
+<ul>
+  <li>aktualizację i bezpieczeństwo kontenerów uruchamiających tworzone aplikacje,</li>
+  <li>w pełni zarządzaną infrastrukturę  wspierającą wersjonowanie i skalowanie na żądanie,</li>
+  <li>koszty wynikające wprost z czasu działania systemu,</li>
+  <li>wdrożenia gotowe do obsługi produkcyjnego ruchu - bez konieczności znajomości zagadnień DevOps,</li>
+  <li>brak kosztów związanych z zarządzaniem infrastrukturą.</li>
+</ul>
+
+<p>Właściwie wszystkie elementy wdrożenia chmurowego są już ukryte przed użytkownikiem. W praktyce oznacza to, że oddając coraz więcej elastyczności tworzonej aplikacji obniżyłeś do minimum konieczność zarządzania systemem. Koncepty, którymi nadal zajmuje się użytkownik, wynikają już ze stosowanych narzędzi i frameworków oraz natury tworzonej aplikacji.</p>
+
+<p>Platforma PaaS najczęściej określa języki i frameworki, dla których dostarcza wsparcie w postaci automatycznego procesu budowania i osadzania, narzędzi i bibliotek wspierających tworzenie usług oraz automatycznej konfiguracji frameworków.</p>
+
+<p>W przypadku migracji systemu w modelu PaaS możemy wpaść w jedną z dwóch ścieżek: dla aplikacji tworzonych we wspieranym przez chmurę języku/frameworku możliwa będzie refaktoryzacja, jednak dla pozostałych aplikacji konieczne może być ich przepisanie.</p>
+
+<p>Model sprawdzi się dobrze w aplikacjach webowych i serwerach usług HTTP - wszędzie tam, gdzie przejście na model FaaS nie jest możliwe ze względu na jego ograniczenia.</p>
+
+<h2 id="faas---function-as-a-service">FaaS - Function as a service</h2>
+
+<p>Dostawca chmury przejmuje odpowiedzialność za wdrożenie i utrzymanie pojedynczych funkcji. Użytkownik zarządza systemem na poziomie kodu źródłowego konkretnych funkcji.</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/desc-faas.png" alt="Charakterystyka wdrożeń FaaS" /></p>
+
+<p>W modelu FaaS dostawca chmury odpowiedzialny jest za wszystkie aspekty uruchomienia funkcji biznesowej w chmurze. Platforma dostarcza nie tylko infrastrukturę systemu, ale też obsługuje np. elementy stosu HTTP. Model funkcyjny jest modelem zdarzeniowym - użytkownik skupia się na obsłudze zdarzeń w systemie, np. zdarzeniem żądania HTTP, pojawieniem się komunikatu w kolejce czy utworzeniem nowego konta użytkownika lub pliku w storage.</p>
+
+<p>Przykładowo, dla funkcji HTTP, abstrahowane są nie tylko sposób uruchomienia, obsługa wątków, SSL czy port, na którym uruchomiona jest usługa, ale też adres publikacji endpointu HTTP, obsługiwane metody jego wywołania czy parsowanie żądania i odpowiedzi. Z punktu widzenia użytkownika wywołanie funkcji HTTP niewiele różni się od wywołania jej przez inny proces. Nawet konkretny serwer obsługujący żądania HTTP jest ukryty przed użytkownikiem i może ulec zmianie na poziomie infrastruktury dostawcy.</p>
+
+<p>Każda osadzona funkcja jest:</p>
+<ul>
+  <li>niezależnie budowana i wersjonowana (zarówno jej kod, jak i deployment),</li>
+  <li>wykonywana z niezależnym zestawem zależności (bibliotek),</li>
+  <li>obsługiwana niezależnie przez load balancer,</li>
+  <li>niezależnie skalowana,</li>
+  <li>zabezpieczona dedykowanymi dla niej regułami uwierzytelniania i autoryzacji.</li>
+</ul>
+
+<p>Podsumowując, każda funkcja jest traktowana jak niezależny artefakt i należy ją postrzegać jako samodzielną aplikację.</p>
+
+<p>Migrując w modelu FaaS zyskujesz:</p>
+<ul>
+  <li>zerowy koszt utrzymania i zarządzania infrastrukturą,</li>
+  <li>ograniczenie tworzenia kodu niepowiązanego bezpośrednio z realizowaną funkcjonalnością,</li>
+  <li>skalowanie od zera do dowolnego obciążenia,</li>
+  <li>błyskawiczne tempo wprowadzania nowych zmian i eksperymentów.</li>
+</ul>
+
+<p>Model FaaS zakłada analizę i fundamentalne przeprojektowanie systemu. Zmiana myślenia o architekturze i przetwarzaniu sprawia, że dotychczasowe problemy będziesz mógł rozwiązać na nowe sposoby. Użytkownicy mogą w całości skupić się na tworzeniu funkcjonalności biznesowych, drastycznie skracając czas potrzebny do wdrażania nowych rozwiązań.</p>
+
+<p>Warto też zauważyć, że skalowanie systemu pozwala nie tylko obsługiwać użytkowników na środowiskach produkcyjnych, ale też skalować środowiska programistyczne i testowe. Jeżeli koszt infrastruktury wprost wynika z liczby użytkowników, to nie ma powodu tworzyć uproszczonych wersji środowisk testowych i można wewnętrznie zapewnić infrastrukturę w pełni zgodną z produkcyjnym wdrożeniem.</p>
+
+<p>W przypadku FaaS należy pamiętać, że z największymi możliwościami i prostotą pojawiają się największe ograniczenia (największe uzależnienie kodu od konkretnej chmury). Tworzona funkcja będzie w pełni polegać na środowisku uruchomieniowym dostawcy. Kod będzie tworzony w języku programowania i w ramach frameworków wskazanych przez usługę FaaS. Często lokalne testowanie będzie utrudnione lub będzie wymagało emulatora. Jednym z największych ograniczeń wielu popularnych chmur jest czas zimnego startu funkcji, tj. natychmiastowe skalowanie od zera do w zasadzie dowolnego obciążenia wiąże się z częstym tworzeniem nowych instancji usługi. To oznacza, że część użytkowników trafiających na nową usługę może zauważyć dłuższe czasy odpowiedzi. W praktyce problem jest zauważalny w systemach o małym ruchu lub gdy niedopuszczalne są nawet pojedyncze żądania przekraczające założony czas odpowiedzi.</p>
+
+<p>FaaS najlepiej sprawdza się w przetwarzaniu opartym o zdarzenia. Zastosowanie funkcji do tworzenia aplikacji webowych lub usług API należy poprzedzić analizą wymagań, ocenić np. dopuszczalne SLA usługi przy uwzględnieniu czasu zimnego startu. Możliwość skalowania usług od zera do dowolnego obciążenia oraz ograniczenie czasu tworzenia nowych funkcjonalności do minimum sprawia, że FaaS to zawsze opcja warta rozważenia.</p>
+
+<p>Niskie koszty utrzymania infrastruktury, wysokie tempo wprowadzania zmian i wzorowe możliwości skalowania pozwolą Twojemu produktowi zyskać przewagę nad konkurencją.</p>
+
+<h2 id="migracja-a-rozwój">Migracja a rozwój</h2>
+
+<p>Przytaczane do tej pory koszty związane z migracją zakładały dostosowanie i wdrożenie działających systemów. Przy ich ocenie zakładałem, że zespół nie posiada wiedzy i doświadczenia w tworzeniu aplikacji w chmurze. W takiej sytuacji koszt szkoleń, prób i błędów oraz faktycznego wdrożenia rośnie wraz ze wzrostem “chmurowości” rozwiązania.</p>
+
+<p>Sytuacja będzie wyglądać zupełnie inaczej dla zespołu tworzącego i utrzymującego już istniejące rozwiązania chmurowe. W takim wypadku koszt nowej technologii został już poniesiony i nie wpływa na koszt przygotowywania nowych rozwiązań. Dla doświadczonych zespołów koszt dostarczenia nowej funkcjonalności w środowisku chmurowym będzie wyraźnie niższy niż w tradycyjnym podejściu ze względu na:</p>
+<ul>
+  <li>abstrakcję infrastruktury,</li>
+  <li>minimalny koszt wdrożenia i utrzymania aplikacji,</li>
+  <li>przeniesienie ciężaru na rozwój funkcjonalny aplikacji,</li>
+  <li>dostępność gotowych do integracji z systemem usług w modelu SaaS</li>
+</ul>
+
+<h2 id="vendor-lock-in">Vendor lock-in</h2>
+
+<p>Planując migrację do chmury musisz zmierzyć się z tematem uzależnienia kodu od konkretnego dostawcy.</p>
+
+<p>Czy <em>vendor lock-in</em> jest zły? Zagadnienie warto traktować jako ryzyko, a nie zagrożenie jako takie. Dla ryzyk możliwe jest zaplanowanie ścieżek przeciwdziałania i przygotowanie planu wyjścia z chmury (czy to do innego dostawcy, czy zupełnie w kierunku chmury prywatnej lub rozwiązania <em>on-premises</em>).</p>
+
+<p>Dla podejść IaaS i CaaS możemy przyjąć, że ryzyko wyjścia z chmury niesie za sobą minimalne koszty - w szczególności, gdy system nie korzysta z natywnych usług oferowanych przez chmurę obliczeniową.</p>
+
+<p>W przypadku PaaS i FaaS prawdopodobnie zaprojektowałeś system pod kątem oferty konkretnej chmury. Najwięksi dostawcy zapewniają ujednoliconą ofertę produktów. O ile różnice pomiędzy oferowanymi rozwiązaniami w wielu przypadkach uniemożliwiają migrację systemu bez żadnych zmian, to jednak znajdziemy pomiędzy nimi odpowiadające sobie rozwiązania pozwalające zrealizować system w podobnej architekturze.</p>
+
+<p>Warto zauważyć, że problem <em>vendor lock-in</em>, jako poważne ryzyko migracji do chmury, często jest adresowany wprost przez dostawców. Przykładowo w Google Cloud Platform większość produktów jest zbudowana w oparciu o otwarte standardy oraz narzędzia open-source. Przykładowo Google Kubernetes Engine do działania wykorzystuje platformę Kubernetes, Cloud Bigtable jest zgodny z HBase, itd. Podobne podejście jest stosowane przez wiodących dostawców chmur publicznych.</p>
+
+<p>Szacując koszty wyjścia z chmury powinieneś rozważyć również utracone zyski wynikające z obaw przed <em>vendor lock-in</em>. Obawa przed uzależnieniem może doprowadzić do zwiększenia złożoności systemu, zwiększenia kosztu produkcji i utrzymania systemu, utraty funkcjonalności dających przewagę, itp. Czy ew. koszt wyjścia z chmury będzie większy niż oszczędności wynikające z jej wykorzystania? W przypadku dużego prawdopodobieństwa lub wysokiego kosztu wyjścia z chmury warto rozważyć ograniczenie migracji do modelu CaaS.</p>
+
+<h2 id="on-prem-iaas-caas-paas-faas">On-prem, IaaS, CaaS, PaaS, FaaS</h2>
+
+<p>Mając już w głowie argumentacje i przykłady wszystkich podejść, możemy nakreślić podsumowanie odpowiedzialności w różnych modelach.</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/compare-xaas.png" alt="Porównanie modeli wdrożeń" /></p>
+
+<p>Im bardziej zaadaptujemy rozwiązania chmurowe, tym więcej odpowiedzialności przerzucimy na stronę dostawcy.</p>
+
+<h2 id="dojrzałość-chmurowa">Dojrzałość chmurowa</h2>
+
+<p>Znając system możemy pokusić się o ocenę jego dojrzałości chmurowej. Z jednej strony mamy klasyczne rozwiązania <em>on-premises</em>, a z drugiej rozwiązania w pełni serverless. Podsumowując wady i zalety opisywanych do tej pory podejść naszkicujmy prosty diagram szans i ryzyk zależny od stopnia migracji do chmury:</p>
+
+<p><img src="/assets/img/posts/2020-10-22-modele-wdrozenia-w-chmurze/native-vs-metrics.png" alt="Porównanie modeli wdrożeń" /></p>
+
+<p>Im bardziej zbliżymy się do podejść serverless, tym więcej korzyści osiągniemy z migracji. Należy jednak zwrócić uwagę, że im dalej się przesuwamy, tym droższa będzie migracja oraz wzrośnie ryzyko uzależnienia się od konkretnego dostawcy.</p>
+
+<h2 id="cele-migracji">Cele migracji</h2>
+
+<p>Podsumowując, zanim wybierzesz odpowiedni kierunek migracji do chmury, powinieneś zidentyfikować kluczowe problemy, które starasz się rozwiązać. Na ich podstawie możesz ustalić cele i ograniczenia, które pomogą Ci wybrać odpowiednią strategię dla Twojego systemu.</p>
+
+<p>Rzućmy okiem na kilka przykładowych celów. Pokażę Ci, jakie decyzje mógłbyś rozważyć, stojąc przed nimi:</p>
+<ul>
+  <li>“Chcemy być w chmurze” - przy minimalnym nakładzie pracy możesz wskoczyć we wdrożenia w ramach IaaS i z sukcesem odhaczyć wymaganie. Jednak, o ile ten cel nie ma ukrytej intencji, samo przeniesienie do chmury dla prestiżu nie wydaje się być sensownie obraną strategia rozwoju.</li>
+  <li>“Chcemy obniżyć koszty sprzętu”- wdrożenia IaaS mogą obniżyć koszt sprzętu, jednak koszt utrzymania pojedynczej wirtualnej maszyny odpowiadającej już posiadanym maszynom może być większy.</li>
+  <li>“Chcemy obniżyć koszty administrowania” - wdrożenia CaaS zdejmują z użytkownika potrzebę administrowania systemami operacyjnymi maszyn wirtualnych. Przejście na model PaaS i FaaS pozwala dalej radykalnie ograniczać te koszty.</li>
+  <li>“Chcemy obniżyć koszty infrastruktury” - model CaaS wyraźnie zwiększa utylizację infrastruktury. Dodatkowo przejście na PaaS i FaaS pozwala nie utrzymywać infrastruktury w ogóle gdy nie jest potrzebna.</li>
+  <li>“Chcemy zwiększyć skalowalność systemu” - każdy kolejny etap migracji zwiększa standaryzację wdrażanych rozwiązań, przez co pozwala dostawcy chmury na efektywniejsze skalowanie systemu bez naszego udziału.</li>
+  <li>“Chcemy poprawić bezpieczeństwo systemu” - każdy kolejny model (CaaS, PaaS, FaaS) poprawia bezpieczeństwo systemu przenosząc odpowiedzialność za utrzymanie i zarządzanie kolejnymi elementami przez dostawcę infrastruktury.</li>
+  <li>“Chcemy obniżyć koszty wprowadzenia nowych zmian” - modele chmurowe sprzyjają szybkiemu wprowadzaniu zmian i prowadzeniu eksperymentów przy minimalnym narzucie związanym z wdrożeniem i administracją.</li>
+  <li>“Nie chcemy płacić za infrastrukturę” - cel zdefiniowany przewrotnie, jednak jego intencją jest pokrycie kosztów infrastruktury przez użytkowników - gdy nie używają systemu, to ten nie generuje kosztów utrzymania. Jak się już pewnie domyślasz, docieramy do Graala rozwiązań chmurowych. W tym miejscu łakomie zerkasz już w stronę serverless, kuszą Cię jego możliwości skalowania do zera, brak stałych kosztów utrzymania i możliwość określenia precyzyjnego kosztu obsługi każdego użytkownika w systemie :)</li>
+</ul>
+
+<p>Potraktuj przykładowe cele jako inspiracje i przygotuj własną listę oczekiwań i driverów migracji do chmury. Znając problemy i oczekiwania, skuteczniej ocenisz potencjalne zyski i sensowność wybranego podejścia.</p>
+
+<h2 id="co-wybrać">Co wybrać?</h2>
+
+<p>To co ostatecznie wybrać? Wszystko po trochu!</p>
+
+<p>Sposób migracji aplikacji należy dobierać do jej potrzeb, ograniczeń i szans na rozwój. Naturalnym podejściem będzie wdrożenie części systemów wymagających minimalnych czasów odpowiedzi do użytkownika w modelu CaaS lub PaaS oraz zaprojektowanie procesów biznesowych w modelu zdarzeniowym przy wsparciu FaaS.</p>
+
+<p>Migracja do chmury uczy nas myślenia nie tylko w kategoriach kodu, ale też optymalizacji kosztów i szybkości wdrażania zmian. Przykładowo, jeśli tworzysz aplikację bota integrującego się z platformą Slack, możesz uruchomić webhook w oparciu o PaaS, który zleca dalsze operacje do kolejki zdarzeń obsługiwanych przez infrastrukturę FaaS. W takim podejściu usługa PaaS zapewnia nam stałe działanie usługi nieobarczonej kosztem zimnego startu, a FaaS zapewnia infrastrukturę przetwarzania operacji, za którą płacimy tylko w trakcie obsługi. W takim podejściu poniesiemy minimalny koszt zawsze czekającej usługi (co jest wymaganiem od strony UI użytkownika) i zerowy koszt funkcji działających tylko wtedy, gdy jest dla nich zadanie do wykonania. Dzięki takiej analizie możemy optymalizować koszt działania systemu przeznaczając środki w miejscach, w których niosą realną wartość (szybki czas odpowiedzi usługi do użytkownika) i obniżając je tam, gdzie możliwe są oszczędności (przetwarzanie zadań w tle).</p>
+
+<p>Podsumowując -  przy wyborze modelu wdrożenia w chmurze ważne jest określenie rozwiązywanych problemów i celów, które chcesz osiągnąć. Na tej podstawie będziesz mógł świadomie wybrać najlepsze narzędzia do zadanego problemu. Nie bój się eksperymentować i mieszać podejść, aby uzyskać infrastrukturę skrojoną idealnie pod Twoje potrzeby.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "cloud iaas caas paas faas gcp aws azure";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
