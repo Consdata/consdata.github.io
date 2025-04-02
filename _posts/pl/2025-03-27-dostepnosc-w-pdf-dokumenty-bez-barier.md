@@ -11,20 +11,43 @@ image: /assets/img/posts/2025-03-27-dostepnosc-w-pdf-dokumenty-bez-barier/thumbn
 tags:
 - WCAG
 ---
-Dokumenty PDF (Portable Document Format) to jeden z najczęściej używanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Wspominając o ich popularność, pojawia się pytanie, czy każdy tego typu dokument możemy nazwać dostępnym dla wszystkich w rozumieniu zespołu cech i funkcji umożliwiających osobom z różnymi niepełnosprawnościami lub ograniczeniami korzystanie z niego? Takie osoby powinny, bez pomocy innych, w wydajny sposób czerpać z treści tego typu dokumentów równie dużo co osoby bez niepełnosprawności. Co powinniśmy brać pod uwagę, chcąc tworzyć dokumenty PDF bez barier?
+PDF (Portable Document Format) to jeden z najczęściej używanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Wspominając o ich popularność, pojawia się pytanie, czy każdy tego typu dokument możemy nazwać dostępnym dla wszystkich w rozumieniu zespołu cech i funkcji umożliwiających osobom z różnymi niepełnosprawnościami lub ograniczeniami korzystanie z niego? Takie osoby powinny, bez pomocy innych, w wydajny sposób czerpać z treści tego typu dokumentów równie dużo co osoby bez niepełnosprawności. Co powinniśmy brać pod uwagę, chcąc tworzyć dokumenty PDF bez barier?
 ## Tworzenie dostępnych dokumentów PDF
 Standard PDF/UA (Universal Accessibility), stworzony przez Międzynarodową Organizację Normalizacyjną (ISO) oraz wytyczne Web Content Accessibility Guidelines (WCAG) opracowane przez organizację W3C określają zasady tworzenia dokumentów umożliwiające każdej osobie dostęp do informacji zawartych w dokumencie PDF. Przyjrzyjmy się kilku z tych zasad.
 ### Struktura dokumentu
-Dostępne pliki PDF powinny mieć odpowiednio określoną strukturę dokumentu z nagłówkami, akapitami i tabelami, co pozwala czytnikom ekranu zrozumienie przepływu treści.
-- Wszystkie znaczące treści powinny być oznaczone za pomocą tagów
-- Tagi w całej utworzonej strukturze powinny odzwierciedlać logiczną kolejność odczytu dokumentu oraz ich przeznaczenie (np. nagłówek - `<h1>`, lista  `<l>`, paragraf `<p>`)
-- Do oznaczenia elementów ozdobnych (np. numery stron, grafiki dekoracyjne) nie powinny być używane tagi wykorzystywane dla treści
+Struktura dokumentu powinna być zaprojektowana w sposób zapewniający jej właściwą reprezentację w końcowym pliku PDF. Oznacza to, że wszystkie elementy treści, takie jak nagłówki, akapity, listy czy tabele, powinny być odpowiednio oznaczone zgodnie z regułami semantycznymi właściwymi dla używanego narzędzia. W zależności od technologii tworzenia dokumentu, należy stosować odpowiednie techniki, aby zapewnić prawidłową hierarchię i logiczną strukturę treści. Na przykład:
+- W edytorach tekstu, takich jak Microsoft Word czy LibreOffice Writer, należy stosować odpowiednie style nagłówków i akapitów, które pozwalają na poprawne rozpoznanie struktury dokumentu.
+- W dokumentach tworzonych w LaTeX-u, ważne jest stosowanie odpowiednich znaczników, takich jak `\chapter`, `\section`, które jednoznacznie definiują hierarchię i semantykę treści.
+- W dokumentach HTML kluczowe jest stosowanie semantycznych tagów, takich jak `<h1>`, `<p>`, `<ul>`, `<table>`, które określają rolę poszczególnych elementów w strukturze dokumentu.
+- W przypadku narzędzi opartych na XML, jak Apache FOP, należy korzystać z odpowiednich ról i atrybutów semantycznych, np. `role="H1"`, które pomagają w prawidłowym przetwarzaniu struktury dokumentu w finalnym pliku PDF.
+- Jeśli dokument jest tworzony za pomocą Adobe Acrobat Pro, ważne jest, aby prawidłowo stosować tagi strukturalne, takie jak `<P>`, `<L>`, `<Table>`, które pozwalają na zachowanie logicznej struktury treści i umożliwiają prawidłowe odczytywanie dokumentu przez technologie asystujące.
+
+Niezależnie od wybranego narzędzia, istotne jest, aby finalny dokument PDF wiernie odzwierciedlał strukturę treści, co zapewni prawidłowe jego przetwarzanie przez czytniki ekranu i inne technologie asystujące.
 ### Alternatywne opisy tekstowe dla elementów nietekstowych
 Grafiki istotne dla treści, takie jak wykresy lub diagramy, powinny mieć alternatywny tekst opisujący ich zawartość dla użytkowników czytników ekranu, a linki w dokumencie powinny być odpowiednio oznaczone, na przykład „Pobierz PDF” zamiast „Kliknij tutaj”, aby użytkownicy wiedzieli, dokąd prowadzą.
 ### Kolor i kontrast
-W dokumentach PDF kluczowe jest utrzymanie właściwego kontrastu pomiędzy tekstem a tłem, co ułatwia czytanie osobom z problemami ze wzrokiem. Zgodnie z zaleceniami WCAG, minimalny stosunek kontrastu powinien wynosić 4,5:1 dla tekstu standardowego oraz 3:1 dla dużego tekstu (np. nagłówków). Trzeba unikać stosowania jedynie koloru jako sposobu komunikacji (np. czerwony napis na zielonym tle), ponieważ osoby z daltonizmem mogą mieć trudności w odróżnianiu takich elementów.
+W dokumentach PDF kluczowe jest utrzymanie właściwego kontrastu pomiędzy tekstem a tłem, co ułatwia czytanie osobom z problemami ze wzrokiem. Można go obliczyć w następujący sposób:
+
+
+1. Najpierw obliczamy luminancję każdego z kolorów (tekstowego i tła) za pomocą wzoru: <center>`L = 0,2126 ⋅ R + 0,7152 ⋅ G + 0,0722 ⋅ B`</center>
+
+gdzie `R`, `G` i `B` to wartości koloru w przestrzeni RGB.
+
+2. Następnie, stosunek kontrastu obliczamy według wzoru podstawiając wcześniej otrzymane wyniki: <center>`Stosunek kontrastu = (L_jaśniejszy + 0.05) / (L_ciemniejszy + 0.05)`</center>
+
+zgodnie z zaleceniami WCAG, minimalny stosunek kontrastu powinien wynosić 4,5:1 dla tekstu standardowego oraz 3:1 dla dużego tekstu (np. nagłówków).
+
+Więcej informacji: [https://www.w3.org/TR/WCAG20-TECHS/G18.html](https://www.w3.org/TR/WCAG20-TECHS/G18.html)
+
+Dodatkowo należy unikać stosowania jedynie koloru jako sposobu komunikacji (np. czerwony napis na zielonym tle), ponieważ osoby z daltonizmem mogą mieć trudności w odróżnianiu takich elementów.
 ### Ustawienia dokumentu dla lepszej dostępności
-Ustawienie języka dokumentu PDF umożliwia niektórym czytnikom ekranu przełączenie bieżącego syntezatora mowy na odpowiedni język, umożliwiając poprawną wymowę treści w różnych językach. Podanie tytułu dokumentu może pomóc użytkownikowi w jego zlokalizowaniu i zidentyfikowaniu.
+Aby umożliwić czytnikom ekranu prawidłowe odczytywanie tekstów w różnych językach, ważne jest oznaczenie języka zarówno dla całego dokumentu, jak i poszczególnych fragmentów tekstu, które są w innych językach. Dzięki temu czytnik ekranu może przełączyć się na odpowiedni syntezator mowy, zapewniając poprawną wymowę. Podanie tytułu dokumentu może pomóc użytkownikowi w jego zlokalizowaniu i zidentyfikowaniu.
+### Unikanie migających elementów
+Migające lub szybko zmieniające się elementy w dokumentach mogą powodować niechciane reakcje, takie jak ataki epilepsji, szczególnie u osób wrażliwych na światło. W związku z tym, częstotliwość ich migotania nie powinna przekraczać 3 Hz, aby zminimalizować ryzyko.
+### Multimedia w PDF
+W przypadku dokumentów, które zawierają multimedia, takie jak filmy lub nagrania dźwiękowe, kluczowe jest dodanie napisów lub transkrypcji. Dzięki temu osoby niesłyszące lub niedosłyszące mają możliwość korzystania z treści dźwiękowych i wideo. Zgodnie z zasadami WCAG 2.1, wszystkie nagrania audio w zsynchronizowanych multimediach muszą mieć napisy rozszerzone, chyba że stanowią one alternatywę dla tekstu i są w ten sposób oznaczone.
+### Ułatwienia dostępu dla osób z trudnościami w nauce
+Wsparcie dla osób z trudnościami w nauce i ograniczeniami poznawczymi polega na używaniu prostych, jasnych zwrotów oraz unikaniu skomplikowanego języka. Struktura dokumentu powinna być uporządkowana i spójna, z jasno wyodrębnionymi tytułami oraz sekcjami. Ponadto, pomocne mogą okazać się listy numerowane, tabele oraz różne inne elementy wspierające naukę.
 ## Czy nasz dokument PDF jest dostępny?
 Nawet przestrzegając norm i zasad, na pierwszy rzut oka trudno ocenić czy dany dokument PDF jest w pełni dostępny. Niestety nie istnieje oficjalne przeznaczone do tego narzędzie stworzone przez komisję ISO, ale dostępne są zarówno płatne, jak i bezpłatne aplikacje, które przychodzą nam z pomocą, oferując możliwość przeprowadzenia audytu pod kątem dostępności i na jego podstawie utworzenia raportu, a w przypadku niektórych możliwość ich edycji.
 ### Adobe Acrobat Pro DC
