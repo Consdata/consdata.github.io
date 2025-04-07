@@ -2,12 +2,12 @@
 layout:    post
 title:     "Czy wiesz, że z pomocą @starting-style można animować elementy z display: none za pomocą samego CSS?"
 description: ""
-date:      2025-03-31T08:00:00+01:00
+date:      2025-04-07T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: ptatarski
-image: /assets/img/posts/2025-03-31-starting-style/thumbnail.webp
+image: /assets/img/posts/2025-04-07-starting-style/thumbnail.webp
 tags:
 - angular
 ---
