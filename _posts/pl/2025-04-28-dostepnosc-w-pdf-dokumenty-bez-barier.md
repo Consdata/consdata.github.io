@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Dostępność w PDF - dokumenty bez barier
-description: ""
+description: "PDF (Portable Document Format) to jeden z najczęściej wykorzystywanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Jego popularność przynosi jednak konkretne pytania dotyczące dostępności., Czy każdy tego typu dokument możemy nazwać dostępnym? Czy będzie on dostosowany pod kątem różnego typu ograniczeń i niepełnosprawności ruchowych, sensorycznych, oraz kognitywnych. Czy jego przygotowanie umożliwia takim osobom samodzielne korzystanie z niego? Wymogi te są określane poprzez wytyczne WCAG."
 date:      2025-04-28T08:00:00+01:00
 published: true
 didyouknow: true
@@ -11,10 +11,22 @@ image: /assets/img/posts/2025-04-28-dostepnosc-w-pdf-dokumenty-bez-barier/thumbn
 tags:
 - WCAG
 ---
-PDF (Portable Document Format) to jeden z najczęściej używanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Wspominając o ich popularność, pojawia się pytanie, czy każdy tego typu dokument możemy nazwać dostępnym dla wszystkich w rozumieniu zespołu cech i funkcji umożliwiających osobom z różnymi niepełnosprawnościami lub ograniczeniami korzystanie z niego? Takie osoby powinny, bez pomocy innych, w wydajny sposób czerpać z treści tego typu dokumentów równie dużo co osoby bez niepełnosprawności. Co powinniśmy brać pod uwagę, chcąc tworzyć dokumenty PDF bez barier?
+PDF (Portable Document Format) to jeden z najczęściej wykorzystywanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Jego popularność przynosi jednak konkretne pytania dotyczące dostępności., Czy każdy tego typu dokument możemy nazwać dostępnym? Czy będzie on dostosowany pod kątem różnego typu ograniczeń i niepełnosprawności ruchowych, sensorycznych, oraz kognitywnych. Czy jego przygotowanie umożliwia takim osobom samodzielne korzystanie z niego? Wymogi te są określane poprzez wytyczne WCAG.
+
+Warto przy tym zaznaczyć, że - przy użyciu wyłącznie narzędzi asystujących oraz bez konieczności skorzystania ze wsparcia osób trzecich - użytkownicy z niepełnosprawnościami powinni mieć możliwość przyswojenia treści z danego dokumentu w takim samym stopniu, co użytkownicy bez niepełnosprawności. Co więc powinno się  brać pod uwagę, aby tworzyć dokumenty PDF bez barier?
+
+## Co dokładnie oznacza “dostępność” dokumentów - krótko o wytycznych WCAG
+
+Kryteria dostępności dokumentów i stron internetowych dla osób z różnymi rodzajami niepełnosprawności zostały określone w wytycznych WCAG. Obejmują one cztery główne kategorie: funkcjonalność, kompatybilność, postrzegalność i zrozumiałość. Do stosowania tego standardu zobowiązane są przede wszystkim instytucje publiczne, ale jego wdrożenie przyniesie korzyści klientom każdego z sektorów.
+
+Więcej informacji na temat tego, czym jest WCAG, jaka jest historia tego standardu oraz szczegółowe informacje dotyczące tego, jakie instytucje powinny go wdrożyć i kto na tym skorzysta, znajdziecie w naszym [artykule wprowadzającym do tematu WCAG](https://consdata.com/pl/blog/biznesowy/co-to-jest-wcag-i-dlaczego-nalezy-wdrozyc-ten-standard-w-swojej-organizacji).
+
 
 ## Tworzenie dostępnych dokumentów PDF
-Standard PDF/UA (Universal Accessibility), stworzony przez Międzynarodową Organizację Normalizacyjną (ISO) oraz wytyczne Web Content Accessibility Guidelines (WCAG) opracowane przez organizację W3C określają zasady tworzenia dokumentów umożliwiające każdej osobie dostęp do informacji zawartych w dokumencie PDF. Przyjrzyjmy się kilku z tych zasad.
+Standard PDF/UA (Universal Accessibility), stworzony przez Międzynarodową Organizację Normalizacyjną (ISO) oraz wytyczne Web Content Accessibility Guidelines (WCAG) opracowane przez organizację W3C określają zasady tworzenia dokumentów umożliwiające każdej osobie dostęp do informacji zawartych w dokumencie PDF.
+
+Przyjrzyjmy się kilku z tych zasad.
+
 
 ### Struktura dokumentu
 Struktura dokumentu powinna być zaprojektowana w sposób zapewniający jej właściwą reprezentację w końcowym pliku PDF. Oznacza to, że wszystkie elementy treści, takie jak nagłówki, akapity, listy czy tabele, powinny być odpowiednio oznaczone zgodnie z regułami semantycznymi właściwymi dla używanego narzędzia. W zależności od technologii tworzenia dokumentu, należy stosować odpowiednie techniki, aby zapewnić prawidłową hierarchię i logiczną strukturę treści. Na przykład:
@@ -32,7 +44,7 @@ Grafiki istotne dla treści, takie jak wykresy lub diagramy, powinny mieć alter
 ### Kolor i kontrast
 W dokumentach PDF kluczowe jest utrzymanie właściwego kontrastu pomiędzy tekstem a tłem, co ułatwia czytanie osobom z problemami ze wzrokiem. Można go obliczyć w następujący sposób:
 
-Najpierw obliczamy luminancję każdego z kolorów (tekstowego i tła) za pomocą wzoru: 
+Najpierw obliczamy luminancję każdego z kolorów (tekstowego i tła) za pomocą wzoru:
 ```
 L = 0,2126 ⋅ R + 0,7152 ⋅ G + 0,0722 ⋅ B
 ```
@@ -43,7 +55,7 @@ Następnie, stosunek kontrastu obliczamy według wzoru podstawiając wcześniej 
 Stosunek kontrastu = (L_jaśniejszy + 0.05) / (L_ciemniejszy + 0.05)
 ```
 zgodnie z zaleceniami WCAG, minimalny stosunek kontrastu powinien wynosić 4,5:1 dla tekstu standardowego oraz 3:1 dla dużego tekstu (np. nagłówków).
-     
+
 Więcej informacji: [https://www.w3.org/TR/WCAG20-TECHS/G18.html](https://www.w3.org/TR/WCAG20-TECHS/G18.html)
 
 Dodatkowo należy unikać stosowania jedynie koloru jako sposobu komunikacji (np. czerwony napis na zielonym tle), ponieważ osoby z daltonizmem mogą mieć trudności w odróżnianiu takich elementów.
@@ -52,7 +64,7 @@ Dodatkowo należy unikać stosowania jedynie koloru jako sposobu komunikacji (np
 Aby umożliwić czytnikom ekranu prawidłowe odczytywanie tekstów w różnych językach, ważne jest oznaczenie języka zarówno dla całego dokumentu, jak i poszczególnych fragmentów tekstu, które są w innych językach. Dzięki temu czytnik ekranu może przełączyć się na odpowiedni syntezator mowy, zapewniając poprawną wymowę. Podanie tytułu dokumentu może pomóc użytkownikowi w jego zlokalizowaniu i zidentyfikowaniu.
 
 ### Unikanie migających elementów
-Migające lub szybko zmieniające się elementy w dokumentach mogą powodować niechciane reakcje, takie jak ataki epilepsji, szczególnie u osób wrażliwych na światło. W związku z tym, częstotliwość ich migotania nie powinna przekraczać 3 Hz, aby zminimalizować ryzyko.
+Migające lub szybko zmieniające się elementy w dokumentach mogą powodować niepożądane reakcje, takie jak ataki epilepsji, szczególnie u osób wrażliwych na światło. W związku z tym, aby zminimalizować ryzyko, częstotliwość ich migotania nie powinna przekraczać 3 Hz.
 
 ### Multimedia w PDF
 W przypadku dokumentów, które zawierają multimedia, takie jak filmy lub nagrania dźwiękowe, kluczowe jest dodanie napisów lub transkrypcji. Dzięki temu osoby niesłyszące lub niedosłyszące mają możliwość korzystania z treści dźwiękowych i wideo. Zgodnie z zasadami WCAG 2.1, wszystkie nagrania audio w zsynchronizowanych multimediach muszą mieć napisy rozszerzone, chyba że stanowią one alternatywę dla tekstu i są w ten sposób oznaczone.
@@ -75,7 +87,10 @@ PAC jest darmowym narzędziem badającym dostępność dokumentów PDF pod kąte
 ![Widok raportu narządzia PAC](/assets/img/posts/2025-04-28-dostepnosc-w-pdf-dokumenty-bez-barier/PAC.webp)
 
 ## Jak działają czytniki ekranu w kontekście plików PDF?
-Czytniki ekranu to programy wspierające osoby niewidome i słabowidzące w odczytywaniu tekstu wyświetlanego na ekranie komputera. Współpracują z jego systemem operacyjnym, przekształcając informacje w mowę lub alfabet Braille’a tym samym umożliwiając użytkownikom interakcję z komputerem i korzystanie z różnych programów i aplikacji. Czytnik ekranu może odczytać dokument PDF tylko wtedy, gdy jest on odpowiednio przygotowany pod kątem dostępności. Szczególnie ważne jest wspomniane wyżej prawidłowe i logiczne otagowanie elementów dokumentu ponieważ są one interpretowane przez czytnik tworząc hierarchię, która umożliwia użytkownikom wygodne nawigowanie po dokumencie i zrozumienie jego zawartości. Oprócz odpowiedniej struktury konieczne jest dodanie alternatywnych tekstów dla obrazów, wykresów czy innych elementów graficznych, aby osoby niewidome mogły zrozumieć zawartość dokumentu. Bez takich opisów czytnik ekranu pominie grafikę lub odczyta jedynie jej nazwę pliku, co nie dostarczy żadnych wartościowych informacji.
+Czytniki ekranu to programy wspierające osoby niewidome i słabowidzące w odczytywaniu tekstu wyświetlanego na ekranie komputera. Współpracują z jego systemem operacyjnym, przekształcając informacje w mowę lub alfabet Braille’a tym samym umożliwiając użytkownikom interakcję z komputerem i korzystanie z różnych programów i aplikacji. Czytnik ekranu może odczytać dokument PDF tylko wtedy, gdy jest on odpowiednio przygotowany pod kątem dostępności.
+
+Szczególnie ważne jest wspomniane wyżej prawidłowe i logiczne otagowanie elementów dokumentu, ponieważ są one interpretowane przez czytnik tworząc hierarchię, która umożliwia użytkownikom wygodne nawigowanie po dokumencie i zrozumienie jego zawartości. Oprócz odpowiedniej struktury konieczne jest dodanie alternatywnych tekstów dla obrazów, wykresów czy innych elementów graficznych, aby osoby niewidome mogły zrozumieć zawartość dokumentu. Bez takich opisów czytnik ekranu pominie grafikę lub odczyta jedynie jej nazwę pliku, co nie dostarczy żadnych wartościowych informacji.
+
 Najpopularniejsze czytniki ekranu:
 - **Windows**: NVDA (darmowy), JAWS (komercyjny), Narrator (wbudowany)
 - **MacOS**: VoiceOver (wbudowany)
@@ -84,5 +99,9 @@ Najpopularniejsze czytniki ekranu:
 
 Chociaż istnieją narzędzia do automatycznego sprawdzania dostępności plików PDF, warto również przetestować dokument przy użyciu czytnika ekranu. Tylko w ten sposób można upewnić się, że wszystkie elementy są poprawnie odczytywane i dokument jest w pełni użyteczny dla osób korzystających z technologii wspomagających.
 
+Więcej na temat testowania urządzeń pod kątem dostępności przy użyciu różnych rodzajów czytników ekranu dowiecie się z naszego artykułu o [testowaniu dostępności WCAG](https://consdata.com/pl/blog/biznesowy/testowanie-dostepnosci-wcag).
+
 ## Podsumowanie
-Decydując się na zapewnienie dostępności naszym dokumentom PDF, oprócz spełniania wymogów prawnych, powinniśmy kierować się także chęcią umożliwienia osobom z niepełnosprawnościami pełnego i samodzielnego dostępu do treści. Ważne jest, aby pamiętać o obowiązujących zasadach ich tworzenia, o kompleksowym podejściu w momencie weryfikacji dostępności przy użyciu stworzonych w tym celu narzędzi oraz technologii wspomagających wykorzystywanych przez osoby niepełnosprawne takich jak czytniki ekranowe. W ten sposób możemy tworzyć dokumenty PDF dostępne dla wszystkich użytkowników i wyeliminować bariery w dostępie do informacji.
+Decydując się na zapewnienie dostępności naszym dokumentom PDF, oprócz spełniania wymogów prawnych, powinniśmy kierować się także chęcią umożliwienia osobom z niepełnosprawnościami pełnego i samodzielnego dostępu do treści.
+
+Ważne jest, aby pamiętać o obowiązujących zasadach ich tworzenia, o kompleksowym podejściu w momencie weryfikacji dostępności przy użyciu stworzonych w tym celu narzędzi oraz technologii wspomagających wykorzystywanych przez osoby niepełnosprawne takich jak czytniki ekranowe. W ten sposób możemy tworzyć dokumenty PDF dostępne dla wszystkich użytkowników i wyeliminować bariery w dostępie do informacji.
