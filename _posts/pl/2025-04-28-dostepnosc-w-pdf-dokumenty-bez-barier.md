@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     Dostępność w PDF - dokumenty bez barier
-description: "PDF (Portable Document Format) to jeden z najczęściej wykorzystywanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Jego popularność przynosi jednak konkretne pytania dotyczące dostępności., Czy każdy tego typu dokument możemy nazwać dostępnym? Czy będzie on dostosowany pod kątem różnego typu ograniczeń i niepełnosprawności ruchowych, sensorycznych, oraz kognitywnych. Czy jego przygotowanie umożliwia takim osobom samodzielne korzystanie z niego? Wymogi te są określane poprzez wytyczne WCAG."
+description: ""
 date:      2025-04-28T08:00:00+01:00
 published: true
 didyouknow: true
@@ -17,7 +17,7 @@ Warto przy tym zaznaczyć, że - przy użyciu wyłącznie narzędzi asystującyc
 
 ## Co dokładnie oznacza “dostępność” dokumentów - krótko o wytycznych WCAG
 
-Kryteria dostępności dokumentów i stron internetowych dla osób z różnymi rodzajami niepełnosprawności zostały określone w wytycznych WCAG. Obejmują one cztery główne kategorie: funkcjonalność, kompatybilność, postrzegalność i zrozumiałość. Do stosowania tego standardu zobowiązane są przede wszystkim instytucje publiczne, ale jego wdrożenie przyniesie korzyści klientom każdego z sektorów.
+Kryteria dostępności dokumentów i stron internetowych dla osób z różnymi rodzajami niepełnosprawności zostały określone w wytycznych WCAG. Obejmują one cztery główne kategorie: funkcjonalność, kompatybilność, postrzegalność i zrozumiałość. Zgodnie z Europejskim Aktem o Dostępności ([EAA](https://consdata.com/pl/blog/biznesowy/co-european-accessibility-act-oznacza-dla-bankow)), od 28 czerwca 2025 roku do stosowania tego standardu zobowiązane będą już nie tylko instytucje publiczne. Nowe przepisy obejmą również organizacje świadczące usługi przez Internet - w tym banki.
 
 Więcej informacji na temat tego, czym jest WCAG, jaka jest historia tego standardu oraz szczegółowe informacje dotyczące tego, jakie instytucje powinny go wdrożyć i kto na tym skorzysta, znajdziecie w naszym [artykule wprowadzającym do tematu WCAG](https://consdata.com/pl/blog/biznesowy/co-to-jest-wcag-i-dlaczego-nalezy-wdrozyc-ten-standard-w-swojej-organizacji).
 
