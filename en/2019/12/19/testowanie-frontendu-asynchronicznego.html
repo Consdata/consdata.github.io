@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie" />
+<meta name="author" content="amarszalek" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu." />
+<meta property="og:description" content="Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2019/12/19/testowanie-frontendu-asynchronicznego.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2019/12/19/testowanie-frontendu-asynchronicznego.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-12-19T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/thumbnail.webp" />
+<meta property="twitter:title" content="Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"amarszalek"},"image":"https://blog.consdata.tech/assets/img/posts/2019-12-20-testowanie-frontendu-asynchronicznego/thumbnail.webp","@type":"BlogPosting","headline":"Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie","description":"Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.","dateModified":"2019-12-19T01:00:00-06:00","datePublished":"2019-12-19T01:00:00-06:00","url":"https://blog.consdata.tech/2019/12/19/testowanie-frontendu-asynchronicznego.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2019/12/19/testowanie-frontendu-asynchronicznego.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2019/12/19/testowanie-frontendu-asynchronicznego.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">Jasmine</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Testowanie frontendu - Cz. 4 Testy jednostkowe kodu działającego asynchronicznie</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/amarszalek.html">
+        <img class="author-image" src="/assets/img/authors/amarszalek.webp" alt="author">
+        <span class="author-name">Adrian Marszałek</span><a class="author" href="https://github.com/adikm">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+19
+
+
+December
+
+
+2019
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Kończąc serię dotyczącą testowania komponentów Angularowych przy pomocy Jasmine, chciałbym poruszyć temat testów kodu wykonywanego asynchronicznie.</p>
+
+<p>Testy jednostkowe asynchronicznych aplikacji frontendowych często wydają się być zagadką dla developerów. Na szczęście twórcy narzędzi pomyśleli również o tym i dostarczyli nam narzędzia, które zdecydowanie ułatwiają pracę z testowaniem takiego kodu.</p>
+
+<p>W tym wpisie jednak nie poruszę kwestii testowania opartego na mockowaniu/stubowaniu kodu. Jeśli jesteś zainteresowany tym tematem, zachęcam do zajrzenia do artykułu Krzysztofa Czechowskiego o <a href="/en/2019/11/20/testowanie-komponentow-i-serwisow.html">testowaniu serwisów</a>.</p>
+
+<h2 id="kod-poddany-testom">Kod poddany testom</h2>
+
+<p>W celu sprawdzenia możliwości testowania asynchronicznych wywołań weźmy na warsztat przykładowy komponent:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="dl">'</span><span class="s1">&lt;div *ngIf="messageVisible" id="welcomeMessage"&gt;Hello!&lt;/div&gt;</span><span class="dl">'</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyComponent</span> <span class="p">{</span>
+  <span class="nl">messageVisible</span><span class="p">:</span> <span class="nx">boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+  <span class="nx">getCompany</span><span class="p">():</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="dl">"</span><span class="s2">company</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">showMessage</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">messageVisible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">},</span> <span class="mi">2000</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Posiada on dwie metody: jedną, która zwraca Promise z nazwą firmy oraz drugą, która wykonuje zmianę widoczności flagi po dwóch sekundach. Na podstawie tej flagi wyświetlana jest wiadomość w templacie HTML.</p>
+
+<p>Klasa testowa, do której będą dodawane test-case’y. W tym przypadku jest ona w 100% standardowa:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">AppComponent</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="na">fixture</span><span class="p">:</span> <span class="nx">ComponentFixture</span><span class="o">&lt;</span><span class="nx">AppComponent</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="kd">let</span> <span class="na">debugElement</span><span class="p">:</span> <span class="nx">DebugElement</span><span class="p">;</span>
+  <span class="nx">beforeEach</span><span class="p">(</span><span class="k">async</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">TestBed</span><span class="p">.</span><span class="nx">configureTestingModule</span><span class="p">({</span>
+      <span class="na">declarations</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nx">AppComponent</span>
+      <span class="p">],</span>
+    <span class="p">}).</span><span class="nx">compileComponents</span><span class="p">();</span>
+      <span class="nx">fixture</span> <span class="o">=</span> <span class="nx">TestBed</span><span class="p">.</span><span class="nx">createComponent</span><span class="p">(</span><span class="nx">AppComponent</span><span class="p">);</span>
+      <span class="nx">debugElement</span> <span class="o">=</span> <span class="nx">fixture</span><span class="p">.</span><span class="nx">debugElement</span><span class="p">;</span>
+  <span class="p">}));</span>
+ <span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="testowanie-metod-zwracających-promisy">Testowanie metod zwracających Promisy</h2>
+<p>Jeśli chcemy przetestować metodę, która zwraca wartość opakowaną w Promise, oraz której wynik nie jest zależny od dostępności zewnętrznych usług, możemy w łatwy sposób sprawdzić zwracane przez nie wartości przy pomocy mechanizmu async/await:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">resolves company using async/await</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">company</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fixture</span><span class="p">.</span><span class="nx">componentInstance</span><span class="p">.</span><span class="nx">getCompany</span><span class="p">();</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">company</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="dl">"</span><span class="s2">company</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>Jeśli z jakiegoś powodu nie możesz wykorzystać async/await, to wówczas zastosowanie znajdzie tradycyjne rozwiązywanie Promisów:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">resolves company promise manually</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fixture</span><span class="p">.</span><span class="nx">componentInstance</span><span class="p">.</span><span class="nx">getCompany</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">company</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">company</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="dl">"</span><span class="s2">company</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="oczekiwanie-na-wykonanie-metody-przy-użyciu-fakeasync">Oczekiwanie na wykonanie metody przy użyciu fakeAsync</h2>
+<p>Metoda <code class="language-plaintext highlighter-rouge">showMessage()</code> z naszego komponentu ma narzucony czas dwóch sekund oczekiwania przed jej wykonaniem.
+W teście możemy powtórzyć ten zabieg i po wywołaniu metody uruchomić asercje wewnątrz <code class="language-plaintext highlighter-rouge">setTimeout()</code>. Jednak wprowadzanie realnego czasu oczekiwania nie jest efektywnym rozwiązaniem i bardzo spowolni nasze testy. Dzięki Angularowemu <code class="language-plaintext highlighter-rouge">fakeAsync</code> możemy testować kod asynchroniczny, w synchroniczny sposób.</p>
+
+<p>Zobaczmy:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">it</span><span class="p">(</span><span class="dl">"</span><span class="s2">tests the message visibility</span><span class="dl">"</span><span class="p">,</span> <span class="nx">fakeAsync</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">fixture</span><span class="p">.</span><span class="nx">componentInstance</span><span class="p">.</span><span class="nx">showMessage</span><span class="p">();</span>
+  <span class="nx">tick</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+  <span class="nx">fixture</span><span class="p">.</span><span class="nx">detectChanges</span><span class="p">();</span>
+  <span class="nx">fixture</span><span class="p">.</span><span class="nx">whenStable</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">helloMessage</span> <span class="o">=</span> <span class="nx">fixture</span><span class="p">.</span><span class="nx">debugElement</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">By</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="dl">"</span><span class="s2">#welcomeMessage</span><span class="dl">"</span><span class="p">));</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">helloMessage</span><span class="p">).</span><span class="nx">toBeTruthy</span><span class="p">();</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">helloMessage</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello!</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">})</span>
+<span class="p">}));</span>
+</code></pre></div></div>
+<p>Spoglądając od góry:</p>
+<ul>
+  <li>najpierw opakowujemy nasz test jednostkowy w blok fakeAsync(), który pozwala nam oszukać asynchroniczny przepływ,</li>
+  <li>wywołujemy asynchroniczną metodę,</li>
+  <li>symulujemy upływ czasu - w rzeczywistości nie trwa to dwóch sekund, jednak aplikacja “myśli”, że tyle upłynęło,</li>
+  <li>wykrywamy zmiany, a kiedy detekcja zmian się zakończy, robimy tradycyjne asercje.</li>
+</ul>
+
+<p>A co jeśli nie znamy czasu, który powinien upłynąć zanim wykonamy asercje? W miejscu <code class="language-plaintext highlighter-rouge">tick(2000)</code>, możemy wykorzystać <code class="language-plaintext highlighter-rouge">flush()</code> i efekt będzie dokładnie taki sam. Czym się charakteryzuje <code class="language-plaintext highlighter-rouge">flush()</code>? Podobnie jak tick, symuluje on upływ czasu, jednak robi do momentu opustoszenia kolejki macrotasków (czyli m.in. setTimeout, setInterval).</p>
+
+<h2 id="testowanie-kodu-asynchronicznego---podsumowanie">Testowanie kodu asynchronicznego - podsumowanie</h2>
+
+<p>Dzięki uzbrojeniu JavaScriptu w wygodne mechanizmy oraz ułatwieniom ze strony Angulara, testowanie jednostkowe kodu działającego asynchronicznie staje się nawet nie tyle proste, co całkiem przyjemne.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Jasmine Angular async unit testing unit test komponent";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
