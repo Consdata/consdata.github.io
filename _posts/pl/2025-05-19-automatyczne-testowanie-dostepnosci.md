@@ -20,9 +20,9 @@ kroku pokażemy, jak przeprowadzić testy dostępności oraz wskażemy, na co wa
 
 Więcej szczegółowych informacji na temat tego czym jest WCAG, kiedy i jak należy go stosować, a także o tym, jakie
 wyzwania związane z zapewnianiem użytkownikom dostępności cyfrowej niesie przyszłość
-opisujemy [tutaj] (https://consdata.com/pl/blog/biznesowy/co-to-jest-wcag-i-dlaczego-nalezy-wdrozyc-ten-standard-w-swojej-organizacji)
+opisujemy [tutaj](https://consdata.com/pl/blog/biznesowy/co-to-jest-wcag-i-dlaczego-nalezy-wdrozyc-ten-standard-w-swojej-organizacji)
 
-# Czym jest jest-axe?
+## Czym jest jest-axe?
 
 Jeśli projekt wykorzystuje bibliotekę Jest, dodanie testów sprawdzających zgodność komponentów z WCAG jest proste i nie
 wymaga dużego nakładu pracy.
@@ -43,7 +43,7 @@ Dodaje do testów matcher `toHaveNoViolations`, który umożliwia prostą walida
 Jest-axe nie zastępuje ręcznego audytu dostępności. Automatyczne testy są tylko wsparciem i nie wychwycą wszystkich
 problemów. Pełną ocenę powinny przeprowadzać osoby posiadające wiedzę w tym zakresie.
 
-# Co jest-axe może przeoczyć?
+## Co jest-axe może przeoczyć?
 
 Ważnym jest, aby mieć świadomość ograniczeń tego narzędzia. Jest-axe może nie wykryć m.in.:
 
@@ -53,17 +53,17 @@ Ważnym jest, aby mieć świadomość ograniczeń tego narzędzia. Jest-axe moż
 - problemów z nawigacją klawiaturową,
 - problemów kontekstowych
 
-# Integracja z Angular
+## Integracja z Angular
 
 Do projektu zawierajacego Jest należy zainstalować Jest-axe
 
-## Krok 1: Instalacja
+### Krok 1: Instalacja
 
 ```bash 
 npm install --save-dev jest-axe @types/jest-axe
 ```
 
-## Krok 2: Konfiguracja
+### Krok 2: Konfiguracja
 
 Do pliku z konfiguracją testów np. `test-setup.ts`, należy dodać import
 
@@ -71,11 +71,11 @@ Do pliku z konfiguracją testów np. `test-setup.ts`, należy dodać import
 import 'jest-axe/extend-expect';
 ```
 
-## Krok 3: Podstawowy test dostępności komponentu
+### Krok 3: Podstawowy test dostępności komponentu
 
 W pliku `test-setup.ts` należy zaimportować `jest-axe/extend-expect`
 
-# Testy
+## Testy
 
 Kiedy wszystko zostało już skonfigurowanie, nie pozostaje nic innego jak użycie narzędzia w testach.
 W pliku z testami należy dodać import `import { axe } from 'jest-axe';`. Następnie, dzięki `axe(fixture.nativeElement)`,
@@ -83,12 +83,12 @@ uruchomiona zostanie analiza dostępności dla wygenerowanego HTMLa komponentu.
 Wynik analizy musi zostać sprawdzony przy użyciu metody `toHaveNoViolations`, w następujący sposób:
 `expect(results).toHaveNoViolations()`.
 
-## Przypadki testowe
+### Przypadki testowe
 
 Na potrzeby testów przygotowano dwa komponenty. Pierwszy zawiera HTML, który nie spełnia wymagań audytu dostępności, a
 drugi taki, który je spełnia.
 
-### Pierwszy scenariusz
+#### Pierwszy scenariusz
 
 Komponent posiada następujący kod HTML:
 
@@ -202,7 +202,7 @@ Powyższe błędy dotyczą:
 - elementu select bez etykiety - rozwijana lista bez powiązanej etykiety
 - nieprawidłowej wartość atrybutu ARIA - użycie "falsy" zamiast "false" dla aria-hidden
 
-### Drugi scenariusz
+#### Drugi scenariusz
 
 W tym scenariuszu komponent posiada już prawidłowy, poprawiony HTML.
 
@@ -235,7 +235,7 @@ W tym scenariuszu komponent posiada już prawidłowy, poprawiony HTML.
 Więcej informacji dotyczących testowania dostępności oraz szczegółowe scenariusze działania z wykorzystaniem różnych
 narzędzi opisujemy w [osobnym artykule](https://consdata.com/pl/blog/biznesowy/testowanie-dostepnosci-wcag)
 
-# Podsumowanie
+## Podsumowanie
 
 Jest-axe łatwo integruje się z Jest, pozwala wykrywać proste błędy dostępności w HTML i działa z popularnymi
 frameworkami (Angular, React, Vue).
