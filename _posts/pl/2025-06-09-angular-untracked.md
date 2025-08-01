@@ -12,9 +12,12 @@ tags:
   - angular
 ---
 
-Każda zmiana wartości sygnału używanego w `computed()`, `effect()` wywołuje rekalkulację.
+W bibliotekach opartych na reaktywnych sygnałach, takich jak Angular Signals, 
+każda zmiana wartości sygnału używanego w funkcjach `computed()` lub `effect()` powoduje automatyczną rekalkulację lub ponowne wykonanie efektu. 
+Dzięki temu aplikacja utrzymuje spójny stan i dynamicznie reaguje na zmiany danych.
+W niektórych sytuacjach jednak warto pobrać wartość sygnału bez uruchamiania reakcji. 
+Można to osiągnąć za pomocą funkcji `untracked()`, która pozwala na odczyt wartości sygnału z pominięciem mechanizmu śledzenia zależności.
 
-Czasami potrzebna jest wartość danego sygnału bez wywołania przeliczenia computed/effect. Można to osiągnąć używając `untracked()`:
 ```typescript
 const signalA = signal(0);
 const signalB = signal(1);
