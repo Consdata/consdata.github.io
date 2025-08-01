@@ -2,7 +2,7 @@
 layout: post
 title: "Czy wiesz, do czego służy untracked w Angular?"
 description: ""
-date: 2025-08-01T13:23:00+01:00
+date: 2025-08-01T00:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
