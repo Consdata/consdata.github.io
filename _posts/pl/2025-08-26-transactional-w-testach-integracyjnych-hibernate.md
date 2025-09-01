@@ -2,7 +2,7 @@
 layout: post
 title: "Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?"
 description: ""
-date: 2025-08-25T00:00:00+01:00
+date: 2025-09-01T00:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
@@ -20,19 +20,19 @@ Często, aby uprościć ich tworzenie, sięgamy po adnotację `@Transactional`, 
 Brzmi idealnie – nie musimy martwić się o „czystość” bazy, a każdy scenariusz startuje od świeżego punktu.
 
 ## Jak Spring obsługuje adnotację @Transactional?
-Wykorzystane jest w tym celu AoP (`Aspect-oriented Programming`). W zależności czy używamy `Spring` `Aspects` czy `AspectJ`, `@Transactional` 
+Wykorzystane jest w tym celu AoP (`Aspect-oriented Programming`). W zależności od tego, czy używamy `Spring Aspects` czy `AspectJ`, `@Transactional` 
 zostaje wykryty albo w `Spring Beans` wyłącznie dla metod publicznych, albo w dowolnym miejscu w kodzie. 
 Następnie wszystkie znalezione metody opakowane zostają w proxy, które rozpoczyna transakcję przed wywołaniem rzeczywistej logiki metody 
 i zatwierdza ją po jej zakończeniu (lub wycofuje w przypadku wyjątku zgłoszonego przez tę metodę). Gdy `@Transactional` używany jest w testach integracyjnych, 
 automatycznie wycofuje metodę testową po zakończeniu pracy.
 
-Brzmi bardzo wygodnie prawda? Pozbywamy się boilerplate'ów do zarządzania transakcjami w każdym miejscu. 
+Brzmi bardzo wygodnie, prawda? Pozbywamy się boilerplate'ów do zarządzania transakcjami w każdym miejscu. 
 Nie musimy przywracać stanu bazy sprzed testu po każdym zdefiniowanym przypadku itp. 
 Niestety w połączeniu z `Hibernate`, adnotacja ta może stać się również pułapką.
 
 Jedną z podstawowych cech transakcji bazy danych jest jej zakres. Zakres transakcji decyduje o tym, które fragmenty kodów podlegają której transakcji. 
 Zmiana zakresu transakcji może mieć zatem ogromny wpływ na zachowanie kodu. Jest to szczególnie widoczne podczas korzystania z `Hibernate`. 
-`Hibernate` używa `Transactions` (i instancji `Transactional Entity Manager`) dla mechanizmu lazy loading. Spójrzmy na przykład:
+`Hibernate` używa `Transactions` (i instancji `Transactional Entity Manager`) dla mechanizmu lazy loading. Spójrzmy na poniższy przykład:
 ```java
 Encja
 @Entity(name = "user")
@@ -55,7 +55,7 @@ która przy pierwszym wywołaniu którejkolwiek z metod zbioru pobierze listę k
 **`Lazy loading (leniwe ładowanie)`** w `Hibernate` działa poprawnie tylko wtedy, gdy jesteśmy w zasięgu aktywnej transakcji bazy danych. 
 Gdy tylko spróbujemy leniwie załadować cokolwiek po zakończeniu oryginalnej transakcji, 
 zostanie zaprezentowany wyjątek `LazyInitializationException`. Zmieniając zakres transakcji możemy zatem wprowadzić do naszej logiki `RuntimeException`. 
-Rzućmy okiem na przykład:
+Rzućmy okiem na kolejny przykład:
 
 ### Prawidłowy zakres transakcji
 ```java
@@ -107,7 +107,7 @@ createNewUser(getNewUser());
     }
 ```
 
-Test oznaczony adnotacją `@Transactional` umożliwia użycie "magii" `Springa`. Przeanalizujemy powyższy przykład:
+Test oznaczony adnotacją `@Transactional` umożliwia użycie "magii" `Springa`. Przeanalizujemy poniższy przykład:
 
 1. Tworzymy nową instancję użytkownika w transakcji:
 ```java
@@ -133,10 +133,10 @@ Wszystko zadziałało poprawnie, utworzony użytkownik został zwrócony przez w
 Jesteśmy pewni, że nasz kod działa poprawnie.
 
 ### Co stanie się na produkcji?
-Jak widzimy logika testu zawiera 2 oddzielne wywołania `REST`. 
+Jak widzimy, logika testu zawiera 2 oddzielne wywołania `REST`. 
 W takim przypadku transakcja użyta do utworzenia użytkownika zostałaby zakończona przed zwróceniem odpowiedzi `HTTP` przez `Controller`. 
 Pobranie użytkownika po jego nazwie zostałoby wykonane poza pierwotną transakcją. 
-Konwersja encji `UserEntity` w `UserDto` dałoby wyjątek `LazyInitializationException`, 
+Konwersja encji `UserEntity` w `UserDto` dałaby wyjątek `LazyInitializationException`, 
 ponieważ próbowaliśmy leniwie załadować pole adresów użytkownika bez transakcji.
 
 ### Przyczyna
@@ -157,7 +157,7 @@ który wyczyści pożądaną tabelę lub kilka tabel przed / po każdym przypadk
 Minusem tego rozwiązania jest fakt, że trzeba pilnować, by istniał skrypt, który czyści każdą "zabrudzoną" tabelę. 
 Adnotację `SQL` można dodać na poziomie klasy, lub pojedynczego przypadku testowego:
 [docs.spring.io - Script Execution Phases](https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/executing-sql.html#testcontext-executing-sql-declaratively-script-execution-phases)
-- Dedykowany serwis czyszczący wszystkie tabele w bazie - wydaje się to najbezpieczniejsze i najmniej obciążające rozwiązanie. 
+- Dedykowany serwis czyszczący wszystkie tabele w bazie - wydaje się to być najbezpieczniejszym i najmniej obciążającym rozwiązaniem. 
 Polega na tym, że przed lub po każdym przypadku testowym czyścimy bazę danych. Kod wtedy jest mniej zależny od zakresu transakcji.
 ```java
 class SomeIntegrationTest {
