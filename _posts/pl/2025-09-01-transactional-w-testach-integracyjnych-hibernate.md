@@ -2,12 +2,12 @@
 layout: post
 title: "Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?"
 description: ""
-date: 2025-09-01T00:00:00+01:00
+date: 2025-09-01T07:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
 author: rmastalerek
-image: /assets/img/posts/2025-08-26-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp
+image: /assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp
 tags:
   - transactions
   - spring
