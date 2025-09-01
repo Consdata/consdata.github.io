@@ -128,7 +128,7 @@ Test oznaczony adnotacją `@Transactional` umożliwia użycie "magii" `Springa`.
    }
 ```
 
-### Jak wydarzyło się w teście integracyjnym?
+### Jak zadziałał test integracyjny?
 Wszystko zadziałało poprawnie, utworzony użytkownik został zwrócony przez wywołanie `getUserByName()`. Nie rzucono żadnego wyjątku. 
 Jesteśmy pewni, że nasz kod działa poprawnie.
 
