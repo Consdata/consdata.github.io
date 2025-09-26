@@ -35,7 +35,7 @@ Ten przypadek pokazuje, że błędy w konfiguracji nie są abstrakcyjnym problem
 
 ### Koszt błędów – w liczbach
 Według danych z 2024 roku średni koszt wycieku danych w chmurze przekroczył 4,8 mln dolarów. 
-W branży finansowej straty bywają jeszcze większe – często sięgają ponad 6 mln dolarów. 
+W branży finansowej, dla takiego samego typu incydentu, straty bywają jeszcze większe – często wynoszą nawet ponad 6 mln dolarów. 
 A wiele z tych incydentów zaczyna się właśnie od drobnych niedociągnięć konfiguracyjnych. 
 Brak kontroli nad uprawnieniami, niewłaściwe polityki bezpieczeństwa czy otwarte punkty dostępu pozwalają atakującym nie tylko wedrzeć się do klastra, 
 ale i swobodnie poruszać się w jego wnętrzu.
@@ -54,7 +54,7 @@ Domyślnie kontenery w Kubernetesie uruchamiane są często jako root i z pełny
 Dlatego już podstawowe ustawienia – takie jak `runAsUser`, `allowPrivilegeEscalation: false` czy `readOnlyRootFilesystem` – potrafią znacząco podnieść poziom ochrony.
 
 ### Przykład prostego Deploymentu:
-Poniżej prosty manifest Poda z ustawieniami Security Context:
+Poniżej znajduje się prosty manifest Poda z ustawieniami Security Context:
 
 ```yaml
 apiVersion: v1
