@@ -85,7 +85,7 @@ To prosty, ale bardzo skuteczny krok, by utrudnić życie hakerom i zwiększyć 
 Ten wpis otwiera serię, w której krok po kroku będziemy przechodzić przez **proces wykrywania i eliminowania błędnych konfiguracji w Kubernetes**.
 Skupimy się na kluczowych obszarach, które są fundamentem bezpiecznego i stabilnego środowiska:
 - jak identyfikować niebezpieczne ustawienia w Podach i kontenerach,
-- jak korzystać z narzędzi takich jak kube-bench czy OPA Gatekeeper do analizy konfiguracji,
+- jak korzystać z narzędzi takich jak kube-bench czy OPA Gatekeeper do poprawy konfiguracji,
 - w jaki sposób weryfikować polityki bezpieczeństwa z poziomu praktycznych przykładów,
 - jakie dobre praktyki wdrożyć, aby klaster był odporniejszy na awarie i ataki.
 
