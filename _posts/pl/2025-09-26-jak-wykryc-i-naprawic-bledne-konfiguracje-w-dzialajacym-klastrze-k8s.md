@@ -56,7 +56,7 @@ Dlatego już podstawowe ustawienia – takie jak `runAsUser`, `allowPrivilegeEsc
 ### Przykład prostego Deploymentu:
 Poniżej prosty manifest Poda z ustawieniami Security Context:
 
-```dockerfile
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
