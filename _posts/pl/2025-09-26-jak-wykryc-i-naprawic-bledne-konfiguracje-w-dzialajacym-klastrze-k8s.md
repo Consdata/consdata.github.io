@@ -2,17 +2,17 @@
 layout:    post
 title:     Jak wykryć i naprawić błędne konfiguracje w działającym klastrze Kubernetes
 description: ""
-date:      2025-09-15T08:00:00+01:00
+date:      2025-09-26T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: bdomzalski
-image: /assets/img/posts/2025-09-15-jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s/thumbnail.webp
+image: /assets/img/posts/2025-09-26-jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s/thumbnail.webp
 tags:
 - kubernetes
 ---
 
-`Kubernetes` na dobre wpisał się w krajobraz nowoczesnych technologii. To narzędzie, które usprawnia codzienną pracę zespołów `DevOps`, 
+**Kubernetes** na dobre wpisał się w krajobraz nowoczesnych technologii. To narzędzie, które usprawnia codzienną pracę zespołów DevOps, 
 pozwalając łatwo uruchamiać, skalować i utrzymywać aplikacje oparte na kontenerach. Nic dziwnego, że tak szybko zdobyło popularność – 
 daje sporą swobodę i elastyczność w budowaniu usług.
 
@@ -23,12 +23,12 @@ A to oznacza nie tylko kłopoty techniczne, ale także realne koszty dla firmy i
 
 ## Gdy konfiguracja zawodzi – przykład z Teslą
 Najlepszym dowodem na to, że błędne ustawienia mogą mieć realne skutki, jest głośny incydent z 2018 roku, 
-gdy hakerzy dostali się do chmurowego środowiska Tesli. Winowajcą okazał się otwarty, niezabezpieczony dashboard `Kubernetes`. 
+gdy hakerzy dostali się do chmurowego środowiska Tesli. Winowajcą okazał się otwarty, **niezabezpieczony dashboard Kubernetes**. 
 Intruzom udało się dzięki temu zainstalować koparki kryptowalut i przez długi czas ukrywać swoją działalność – 
-maskując ruch przez `CloudFlare` i korzystając z własnych pulpitów do wydobycia.
+maskując ruch przez CloudFlare i korzystając z własnych pulpitów do wydobycia.
 
 Skończyło się nie tylko na wykorzystaniu mocy obliczeniowej Tesli. 
-Hakerzy zdobyli też dostęp do danych telemetrycznych testowych pojazdów przechowywanych w `Amazon S3`. Choć firma szybko zareagowała, 
+Hakerzy zdobyli też dostęp do danych telemetrycznych testowych pojazdów przechowywanych w Amazon S3. Choć firma szybko zareagowała, 
 wizerunkowe i finansowe straty były spore.
 
 Ten przypadek pokazuje, że błędy w konfiguracji nie są abstrakcyjnym problemem technicznym. To realne ryzyko biznesowe.
@@ -41,15 +41,20 @@ Brak kontroli nad uprawnieniami, niewłaściwe polityki bezpieczeństwa czy otwa
 ale i swobodnie poruszać się w jego wnętrzu.
 
 ## Pierwszy krok: Security Context w Kubernetes
-Jednym z najważniejszych, a zarazem często lekceważonych elementów zabezpieczania aplikacji w Kubernetes jest poprawna konfiguracja `Security Context`. 
-Te ustawienia definiujemy w manifestach `Podów` lub `Deploymentów`, aby ograniczyć uprawnienia i działanie kontenerów – zarówno na poziomie procesów, 
+Jednym z najważniejszych, a zarazem często lekceważonych elementów zabezpieczania aplikacji w Kubernetes jest poprawna konfiguracja Security Context. 
+Te ustawienia definiujemy w manifestach Podów lub Deploymentów, aby ograniczyć uprawnienia i działanie kontenerów – zarówno na poziomie procesów, 
 jak i całego systemu plików.
 
-I tu ważne zastrzeżenie: `Security Context` nie powinien być traktowany jako „dodatkowe zabezpieczenie”. To absolutna podstawa. 
-Bez niego nawet najlepsze mechanizmy – jak polityki sieciowe czy `RBAC` – tracą na skuteczności.
+I tu ważne zastrzeżenie: Security Context nie powinien być traktowany jako „dodatkowe zabezpieczenie”. To absolutna podstawa. 
+Bez niego nawet najlepsze mechanizmy – jak polityki sieciowe czy RBAC – tracą na skuteczności.
+
+### Dlaczego to ważne?
+Domyślnie kontenery w Kubernetesie uruchamiane są często jako root i z pełnym dostępem do zapisu w systemie plików. W praktyce oznacza to, 
+że działają niemal jak mini‑maszyny z nieograniczonymi możliwościami, co tworzy istotne ryzyko bezpieczeństwa. 
+Dlatego już podstawowe ustawienia – takie jak `runAsUser`, `allowPrivilegeEscalation: false` czy `readOnlyRootFilesystem` – potrafią znacząco podnieść poziom ochrony.
 
 ### Przykład prostego Deploymentu:
-Poniżej prosty manifest Poda z ustawieniami `Security Context`:
+Poniżej prosty manifest Poda z ustawieniami Security Context:
 
 ```dockerfile
 apiVersion: v1
@@ -77,10 +82,10 @@ spec:
 To prosty, ale bardzo skuteczny krok, by utrudnić życie hakerom i zwiększyć bezpieczeństwo środowiska.
 
 ## Co dalej w tej serii?
-Ten wpis otwiera serię, w której krok po kroku będziemy przechodzić przez proces wykrywania i eliminowania błędnych konfiguracji w `Kubernetes`.
+Ten wpis otwiera serię, w której krok po kroku będziemy przechodzić przez **proces wykrywania i eliminowania błędnych konfiguracji w Kubernetes**.
 Skupimy się na kluczowych obszarach, które są fundamentem bezpiecznego i stabilnego środowiska:
-- jak identyfikować niebezpieczne ustawienia w `Podach` i kontenerach,
-- jak korzystać z narzędzi takich jak `kube-bench` czy `OPA Gatekeeper` do analizy konfiguracji,
+- jak identyfikować niebezpieczne ustawienia w Podach i kontenerach,
+- jak korzystać z narzędzi takich jak kube-bench czy OPA Gatekeeper do analizy konfiguracji,
 - w jaki sposób weryfikować polityki bezpieczeństwa z poziomu praktycznych przykładów,
 - jakie dobre praktyki wdrożyć, aby klaster był odporniejszy na awarie i ataki.
 
