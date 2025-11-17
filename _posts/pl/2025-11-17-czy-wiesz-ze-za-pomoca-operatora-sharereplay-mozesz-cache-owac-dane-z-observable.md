@@ -2,20 +2,19 @@
 layout:    post
 title:     Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?
 description: ""
-date:      2025-10-03T08:00:00+01:00
+date:      2025-11-17T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: ptatarski
-image: /assets/img/posts/2025-10-03-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp
+image: /assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp
 tags:
-- angular
 - rxjs
 - observable
 ---
 
-Często zdarza się, że nie chcemy za każdym razem ponownie wykonywać całej logiki z danego *Observable* — 
-zamiast tego wolimy przechować jego wynik w pamięci. W Angularze (i ogólnie w RxJS) możemy to zrobić za pomocą operatora **`shareReplay`**.
+Często zdarza się, że nie chcemy za każdym razem ponownie wykonywać całej logiki z danego `Observable` — 
+zamiast tego wolimy przechować jego wynik w pamięci. W Angularze (i ogólnie w RxJS) możemy to zrobić za pomocą operatora `shareReplay`.
 
 ## Czym jest shareReplay?
 Operator `shareReplay` (tak jak operator `share`) pozwala na konwersję z *cold* do *hot* observable, 
@@ -24,7 +23,7 @@ tak aby każda subskrypcja korzystała z tej samej emisji observable. Dodatkowo 
 
 ## Przykład użycia
 W przykładzie poniżej generujemy losową liczbę. Normalnie przy każdej subskrypcji otrzymalibyśmy nowy wynik,
-ale dzięki `shareReplay` obie subskrypcje dostają dokładnie tę samą wartość.
+ale dzięki `shareReplay` obie subskrypcje dostają dokładnie tę wartość.
 ```typescript
 const source$: Observable<number> = of(Math.round(Math.random() * 1000))
     .pipe(shareReplay());
@@ -37,10 +36,10 @@ s1:  742
 s2:  742
 ```
 ## Opcje konfiguracji
-Operator `shareReplay` posiada także dodatkowe opcje do skonfigurowania.
+Operator `shareReplay` posiada także dodatkowe opcje do skonfigurowania:
 - `bufferSize`  - określa wielkość wewnętrznego ReplaySubject (domyślnie przechowuje ostatnią wartość),
 - `refCount`  - określa, czy w momencie, gdy liczba subskrybentów wyniesie 0 shareReplay ma odsubskrybować się od źródłowego observable, co spowoduje wyczyszczenie cache (domyślnie false),
-- `windowTime`  - ograniczenie czasu przechowywanych wartości (domyślnie nie ogranicza).
+- `windowTime`  - ogranicza czas przechowywania wartości (czego domyślnie nie robi).
 
 
 ### Przykład z dodatkowymi opcjami konfiguracji
@@ -48,6 +47,7 @@ Załóżmy, że chcemy cache’ować więcej niż jedną wartość i dodatkowo k
 ```typescript
 shareReplay({ bufferSize: 3, refCount: true, windowTime: 500 })
 ```
+W rezultacie:
 - zostaną umieszczone w buforze 3 ostatnie wartości,
 - każda z osobna będzie miała czas życia ustawiony na pół sekundy,
 - w momencie, gdy nie będzie żadnej aktywnej subskrypcji, bufor zostanie wyczyszczony.
