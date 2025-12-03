@@ -2,12 +2,12 @@
 layout:    post
 title:     Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?
 description: ""
-date:      2025-11-17T08:00:00+01:00
+date:      2025-12-03T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2025-11-17-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp
+image: /assets/img/posts/2025-12-03-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp
 tags:
 - typescript
 ---
@@ -16,10 +16,10 @@ W TypeScript, poza `string` czy `number`, mamy też kilka specjalnych typów do 
 
 ## Any i unknown – podobieństwa i różnice
 
-Na pierwszy rzut oka typy `any` i `unknown` wyglądają podobnie. Oba pozwalają przypisać do siebie dowolną wartość. To, co możesz potem z tym zrobić, nieco się różni.
+Na pierwszy rzut oka typy `any` i `unknown` wyglądają podobnie. Oba pozwalają przypisać do siebie dowolną wartość. To, co możemy potem z tym zrobić, nieco się różni.
 
-### Typ any – "nie wiem i nie interesuje mnie to"
-Typ `any` wyłącza sprawdzanie typów dla danej zmiennej w TypeScript. Kompilator nie sprawdza, co przypisujesz i jak używasz tej zmiennej. Możesz zrobić z nią wszystko, a ewentualny błąd zobaczysz dopiero w trakcie działania aplikacji.
+### Typ any – "nie wiemy i nie interesuje nas to"
+Typ `any` wyłącza sprawdzanie typów dla danej zmiennej w TypeScript. Kompilator nie sprawdza, co przypisujemy i jak używamy tej zmiennej. Możemy zrobić z nią wszystko, a ewentualny błąd zobaczymy dopiero w trakcie działania aplikacji.
 
 ```typescript
 let drawer: any = "Old watch";
@@ -30,8 +30,8 @@ drawer = { keys: 3 };
 console.log(drawer.substring(6)); // TypeError: drawer.substring is not a function
 ```
 
-### Typ unknown – "nie wiem, ale sprawdzę"
-Typ `unknown` jest bezpieczniejszą alternatywą dla `any`. Możesz przypisać dowolną wartość, ale TypeScript wymaga, by przed użyciem sprawdzić typ tej zmiennej. Dzięki temu nie popełnisz błędu w runtime.
+### Typ unknown – "nie wiemy, ale sprawdzimy"
+Typ `unknown` jest bezpieczniejszą alternatywą dla `any`. Możemy przypisać dowolną wartość, ale TypeScript wymaga, by przed użyciem sprawdzić typ tej zmiennej. Dzięki temu nie popełnimy błędu w runtime.
 
 ```typescript
 let box: unknown;
@@ -61,7 +61,7 @@ function fail(): never {
   return error("Something failed");
 }
 ```
-Funkcja `error()` nigdy nie zwróci wartości. Zawsze zatrzyma program, rzucając błędem
+Funkcja `error()` nigdy nie zwraca wartości. Zawsze zatrzymuje program, rzucając błędem.
 
 #### Funkcja z nieskończoną pętlą
 ```typescript
@@ -69,7 +69,7 @@ function infiniteLoop(): never {
   while (true) {}
 }
 ```
-Funkcja wpadnie w pętlę, z której nie ma wyjścia. Nigdy nie zakończy swojego działania.
+Funkcja wpada w pętlę, z której nie ma wyjścia. Nigdy nie kończy swojego działania.
 
 #### Sprawdzanie kompletności obsługi wariantów (Exhaustive Check)
 ```typescript
@@ -82,7 +82,7 @@ function getArea(shape: Shape): number {
     case 'square':
       return 4;
     default:
-      // Jeśli dodasz nowy kształt, taki jak 'triangle', 
+      // Jeśli dodamy nowy kształt, taki jak 'triangle', 
       // do typu, TypeScript wyświetli tutaj błąd,
       // ponieważ nowy kształt nie może być przypisany do never
       const exhaustiveCheck: never = shape;
@@ -93,9 +93,9 @@ function getArea(shape: Shape): number {
 Typ `never` świetnie pilnuje, czy switch obsługuje wszystkie warianty typu.
 
 ## Kiedy i co wybrać?
-- **unknown** – używaj, gdy nie znasz typu danych (np. odpowiedź z API). To bezpieczny wybór, który wymusza weryfikację typu przed użyciem.
-- **any** – najlepiej unikać `any` całkowicie. Wyłącza ono sprawdzanie typów, co jest głównym celem TypeScriptu. Włącz w konfiguracji tryb strict, a dla nieznanych typów stosuj bezpieczniejszy `unknown`.
-- **never** – używaj, by zaznaczyć, że dany kod jest nieosiągalny. Świetne do funkcji rzucających błędy i do pilnowania kompletności switcha.
+- **unknown** – używajmy, gdy nie znamy typu danych (np. odpowiedź z API). To bezpieczny wybór, który wymusza weryfikację typu przed użyciem.
+- **any** – najlepiej unikajmy `any` całkowicie. Wyłącza ono sprawdzanie typów, co jest głównym celem TypeScriptu. Włączmy w konfiguracji tryb `strict`, a dla nieznanych typów stosujmy bezpieczniejszy `unknown`.
+- **never** – używajmy, by zaznaczyć, że dany kod jest nieosiągalny. Świetne do funkcji rzucających błędy i do pilnowania kompletności switcha.
 
 ## Dokumentacja
 - [TypeScript: any](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
