@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?" />
+<meta name="author" content="rmastalerek" />
+<meta property="og:locale" content="pl" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-09-01T01:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp" />
+<meta property="twitter:title" content="Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"rmastalerek"},"image":"https://blog.consdata.tech/assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp","@type":"BlogPosting","headline":"Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?","dateModified":"2025-09-01T01:00:00-05:00","datePublished":"2025-09-01T01:00:00-05:00","url":"https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2025/09/01/transactional-w-testach-integracyjnych-hibernate.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">transactions</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/rmastalerek.html">
+        <img class="author-image" src="/assets/img/authors/rmastalerek.webp" alt="author">
+        <span class="author-name">Robert Mastalerek</span><a class="author" href="https://github.com/robertmastalerek">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+1
+
+
+September
+
+
+2025
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Testy integracyjne z użyciem <code class="language-plaintext highlighter-rouge">Springa</code> i <code class="language-plaintext highlighter-rouge">Hibernate</code> mają za zadanie możliwie wiernie odwzorować zachowanie aplikacji na środowisku produkcyjnym. 
+Często, aby uprościć ich tworzenie, sięgamy po adnotację <code class="language-plaintext highlighter-rouge">@Transactional</code>, która automatycznie <code class="language-plaintext highlighter-rouge">rollbackuje</code> wszystkie zmiany w bazie danych po zakończeniu testu. 
+Brzmi idealnie – nie musimy martwić się o „czystość” bazy, a każdy scenariusz startuje od świeżego punktu.</p>
+
+<h2 id="jak-spring-obsługuje-adnotację-transactional">Jak Spring obsługuje adnotację @Transactional?</h2>
+<p>Wykorzystane jest w tym celu AoP (<code class="language-plaintext highlighter-rouge">Aspect-oriented Programming</code>). W zależności od tego, czy używamy <code class="language-plaintext highlighter-rouge">Spring Aspects</code> czy <code class="language-plaintext highlighter-rouge">AspectJ</code>, <code class="language-plaintext highlighter-rouge">@Transactional</code> 
+zostaje wykryty albo w <code class="language-plaintext highlighter-rouge">Spring Beans</code> wyłącznie dla metod publicznych, albo w dowolnym miejscu w kodzie. 
+Następnie wszystkie znalezione metody opakowane zostają w proxy, które rozpoczyna transakcję przed wywołaniem rzeczywistej logiki metody 
+i zatwierdza ją po jej zakończeniu (lub wycofuje w przypadku wyjątku zgłoszonego przez tę metodę). Gdy <code class="language-plaintext highlighter-rouge">@Transactional</code> używany jest w testach integracyjnych, 
+automatycznie wycofuje metodę testową po zakończeniu pracy.</p>
+
+<p>Brzmi bardzo wygodnie, prawda? Pozbywamy się boilerplate’ów do zarządzania transakcjami w każdym miejscu. 
+Nie musimy przywracać stanu bazy sprzed testu po każdym zdefiniowanym przypadku itp. 
+Niestety w połączeniu z <code class="language-plaintext highlighter-rouge">Hibernate</code>, adnotacja ta może stać się również pułapką.</p>
+
+<p>Jedną z podstawowych cech transakcji bazy danych jest jej zakres. Zakres transakcji decyduje o tym, które fragmenty kodów podlegają której transakcji. 
+Zmiana zakresu transakcji może mieć zatem ogromny wpływ na zachowanie kodu. Jest to szczególnie widoczne podczas korzystania z <code class="language-plaintext highlighter-rouge">Hibernate</code>. 
+<code class="language-plaintext highlighter-rouge">Hibernate</code> używa <code class="language-plaintext highlighter-rouge">Transactions</code> (i instancji <code class="language-plaintext highlighter-rouge">Transactional Entity Manager</code>) dla mechanizmu lazy loading. Spójrzmy na poniższy przykład:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Encja</span>
+<span class="nd">@Entity</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"user"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserEntity</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="nd">@GeneratedValue</span>
+    <span class="kd">private</span> <span class="no">UUID</span> <span class="n">id</span><span class="o">;</span>
+ 
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+     
+    <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">"user"</span><span class="o">,</span> <span class="n">fetch</span> <span class="o">=</span> <span class="nc">FetchType</span><span class="o">.</span><span class="na">LAZY</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="nc">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserEntity</span><span class="o">&gt;</span> <span class="n">accounts</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Kiedy pobierana jest instancja <code class="language-plaintext highlighter-rouge">UserEntity</code>, pole z powiązanymi kontami (accounts) nie zostanie zainicjowane. 
+Będzie to instancja <code class="language-plaintext highlighter-rouge">PersistentSet</code>, czyli implementacji biblioteki <code class="language-plaintext highlighter-rouge">Hibernate</code>, 
+która przy pierwszym wywołaniu którejkolwiek z metod zbioru pobierze listę kont użytkownika z bazy danych. Gdzie zatem jest haczyk?</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Lazy loading (leniwe ładowanie)</code></strong> w <code class="language-plaintext highlighter-rouge">Hibernate</code> działa poprawnie tylko wtedy, gdy jesteśmy w zasięgu aktywnej transakcji bazy danych. 
+Gdy tylko spróbujemy leniwie załadować cokolwiek po zakończeniu oryginalnej transakcji, 
+zostanie zaprezentowany wyjątek <code class="language-plaintext highlighter-rouge">LazyInitializationException</code>. Zmieniając zakres transakcji możemy zatem wprowadzić do naszej logiki <code class="language-plaintext highlighter-rouge">RuntimeException</code>. 
+Rzućmy okiem na kolejny przykład:</p>
+
+<h3 id="prawidłowy-zakres-transakcji">Prawidłowy zakres transakcji</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Start transakcji</span>
+<span class="n">transactionTemplate</span><span class="o">.</span><span class="na">executeWithoutResult</span><span class="o">(</span><span class="n">transactionStatus</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="c1">// User jest pobierany z bazy danych po nazwie</span>
+    <span class="nc">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">getUserByName</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="c1">// właściwości lazy-loaded są zaciągane w poprawny sposób</span>
+    <span class="n">u</span><span class="o">.</span><span class="na">getAccounts</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">doSomethingWithAccount</span><span class="o">);</span>
+    <span class="c1">// Koniec transakcji</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<h3 id="nieprawidłowy-zakres-transakcji">Nieprawidłowy zakres transakcji</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Start transakcji</span>
+<span class="nc">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">transactionTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">transactionStatus</span> <span class="o">-&gt;</span> <span class="o">{</span>        
+    <span class="c1">// User jest pobierany z bazy danych po nazwie</span>
+    <span class="k">return</span> <span class="n">userService</span><span class="o">.</span><span class="na">getUserByName</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="c1">// Koniec transakcji</span>
+<span class="o">});</span>
+<span class="c1">// Próba ładowania właściwości lazy-loaded z opóźnieniem, </span>
+<span class="c1">// w wyniku czego wyjątek LazyInitializationException</span>
+<span class="n">u</span><span class="o">.</span><span class="na">getAccounts</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">doSomethingWithAccount</span><span class="o">);</span>
+</code></pre></div></div>
+<p>Niepoprawność w powyższym przykładzie widać dość klarownie. Gdy używamy <code class="language-plaintext highlighter-rouge">TransactionTemplate</code> dostarczone przez <code class="language-plaintext highlighter-rouge">Springa</code>, 
+czyli ręcznie zarządzamy transakcją. 
+Mniej oczywiste jest to w przypadku używania adnotacji <code class="language-plaintext highlighter-rouge">@Transactional</code>:</p>
+
+<h2 id="test-integracyjny-oznaczony-transactional">Test integracyjny oznaczony @Transactional</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="nd">@Transactional</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldAddUser</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+<span class="c1">// given:</span>
+<span class="c1">// Tworzymy nowego użytkownika</span>
+<span class="n">createNewUser</span><span class="o">(</span><span class="n">getNewUser</span><span class="o">());</span>
+
+        <span class="c1">// when</span>
+        <span class="c1">// Próbujemy pobrać z bazy użytkownika po nazwie (wraz z wszystkimi właściwościami lazy-loaded)</span>
+        <span class="nc">MvcResult</span> <span class="n">createdUserResponse</span> <span class="o">=</span> <span class="n">getUserByName</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+ 
+        <span class="c1">// then</span>
+        <span class="c1">// W przeciwieństwie do zachowania produkcyjnego nie ma żadnego wyjątku i jesteśmy w stanie odczytać właściwości lazy-loaded</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="n">createdUserResponse</span><span class="o">.</span><span class="na">getResponse</span><span class="o">().</span><span class="na">getStatus</span><span class="o">());</span>
+        <span class="nc">UserDto</span> <span class="n">createdUser</span> <span class="o">=</span> <span class="n">getUserFromResponse</span><span class="o">(</span><span class="n">createdUserResponse</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">createdUser</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">createdUser</span><span class="o">.</span><span class="na">getAccounts</span><span class="o">().</span><span class="na">size</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Test oznaczony adnotacją <code class="language-plaintext highlighter-rouge">@Transactional</code> umożliwia użycie “magii” <code class="language-plaintext highlighter-rouge">Springa</code>. Przeanalizujemy poniższy przykład:</p>
+
+<ol>
+  <li>Tworzymy nową instancję użytkownika w transakcji:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Transactional</span>
+<span class="nd">@ResponseStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CREATED</span><span class="o">)</span>
+<span class="nd">@PostMapping</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createUser</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="nc">UserDto</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+ <span class="n">userService</span><span class="o">.</span><span class="na">createUser</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Znajdujemy instancję użytkownika według jego nazwy i przekształcamy w <code class="language-plaintext highlighter-rouge">DTO</code>, używając jej leniwie ładowanej właściwości “accounts”:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{name}"</span><span class="o">)</span>
+ <span class="kd">public</span> <span class="nc">UserDto</span> <span class="nf">getUserByName</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+ <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">getUserByName</span><span class="o">(</span><span class="n">name</span><span class="o">).</span><span class="na">orElseThrow</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"User not Found"</span><span class="o">));</span>
+ <span class="k">return</span> <span class="k">new</span> <span class="nf">UserDto</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getAccounts</span><span class="o">().</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">Account:</span><span class="o">:</span><span class="n">getAccounts</span><span class="o">).</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()));</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="jak-zadziałał-test-integracyjny">Jak zadziałał test integracyjny?</h3>
+<p>Wszystko zadziałało poprawnie, utworzony użytkownik został zwrócony przez wywołanie <code class="language-plaintext highlighter-rouge">getUserByName()</code>. Nie rzucono żadnego wyjątku. 
+Jesteśmy pewni, że nasz kod działa poprawnie.</p>
+
+<h3 id="co-stanie-się-na-produkcji">Co stanie się na produkcji?</h3>
+<p>Jak widzimy, logika testu zawiera 2 oddzielne wywołania <code class="language-plaintext highlighter-rouge">REST</code>. 
+W takim przypadku transakcja użyta do utworzenia użytkownika zostałaby zakończona przed zwróceniem odpowiedzi <code class="language-plaintext highlighter-rouge">HTTP</code> przez <code class="language-plaintext highlighter-rouge">Controller</code>. 
+Pobranie użytkownika po jego nazwie zostałoby wykonane poza pierwotną transakcją. 
+Konwersja encji <code class="language-plaintext highlighter-rouge">UserEntity</code> w <code class="language-plaintext highlighter-rouge">UserDto</code> dałaby wyjątek <code class="language-plaintext highlighter-rouge">LazyInitializationException</code>, 
+ponieważ próbowaliśmy leniwie załadować pole adresów użytkownika bez transakcji.</p>
+
+<h3 id="przyczyna">Przyczyna</h3>
+<p>Kiedy korzystamy z adnotacji <code class="language-plaintext highlighter-rouge">@Transactional</code> w testach integracyjnych, <code class="language-plaintext highlighter-rouge">Hibernate</code> cache’uje wszystkie encje ze wszystkich transakcji, 
+które wykonywane są w ramach przypadku testowego. Ponieważ na początku wykonywania testu, kiedy wykonana została metoda <code class="language-plaintext highlighter-rouge">createNewUser()</code>, 
+użytkownik był “znany” <code class="language-plaintext highlighter-rouge">Hibernate</code>, wraz ze swoimi powiązanymi kontami, to <code class="language-plaintext highlighter-rouge">Hibernate</code> zapisał je w pamięci podręcznej. 
+Kiedy zatem wywołana została metoda <code class="language-plaintext highlighter-rouge">getUserByName()</code>, to kolekcja została pobrana bez żadnego problemu z tejże pamięci. 
+Spring re-używa tej samej sesji <code class="language-plaintext highlighter-rouge">Hibernate</code> do każdej transakcji w testach integracyjnych. 
+Jest to logiczne, ponieważ <code class="language-plaintext highlighter-rouge">Spring</code> będzie chciał wykonać <code class="language-plaintext highlighter-rouge">Rollback</code> po zakończeniu każdego przypadku testowego.</p>
+
+<h3 id="alternatywy">Alternatywy</h3>
+<p>Alternatyw dla adnotacji <code class="language-plaintext highlighter-rouge">@Transactional</code> w testach integracyjnych jest kilka:</p>
+
+<ul>
+  <li>Wykorzystanie adnotacji <strong><code class="language-plaintext highlighter-rouge">@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)</code></strong> - to rozwiązanie pozwala nam 
+przed każdym testem na nowo tworzyć kontekst <code class="language-plaintext highlighter-rouge">Spring'a</code>. Ma bardzo duży wpływ na wydajność aplikacji i raczej nie powinno być stosowane.</li>
+  <li>Wykorzystanie z adnotacji <code class="language-plaintext highlighter-rouge">@SQL</code> i skryptu do czyszczenia bazy - to rozwiązanie pozwala na zdefiniowanie dedykowanego skryptu, 
+który wyczyści pożądaną tabelę lub kilka tabel przed / po każdym przypadku testowym.
+Minusem tego rozwiązania jest fakt, że trzeba pilnować, by istniał skrypt, który czyści każdą “zabrudzoną” tabelę. 
+Adnotację <code class="language-plaintext highlighter-rouge">SQL</code> można dodać na poziomie klasy, lub pojedynczego przypadku testowego:
+<a href="https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/executing-sql.html#testcontext-executing-sql-declaratively-script-execution-phases">docs.spring.io - Script Execution Phases</a></li>
+  <li>Dedykowany serwis czyszczący wszystkie tabele w bazie - wydaje się to być najbezpieczniejszym i najmniej obciążającym rozwiązaniem. 
+Polega na tym, że przed lub po każdym przypadku testowym czyścimy bazę danych. Kod wtedy jest mniej zależny od zakresu transakcji.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SomeIntegrationTest</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="nc">DatabaseCleanup</span> <span class="n">databaseCleanup</span><span class="o">;</span>
+ 
+  <span class="c1">// ...</span>
+  
+  <span class="nd">@AfterEach</span>
+  <span class="kt">void</span> <span class="nf">afterEach</span><span class="o">()</span> <span class="o">{</span>
+      <span class="n">databaseCleanup</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+  <span class="o">}</span>
+ 
+  <span class="c1">//...</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DatabaseCleanup</span> <span class="kd">implements</span> <span class="nc">InitializingBean</span> <span class="o">{</span>
+
+  <span class="nd">@PersistenceContext</span>
+  <span class="kd">private</span> <span class="nc">EntityManager</span> <span class="n">entityManager</span><span class="o">;</span>
+ 
+  <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">tableNames</span><span class="o">;</span>
+ 
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="o">{</span>
+      <span class="n">tableNames</span> <span class="o">=</span> <span class="n">entityManager</span><span class="o">.</span><span class="na">getMetamodel</span><span class="o">().</span><span class="na">getEntities</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">getJavaType</span><span class="o">().</span><span class="na">getAnnotation</span><span class="o">(</span><span class="nc">Entity</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+              <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="nc">CaseFormat</span><span class="o">.</span><span class="na">UPPER_CAMEL</span><span class="o">.</span><span class="na">to</span><span class="o">(</span><span class="nc">CaseFormat</span><span class="o">.</span><span class="na">LOWER_UNDERSCORE</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span>
+              <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+  <span class="o">}</span>
+ 
+  <span class="nd">@Transactional</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">()</span> <span class="o">{</span>
+      <span class="n">entityManager</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+      <span class="n">entityManager</span><span class="o">.</span><span class="na">createNativeQuery</span><span class="o">(</span><span class="s">"SET REFERENTIAL_INTEGRITY FALSE"</span><span class="o">).</span><span class="na">executeUpdate</span><span class="o">();</span>
+ 
+      <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">tableName</span> <span class="o">:</span> <span class="n">tableNames</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">entityManager</span><span class="o">.</span><span class="na">createNativeQuery</span><span class="o">(</span><span class="s">"TRUNCATE TABLE "</span> <span class="o">+</span> <span class="n">tableName</span><span class="o">).</span><span class="na">executeUpdate</span><span class="o">();</span>
+      <span class="o">}</span>
+ 
+      <span class="n">entityManager</span><span class="o">.</span><span class="na">createNativeQuery</span><span class="o">(</span><span class="s">"SET REFERENTIAL_INTEGRITY TRUE"</span><span class="o">).</span><span class="na">executeUpdate</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="przydatne-linki">Przydatne linki:</h2>
+
+<p><a href="https://dev.to/henrykeys/don-t-use-transactional-in-tests-40eb">dev.to - Don’t Use @Transactional in Tests</a></p>
+
+<p><a href="https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/executing-sql.html#testcontext-executing-sql-declaratively-script-execution-phases">docs.spring.io - Script Execution Phases</a></p>
+
+<p><a href="https://miensol.pl/clear-database-in-spring-boot-tests/">miensol.pl - How to clear database in Spring Boot tests?</a></p>
+
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "transactions spring java transactional";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
