@@ -2,12 +2,12 @@
 layout:    post
 title:     Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?
 description: ""
-date:      2025-12-03T08:00:00+01:00
+date:      2025-12-04T06:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: wstolarski
-image: /assets/img/posts/2025-12-03-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp
+image: /assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp
 tags:
 - typescript
 ---
