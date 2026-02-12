@@ -47,7 +47,7 @@ Dodatkowo zakładamy trzy fazy:
     rampTo: 10
     name: Warm up phase
 ```
-- druga stopniowo zwiększająca obciążenie - do 50 użytkowników,
+- druga stopniowo zwiększająca obciążenie do 50 użytkowników,
 ```yaml
     duration: 60
     arrivalRate: 10
