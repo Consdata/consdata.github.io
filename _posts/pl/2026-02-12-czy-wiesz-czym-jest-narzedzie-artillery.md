@@ -2,7 +2,7 @@
 layout:    post
 title:     Czy wiesz, czym jest narzędzie artillery?
 description: ""
-date:      2026-02-11T08:00:00+01:00
+date:      2026-02-12T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
