@@ -24,7 +24,7 @@ Artillery można zainstalować poprzez:
 npm install -g artillery@latest
 ```
 
-lub używając odpowiedniego obrazu Dockerowego. Same testy pisane są w YAMLu lub JavaScriptcie.
+lub używając odpowiedniego obrazu Dockerowego. Same testy pisane są w YAMLu lub w JavaScripcie.
 
 ## Przykładowy test
 
@@ -36,41 +36,56 @@ Załóżmy, że nasza aplikacja wystawia trzy usługi:
 
 Chcemy przetestować dwa scenariusze:
 
-1. Użytkownik wchodzi na listę projektów, wyświetla listę sprintów dla projektu TEST-PROJECT, 
-a następnie po dwóch sekundach dodaje zadanie do pierwszego sprintu z listy.
+1. Użytkownik wchodzi na listę projektów, wyświetla listę sprintów dla projektu TEST-PROJECT, a następnie po dwóch sekundach dodaje zadanie do pierwszego sprintu z listy.
 2. Użytkownik dodaje po kolei 10 zadań do losowych dostępnych sprintów.
 
 Dodatkowo zakładamy trzy fazy:
-- pierwsza rozgrzewkowa,
-- druga stopniowo zwiększająca obciążenie,
-- trzecia testująca duży przypływ użytkowników.
+- pierwsza rozgrzewkowa - 5 wirtualnych użytkowników na sekundę, zwiększających się do 10 na koniec fazy,
+```yaml
+    duration: 60
+    arrivalRate: 5
+    rampTo: 10
+    name: Warm up phase
+```
+- druga stopniowo zwiększająca obciążenie - do 50 użytkowników,
+```yaml
+    duration: 60
+    arrivalRate: 10
+    rampTo: 50
+    name: Ramp up load
+```
 
-## Implementacja przykładowego testu
+- trzecia testująca duży przypływ użytkowników - 50 użytkowników co sekundę.
+```yaml
+    duration: 30
+    arrivalRate: 50
+    name: Spike phase
+```
 
-Implementacja takiego testu może wyglądać tak:
+## Konfiguracja testu
+
+W sekcji `config` tworzymy podstawową konfigurację testu – definiujemy na jaki adres będziemy uderzali, fazy oraz zmienne, 
+które możemy wykorzystać w ramach scenariuszy. 
+Dodatkowo zdefiniowany jest plugin rozszerzający wyniki oraz procesor – czyli plik zawierający funkcje JavaScript, które mogą być wykorzystane w teście.
 
 ```yaml
 config:
   target: http://localhost:8080
-  phases:
-    - duration: 60
-      arrivalRate: 5
-      rampTo: 10
-      name: Warm up phase # Faza rozgrzewki - 5 wirtualnych użytkowników na sekundę, 
-                          # zwiększających się do 10 na koniec fazy
-    - duration: 60
-      arrivalRate: 10
-      rampTo: 50
-      name: Ramp up load # Stopniowe zwiększanie obciążenia do 50 użytkowników
-    - duration: 30
-      arrivalRate: 50
-      name: Spike phase # 50 użytkowników co sekundę
+  phases: [...]
   plugins:
     metrics-by-endpoint: {}
   processor: "./functions.js"
   variables:
     project: "TEST-PROJECT"
+```
+
+## Scenariusze i flow
+
+Sekcja `scenarios` zawiera definicje scenariuszy testowych. Każdy scenariusz ma określony `weight`, który decyduje o tym, jak często będzie wybierany przez wirtualnych użytkowników. W ramach `flow` określone są kroki scenariusza, w których możemy wykorzystywać zmienne zdefiniowane w konfiguracji lub tworzyć je na bieżąco, np. na podstawie odpowiedzi usług.
+
+```yaml
 scenarios:
+  # 9 na 10 użytkowników wybierze ten scenariusz
   - name: "Standard scenario - add single task"
     weight: 9
     flow:
@@ -90,6 +105,7 @@ scenarios:
             name: "Example task"
             type: "TECHNICAL"
             sprintId: "{{sprintId}}"
+  # 1 na 10 użytkowników wybierze ten scenariusz
   - name: "Rare scenario - add multiple tasks"
     weight: 1
     flow:
@@ -110,11 +126,11 @@ scenarios:
         count: 10
 ```
 
-### Funkcje pomocnicze (processor)
+## Funkcje pomocnicze (processor)
 
 Plik `functions.js` z funkcjami pomocniczymi:
 
-```js
+```javascript
 module.exports = {
   setAddTaskBody
 }
@@ -138,17 +154,6 @@ function randomString() {
   return (Math.random() + 1).toString(36).substring(7);
 }
 ```
-
-### Konfiguracja testu
-
-W sekcji `config` tworzymy podstawową konfigurację testu – definiujemy na jaki adres będziemy uderzali, fazy oraz zmienne, które możemy wykorzystać w ramach scenariuszy. 
-Dodatkowo zdefiniowany jest plugin rozszerzający wyniki oraz procesor – czyli plik zawierający funkcje JavaScript, które mogą być wykorzystane w teście.
-
-### Scenariusze i flow
-
-- Sekcja `scenarios` zawiera definicje wspomnianych wcześniej scenariuszy.
-- `weight` określa jak często dany scenariusz ma występować – w tym przypadku na 10 wirtualnych użytkowników 9 wejdzie w scenariusz pierwszy, a tylko 1 w scenariusz drugi.
-- W ramach `flow` określone są właściwe kroki scenariusza, w których możemy wykorzystywać zmienne zdefiniowane w konfiguracji lub tworzyć je na bieżąco np. na podstawie odpowiedzi usług.
 
 ## Hooki w Artillery
 
@@ -194,6 +199,93 @@ Fragment wygenerowanego raportu, przedstawiający czasy odpowiedzi (ich minimaln
 <img src="/assets/img/posts/2026-02-12-czy-wiesz-czym-jest-narzedzie-artillery/http_response_time.png" alt="Fragment raportu wygenerowanego przez Artillery" />
 
 ## Podsumowanie
+
+Poniżej pełny przykład pliku testowego YAML oraz procesora JS, zbierający wszystkie elementy opisane powyżej:
+
+```yaml
+config:
+  target: http://localhost:8080
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 10
+      name: Warm up phase
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: Ramp up load
+    - duration: 30
+      arrivalRate: 50
+      name: Spike phase
+  plugins:
+    metrics-by-endpoint: {}
+  processor: "./functions.js"
+  variables:
+    project: "TEST-PROJECT"
+scenarios:
+  - name: "Standard scenario - add single task"
+    weight: 9
+    flow:
+      - get:
+          url: "/get-projects"
+      - get:
+          url: "/get-sprints"
+          qs:
+            project: "{{project}}"
+          capture:
+            json: "$.sprints[0].sprintId"
+            as: "sprintId"
+      - think: 2
+      - post:
+          url: '/add-task'
+          json:
+            name: "Example task"
+            type: "TECHNICAL"
+            sprintId: "{{sprintId}}"
+  - name: "Rare scenario - add multiple tasks"
+    weight: 1
+    flow:
+      - get:
+          url: "/get-projects"
+      - get:
+          url: "/get-sprints"
+          qs:
+            project: "{{project}}"
+          capture:
+            json: "$.sprints"
+            as: "sprints"
+      - think: 2
+      - loop:
+        - post:
+            beforeRequest: "setAddTaskBody"
+            url: '/add-task'
+        count: 10
+```
+
+```javascript
+module.exports = {
+  setAddTaskBody
+}
+
+function setAddTaskBody(requestParams, context, ee, next) {
+  const type = Math.random() < 0.75 ? "BUG" : "TECHNICAL"
+  const name = randomString();
+  const sprints = context.vars["sprints"];
+  const randomSprint = sprints[Math.floor(Math.random() * sprints.length)];
+
+  const task = {
+    name,
+    type,
+    sprintId: randomSprint.sprintId
+  }
+  requestParams.json = task;
+  return next();
+}
+
+function randomString() {
+  return (Math.random() + 1).toString(36).substring(7);
+}
+```
 
 Artillery to proste i przyjemne narzędzie, które posiada także wiele innych funkcjonalności niewykorzystanych w powyższym przykładzie – można się z nimi zapoznać w dokumentacji. 
 Potencjalnym problemem może być jednak brak wsparcia dla równoległych requestów wywoływanych przez jednego wirtualnego użytkownika – chociaż teoretycznie w kodzie Artillery znaleźć można opcję `parallel`, 
