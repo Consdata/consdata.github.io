@@ -2,12 +2,12 @@
 layout:    post
 title:     Czy wiesz, czym jest narzędzie artillery?
 description: ""
-date:      2026-02-12T08:00:00+01:00
+date:      2026-02-13T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: kdudek
-image: /assets/img/posts/2026-02-12-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp
+image: /assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp
 tags:
 - artillery
 - tests
@@ -40,14 +40,14 @@ Chcemy przetestować dwa scenariusze:
 2. Użytkownik dodaje po kolei 10 zadań do losowych dostępnych sprintów.
 
 Dodatkowo zakładamy trzy fazy:
-- pierwsza rozgrzewkowa - 5 wirtualnych użytkowników na sekundę, zwiększających się do 10 na koniec fazy,
+- pierwsza, rozgrzewkowa - 5 wirtualnych użytkowników na sekundę, zwiększających się do 10 na koniec fazy,
 ```yaml
     duration: 60
     arrivalRate: 5
     rampTo: 10
     name: Warm up phase
 ```
-- druga stopniowo zwiększająca obciążenie do 50 użytkowników,
+- druga, stopniowo zwiększająca obciążenie do 50 użytkowników,
 ```yaml
     duration: 60
     arrivalRate: 10
@@ -64,8 +64,8 @@ Dodatkowo zakładamy trzy fazy:
 
 ## Konfiguracja testu
 
-W sekcji `config` tworzymy podstawową konfigurację testu – definiujemy na jaki adres będziemy uderzali, fazy oraz zmienne, 
-które możemy wykorzystać w ramach scenariuszy. 
+W sekcji `config` tworzymy podstawową konfigurację testu – definiujemy, na jaki adres będą kierowane żądania, fazy testu oraz zmienne, 
+które możemy wykorzystać w ramach scenariuszy.
 Dodatkowo zdefiniowany jest plugin rozszerzający wyniki oraz procesor – czyli plik zawierający funkcje JavaScript, które mogą być wykorzystane w teście.
 
 ```yaml
@@ -196,7 +196,7 @@ artillery report results.json
 
 Fragment wygenerowanego raportu, przedstawiający czasy odpowiedzi (ich minimalną i maksymalną wartość, a także medianę oraz percentyle 95 i 99) dla wszystkich żądań HTTP wysłanych w ramach scenariuszy:
 
-<img src="/assets/img/posts/2026-02-12-czy-wiesz-czym-jest-narzedzie-artillery/http_response_time.png" alt="Fragment raportu wygenerowanego przez Artillery" />
+<img src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/http_response_time.png" alt="Fragment raportu wygenerowanego przez Artillery" />
 
 ## Podsumowanie
 
