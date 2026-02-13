@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Moje własne zadania i jak się w nich odnaleźć | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Moje własne zadania i jak się w nich odnaleźć" />
+<meta name="author" content="mstolarski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Większość z nas ma coś do zrobienia. Na początku owe coś jest dość ogólnie zdefiniowane, np.: “napisać wpis na bloga” czy “zaprojektować mechanizm ładowania modułów aplikacji”. Dość szybko zaczynamy rozbijać temat na mniejsze elementy. Te mniejsze elementy zostają doprecyzowane lub dalej podzielone, aby w końcu stać się zadaniami:" />
+<meta property="og:description" content="Większość z nas ma coś do zrobienia. Na początku owe coś jest dość ogólnie zdefiniowane, np.: “napisać wpis na bloga” czy “zaprojektować mechanizm ładowania modułów aplikacji”. Dość szybko zaczynamy rozbijać temat na mniejsze elementy. Te mniejsze elementy zostają doprecyzowane lub dalej podzielone, aby w końcu stać się zadaniami:" />
+<link rel="canonical" href="https://blog.consdata.tech/en/2020/01/19/zarzadzanie-zadaniami.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/01/19/zarzadzanie-zadaniami.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-01-19-zarzadzanie-zadaniami/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-19T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-01-19-zarzadzanie-zadaniami/thumbnail.webp" />
+<meta property="twitter:title" content="Moje własne zadania i jak się w nich odnaleźć" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mstolarski"},"image":"https://blog.consdata.tech/assets/img/posts/2020-01-19-zarzadzanie-zadaniami/thumbnail.webp","@type":"BlogPosting","headline":"Moje własne zadania i jak się w nich odnaleźć","description":"Większość z nas ma coś do zrobienia. Na początku owe coś jest dość ogólnie zdefiniowane, np.: “napisać wpis na bloga” czy “zaprojektować mechanizm ładowania modułów aplikacji”. Dość szybko zaczynamy rozbijać temat na mniejsze elementy. Te mniejsze elementy zostają doprecyzowane lub dalej podzielone, aby w końcu stać się zadaniami:","dateModified":"2020-01-19T00:00:00-06:00","datePublished":"2020-01-19T00:00:00-06:00","url":"https://blog.consdata.tech/2020/01/19/zarzadzanie-zadaniami.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/01/19/zarzadzanie-zadaniami.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2020/01/19/zarzadzanie-zadaniami.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">Personal Tasks</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Moje własne zadania i jak się w nich odnaleźć</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/mstolarski.html">
+        <img class="author-image" src="/assets/img/authors/mstolarski.webp" alt="author">
+        <span class="author-name">Michał Stolarski</span><a class="author" href="https://github.com/mstolarski">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+19
+
+
+January
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <h2 id="czy-warto-świadomie-zarządzać-zadaniami">Czy warto świadomie zarządzać zadaniami?</h2>
+
+<p>Większość z nas ma <strong>coś</strong> do zrobienia. Na początku owe <strong>coś</strong> jest dość ogólnie zdefiniowane, np.: “<em>napisać wpis na bloga”</em> czy <em>“zaprojektować mechanizm ładowania modułów aplikacji”</em>. Dość szybko zaczynamy rozbijać temat na mniejsze elementy. Te mniejsze elementy zostają doprecyzowane lub dalej podzielone, aby w końcu stać się  <strong>zadaniami</strong>:</p>
+<ul>
+  <li>wymyślić tytuł i datę publikacji wpisu</li>
+  <li>zaproponować agendę</li>
+  <li>napisać tekst.</li>
+</ul>
+
+<p>Bierzemy pierwsze zadanie od góry i zaczynamy realizować nasz projekt. Dość szybko pojawiają się nowe zadania:</p>
+<ul>
+  <li>skoordynować datę publikacji z innymi wpisami w kolejce</li>
+  <li>zorganizować wsparcie merytoryczne
+    <ul>
+      <li>doprecyzować agendę, aby móc wybrać osobę wspierającą</li>
+    </ul>
+  </li>
+  <li>zweryfikować dane statystyczne</li>
+  <li>sporządzić listę źródeł</li>
+  <li>wybrać grafiki.</li>
+</ul>
+
+<p>Jeszcze nie zaczęliśmy pisać samego tekstu bloga a już mamy 9 zadań. W miarę postępu prac pojawiają się następne konkretne zadania:</p>
+<ul>
+  <li>znaleźć wyniki badań potwierdzających tezę</li>
+  <li>przeredagować punkt 5</li>
+  <li>skrócić podsumowanie</li>
+  <li>uzgodnić przesunięcie daty publikacji</li>
+  <li>poprawić literówki po przeglądzie.</li>
+</ul>
+
+<p>Opierając się na własnym doświadczeniu zaryzykuję poniższe stwierdzenia:</p>
+
+<ol>
+  <li>nawet przy pozornie prostym temacie zadań potrafi być sporo</li>
+  <li>nowe zadania pojawiają się ciągle, w trakcje realizacji innych zadań.</li>
+</ol>
+
+<p>Większość z nas zarządza własnymi zadaniami. Świadomie lub nie. Część z nas robi to w pamięci - <strong>pamiętam</strong> o kupieniu kwiatów dla żony na rocznicę ślubu. Niestety nasz mózg ma pewne ograniczenia utrudniające zarządzanie zadaniami w pamięci.</p>
+
+<p>Zadania przechowywane w pamięci trudno się priorytetyzuje. Ciekawe zadania automatycznie stają się ważniejsze. Podobnie zresztą zadania nowe. Duży wpływ na priorytety zadań mają też czynniki zewnętrzne co nie zawsze jest pożądane. Cytując nasz biurowy humor: <em>“kto głośniej krzyczy ten ma większy priorytet”</em>.</p>
+
+<p>Zadania nudne lub odległe w czasie dość łatwo mogą się zagubić w mózgu, przynajmniej w moim. Szczególnie gdy lista zadań i różnych wątków, które należy kontrolować ciągle rośnie. Paradoksalnie niektóre zadania trudno usunąć z mózgu. Mam w głowie mnóstwo rzeczy, o których nie muszę już pamiętać i z przyjemnością zwolniłbym tę część pamięci.</p>
+
+<p>Najważniejszym argumentem przeciwko przechowywaniu listy zadań w głowie jest skalowanie tego rozwiązania. Owszem, mózg można ćwiczyć i konsekwentnie poprawiać jego działanie, jednakże większość z nas ma swój limit po przekroczeniu którego zaczyna gubić informacje. W miarę jak lista zadań w naszej głowie rośnie, prędzej czy później o którymś zapomnimy.</p>
+
+<p>Mam nadzieję, że na na tym etapie tekstu jest jasne, że warto odciążyć głowy przenosząc gdzieś listę zadań. Pytanie zatem gdzie?</p>
+
+<h2 id="co-chcę-osiągnąć">Co chcę osiągnąć?</h2>
+
+<p>Wybierając mechanizm zarządzania zadaniami mam dwa podstawowe cele:</p>
+
+<ol>
+  <li>zapisując zadanie chcę mieć pewność, że zajmę się nim w odpowiednim czasie
+    <ul>
+      <li>nie muszę o nim <strong>pamiętać</strong></li>
+    </ul>
+  </li>
+  <li>realizując zadanie chcę mieć pewność, że jest to najlepsze wykorzystanie mojego czasu w danej chwili
+    <ul>
+      <li>mogę się <strong>skupić</strong> tylko na tym zadaniu.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Zestaw narzędzi umożliwiających zrealizowanie powyższych celów pozwoli mi ze spokojem pracować nad meritum i uwolni mnie od nerwowego <em>“przeczesywania”</em> pamięci: <em>“co powinienem teraz zrobić?”</em>, <em>“czy wysłałem ofertę na XYZ?”</em>, <em>“czy mogę iść do domu?”</em>.</p>
+
+<h2 id="teoria-i-metodyki">Teoria i metodyki</h2>
+
+<p>Nie będzie dużym zaskoczeniem jeżeli napiszę, że ktoś już wpadł na pomysł usprawnienia zarządzania zadaniami. W internecie i drukowanych materiałach znaleźć można mnóstwo informacji na temat wielu metodyk zarządzania zadaniami, np:</p>
+<ul>
+  <li><a href="https://www.google.com/search?q=getting+thins+done">Getting Things Done (GTD)</a></li>
+  <li><a href="https://www.google.com/search?q=Getting+Sh-t+Done">Getting Sh-t Done (GSD)</a></li>
+  <li><a href="https://www.google.com/search?q=autofocus+productivity">Autofocus</a></li>
+  <li><a href="https://www.google.com/search?q=strikethru">Strikethru</a>.</li>
+</ul>
+
+<p>Część metodyk poparta jest badaniami i opiera się na naukowych podstawach, aby maksymalizować efekty naszej pracy. Żadna z poznanych przeze mnie metryk nie jest jednak dla mnie idealna. W codziennej pracy wykorzystuję parę zaleceń i wskazówek z różnych metodyk i źródeł.</p>
+
+<h3 id="3-elementy-zarządzania-zadaniami">3 elementy zarządzania zadaniami</h3>
+
+<p>Pracę z zadaniami dzielę na trzy podstawowe etapy:</p>
+<ol>
+  <li>zapisywanie zadań</li>
+  <li>przegląd zadań</li>
+  <li>wykonanie zadania.</li>
+</ol>
+
+<h4 id="zapisywanie-zadań">Zapisywanie zadań</h4>
+
+<p>Zadanie powinniśmy zapisać w momencie, gdy je dostrzeżemy. Chcemy minimalizować czas, w którym zadanie jest <strong>tylko w naszej pamięci</strong>. Oznacza to, że chcemy zapisywać zadania w trakcie wykonywania innych czynności, np. będąc na spotkaniu, pracując nad innym zdaniem, rozmawiając na korytarzu czy patrząc przez okno kontemplując poranną kawkę.</p>
+
+<p>Narzędzie wspomagające nas w zarządzaniu zadaniami musi zatem dostarczać prosty sposób zapisywania zadania. Jak najmniej danych obowiązkowych, jak najmniej decyzji do podjęcia w momencie zapisywania. Jeżeli do stworzenia zadania muszę się przygotować i wiedzieć kiedy, jak, gdzie i z kim to zadanie będę wykonywał, to często tego zadania nie zapiszę.</p>
+
+<p>Jeżeli od początku wiem coś więcej o zadaniu np. <em>“żeby wysłać tego maila będę potrzebował dostępu do poczty”</em> to mogę od razu to zapisać np. dodając etykietę <em>“email”</em>. Ale nie muszę tego robić natychmiast. Mogę te informacje uzupełnić później. Najlepiej podczas <a href="#przegląd-zadań">przeglądania zadań</a>.</p>
+
+<p>Aby móc zapisać zadanie musimy najpierw je <strong>dostrzec</strong>. To samo w sobie często jest bardzo trudne, a czasem wręcz najtrudniejsze. Realizując zadanie łatwo jest <em>“zatracić się”</em> i rozwiązywać kolejne wyzwania bez zastanawiania się czy nie odwodzi nas to zbytnio od aktualnego celu.</p>
+
+<p>A zatem co może być moim <em>zadaniem</em>? Wszystko co nie jest wprost zaadresowane do osoby obecnej przy rozmowie. Aby w ciągu słów i myśli rozpoznać potencjalne zadanie warto zwracać uwagę na wypowiedziane czasowniki:</p>
+<ul>
+  <li>w pierwszej osobie liczby pojedynczej i mnogiej, np:
+    <ul>
+      <li><em>“zrobię/zrobimy”</em></li>
+      <li><em>“sprawdzę/sprawdzimy”</em></li>
+      <li><em>“zapytam”</em></li>
+      <li><em>“przypilnuję/dopilnuję”</em></li>
+    </ul>
+  </li>
+  <li>w drugiej osobie liczby mnogiej
+    <ul>
+      <li><em>“zrobicie”</em></li>
+      <li><em>“sprawdzicie”</em></li>
+    </ul>
+  </li>
+  <li>w trzeciej osobie liczby pojedynczej
+    <ul>
+      <li><em>“on to zrobi”</em>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Zdania z takimi czasownikami opisują zadanie, które należy wykonać albo upewnić się, że ktoś je wykona.</p>
+
+<h4 id="przegląd-zadań">Przegląd zadań</h4>
+
+<p>Jeżeli mamy już listę zadań dodanych jak najszybciej, <em>“na gorąco”</em>, to koniecznie musimy tę listę oczyścić. Nieoczyszczana lista szybko robi się długa i przerażająca. Jej pielęgnowanie jest bardzo ważne. Na szczęście mamy dość proste narzędzie do pielęgnacji listy: <strong>przegląd</strong>.</p>
+
+<p>Przegląd polega na przejściu wszystkich zadań na liście.  Procedura powtarzana dla każdego zadania może być różna. W moim przypadku sprawdza się poniższa:</p>
+<ul>
+  <li>jeżeli zadanie jest nieaktualne lub bez sensu: <strong>usuwam</strong> to zadanie</li>
+  <li>jeżeli zadanie jest <em>“małe”</em> (dla mnie najczęściej to znaczy <em>“zajmie mniej niż 3 minuty”</em>): <strong>realizuję</strong> natychmiast</li>
+  <li>jeżeli jest jakaś wątpliwość w zadaniu i mogę ją wyjaśnić: <strong>uzupełniam opis</strong> zadania</li>
+  <li>jeżeli jest jakaś wątpliwość w zadaniu i nie mogę jej od razu wyjaśnić: <strong>dodaję zadanie</strong> na wyjaśnienie</li>
+  <li>upewniam się, że zadanie ma pełen opis wedle obecnego stanu wiedzy (treść, priorytet, termin, etykiety, komentarze…), w razie potrzeby: <strong>uzupełniam lub poprawiam</strong> opis.</li>
+</ul>
+
+<p>Koniec, w ramach przeglądu nie robię nic więcej. Taki przegląd powinien zająć nie więcej niż 15 minut i powinien być robiony co najmniej raz dziennie. Dla mnie optymalne są dwa przeglądy: jeden rano <em>“do porannej kawki”</em> podczas którego staram się ułożyć plan dnia, i drugi pod koniec pracy w biurze podczas którego upewniam się że nie przeoczyłem czegoś ważnego.</p>
+
+<p>Część materiałów dostępnych online poleca wieczorny przegląd zadań <em>“na koniec dnia”</em>, aby następnego dnia obudzić się z gotowym planem na dzień w głowie. Cytując klasyka:</p>
+<blockquote>
+  <p>“najlepszy sposób na zakończenie dnia to zaplanowanie dnia następnego”</p>
+</blockquote>
+
+<p>Pomysł jest pociągający, idea szczytna. Prawda jest taka, że nie udało mi się jak dotąd wcielić tego w życie. Może kiedyś będę mógł uzupełnić ten wpis doświadczeniami w tym zakresie.</p>
+
+<p>W ramach przeglądu można też przypisać zadaniom kategorie/projekty, priorytety, etykiety, itp. Możliwości są mocno zależne od wybranego narzędzia wpierającego zarządzanie zadaniami, jednak cel jest wspólny dla wszystkich: podzielić duży zbiór zadań na mniejsze, które łatwiej ułożyć w odpowiedniej kolejności.</p>
+
+<h4 id="wykonanie-zadań">Wykonanie zadań</h4>
+
+<p>Po dostrzeżeniu zadań, zapisaniu ich poza głową, przejrzeniu i odpowiednim uszeregowaniu przychodzi wreszcie czas na ich wykonanie. Jeżeli poprzednie elementy wykonaliśmy poprawnie, możemy w tym momencie skupić się w 100% na meritum zadania. Jesteśmy pewni, że zadanie na górze listy jest najważniejsze i w tej chwili powinniśmy się nim zająć. Nie rozprasza nas zastanawianie się nad tym, jak lepiej wykorzystać czas.</p>
+
+<h2 id="dostępne-narzędzia">Dostępne narzędzia</h2>
+
+<p>Wybór narzędzia najczęściej jest najciekawszym etapem różnych przedsięwzięć. Wiele osób od tego zaczyna przygodę z <em>“zarządzaniem zadaniami”</em>. Niestety wielu też na tym etapie kończy. Pamiętajmy, że narzędzie ma nam pomóc osiągnąć cel. Ma nam ułatwić. Nie wskaże nam natomiast celów i nie wykona zadań za nas. Korzystanie z danego narzędzia nie powinno też być celem samym w sobie.</p>
+
+<p>Skoro chcemy jednak <em>“gdzieś”</em> te zadania zapisywać zobaczmy, jakie mamy możliwości.</p>
+
+<ol>
+  <li>kartka papieru
+    <ul>
+      <li>łatwe do wdrożenia, praktycznie zerowy czas wejścia</li>
+      <li>trudne zarządzanie (sortowanie? priorytetyzacja? zadania cykliczne?)</li>
+      <li>trudne wyszukiwanie</li>
+      <li>słabe skalowanie</li>
+    </ul>
+  </li>
+  <li>plik tekstowy
+    <ul>
+      <li>łatwe do uruchomienia</li>
+      <li>łatwe wyszukiwanie</li>
+      <li>konieczność wypracowania własnej notacji i oznaczeń</li>
+      <li>brak obsługi przypomnień</li>
+      <li>synchronizacja pomiędzy urządzeniami?</li>
+    </ul>
+  </li>
+  <li>WIKI (np. lista zadań w prywatnej przestrzeni)
+    <ul>
+      <li>łatwe do uruchomienia</li>
+      <li>łatwe wyszukiwanie</li>
+      <li>konieczność wypracowania własnej notacji i oznaczeń</li>
+      <li>brak obsługi przypomnień</li>
+      <li>łatwa synchronizacja pomiędzy urządzeniami</li>
+    </ul>
+  </li>
+  <li>JIRA (np. lista zadań w prywatnym projekcie)
+    <ul>
+      <li>proste zarządzanie z wykorzystaniem rankingu, etykiet, epików itp.</li>
+      <li>możliwość skonfigurowania przypomnień</li>
+      <li>skomplikowana konfiguracja przepływu i struktury zadania</li>
+      <li>słabe wsparcie dla urządzeń mobilnych bez dodatkowych aplikacji</li>
+    </ul>
+  </li>
+  <li>“JIRA” w chmurze (np. Trello)
+    <ul>
+      <li>lista zadań w prywatnej “chmurze”</li>
+      <li>proste zarządzanie z wykorzystaniem rankingu, etykiet, epików itp.</li>
+      <li>możliwość skonfigurowania przypomnień</li>
+      <li>dostępność z internetu (bez vpn/certyfikatów)</li>
+      <li>aplikacja mobilna</li>
+      <li>konieczność dostosowania workflow</li>
+    </ul>
+  </li>
+  <li>dedykowana aplikacja
+    <ul>
+      <li>lista zadań w prywatnej “chmurze”</li>
+      <li>możliwość wprowadzenia struktury/etykiet</li>
+      <li>dostępność z internetu</li>
+      <li>aplikacja mobilna</li>
+      <li>brak narzuconego/wymaganego workflow.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Powyższa lista żadną miarą nie jest kompletna. Jestem przekonany, że istnieje jeszcze sporo ciekawych rozwiązań. Korzystanie z dedykowanej aplikacji jest jednak tak wygodne, że przestałem szukać dalej.</p>
+
+<h2 id="moje-narzędzie">Moje narzędzie</h2>
+
+<p>Ja do zarządzania zadaniami wykorzystuję aplikację <a href="https://todoist.com">Todoist</a>. Mój wybór ułatwiły następujące właściwości aplikacji:</p>
+<ol>
+  <li>łatwość dostępu
+    <ul>
+      <li>WWW</li>
+      <li>dedykowana aplikacja mobilna</li>
+      <li>aplikacja Chrome (np. uruchamianie w Ubuntu jako osobne okno które mogę przykleić do pulpitu)</li>
+      <li>rozszerzenie Chrome (np. do szybkiego dodawania zadań)</li>
+    </ul>
+  </li>
+  <li>brak narzuconego sposobu zarządzania
+    <ul>
+      <li>nie muszę definiować statusów/workflow zadań</li>
+      <li>mogę dowolnie interpretować priorytety/etykiety/projekty itp.</li>
+    </ul>
+  </li>
+  <li>dodatkowe wbudowane funkcjonalności
+    <ul>
+      <li>etykiety</li>
+      <li>projekty</li>
+      <li><strong>filtry</strong></li>
+      <li>przypomnienia czasowe i geograficzne</li>
+      <li>integracje (email, Gmail, Chrome, Asystent Google, Slack, Kalendarz Google, IFFT…)</li>
+    </ul>
+  </li>
+  <li>aspekt społecznościowy
+    <ul>
+      <li>sporo materiałów opisujących podejścia różnych osób do zarzadzania zadaniami w Todoist</li>
+      <li>Youtube, Twitter, blog.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Dodawanie zadań jest proste. Wymaga minimalnej wiedzy o zadaniu jednocześnie umożliwia ustawienie wszystkich aspektów natychmiast. Dzięki integracjom mogę dodawać zadanie w najwygodniejszy aktualnie sposów, np.</p>
+<ul>
+  <li>gdy prowadzę samochód mogę powiedzieć do Asystenta Google: “notatka dla siebie sprawdź jutro czy poszła faktura za X”</li>
+  <li>podczas korzystania z telefonu mogę dodać zadnie dotykając jeden przycisk na ekranie i wpisać treść zadania
+    <ul>
+      <li>etykiety, terminy, priorytety są zaczytywane z tekstu</li>
+      <li>można też je łatwo wybrać przyciskami</li>
+    </ul>
+  </li>
+  <li>mogę dodać zadanie wysyłając email na dedykowany adres
+    <ul>
+      <li>bardzo przydatne jako forward - stworzenie zadania z maila zajmuje 4 sekundy</li>
+    </ul>
+  </li>
+  <li>mogę dodać zadanie z menu kontekstowego w przeglądarce</li>
+  <li>mogę dodać zadanie z poziomu rozmowy na Slack wpisująć “/todoist sprawdź kiedy grają Gwiezdne Wojny”</li>
+  <li>mogę dodać zadanie bezpośrednio w aplikacji</li>
+  <li>mogę automatycznie tworzyć zadania w odpowiedzi na zdarzenia IFFT.</li>
+</ul>
+
+<p>Przeglądanie zadań jest proste. Zadania bez wskazanego projektu wpadają do skrzynki odbiorczej. Jest to worek, na wszystko co wpadło (o ile podczas tworzenia zadania nie podałem wprost projektu). Przeglądając skrzynkę odbiorczą mogę:</p>
+<ul>
+  <li>uzupełnić opis zadania
+    <ul>
+      <li>notatki w formie tekstu i załączników</li>
+    </ul>
+  </li>
+  <li>dodać podzadania</li>
+  <li>ustawić priorytet
+    <ul>
+      <li>5 poziomów</li>
+      <li>steruje kolejnością wyświetlania zadań (prosto, bez ręcznego sortowania i nadmiernego wyboru)</li>
+    </ul>
+  </li>
+  <li>przypisać do projektu
+    <ul>
+      <li>pozwala zdefiniować osobne worki zadań</li>
+      <li>ułatwia <em>“ogarnięcie”</em> dużej ilości zadań</li>
+    </ul>
+  </li>
+  <li>ustawić etykietę
+    <ul>
+      <li>ja wykorzystuję etykiety jako wskazówki czego potrzebuję do wykonania zadania</li>
+      <li>jedno zadanie może mieć wiele etykiet</li>
+      <li>przykłady moich etykiet: email, wiki, jira, biuro, cisza</li>
+      <li>bardzo przydatne przy wykorzystaniu filtrów</li>
+    </ul>
+  </li>
+  <li>ustawić termin</li>
+  <li>ustawić przypomnienie
+    <ul>
+      <li>czasowe</li>
+      <li>geograficzne (np. <em>“gdy wejdę do Castorama”</em>) - brzmi fajnie, przydatność taka sobie w moim przypadku.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Wybór zadania do wykonania jest prosty. Opieram się o filtry wybierające zadania na dany moment. Dla przykładu:</p>
+<ul>
+  <li>filtr “K9” (od nazwy naszego biura):
+    <ul>
+      <li>etykiety: biuro lub jira lub wiki lub email lub telefon lub “nie cisza”</li>
+      <li>termin: dzisiaj lub brak terminu (jeżeli na jutro to dzisiaj nie wrzucaj mi tego na ekran)</li>
+    </ul>
+  </li>
+  <li>filtr “pociąg”:
+    <ul>
+      <li>etykiety: jira lub wiki lub email lub cisza</li>
+      <li>termin: dzisiaj lub brak terminu</li>
+    </ul>
+  </li>
+  <li>filtr “wieczór”:
+    <ul>
+      <li>etykiety: jira lub wiki lub email lub cisza lub “nie biuro”.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Zadania widoku filtra są posortowane po priorytetach. Najważniejsze na górze. Aplikacja Chrome dodana do autostartu zapewnia że lista zadań będzie zawsze widoczna na pulpicie komputera.</p>
+
+<h2 id="kiedy-to-wszystko-robić">Kiedy to wszystko robić?</h2>
+
+<p>Dodajemy zadania ciągle, na bieżąco. Nie chcemy pamiętać o dodaniu zadania.</p>
+
+<p>Przegląd zadań - regularnie. U mnie sprawdza się metoda <em>“pozytywnego skojarzenia”</em>: poranny przegląd zadań zawsze przy <strong>porannej kawce</strong>. Należy pamiętać, że przegląd można robić też w miarę potrzeb, nawet jeśli niedawno zrobiło się planowany. Jeżeli np. zrealizowaliśmy już wszystkie zadania na dzisiaj (rzadko) albo sprawy bieżące przygniotły nas bardziej niż zakładaliśmy (często).</p>
+
+<p>Wykonywanie zadań - ciągle. Jeżeli siadam przy biurku, to nie zastanawiam się, co tu by zrobić. Patrzę na listę w odpowiednim filtrze i jadę od góry. Zadanie możemy również wykonywać w odpowiedzi na przypomnienie. Polecam jednak ostrożność w tym aspekcie. Przypomnienia potrafią skutecznie wybić z rytmu.</p>
+
+<h3 id="kiedy-robię-coś-nie-tak">Kiedy robię coś nie tak?</h3>
+
+<p>Po czym mogę poznać, że coś robię nie tak? Mam skonfigurowane narzędzie. Jestem zmotywowany. Coś tam wychodzi, ale czy na pewno? Poniższe objawy powinny nas sprowokować do optymalizacji lub zmiany podejścia:</p>
+
+<ul>
+  <li>nie zapisuję zadań
+    <ul>
+      <li>nie mam przy sobie narzędzia</li>
+      <li>nie wiem, na kiedy to</li>
+      <li>nie wiem, czego będę potrzebował</li>
+      <li>nie wiem, czy warto</li>
+    </ul>
+  </li>
+  <li>realizuję chaotycznie
+    <ul>
+      <li>nie wiem, za co się zabrać</li>
+      <li><em>“aaaa, tutaj to było!”</em>”</li>
+      <li><em>“dzisiaj już tego nie dokończę”</em></li>
+    </ul>
+  </li>
+  <li>realizuję z pamięci i potem znajduję zadania już wykonane
+    <ul>
+      <li><em>“o to już zrobiłem dwa tygodnie temu”</em></li>
+      <li><em>“ten projekt zrobiliśmy w zeszłym roku”</em></li>
+    </ul>
+  </li>
+  <li>realizuję zbyt duże zadania
+    <ul>
+      <li><em>“napisz bloga”</em> (jedno zadanie)</li>
+    </ul>
+  </li>
+  <li>realizuję zadania, których nie warto robić teraz.</li>
+</ul>
+
+<h2 id="gdzie-szukać-informacji">Gdzie szukać informacji?</h2>
+
+<p>Przede wszystkim: Google. Temat nie jest nowy, jest bardzo często opisywany. Pamiętajmy jednak, aby wykorzystać opisy aby dostosować mechanizm do własnych potrzeb. Widziałem już (nie tylko u siebie) próby bezkrytycznego wdrożenia metodyki (np. GTD) kończące się totalną klapą z uwagi na drobnostki. Można wybrać sobie tylko te elementy, które nam pomagają.</p>
+
+<p>Pozostałe źródła informacji:</p>
+<ul>
+  <li>Youtube
+    <ul>
+      <li><a href="https://www.youtube.com/channel/UCE_lTvaMHuco_Oh3-69LkCA">Carl Pullein</a></li>
+      <li><a href="https://www.youtube.com/user/cesidalessio">Keep Productive</a></li>
+      <li><a href="https://www.youtube.com/user/DoistApps">Doist</a></li>
+    </ul>
+  </li>
+  <li>strona <a href="https://todoist.com/overview">Todoist</a> i <a href="https://doist.com/blog/">blog</a> firmy która go napisała</li>
+  <li>Twitter
+    <ul>
+      <li><a href="https://twitter.com/search?q=%40todoist">@todoist</a></li>
+      <li><a href="https://twitter.com/search?q=%40carlpullein">@carlpullein</a></li>
+      <li><a href="https://twitter.com/search?q=%23productivity">#productivity</a>.</li>
+    </ul>
+  </li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Personal Tasks Time Management Productivity To-Do Lists Planning Your Day";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

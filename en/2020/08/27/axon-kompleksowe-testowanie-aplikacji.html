@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Axon - Kompleksowe testowanie aplikacji | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Axon - Kompleksowe testowanie aplikacji" />
+<meta name="author" content="mkociszewski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Niniejszy artykuł jest poświęcony w pełni testom aplikacji opartej o Axona. Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu." />
+<meta property="og:description" content="Niniejszy artykuł jest poświęcony w pełni testom aplikacji opartej o Axona. Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2020/08/27/axon-kompleksowe-testowanie-aplikacji.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/08/27/axon-kompleksowe-testowanie-aplikacji.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-27T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/thumbnail.webp" />
+<meta property="twitter:title" content="Axon - Kompleksowe testowanie aplikacji" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mkociszewski"},"image":"https://blog.consdata.tech/assets/img/posts/2020-07-30-axon-kompleksowe-testowanie-aplikacji/thumbnail.webp","@type":"BlogPosting","headline":"Axon - Kompleksowe testowanie aplikacji","description":"Niniejszy artykuł jest poświęcony w pełni testom aplikacji opartej o Axona. Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.","dateModified":"2020-08-27T02:00:00-05:00","datePublished":"2020-08-27T02:00:00-05:00","url":"https://blog.consdata.tech/2020/08/27/axon-kompleksowe-testowanie-aplikacji.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/08/27/axon-kompleksowe-testowanie-aplikacji.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2020/08/27/axon-kompleksowe-testowanie-aplikacji.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">java</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Axon - Kompleksowe testowanie aplikacji</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/mkociszewski.html">
+        <img class="author-image" src="/assets/img/authors/mkociszewski.webp" alt="author">
+        <span class="author-name">Mateusz Kociszewski</span><a class="author" href="https://github.com/matty-matt">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+27
+
+
+August
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Powszechnie wiadomo, że kod dobrze pokryty testami jest dużo bardziej podatny na rozwój - wszak nie musimy obawiać się, że nasza zmiana spowoduje np. powrót znanego wcześniej błędu.
+<a href="/en/2020/06/09/microservices-on-axon.html">W poprzednim wpisie</a> opisałem swoje zmagania z migracją monolitu do mikroserwisów na Axonie, umyślnie pomijając kwestię związaną z testami.
+Niniejszy artykuł jest poświęcony w pełni temu tematowi.
+Przedstawię w nim kilka elementów składających się na kompleksowo przetestowaną aplikację opartą o Axona.</p>
+
+<h2 id="testy-domenowe">Testy domenowe</h2>
+<p>Zacznijmy od przetestowania domeny, czyli logiki biznesowej zawartej w obiektach domenowych.
+W Axonie jest to ułatwione, poprzez gotowe narzędzia, które dostajemy w pakiecie z frameworkiem.
+Zaleta tych testów jest taka, że nie podnoszą one żadnego kontekstu, a więc wykonują się bardzo szybko.</p>
+
+<h2 id="agregaty">Agregaty</h2>
+<p>Zostając przy aplikacji z poprzedniego wpisu, weźmy jako przykład oznaczanie filmu jako obejrzany/nieobejrzany.
+Niezmiennik agregatu mówi, że gdy film jest już oznaczony jako obejrzany, to nie możemy tego zrobić ponownie - tak samo nieobejrzanego filmu nie możemy “odzobaczyć” ;).
+Wystąpienie takiej anomalii odnotowywane jest w logu, a <strong>ToggleWatchedEvent</strong> nie zostaje wyemitowany.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Aggregate</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregate</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@CommandHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">ToggleWatchedCommand</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">watched</span><span class="o">.</span><span class="na">isWatched</span><span class="o">()</span> <span class="o">==</span> <span class="n">command</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Cannot toggle to the same state, skipping.."</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">apply</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedEvent</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">(),</span> <span class="n">command</span><span class="o">.</span><span class="na">getWatched</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Rozważmy tzw. happy path w testach dla tego przypadku biznesowego. 
+Będziemy potrzebować obiektu <strong>FixtureConfiguration</strong>, który zasymuluje nam sytuację, w której może znaleźć się nasz agregat.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">private</span> <span class="nc">FixtureConfiguration</span><span class="o">&lt;</span><span class="nc">MovieAggregate</span><span class="o">&gt;</span> <span class="n">fixture</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">fixture</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AggregateTestFixture</span><span class="o">&lt;&gt;(</span><span class="nc">MovieAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Test piszemy w następujący sposób:</p>
+<ol>
+  <li>Określamy “punkt startowy” dla naszego agregatu, czyli jakie eventy zostały zastosowane w agregacie do tej pory (jest to <strong>given</strong> w podejściu behawioralnym).</li>
+  <li>Wpisujemy command, który chcemy poddać testom (odpowiednio - <strong>when</strong>). W naszym przypadku to <strong>ToggleWatchedCommand</strong></li>
+  <li>Definiujemy stan oczekiwany.</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldToggleWatchedEventAppear</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">given</span><span class="o">(</span>                                                              <span class="c1">// 1</span>
+                    <span class="k">new</span> <span class="nf">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">MovieSavedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>         <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">expectEvents</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>   <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">expectState</span><span class="o">(</span>                                                       
+                    <span class="n">state</span> <span class="o">-&gt;</span> <span class="n">assertThat</span><span class="o">(</span><span class="n">state</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isTrue</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Druga ścieżka do sprawdzenia to brak emisji zdarzenia w momencie zmiany stanu na ten sam.
+Dorzućmy więc do <strong>given</strong> wystąpienie eventu <strong>ToggleWatchedEvent</strong> - wtedy agregat nie powinien wyemitować nic nowego:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAggregateTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldNotToggleWatchedEventAppear</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">given</span><span class="o">(</span>
+                    <span class="k">new</span> <span class="nf">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">MovieSavedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">),</span>
+                    <span class="k">new</span> <span class="nf">ToggleWatchedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="k">new</span> <span class="nc">ToggleWatchedCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watched</span><span class="o">(</span><span class="kc">true</span><span class="o">)))</span>
+                <span class="o">.</span><span class="na">expectNoEvents</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">expectState</span><span class="o">(</span>                                                       
+                    <span class="n">state</span> <span class="o">-&gt;</span> <span class="n">assertThat</span><span class="o">(</span><span class="n">state</span><span class="o">.</span><span class="na">getWatched</span><span class="o">().</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isTrue</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h2 id="sagi">Sagi</h2>
+<p>Drugim obiektem domenowym, który poddam testom, jest saga (zob. DDD).
+W mojej aplikacji zdarzeniem otwierającym sagę dla filmu jest <strong>MovieCreatedEvent</strong> wyemitowany przez MovieAggrate - po jego pojawieniu się, wysyłam command, który zostanie obsłużony w mikroserwisie (<em>proxy-service</em>) odpowiedzialnym za pobieranie szczegółów filmu z zewnętrznego źródła:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSaga</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@StartSaga</span>
+    <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="no">MOVIE_ID</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieCreatedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">movieId</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">proxyId</span> <span class="o">=</span> <span class="no">PROXY_PREFIX</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">movieId</span><span class="o">);</span>
+        <span class="n">associateWith</span><span class="o">(</span><span class="s">"proxyId"</span><span class="o">,</span> <span class="n">proxyId</span><span class="o">);</span>
+        <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">FetchMovieDetailsCommand</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getSearchPhrase</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Proces ten może trochę potrwać (niedostępność zewnętrznego źródła, timeouty, problemy z łączem), dlatego też zdecydowałem się na sagę, która jest rozwiązaniem nieblokującym.
+Gdy <em>proxy-service</em> wyemituje zdarzenie <strong>MovieDetailsEvent</strong>, to w zależności od zawartości payloadu, śle command z uzupełnionymi szczegółami dla filmu lub nie i bez względu na rezultat kończę sagę:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSaga</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@SagaEventHandler</span><span class="o">(</span><span class="n">associationProperty</span> <span class="o">=</span> <span class="no">PROXY_ID</span><span class="o">)</span>
+    <span class="nd">@EndSaga</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">MovieDetailsEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">movie</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">MovieState</span><span class="o">.</span><span class="na">NOT_FOUND_IN_EXTERNAL_SERVICE</span> <span class="o">==</span> <span class="n">movie</span><span class="o">.</span><span class="na">getMovieState</span><span class="o">())</span> <span class="o">{</span>
+            <span class="c1">// handle when movie not found</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">SaveMovieCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getExternalMovie</span><span class="o">()));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Do przetestowania tego przypadku znów będziemy potrzebować <strong>fixture</strong>, tyle że tym razem skrojony pod sagi:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSagaTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">private</span> <span class="nc">SagaTestFixture</span><span class="o">&lt;</span><span class="nc">MovieSaga</span><span class="o">&gt;</span> <span class="n">fixture</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SagaTestFixture</span><span class="o">&lt;&gt;(</span><span class="nc">MovieSaga</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Testy mają sprawdzić czy odpowiednie commandy zostaną wyemitowane, oraz czy saga “wystartowała”, bądź zakończyła się w odpowiednim momencie.
+Szkielet testu wygląda następująco:</p>
+<ol>
+  <li>Mając agregat X z ustalonym identyfikatorem.</li>
+  <li>Wiedząc, że X nie wyemitował żadnego eventu (lub wyemitował konkretny event).</li>
+  <li>To gdy agregat X.</li>
+  <li>Wyemituje konkretny event.</li>
+  <li>Oczekujemy aktywnej (lub nieaktywnej) sagi oraz opublikowany command (lub nieopublikowanie niczego).</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieSagaTest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldDispatchFetchMovieDetailsCommand</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">givenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                      <span class="c1">// 1</span>
+                <span class="o">.</span><span class="na">published</span><span class="o">()</span>                                                 <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">whenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                      <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">publishes</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">))</span>     <span class="c1">// 4</span>
+                <span class="o">.</span><span class="na">expectActiveSagas</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>                                        <span class="c1">// 5</span>
+                <span class="o">.</span><span class="na">expectDispatchedCommands</span><span class="o">(</span>                                   
+                    <span class="k">new</span> <span class="nf">FetchMovieDetailsCommand</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldDispatchSaveCastCommand</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">fixture</span><span class="o">.</span><span class="na">givenAggregate</span><span class="o">(</span><span class="n">movieId</span><span class="o">)</span>                                       <span class="c1">// 1</span>
+                <span class="o">.</span><span class="na">published</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieCreatedEvent</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">searchPhrase</span><span class="o">))</span>      <span class="c1">// 2</span>
+                <span class="o">.</span><span class="na">whenAggregate</span><span class="o">(</span><span class="n">proxyId</span><span class="o">)</span>                                       <span class="c1">// 3</span>
+                <span class="o">.</span><span class="na">publishes</span><span class="o">(</span><span class="k">new</span> <span class="nc">MovieDetailsEvent</span><span class="o">(</span><span class="n">proxyId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">))</span>     <span class="c1">// 4</span>
+                <span class="o">.</span><span class="na">expectActiveSagas</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>                                         <span class="c1">// 5</span>
+                <span class="o">.</span><span class="na">expectDispatchedCommands</span><span class="o">(</span>                                    
+                    <span class="k">new</span> <span class="nf">SaveMovieCommand</span><span class="o">(</span><span class="n">movieId</span><span class="o">,</span> <span class="n">externalMovie</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Jak widać zastosowanie fixture również w przypadku sagi, okazuje się proste i intuicyjne.</p>
+
+<h2 id="testy-integracyjne---możliwe-z-axonem">Testy integracyjne - możliwe z Axonem?</h2>
+<p>Po testach domenowych, gdy wiemy już, że nasza logika biznesowa jest poprawna (i mamy na to dowody w postaci testów!), można zabrać się za weryfikację trochę większego fragmentu aplikacji.</p>
+
+<h2 id="konfiguracja">Konfiguracja</h2>
+<p>Testy integracyjne z użyciem prawdziwego Event Store’a (w naszym przypadku AxonServera) wymagają więcej konfiguracji - twórcy w tym aspekcie akurat nie przygotowali nam gotowego rozwiązania.
+Trochę się naszukałem, zanim znalazłem informację o tym, że rekomendowanym przez AxonIQ rozwiązaniem problemu jest skorzystanie z obrazu dockerowego.
+Konkretnie wspominają o uruchomieniu AxonServer z terminala i podłączeniu się testami do tej instancji.
+Wręcz idealna rola dla <a href="https://www.testcontainers.org/"><strong>testcontainers</strong></a> - pomyślałem (po przygotowaniu konfiguracji pod testy, trafiłem na podobne rozwiązanie na stacku).
+Stworzyłem klasę umożliwiającą podniesienie potrzebnych kontenerów, aby skorzystać z nich podczas testów:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestContainers</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MONGO_PORT</span> <span class="o">=</span> <span class="mi">29019</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">AXON_HTTP_PORT</span> <span class="o">=</span> <span class="mi">8024</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">AXON_GRPC_PORT</span> <span class="o">=</span> <span class="mi">8124</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">startAxonServer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">GenericContainer</span> <span class="n">axonServer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">(</span><span class="s">"axoniq/axonserver:latest"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="no">AXON_HTTP_PORT</span><span class="o">,</span> <span class="no">AXON_GRPC_PORT</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">waitingFor</span><span class="o">(</span>
+                        <span class="nc">Wait</span><span class="o">.</span><span class="na">forLogMessage</span><span class="o">(</span><span class="s">".*Started AxonServer.*"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                <span class="o">);</span>
+        <span class="n">axonServer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span>
+                <span class="s">"ENV_AXON_GRPC_PORT"</span><span class="o">,</span> 
+                <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">axonServer</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="no">AXON_GRPC_PORT</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">startMongo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">GenericContainer</span> <span class="n">mongo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GenericContainer</span><span class="o">(</span><span class="s">"mongo:latest"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="no">MONGO_PORT</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withEnv</span><span class="o">(</span><span class="s">"MONGO_INITDB_DATABASE"</span><span class="o">,</span> <span class="s">"moviekeeper"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withCommand</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"mongod --port %d"</span><span class="o">,</span> <span class="no">MONGO_PORT</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">waitingFor</span><span class="o">(</span>
+                        <span class="nc">Wait</span><span class="o">.</span><span class="na">forLogMessage</span><span class="o">(</span><span class="s">".*waiting for connections.*"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+                <span class="o">);</span>
+        <span class="n">mongo</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span>
+                <span class="s">"ENV_MONGO_PORT"</span><span class="o">,</span> 
+                <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">mongo</span><span class="o">.</span><span class="na">getMappedPort</span><span class="o">(</span><span class="no">MONGO_PORT</span><span class="o">)));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Należy tu jednak pamiętać o tym, że <strong>withExposedPorts</strong> wystawia porty tylko <strong>wewnątrz kontenera</strong>, potrzebny więc był sposób na pozyskanie portów, do których testy będą mogły się połączyć.
+Testcontainers przy każdym restarcie kontenera wystawia go na losowym wolnym porcie z danego zakresu, istnieje jednak metoda na pobranie tych portów w runtime.
+Robię to w ostatniej instrukcji każdej z metod, jednocześnie wrzucając znalezione wartości do zmiennych środowiskowych <strong>ENV_AXON_GRPC_PORT</strong> oraz <strong>ENV_MONGO_PORT</strong>.
+Zmienne te używam w yamlu konfiguracyjnym pod testy:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">data</span><span class="pi">:</span>
+        <span class="na">mongodb</span><span class="pi">:</span>
+            <span class="na">uri</span><span class="pi">:</span> <span class="s">mongodb://localhost:${ENV_MONGO_PORT}/moviekeeper</span>
+<span class="na">axon</span><span class="pi">:</span>
+  <span class="na">axonserver</span><span class="pi">:</span>
+        <span class="na">servers</span><span class="pi">:</span> <span class="s">localhost:${ENV_AXON_GRPC_PORT}</span>
+</code></pre></div></div>
+<p>Metody <strong>startMongo</strong> i <strong>startAxonServer</strong> wykorzystałem w klasie, z której dziedziczą wszystkie testy integracyjne:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="o">(</span><span class="nc">SpringExtension</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@SpringBootTest</span><span class="o">(</span><span class="n">webEnvironment</span> <span class="o">=</span> <span class="nc">SpringBootTest</span><span class="o">.</span><span class="na">WebEnvironment</span><span class="o">.</span><span class="na">RANDOM_PORT</span><span class="o">)</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommonIntegrationSetup</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@BeforeAll</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">beforeAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">TestContainers</span><span class="o">.</span><span class="na">startAxonServer</span><span class="o">();</span>
+        <span class="nc">TestContainers</span><span class="o">.</span><span class="na">startMongo</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Po wszystkim nie musimy zatrzymywać kontenerów, zadzieje się to automatycznie (GenericContainer implementuje <code class="language-plaintext highlighter-rouge">AutoCloseable</code>).
+Należy jednak pamiętać o <strong>ustawieniu profilu</strong> i <strong>pliku konfiguracyjnym</strong> pod ten profil - zdarzyło mi się puścić testy (bez tych dwóch rzeczy skonfigurowanych), podczas gdy aplikacja chodziła “produkcyjnie” - można łatwo zgadnąć, do jakiego AxonServera owe testy się podłączyły. :)</p>
+
+<h2 id="skonfigurowane-do-dzieła">Skonfigurowane. Do dzieła!</h2>
+<p>W mojej aplikacji w momencie, gdy znaleziony zostanie film o żądanym tytule, mają miejsce następujące kroki:</p>
+<ol>
+  <li>Zwracane są szczegóły znalezionego filmu.</li>
+  <li>Wysyłany jest command, który mówi <strong>znajdź trailery i obsadę dla tego filmu</strong>.</li>
+</ol>
+
+<p>Parę kroków później efektem tego commanda, są kolejne commandy, już skierowane do konkretnego mikroserwisu (odpowiedzialnego za pobranie obsady i trailerów).
+Żeby nie było za łatwo, wyszukiwanie czegokolwiek w TMDb zlecam osobnemu mikroserwisowi (zachęcam do spojrzenia na diagram komponentów z <a href="/en/2020/06/09/microservices-on-axon.html">poprzedniego wpisu</a>).
+Oczywiście nie chcę, aby test był zależny od jakiegoś serwisu, więc konieczne jest stworzenie mocka:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Profile</span><span class="o">(</span><span class="s">"test"</span><span class="o">)</span>
+<span class="nd">@Slf4j</span>
+<span class="nd">@Component</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MockProxyCommandHandler</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">EventGateway</span> <span class="n">eventGateway</span><span class="o">;</span>
+
+    <span class="nd">@CommandHandler</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">FetchTrailersCommand</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"MOCK fetching..."</span><span class="o">);</span>
+        <span class="n">eventGateway</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="k">new</span> <span class="nc">TrailersDetailsEvent</span><span class="o">(</span><span class="n">command</span><span class="o">.</span><span class="na">getProxyId</span><span class="o">(),</span> <span class="no">TRAILERS</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W teście chcę zasymulować sytuację, w której pojawia się command <strong>CreateTrailersCommand</strong>.
+W efekcie aplikacja powinna pobrać trailery dla wskazanego filmu i umieścić je w bazie:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TrailersIntegrationTest</span> <span class="kd">extends</span> <span class="nc">CommonIntegrationSetup</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">CommandGateway</span> <span class="n">commandGateway</span><span class="o">;</span>
+    <span class="o">...</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">beforeEach</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">movieId</span> <span class="o">=</span> <span class="s">"123"</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">trailers</span> <span class="o">=</span> <span class="n">generateTrailers</span><span class="o">(</span><span class="n">movieId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldRetrieveTrailers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// given</span>
+        <span class="n">commandGateway</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="k">new</span> <span class="nc">CreateTrailersCommand</span><span class="o">(</span>
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">(),</span> 
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getExternalMovieId</span><span class="o">(),</span> 
+                    <span class="n">trailers</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">()));</span>
+
+        <span class="n">await</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="no">FIVE_SECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">with</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">pollInterval</span><span class="o">(</span><span class="no">ONE_HUNDRED_MILLISECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">until</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">trailerRepository</span><span class="o">.</span><span class="na">findByMovieId</span><span class="o">(</span><span class="n">movieId</span><span class="o">).</span><span class="na">isPresent</span><span class="o">());</span>
+
+        <span class="c1">// when</span>
+        <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">TrailerDTO</span><span class="o">[]&gt;</span> <span class="n">trailerResponse</span> <span class="o">=</span> <span class="n">testRestTemplate</span>
+                <span class="o">.</span><span class="na">getForEntity</span><span class="o">(</span>
+                        <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GET_TRAILERS_URL</span><span class="o">,</span> <span class="n">randomServerPort</span><span class="o">,</span> <span class="n">movieId</span><span class="o">),</span>
+                        <span class="nc">TrailerDTO</span><span class="o">[].</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// then</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">TrailerDTO</span><span class="o">&gt;</span> <span class="n">trailerDTOS</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">trailerResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">());</span>
+
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerDTOS</span><span class="o">.</span><span class="na">size</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">trailerDTOS</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">trailers</span><span class="o">.</span><span class="na">getTrailers</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Skorzystałem z <a href="https://github.com/awaitility/awaitility"><strong>awaitility</strong></a>, żeby poczekać chwilę na odpowiedź w razie małej czkawki.</p>
+
+<h2 id="testy-e2e">Testy E2E</h2>
+<p>Na samym szczycie piramidy testów są testy end-to-end, czyli sprawdzenie aplikacji w ten sposób, w jaki klient z niej korzysta.
+W moim przypadku klientem jest aplikacja frontendowa, która uderzając na konkretny endpoint, oczekuje konkretnej odpowiedzi.
+Przetestujmy wyszukanie filmu po tytule.</p>
+
+<p>Taki test powinien:</p>
+<ul>
+  <li>uderzyć na endpoint, za którym kryje się dana funkcjonalność,</li>
+  <li>sprawdzić status odpowiedzi od serwera,</li>
+  <li>sprawdzić zawartość odpowiedzi,</li>
+  <li>upewnić się, że film został umieszczony w bazie, a jeśli tak to czy jest on równy temu, który dostaliśmy w ciele odpowiedzi.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieE2ETest</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldStoreMovie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// when</span>
+        <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">MovieDTO</span><span class="o">&gt;</span> <span class="n">storedMovieResponse</span> <span class="o">=</span> <span class="n">testRestTemplate</span><span class="o">.</span><span class="na">postForEntity</span><span class="o">(</span>
+                           <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GET_OR_POST_MOVIES</span><span class="o">,</span> <span class="n">randomServerPort</span><span class="o">),</span> 
+                           <span class="k">new</span> <span class="nf">TitleBody</span><span class="o">(</span><span class="no">SUPER_MOVIE</span><span class="o">),</span> 
+                           <span class="nc">MovieDTO</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">storedMovieResponse</span><span class="o">.</span><span class="na">getStatusCode</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CREATED</span><span class="o">);</span>
+
+        <span class="nc">MovieDTO</span> <span class="n">body</span> <span class="o">=</span> <span class="n">storedMovieResponse</span><span class="o">.</span><span class="na">getBody</span><span class="o">();</span>
+
+        <span class="n">await</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">atMost</span><span class="o">(</span><span class="no">FIVE_SECONDS</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">pollInterval</span><span class="o">(</span><span class="no">ONE_HUNDRED_MILLISECONDS</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">until</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">movieRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">()).</span><span class="na">isPresent</span><span class="o">());</span>
+
+        <span class="c1">// then</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">).</span><span class="na">isNotNull</span><span class="o">();</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getAggregateId</span><span class="o">()).</span><span class="na">isNotEmpty</span><span class="o">();</span>
+        <span class="n">assertThat</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getTitle</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="no">SUPER_MOVIE</span><span class="o">);</span>
+
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">MovieDTO</span><span class="o">&gt;</span> <span class="n">persistedMovie</span> <span class="o">=</span> <span class="n">movieRepository</span>
+                    <span class="o">.</span><span class="na">findByExternalMovieId</span><span class="o">(</span><span class="n">body</span><span class="o">.</span><span class="na">getExternalMovieId</span><span class="o">());</span>
+        <span class="n">persistedMovie</span><span class="o">.</span><span class="na">ifPresent</span><span class="o">(</span><span class="n">movie</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">.</span><span class="na">getCreationDate</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="no">NOW</span><span class="o">);</span>
+            <span class="n">assertThat</span><span class="o">(</span><span class="n">movie</span><span class="o">.</span><span class="na">isWatched</span><span class="o">()).</span><span class="na">isFalse</span><span class="o">();</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>W tym podejściu również wykorzystałem kontenery testowe, tak samo, jak przy testach integracyjnych, konfiguracja jest identyczna.
+Nie chcę uzależniać żadnych testów od połączenia z zewnętrznym serwisem, więc i w tym przypadku posłużyłem się mockiem, symulującym działanie proxy-service.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Jak widać korzystanie z Axonowych <strong>fixture</strong> bardzo ułatwia testowanie kodu, a i w przypadku testów wymagających szerszego kontekstu również istnieją rozwiązania.
+Uruchamianie takich testów można w łatwy sposób zautomatyzować, np. używając Travisa, dzięki czemu będziemy znali na bieżąco stan naszej aplikacji.</p>
+
+<h2 id="źródła">Źródła</h2>
+<ul>
+  <li><a href="https://github.com/matty-matt/movie-keeper-core">https://github.com/matty-matt/movie-keeper-core</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "java microservices axon axon-server event-sourcing spring-boot tests";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

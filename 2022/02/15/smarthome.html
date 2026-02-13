@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Inteligentny dom dla programisty, czyli DIY Smart Home | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Inteligentny dom dla programisty, czyli DIY Smart Home" />
+<meta name="author" content="aswarcewicz" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="DIY dla Smart Home, z przykładami automatyzacji, treściwym przeglądem systemów i narzędzi dla inteligentnego domu." />
+<meta property="og:description" content="DIY dla Smart Home, z przykładami automatyzacji, treściwym przeglądem systemów i narzędzi dla inteligentnego domu." />
+<link rel="canonical" href="https://blog.consdata.tech/2022/02/15/smarthome.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2022/02/15/smarthome.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2022-02-05-smarthome/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-15T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2022-02-05-smarthome/thumbnail.webp" />
+<meta property="twitter:title" content="Inteligentny dom dla programisty, czyli DIY Smart Home" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"aswarcewicz"},"image":"https://blog.consdata.tech/assets/img/posts/2022-02-05-smarthome/thumbnail.webp","@type":"BlogPosting","headline":"Inteligentny dom dla programisty, czyli DIY Smart Home","description":"DIY dla Smart Home, z przykładami automatyzacji, treściwym przeglądem systemów i narzędzi dla inteligentnego domu.","dateModified":"2022-02-15T01:00:00-06:00","datePublished":"2022-02-15T01:00:00-06:00","url":"https://blog.consdata.tech/2022/02/15/smarthome.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2022/02/15/smarthome.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2022/02/15/smarthome.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">smarthome</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Inteligentny dom dla programisty, czyli DIY Smart Home</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/aswarcewicz.html">
+        <img class="author-image" src="/assets/img/authors/aswarcewicz.webp" alt="author">
+        <span class="author-name">Adrian Swarcewicz</span><a class="author" href="https://github.com/aswarcewicz">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+15
+
+lutego
+
+
+
+2022
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Jakiś czas temu trafiłem na artykuł, którego głównym tematem był wzrost popularności Smart Home w czasach pandemii. 
+Od tamtej pory obiecuję sobie, że w końcu się zbiorę i w tzw. pigułce opiszę, z jakich urządzeń ja korzystam, 
+co udało mi się z ich pomocą osiągnąć i jakie problemy napotkałem.</p>
+
+<h2 id="integracje--automatyzacje">Integracje / Automatyzacje</h2>
+
+<p>Zanim jednak przejdę do detali i wszystkich technicznych kwestii związanych ze Smart Home, opowiem o swoich przykładach automatyzacji inteligentnego domu dla programisty.</p>
+
+<h3 id="oświetlenie">Oświetlenie</h3>
+
+<p>Przygodę ze Smart Home zacząłem od oświetlenia, a inspiracją do zmian były przełączniki w niewygodnych miejscach.
+Na start wziąłem przedpokój, jako idealne miejsce do zastosowania czujnika ruchu. Teraz wystarczy wejść, aby światło z automatu się zapaliło i zgasiło po około 40 sekundach bez ruchu. 
+Oczywiście nie „odciąłem” standardowego włącznika na ścianie, a jego użycie zaprogramowałem tak, żeby ręczne włączenie nie brało pod uwagę braku ruchu i było zapalone „na stałe”.
+Moje czujniki ruchu działają na baterie i są bardzo małe, można więc je sprytnie ukryć, zachowując estetykę pomieszczenia.
+Poniżej przykład czujnika ruchu, który zapala światło w przedpokoju. Umieściłem go nad lewą szafką, dzięki czemu jest niewidoczny.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/czujnikruchu.jpg" alt="Czujnik ruchu umieszczony w szafce" width="250" /></p>
+
+<p>Doświadczenie z czujnikami ruchu wykorzystałem też w innych miejscach. Dla przykładu jeden z nich zapala taśmę LED pod łóżkiem w sypialni, dając ciekawy efekt.</p>
+
+<p>Kolejne pomieszczenie, w którym chciałem zadbać o ergonomię związaną z użyciem przełącznika oświetlenia, była kuchnia.
+Tak jak wcześniej, standardowy przełącznik na ścianie pozostawiłem, ale dołożyłem drugi „przyklejany” na magnes pod okapem kuchennym.
+Może nieco mniej smart niż poprzednie rozwiązanie, za to komfort zdecydowanie większy.
+Dosyć często zapominam o wyłączeniu oświetlenia w kuchni, planuję więc dołożyć jeszcze czujnik, który po kilku minutach bez ruchu automatycznie wyłączy światło nad blatem.</p>
+
+<p>Kolejna oświetleniowa automatyzacja, którą warto rozważyć, to taka zależna od zachodu słońca (zmiennego w zależności od daty i położenia geograficznego).
+Automatyzacja „zapala mi” zewnętrzne lampki świąteczne po zachodzie słońca, a wyłącza tuż przed północą.</p>
+
+<p>I jeszcze jedna „oświecona” podpowiedź na koniec. Z użyciem odpowiedniej automatyzacji, bazującej na położeniu telefonów domowników, 
+za każdym razem, kiedy wszyscy są poza domem, mam pewność, że wszystkie światła są pogaszone.</p>
+
+<h3 id="ogrzewanie">Ogrzewanie</h3>
+
+<p>W moim inteligentnym domu zmieniło się też sporo w kwestii ogrzewania.
+Poranek zawsze zaczyna się od wpuszczenia świeżego powietrza, wiec otwarcie okna z automatu zakręca głowice na kaloryferach,
+a odkręca po 10 minutach od ich zamknięcia w celu unormowania temperatury.
+Podobnie jak w przypadku oświetlenia tak i tutaj, gdy wszyscy domownicy są poza domem, to upewniam się, że grzanie jest zakręcone.</p>
+
+<h3 id="ostrzeżenia--alarmy">Ostrzeżenia / alarmy</h3>
+
+<p>Z użyciem Smart Home i wcześniej wspomnianych czujników ruchu, możemy stworzyć własny system alarmowy,
+który pod nieobecność domowników włączy alarm i przekaże nam odpowiedni komunikat.
+W moim przypadku bardzo przydatne okazały się czujniki informujące o wycieku.
+Przy użytkowaniu zmywarki okazało się, że na jednym z połączeń jest mała nieszczelność i dopiero pod koniec zmywania pojawiały się pojedyncze kropelki, które czujnik na szczęście wykrył.
+Innym razem, w tajemniczy sposób pękło połączenie silikonowe między wanną a ścianą, przez co pod prysznicem powoli zbierała się woda.
+Tak jak w przypadku zmywarki, tak i tutaj były to dosłownie pojedyncze kropelki.
+Do przetarcia wystarczał jeden listek ręcznika papierowego.
+Nie mniej jednak dzięki alarmowi wiedziałem, że coś trzeba poprawić.</p>
+
+<h3 id="centrum-sterowania-smart-home">Centrum sterowania Smart Home</h3>
+
+<p>Mając już zestaw narzędzi do samodzielnego wdrożenia Smart Home (nasze DoItYourself), wszystko możemy spiąć tak, aby nasz telefon stał się „centrum sterowania” inteligentnego domu dla programisty.
+Możemy też korzystać z coraz bardziej popularnego sterowania głosowego.
+Z odpowiednimi urządzeniami wystarczy „Hey Google” lub „Hey Siri” oraz konkretna komenda, aby nasz asystent włączył światło, zmienił jego kolor czy zasłonił okna.
+Poniżej przykład z integracji HomeKit na telefonach wyposażonych w iOS.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/homekit1.jpg" alt="HomeKit" width="250" />
+<img src="/assets/img/posts/2022-02-05-smarthome/homekit2.jpg" alt="HomeKit" width="250" /></p>
+
+<p>Jeśli ktoś posiada stary telefon, tablet czy czytnik kindle z wifi, może mu nadać nowe życie. Takie nasze programistyczne zero waste ;)
+Stare urządzenie można umieścić w centralnym miejscu, prezentując aktualny stan temperatury, światła lub tego, co nam nasza kreatywność podpowie.
+Wydaje mi się, że ogranicza nas tylko wyobraźnia. Poniżej znowu moje przykłady:</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/ha-temperature.png" alt="HomeAssistant" width="250" />
+<img src="/assets/img/posts/2022-02-05-smarthome/ha-light.png" alt="HomeAssistant" width="250" /></p>
+
+<h2 id="co-siedzi-pod-maską">Co siedzi pod „maską”?</h2>
+
+<p>Zanim zaczniesz ze Smart Home, przejrzyj dostępne rozwiązania i zwróć uwagę na ich ograniczenia.
+Wiadomo, że najłatwiej uczyć się na błędach i sukcesach innych, opiszę więc swoją ścieżkę do optymalnego rozwiązania.
+Na starcie wybrałem Xiaomi, bo było dostępnych najwięcej urządzeń w przyzwoitych cenach.
+Dodatkowo miałem już czujnik do kwiatka i żarówkę RGB od tego producenta.
+Kupiłem bramkę Xiaomi Gateway v3 działającą po Zigbee oraz Bluetooth i kilka czujników.
+Niedługo później zaczęły się schody.
+Okazało się, że do sensownego działania bramka potrzebuje stałego dostępu do internetu, komunikuje się z chińskimi serwerami (bo taką wersję kupiłem) i pojawiają się opóźnienia na automatyzacjach.</p>
+
+<p>Wtedy zrobiłem mały krok wstecz i zacząłem szukać rozwiązania, które w pełni będzie działało w sieci lokalnej oraz będzie obsługiwało sensory ZigBee, które już mam.
+Tak trafiłem na HomeAssistant i tzw. uniwersalne bramki Zigbee, do których można podłączyć większość sprzętu od różnych producentów.</p>
+
+<h3 id="bramka-zigbee">Bramka Zigbee</h3>
+
+<p>W kwestii bramek uniwersalnych popularnych jest kilka układów. Tym razem, przed zakupem dokładniej prześledziłem opinie użytkowników.
+Po analizie wybór padł na <a href="https://electrolama.com/projects/zig-a-zig-ah/">ZZH</a>. To właśnie to urządzenie miało najlepsze oceny użytkowników i spełniło moje oczekiwania.
+Mam to urządzenia od jakichś dwóch lat i dla mnie to był bardzo dobry wybór. Nigdy nie miałem z nim problemów.</p>
+
+<h3 id="komputer-pod-automatyzację">Komputer pod automatyzację</h3>
+
+<p>Skoro mamy już koncepcje i narzędzia dla naszego Smart Home, przyszedł czas na wybór software,
+który będzie obsługiwać uniwersalną bramkę oraz pozwoli nam tworzyć automatyzację.
+Software trzeba na czymś zainstalować, więc trzeba wybrać odpowiedni komputer. Tutaj też miałem małe potknięcie.
+Akurat miałem wolne Raspberry Pi2 i postanowiłem z niego skorzystać, pomimo że producenci poniższego softu na swoich stronach wprost to odradzali.
+Jak się szybko przekonałem, mieli rację.
+Pomijam już problemy techniczne z zasilaniem mojego egzemplarza Raspberry, które po jakimś czasie freez’owało…
+Większą bolączką okazał się ponowny start HomeAssistant’a, potrzebujący kilkunastu minut, aby podnieść całe oprogramowanie do Smart Home.
+To było stanowczo za długo, a urządzeń oraz automatyzacji miałem zdecydowanie mniej niż teraz.
+Aktualnie korzystam z wirtualki z 2GB RAM, ale wiem, że Raspberry Pi4 też spokojnie daje radę.</p>
+
+<h3 id="zigbee2mqtt">Zigbee2MQTT</h3>
+
+<p>Czujniki oraz uniwersalną bramkę trzeba jakoś sparować. Zigbee2MQTT jest oprogramowaniem, które za pomocą uniwersalnej bramki łączy się z urządzeniami ZigBee, publikuje ich zdarzenia na kolejkę MQTT,
+a także w drugą stronę, zdarzenia z kolejki wysyła do urządzeń.</p>
+
+<h3 id="homeassistant">HomeAssistant</h3>
+
+<p>Jak już mamy coś, co komunikuje się z naszymi urządzeniami za pomocą bramki, to możemy wyświetlić stan naszych urządzeń, a także na ich podstawie zrobić automatyzacje,
+do tego właśnie służy HomeAssistant. Na tym etapie warto wspomnieć, że instalację Zigbee2MQTT oraz MQTT osobno można pominąć i skorzystać z rozwiązań dostarczanych lub instalowanych przez wyklikanie ich w HomeAssitant.
+Ja poszedłem jednak drogą osobnych komponentów. 
+Jak zaczynałem swoją przygodę, natrafiłem na informację, że Zigbee2MQTT wspiera więcej urządzeń niż sam HomeAssitant, a dodatkowo zyskałem możliwość niezależnej aktualizacji poszczególnych komponentów.</p>
+
+<h2 id="urządzenia-wykonawcze-czujniki-przyciski-i-tak-dalej">Urządzenia wykonawcze, czujniki, przyciski i tak dalej…</h2>
+
+<p>Tę sekcję podzielę na trzy podsekcje, ponieważ w swoim Smart Home korzystam głównie z trzech sposobów komunikacji.
+Pierwszy ze sposobów to Wi-Fi, drugi to Bluetooth, trzeci to Zigbee.</p>
+
+<h3 id="komunikacja-po-wi-fi">Komunikacja po Wi-Fi</h3>
+
+<p>Zaletą tego sposobu komunikacji jest jego powszechność i łatwość integracji. 
+Każdy ma Wi-Fi, obsługa jest łatwa, wadą natomiast jest zasięg.
+Nie każdy ma odpowiednie wzmacniacze sygnału i może się okazać, że zasięg w wybranym miejscu jest mało stabilny, przez co urządzenie też nie działa, tak jakbyśmy tego chcieli.
+Dodatkowo Smart Home to też ciągle rosnąca liczba urządzeń, która może spowodować problemy wydajnościowe na „pierwszym lepszym” punkcie dostępowym.
+Ze swojego doświadczenia mogę powiedzieć, że pomimo bardzo dobrego zasięgu zdarzyło mi się kilka problemów z urządzeniami Wi-Fi.
+Ostatni z problemów, który pamiętam to taki, że przekaźnik Shelly zintegrowany po MQTT przestał być widoczny przez HomeAssistant’a po zaniku zasilania.
+Wymagane było odpowiednie skonfigurowanie i wydaje mi się, że od tamtej pory jest już ok.
+Poniżej podrzucam listę przykładowych urządzeń działających po Wi-Fi, których używam w swoim Smart Home:</p>
+
+<h4 id="taśma-led-yeelight">Taśma LED Yeelight</h4>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/yellightstrip.png" alt="Taśma Yeelight" width="250" /></p>
+
+<p>Zalety — ładnie świeci, możliwy wybór koloru, łatwo się przedłuża.</p>
+
+<p>Wady — maksymalna długość taśmy w niektórych przypadkach może nie wystarczyć.
+Łączenie kolejnych „kawałków” jest zrobione dosyć dużym wtykiem, w porównaniu do taśm, które lutujemy i może spowodować problem z umieszczeniem całości w aluminiowym profilu na taśmy.</p>
+
+<h4 id="przekaźnik-shelly-25">Przekaźnik Shelly 2.5</h4>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/shelly25.png" alt="Przekaźnik Shelly" width="250" /></p>
+
+<p>Zalety — duża liczba dostarczanych danych, a także różne sposoby integracji (API lub MQTT).
+Każdy z dwóch kanałów może być osobno konfigurowany pod względem rodzaju podłączonego klawisza (dzwonkowy, stanowy).
+Dla każdego z kanałów mamy też osobny zestaw informacji o aktualnym poborze prądu.
+Możemy skonfigurować stan przekaźnika po powrocie zasilania (dla mnie to ważne, aby pod nieobecność domowników nie okazało się, że w całym mieszkaniu mamy zapalone światła).
+No i ostatnie — mieści się w puszce, niestety część urządzeń nie przewiduje umieszczania w europejskich okrągłych puszkach.</p>
+
+<p>Wady — komunikacja Wi-Fi i wszystko, co z nią się wiąże.
+Z doświadczenia preferuje Zigbee, tym bardziej że urządzenia Zigbee na stałe podłączone do prądu z automatu przedłużają zasięg sieci.</p>
+
+<h4 id="esp32">ESP32</h4>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/esp32.png" alt="Esp32" width="250" /></p>
+
+<p>Mały, tani, ale potężny układ. Na standardowym wyposażeniu używanej przeze mnie wersji „devkit v1” znajduje się Wi-Fi oraz Bluetooth.
+Dzięki popularności układu łatwo można znaleźć projekty obudowy do samodzielnego wydrukowania na drukarce 3D.
+W moim Smart Home pracują dwa rodzaje takich układów:</p>
+<ul>
+  <li>Pierwszy z nich ma na pokładzie <a href="https://docs.openmqttgateway.com/">OpenMQTTGateway</a>. Wykorzystuje go do odczytywania danych z czujników Bluetooth, jak czujnik w kwiatku (o czym dalej) czy zegarek z wyświetlaczem eInk.</li>
+  <li>Drugi z nich ma na pokładzie <a href="https://esphome.io/">EspHome</a> i podłączony odbiornik oraz nadajnik podczerwieni. Myślę, że podłączone elementy już dobrze reprezentują jego przeznaczenie. 
+W dalszych planach mam też przetłumaczenie sygnałów podczerwieni z indukcji Electrolux Hob2Hood na okap firmy Globalo (sprzęt, jaki posiadam).
+Wyzwanie stanowi brak w okapie opcji „ustaw wentylator na 3” (taki sygnał nada indukcja). Jedynym sposobem osiągnięcia tego stanu jest klikanie w +/-.</li>
+</ul>
+
+<h3 id="komunikacja-po-bluetooth">Komunikacja po Bluetooth</h3>
+
+<p>O tym sposobie integracji z pewnością można powiedzieć, że jego największą wadą jest mały zasięg.
+Wcześniej wspomniany układ Esp32 z OpenMQTTGateway może okazać się niezbędnym narzędziem, celem zebrania danych z różnych zakątków domu.
+Ciekawostką może być to, że sensory Bluetooth Low Energy, póki są niepołączone z konkretnym urządzeniem, nadają informacje o swoim stanie w taki sposób,
+że każdy może je odczytać. Stąd odbieram dane z zegarka Xiaomi sąsiadów…</p>
+
+<p>Urządzenia Bluetooth, z których korzystam:</p>
+
+<h4 id="xiaomi-flora-flower-monitor">Xiaomi Flora flower monitor</h4>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/flowermonitor.png" alt="Czujnik do roślin" width="250" /></p>
+
+<p>Zalety — duża liczba danych, zarówno o glebie, jak i otoczeniu. Z danych otoczenia mamy np. temperaturę oraz jasność.</p>
+
+<p>Wady — to na pewno komunikacja bluetooth i to, z czym się wiąże.</p>
+
+<h4 id="zegarek-z-wyświetlaczem-eink-lywsd02mmc">Zegarek z wyświetlaczem eInk (lywsd02mmc)</h4>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/einkclock.png" alt="Zegar z wyświetlaczem eInk" width="250" /></p>
+
+<p>Zalety — na pewno czytelny wyświetlacz i dodatkowe dane o wilgotności oraz temperaturze w pomieszczeniu.</p>
+
+<p>Wady — takie jak każdego urządzenia Bluetooth (m.in zasięg).</p>
+
+<h3 id="komunikacja-po-zigbee">Komunikacja po ZigBee</h3>
+
+<p>Mój ulubiony sposób komunikacji, bo najmniej zawodny oraz łatwo zwiększa się zasięg.
+Dodatkowo są to urządzenia, które bardzo długo wytrzymują na baterii.
+Urządzeń o tym sposobie komunikacji mam najwięcej, wiec zbiorę je w kilku grupach.</p>
+
+<h4 id="przekaźniki-oraz-gniazdka">Przekaźniki oraz gniazdka</h4>
+
+<p>Pozwoliłem sobie zebrać te wszystkie urządzenia w jedną grupę, bo ich głównym przeznaczeniem jest włączenie/wyłączenie zasilania. 
+Różnią się jedynie wspieranymi funkcjami. Do których można zaliczyć wybór typu klawisza (w przypadku przekaźników), 
+liczbę i rodzaj raportowanych danych. Wybrane informują o poborze energii, temperaturze, a także pozwalają ustawić stan po powrocie zasilania. 
+Warto zwrócić też uwagę na to, aby mieściły się w europejskich puszkach (jeśli są to przekaźniki).
+Tak jak wcześniej już wspomniałem, zaletą tych urządzeń jest to, że większość z nich wzmacnia zasięg sieci ZigBee.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/relay.png" alt="Przekaźnik" width="250" />
+<img src="/assets/img/posts/2022-02-05-smarthome/socket.png" alt="Gniazdko" width="250" /></p>
+
+<h4 id="sterowniki-taśm-led">Sterowniki taśm led</h4>
+
+<p>Sterowniki taśm led, czyli urządzenia, które pozwalają nam na wybór koloru oraz jasności.
+W swoim Smart Home mam tylko jedno takie urządzenie, które działa prawie bez zastrzeżeń.
+Jedyną wadą jest to, że po powrocie zasilania jest domyślnie włączone i musiałem to „ograć” dodatkowym przekaźnikiem i automatyzacją.
+Z zalet — podłączamy dowolną taśmę LED oraz dowolny zasilacz (oczywiście dobieramy urządzenia w zależności od potrzebnej mocy i napięcia).
+W moim wypadku jest to taśma LED zasilona z 24V na dwóch końcach (dla równomiernego podświetlenia, w przypadku większych długości).</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/ledcontroller.png" alt="Sterownik taśmy LED" width="250" /></p>
+
+<h4 id="przyciski">Przyciski</h4>
+
+<p>W przypadku przycisków podobnie jak i w przypadku przekaźników jest w czym przebierać.
+Szczególnie lubię te najmniejsze urządzenia z dwoma przyciskami, pochodzące z rodziny IKEA Tradfri. 
+Są dosyć tanie, poza krótkim przyciśnięciem obsługują także te długie, więc możemy wykorzystać je nawet do ściemniania i rozjaśniania.
+W moim przypadku z ich pomocą dołożyłem obsługę głównego oświetlenia kuchennego w bardziej wygodnym miejscu — pod okap.
+Przyciski mają wbudowany magnes, więc nie było problemu z ich przymocowaniem w tym miejscu.
+Zanim odkryłem te przyciski, miałem kostkę Aqara Cube. Dosyć fajny gadżet z dużą liczbą zdarzeń.
+Przewrócenie o 90°, 180°, obrót ze wskazaniem kąta, podwójne uderzenie.
+Jednak jest dużo mniej intuicyjny od standardowych przycisków i trzeba wiedzieć, co kryje się pod każdą z akcji na kostce.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/tradfriswitch1.png" alt="Przycisk IKEA Tradfri" width="250" />
+<img src="/assets/img/posts/2022-02-05-smarthome/tradfriswitch2.png" alt="Przycisk IKEA Tradfri" width="250" />
+<img src="/assets/img/posts/2022-02-05-smarthome/aqaracube.png" alt="Kostka Aqara" width="250" /></p>
+
+<h4 id="czujniki-ruchu">Czujniki ruchu</h4>
+
+<p>W moich automatyzacjach używam jedynie czujników ruchu od Xiami/Aqara.
+Mogę o nich powiedzieć, że są dosyć małe, dlatego łatwo je wpasować je w każde pomieszczenie.
+Mogą się jednak nie sprawdzić w domyślnej konfiguracji, zwłaszcza we wszystkich automatyzacjach, ponieważ raportują swój stan co około minutę-półtora.
+Na szczęście istnieją poradniki, jak można łatwo wprowadzić je w tryb testowy, gdzie będą raportować wykryty ruch co 5 sekund.
+Korzystam z takiego rozwiązania przy czujniku, który zapala mi światło w przedpokoju. Hack działa już od kilku miesięcy, bez widocznego wpływu na baterię.
+W kwestii modyfikacji mogę dodać, że pierwszy czujnik po takiej zmianie działał 2 dni, po czym z nieznanych przyczyn przestał.
+Być może przegrzałem go przy lutowaniu, a być może po prostu „nastał jego czas”. Link do modyfikacji: <a href="https://community.smartthings.com/t/making-xiaomi-motion-sensor-a-super-motion-sensor/139806">https://community.smartthings.com/t/making-xiaomi-motion-sensor-a-super-motion-sensor/139806</a></p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/motionsensor.png" alt="Czujnik ruchu" width="250" /></p>
+
+<h4 id="sensory-otwartych-okiendrzwi">Sensory otwartych okien/drzwi</h4>
+
+<p>Podobnie jak w przypadku czujników ruchu, tak i tutaj używam czujników tylko jednego rodzaju. 
+Szukałem jak najmniejszych, żeby nie rzucały się w oczy i po analizie kilku wybór padł na te od Aqara.
+Ciężko powiedzieć o nich coś więcej niż to, że dobrze spełniają swoją funkcję.
+Zasięg między magnesem a czujnikiem może się wahać, w zależności od tego jak ustawimy urządzenia, skierowane do siebie frontem czy bokiem.
+Mam urządzenia umieszczone w obydwu wariantach. Odległość między nimi zazwyczaj wynosi około 1 cm i nie zaobserwowałem jeszcze żadnych problemów.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/windowsensor.png" alt="Głowica termostatyczna" width="250" /></p>
+
+<h4 id="głowice-termostatyczne">Głowice termostatyczne</h4>
+
+<p>Temat głowic termostatycznych może być nieco bardziej zawiły, ponieważ mamy sporo wariantów do wyboru. 
+Ja wybrałem <a href="https://www.zigbee2mqtt.io/devices/BRT-100-TRV.html">Moes BRT-100-TRV</a>. Przy wyborze kierowałem się liczbą wystawianych informacji oraz zapewnieniem producenta, 
+że działają na baterii dłużej niż inne warianty.
+Szczegółowe informacje o wystawianych danych dostępne są na stronach projektu <a href="https://www.zigbee2mqtt.io/supported-devices/">Zigbee2MQTT</a>.
+Jedna z moich głowic raportuje stan baterii 91%, druga 83%. Obydwie działają od listopada, a w momencie sprawdzania tego stanu mieliśmy połowę stycznia.
+W kwestii baterii mogę dodać tylko, że ze względu na różnice w napięciu między bateriami a akumulatorami (1.2V vs 1.5V), konieczne może być używanie zwykłych baterii.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/trv.png" alt="Głowica termostatyczna" width="250" /></p>
+
+<h4 id="czujniki-wycieku-wody">Czujniki wycieku wody</h4>
+
+<p>Konstrukcyjnie dosyć proste urządzenia. Na ich spodzie znajdują się dwie elektrody, których zwarcie powoduje zmianę stanu czujnika.
+W przypadku czujników Xiaomi/Aqara elektrody możemy wykręcić, zmniejszając tym samym poziom, od którego reagują.
+Najstarszy z moich czujników ma już dwa lata, a ciągle raportuje stan baterii na 100%, więc bez obaw można umieszczać je w trudno dostępnych miejscach.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/leaksensor.png" alt="Czujnik wycieku wody" width="250" /></p>
+
+<h4 id="czujniki-temperatury">Czujniki temperatury</h4>
+
+<p>Jedne z moich pierwszych czujników, a jak wspominałem, zaczynałem z bramką od Xiaomi, stąd wybór też tego producenta.
+Dużą zaletą kwadratowych czujników temperatury Xiaomi jest to, że poza temperaturą oraz wilgotnością, raportują też ciśnienie atmosferyczne.</p>
+
+<p><img src="/assets/img/posts/2022-02-05-smarthome/temperaturesensor.png" alt="Czujnik temperatury" width="250" /></p>
+
+<h2 id="bezpieczeństwo-i-prywatność">Bezpieczeństwo i prywatność</h2>
+
+<p>W mojej ocenie w całej zabawie w Smart Home warto zwrócić uwagę na prywatność oraz bezpieczeństwo.
+Nie wyobrażam sobie trzymać w sieci urządzeń, które zbierają dane i wysyłają je na azjatyckie, niesprawdzone serwery.
+W sieci można znaleźć wiele przykładów kamerek, które albo miały słabe zabezpieczenia, albo luki w bezpieczeństwie i pozwalały każdemu na zdalny dostęp.
+Dla mnie podstawowym wymaganiem przy tego typu rozwiązaniach jest praca w sieci lokalnej.
+Wszystkie systemy i narzędzia dla Smart Home w moim domu mają wycięty dostęp do internetu, a pozwalam na niego jedynie przy okresowych aktualizacjach.
+W przyszłości zastanawiam się nad poluźnieniem tej restrykcji dla wybranych serwerów i urządzeń, ponieważ koliduje to nieco z integracją od pralki LG oraz zmywarki Bosch.
+Aktualnie, jeśli mam potrzebę dostępu z zewnątrz, to zapewniam sobie ten dostęp sam. Zawsze za pomocą rozwiązań, które uważam za godne zaufania. 
+Przykładem takiego dostępu jest VPN, który sam wystawiam oraz integracja HomeKit od iOS.
+Zdalny dostęp od Apple (przez HomeKit) dostałem tak naprawdę „out of the box”. 
+W domu mam zawsze tablet od Apple i tak długo, jak jest naładowany, pozwala innym domownikom z urządzeniami tego samego producenta na zdalny dostęp,
+spinając całość przez chmurę Apple.</p>
+
+<h2 id="to-na-tyle">To na tyle…</h2>
+
+<p>Zabawa w SmartHome nie należy do najtańszych i najłatwiejszych. Mam jednak nadzieję, że lektura tego artykułu nieco przybliży Wam temat inteligentnego domu dla programisty.
+To już Wasza decyzja, czy chcecie zająć się całością sami, czy może skorzystać z pomocy specjalistycznych firm.
+Jeśli zdecydujecie się na wybór jakieś firmy, to ten artykuł nakieruje Was na możliwe opcje, tak aby nie żałować wydanych pieniędzy.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "smarthome homeassistant zigbee2mqtt zigbee homekit heysiri heygoogle heyalexa";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

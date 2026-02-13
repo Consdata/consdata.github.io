@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tomcat - model przetwarzania żądań | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Tomcat - model przetwarzania żądań" />
+<meta name="author" content="jwilczewski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji." />
+<meta property="og:description" content="Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji." />
+<link rel="canonical" href="https://blog.consdata.tech/2020/03/18/tomcat-model-przetwarzania-zadan.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/03/18/tomcat-model-przetwarzania-zadan.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-18T08:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/thumbnail.webp" />
+<meta property="twitter:title" content="Tomcat - model przetwarzania żądań" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"jwilczewski"},"image":"https://blog.consdata.tech/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/thumbnail.webp","@type":"BlogPosting","headline":"Tomcat - model przetwarzania żądań","description":"Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji.","dateModified":"2020-03-18T08:00:00-05:00","datePublished":"2020-03-18T08:00:00-05:00","url":"https://blog.consdata.tech/2020/03/18/tomcat-model-przetwarzania-zadan.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/03/18/tomcat-model-przetwarzania-zadan.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2020/03/18/tomcat-model-przetwarzania-zadan.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">java</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Tomcat - model przetwarzania żądań</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/jwilczewski.html">
+        <img class="author-image" src="/assets/img/authors/jwilczewski.webp" alt="author">
+        <span class="author-name">Jakub Wilczewski</span><a class="author" href="https://github.com/jwilczewski">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+18
+
+marca
+
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Tomcat jest jednym z najpopularniejszych serwerów webowych dla aplikacji pisanych w Javie. Jest podstawowym kontenerem aplikacji springbootowych. Tworząc nowy projekt często polegamy na jego domyślnej konfiguracji. Kiedy projekt dojrzewa do wdrożenia produkcyjnego i musi zmierzyć się z obsługą dużego ruchu, często konieczne okazuje się dostrojenie tej konfiguracji. W tym artykule skupię się na konfiguracji connectorów na przykładzie pewnego problemu produkcyjnego. Opis konfiguracji Tomcata bazuje na wersji 7.x, ale jest w zasadzie aktualny również dla wyższych wersji.</p>
+
+<h2 id="problem-z-wyczerpaną-pulą-wątków-w-tomcacie">Problem z wyczerpaną pulą wątków w Tomcacie</h2>
+
+<p>W jednym z systemów, które współtworzyłem, wystąpił problem podczas działania produkcyjnego. Problem objawiał się brakiem możliwości połączenia z endpointem wystawionym na Tomcacie. Monitoring i analiza logów jednoznacznie pokazały, że wyczerpała się pula wątków obsługujących żądania http. Dalsza analiza ujawniła, że praprzyczyną problemu był w tym przypadku system autoryzacji, z którym łączył się nasz system. W systemie autoryzacji znacząco wzrosły czasy odpowiedzi, co powodowało, że wątki Tomcata były bardzo długo zajęte. Tomcat powoływał nowe wątki, ale ostatecznie osiągnął limit 1000 wątków (taki mieliśmy ustawiony na connectorze) i przestał obsługiwać nowe połączenia - również takie, które nie wymagały wywołania systemu autoryzacji.</p>
+
+<p>Co więcej, zauważyliśmy i potwierdziliśmy to później w testach, że po całkowitym wysyceniu puli wątków, Tomcat nie jest w stanie bez restartu powrócić do prawidłowego działania nawet wtedy, kiedy problem z długimi czasami odpowiedzi zostanie wyeliminowany.</p>
+
+<p>Opisana sytuacja skłoniła nas do sprawdzenia czy jesteśmy w stanie zapobiec takiemu zachowaniu Tomcata poprzez modyfikację konfiguracji connectorów. Pojawił się między innymi pomysł zmiany implementacji connectora blokującego (bio) na nieblokujący (nio). W systemie, którego dotyczył problem używany był tomcat 7.x, w którym domyślnie używana jest implementacja blokująca.</p>
+
+<h2 id="konfiguracja-connectorów">Konfiguracja connectorów</h2>
+
+<p>Podstawowa konfiguracja Tomcata znajduje się w pliku conf/server.xml i zawiera konfigurację następujących elementów:</p>
+<ul>
+  <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/config/server.html">Server</a> - konfiguracja całego kontenera, zawiera konfiguracje poszczególnych serwisów.</li>
+  <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/config/service.html">Service</a> - zawiera konfigurację poszczególnych connectorów łącząc je silnikiem przetwarzania żądań.</li>
+  <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/config/http.html">Connector</a> - nasłuchuje na wybranym porcie http i obsługuje połączenia przekazując żądania do silnika zdefiniowanego w elemencie Engine.</li>
+  <li><a href="http://tomcat.apache.org/tomcat-7.0-doc/config/engine.html">Engine</a> - przetwarza żądania pochodzące ze wszystkich connectorów zdefiniowanych w elemencie Service.</li>
+</ul>
+
+<p>Z punktu widzenia przetwarzania żądań, kluczowe znaczenie ma konfiguracja connectora i parametry:</p>
+<ul>
+  <li>protocol - Pozwala określić wybraną implementacje connectora (to tutaj możemy zdecydować czy chcemy użyć connectora blokującego czy nieblokującego).</li>
+  <li>acceptCount - Długość kolejki oczekujących połączeń. Kolejka napełnia się jeżeli wszystkie wątki w puli wątków connectora są zajęte. W przypadku osiągnięcia limitu tej kolejki (domyślnie 100) połączenia klientów będą odrzucane.</li>
+  <li>maxConnections - Maksymalna liczba połączeń, które mogą być przetwarzane. Po osiągnięciu maksymalnej liczby połączeń, połączenia nadal są przyjmowane i kolejkowane do czasu osiągnięcia limitu wynikającego z parametru acceptCount. Domyślnie maxConnections jest równe maxThreads dla connectora blokującego i 10000 dla nieblokującego.</li>
+  <li>maxThreads - Maksymalna liczba wątków obsługujących żądania. Parametr ten oznacza, ile żądań może być symultanicznie przetwarzanych przez serwer. Domyślna wartość tego parametru to 200. Jest to najważniejszy parametr, zważywszy na problem, który rozwiązujemy w tym artykule.</li>
+</ul>
+
+<h2 id="monitorowanie-puli-wątków">Monitorowanie puli wątków</h2>
+
+<p>Aktualna liczba wątków przetwarzających żądania jest, obok rozmiaru sterty, jednym z najważniejszych parametrów, które powinny być objęte monitoringiem. W tym przypadku monitorujemy atrybut <code class="language-plaintext highlighter-rouge">currentThreadsBusy</code> mbean’a</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool
+</code></pre></div></div>
+<p>(przy czym RODZAJ_CONNECTORA to “bio” dla connectora blokującego i “nio” dla nieblokującego, PORT to numer portu, na którym nasłuchuje connector).</p>
+
+<p>Do monitoringu można użyć narzędzia <a href="https://jolokia.org/">jolokia</a>, które udostępnia JMX za pomocą protokołu http. W takiej konfiguracji wystarczy regularnie odpytywać o stan puli wątków poprzez wywołanie http GET:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://HOST:PORT/jolokia/read/Catalina:name="http-RODZAJ_CONNECTORA-PORT",type=ThreadPool/currentThreadsBusy
+</code></pre></div></div>
+
+<p>W odpowiedzi dostajemy jsona, który w polu value zawiera aktualny rozmiar puli wątków</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"mbean"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Catalina:name=</span><span class="se">\"</span><span class="s2">http-RODZAJ_CONNECTORA-PORT</span><span class="se">\"</span><span class="s2">,type=ThreadPool"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attribute"</span><span class="p">:</span><span class="w"> </span><span class="s2">"currentThreadsBusy"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"read"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1564763927</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>Warto skonfigurować alerting, który będzie ostrzegał o wysycaniu się puli połączeń i pozwoli szybciej zdiagnozować problem.</p>
+
+<h2 id="porównanie-connectorów-blokujących-bio-i-nieblokujących-nio">Porównanie connectorów blokujących (bio) i nieblokujących (nio)</h2>
+
+<h3 id="różnica-w-działaniu">Różnica w działaniu</h3>
+
+<p>W Tomcacie 7.x domyślną implementacją connectora jest implementacja blokująca. W Tomcacie 8 i wyższych domyślny jest connector nieblokujący. Podstawowa różnica w działaniu polega na tym, że <strong>w connectorze blokującym wątek przypisywany jest do połączenia, a w connectorze nieblokującym do pojedynczego żądania</strong>. Może to mieć duże znaczenie przy zastosowaniu połączeń keep-alive, kiedy to jedno połączenie jest wykorzystywane do przesłania wielu żądań i odpowiedzi. W takim modelu wątek na serwerze jest zajęty na cały czas trwania pojedynczego połączenia mimo, że faktyczne przetwarzanie na serwerze zachodzi tylko w obrębie pojedynczego żądania.</p>
+
+<h3 id="test">Test</h3>
+
+<p>Dla porównania można wykonać prosty test na dwóch rodzajach connectorów. W teście klient raz na sekundę wysyła żądanie do serwera. Łącznie jeden klient wysyła 30 żądań. Uruchamiamy 20 klientów w ciągu 2 sekund. Jednocześnie monitorujemy rozmiar puli wątków.</p>
+
+<p>Tak wygląda wykres czasów odpowiedzi dla connectora blokującego:</p>
+
+<p><img src="/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/gatling-bio.png" alt="wykres czasów odpowiedzi dla connectora blokującego" /></p>
+
+<p>a tak dla connectora nieblokującego:</p>
+
+<p><img src="/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/gatling-nio.png" alt="wykres czasów odpowiedzi dla connectora nieblokującego" /></p>
+
+<p>Nie widać tutaj jakiejś specjalnej różnicy między działaniem connectora bio i nio. Zupełnie inaczej wyglądają natomiast wykresy liczby zajętych wątków w puli. Dla connectora blokującego liczba zajętych wątków podczas trwania testu przekracza 20. Czyli jest zgodna z liczbą klientów wysyłających żądania do serwera. Połączenia keep-alive mają timeout równy 5 sekund więc klient utrzymuje cały czas jedno połączenie do wszystkich żądań:</p>
+
+<p><img src="/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/threads-bio.png" alt="wykres liczby zajętych wątków dla connectora blokującego" /></p>
+
+<p>Dla connectora nieblokującego żądania są obsługiwane w większości przez jeden wątek:</p>
+
+<p><img src="/assets/img/posts/2020-03-18-tomcat-model-przetwarzania-zadan/threads-nio.png" alt="wykres liczby zajętych wątków dla connectora nieblokującego" /></p>
+
+<p>Test pokazuje, że przy takim modelu przetwarzania żądań za pomocą connectora nieblokującego możemy uzyskać sporą oszczędność zasobów i lepiej zutylizować serwer.</p>
+
+<h3 id="użycie-mod_proxy-zmienia-sytuację">Użycie mod_proxy zmienia sytuację</h3>
+
+<p>Warto zwrócić uwagę na to, że takie wyniki osiągamy w przypadku bezpośredniego połączenia pomiędzy klientem, a serwerem Tomcat. Zdarza się jednak, że mamy jeszcze warstwę pośrednią np. w postaci serwera Apache httpd i modułu mod_proxy. Domyślnie mod_proxy nie ma włączonej opcji keep-alive więc wszystkie połączenia do backendu są zamykane po obsłużeniu pojedynczego żądania.</p>
+
+<p>Test został przeprowadzony za pomocą narzędzia <a href="https://gatling.io/">Gatling</a>. Więcej o samym narzędziu można przeczytać w osobnym <a href="/2017/08/01/gatling.html">artykule na naszym blogu</a>.</p>
+
+<h2 id="próba-rozwiązania-problemu">Próba rozwiązania problemu</h2>
+
+<p>Podsumowując: Wstępem do rozważań nad konfiguracją connectorów był problem z długimi czasami jakie wątki Tomcata spędzały na komunikacji z systemem autoryzacji. Czy zmiana connectora na nieblokujący pomogłaby w tej sytuacji? Niestety nie. Connector nieblokujący nie wiąże wątku z połączeniem, ale nadal wiąże go z pojedynczym żądaniem. W tym przypadku nadal wątki będą blokowane na długim wywołaniu systemu autoryzacji. Choć zastosowanie connectora nio z pewnością zaoszczędziłoby część zasobów maszyny, to w tym przypadku należałoby raczej rozważyć użycie jakiejś implementacji circuit breaker’a lub też zmienić model obsługi żądań na bardziej reaktywny (np. <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html">webflux</a>).</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "java tomcat nio connector";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

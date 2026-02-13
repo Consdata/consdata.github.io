@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Jak napisać plugin w IntelliJ | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Jak napisać plugin w IntelliJ" />
+<meta name="author" content="bradlinski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność." />
+<meta property="og:description" content="IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność." />
+<link rel="canonical" href="https://blog.consdata.tech/2021/01/11/pisanie-pluginow-do-intellij.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/01/11/pisanie-pluginow-do-intellij.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-11T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/thumbnail.webp" />
+<meta property="twitter:title" content="Jak napisać plugin w IntelliJ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"bradlinski"},"image":"https://blog.consdata.tech/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/thumbnail.webp","@type":"BlogPosting","headline":"Jak napisać plugin w IntelliJ","description":"IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność.","dateModified":"2021-01-11T01:00:00-06:00","datePublished":"2021-01-11T01:00:00-06:00","url":"https://blog.consdata.tech/2021/01/11/pisanie-pluginow-do-intellij.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/01/11/pisanie-pluginow-do-intellij.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2021/01/11/pisanie-pluginow-do-intellij.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">intellij</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Jak napisać plugin w IntelliJ</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/bradlinski.html">
+        <img class="author-image" src="/assets/img/authors/bradlinski.webp" alt="author">
+        <span class="author-name">Bartosz Radliński</span><a class="author" href="https://github.com/m87">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+11
+
+stycznia
+
+
+
+2021
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>IntelliJ IDEA to obecnie jedno z popularniejszych, jeśli nie najpopularniejsze IDE dla Javy. Jedną z jego zalet jest duża baza pluginów, dostarczana przez samo JetBrains, jak i społeczność. W tym artykule przedstawię podstawy tworzenia pluginów dla tej platformy. Większość z zebranych tu informacji (poza elementami związanymi z Javą) ma zastosowanie do dowolnego IDE ze stajni JetBrains.</p>
+
+<h2 id="sposoby-rozszerzania-ide">Sposoby rozszerzania IDE</h2>
+<p>W platformie mamy do dyspozycji trzy podstawowe metody rozszerzenia IDE:</p>
+<ul>
+  <li>actions - kod uruchamiany w momencie, gdy użytkownik kliknie np. w element menu kontekstowego lub paska narzędziowego,</li>
+  <li>listeners - pozwalają nasłuchiwać na eventy generowane przez platformę lub inne pluginy,</li>
+  <li>extension points - interfejsy pozwalające na rozszerzenie konkretnych elementów platformy lub innych pluginów.</li>
+</ul>
+
+<p>Więcej informacji o tym, co i jak działa, możecie znaleźć w dokumentacji IDE. Ja natomiast przedstawię ujęcie praktyczne, w ramach którego stworzymy prosty plugin dla IntelliJ, który wykorzysta wszystkie opisane wyżej metody. Przykładowy plugin, na podstawie adnotacji, wygeneruje plik tekstowy z prostą dokumentacją dla klas Javy (do tego wykorzystane zostaną akcje i listenery) oraz pozwoli na wyświetlenie tej dokumentacji w ramach <code class="language-plaintext highlighter-rouge">Quick Documentation</code> (Extension point). Mając klasę:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Doc</span><span class="o">(</span><span class="s">"To jest testowa klasa"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestClass</span> <span class="o">{</span>
+
+    <span class="nd">@Doc</span><span class="o">(</span><span class="s">"To jest testowe pole"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">field</span><span class="o">;</span>
+
+    <span class="nd">@Doc</span><span class="o">(</span><span class="s">"To jest testowe pole "</span> <span class="o">+</span> <span class="nc">Constants</span><span class="o">.</span><span class="na">ADDITIONAL_TEXT</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">fieldWithExtraInfo</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>plugin wygeneruje dokumentację w postaci:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TestClass: To jest testowa klasa
+field: To jest testowe pole
+fieldWithExtraInfo: To jest testowe pole z dodatkowym opisem ze stałe
+</code></pre></div></div>
+
+<p>Na githubie znajduje się <a href="https://github.com/m87/article-app">repozytorium z pluginem</a> oraz <a href="https://github.com/m87/article-test-app">repozytorium z testową aplikacją</a></p>
+
+<h2 id="baza-pluginu">Baza pluginu</h2>
+<p>Przygodę z własnym pluginem rozpoczynamy od stworzenia nowego projektu typu <code class="language-plaintext highlighter-rouge">Intellij Platform Plugin</code>. Wygenerowana zostanie domyślna struktura katalogów oraz plik XML z manifestem (META-INF/plugin.xml). Zawiera on podstawowe informacje o pluginie tj. jego unikalny identyfikator, opis, dane autora itd. W tym pliku definiujemy również zależność pluginu, w naszym przypadku będą takie trzy:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;depends&gt;</span>com.intellij.modules.platform<span class="nt">&lt;/depends&gt;</span>
+<span class="nt">&lt;depends&gt;</span>com.intellij.modules.lang<span class="nt">&lt;/depends&gt;</span>
+<span class="nt">&lt;depends&gt;</span>com.intellij.modules.java<span class="nt">&lt;/depends&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">*.platform</code> - zawiera interfejsy i klasy potrzebne do implementacji serwisów, akcji, UI, rozszerzeń itd.;</li>
+  <li><code class="language-plaintext highlighter-rouge">*.lang</code> - zawiera elementy związane z przetwarzaniem plików, nawigacją itd.;</li>
+  <li><code class="language-plaintext highlighter-rouge">*.java</code> - zawiera elementy ułatwiające prace z plikami Javy;</li>
+</ul>
+
+<h2 id="akcje">Akcje</h2>
+<p>Mając już gotowy projekt bazowy możemy przejść do implementacji akcji czyli dodamy element do menu kontekstowego edytora i do drzewa projektu - przycisk ‘Generuj’. Na razie będzie wyświetlał tylko popup z informacją.
+Każda akcja w platformie musi rozszerzać abstrakcyjną klasę AnAction i implementować metodę actionPerformed. Tworzymy zatem naszą akcję, którą nazwiemy DocAction.
+Na razie implementacja actionPerformed sprowadzać będzie się do wyświetlenia okna dialogowego. Do tego celu wykorzystamy gotowego helpera w platformie - Messages:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocAction</span> <span class="kd">extends</span> <span class="nc">AnAction</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">actionPerformed</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">AnActionEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Messages</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="s">"Witam!"</span><span class="o">,</span> <span class="s">""</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Na koniec musimy jeszcze powiązać naszą akcję z jakimś elementem IDE, który ją wywoła. Akcję definiujemy w manifeście w następujący sposób:</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;actions&gt;</span>
+        <span class="nt">&lt;action</span> <span class="na">id=</span><span class="s">"com.consdata.article.DocAction"</span>
+                <span class="na">class=</span><span class="s">"com.consdata.article.DocAction"</span>
+                <span class="na">text=</span><span class="s">"Generuj"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;add-to-group</span> <span class="na">group-id=</span><span class="s">"EditorPopupMenu"</span> <span class="na">anchor=</span><span class="s">"last"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;add-to-group</span> <span class="na">group-id=</span><span class="s">"ProjectViewPopupMenu"</span> <span class="na">anchor=</span><span class="s">"last"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/action&gt;</span>
+    <span class="nt">&lt;/actions&gt;</span>
+</code></pre></div></div>
+<p>Atrybut <code class="language-plaintext highlighter-rouge">id</code> to unikalny identyfikator naszej akcji (zwykle <code class="language-plaintext highlighter-rouge">Fully qualified name</code> klasy), w atrybucie <code class="language-plaintext highlighter-rouge">class</code> wskazujemy implementację akcji. W atrybucie <code class="language-plaintext highlighter-rouge">text</code> określamy tekst przycisku w menu. Wewnątrz węzła akcji definiujemy, do której grupy akcji chcemy ją ’przypiąć’. W naszym przypadku jest to <code class="language-plaintext highlighter-rouge">EditorPopupMenu</code> - menu kontekstowe edytora oraz <code class="language-plaintext highlighter-rouge">ProjectViewPopupMenu</code> - menu kontekstowe drzewa projektu. 
+Po uruchomieniu projektu i klknięciu prawym przyciskiem myszy na edytor pliku w menu kontekstowym pokaże nam się opcja ‘Generuj’</p>
+
+<p><img src="/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/menu.png" alt="menu" /></p>
+
+<p>Po kliknięcu w ‘Generuj’ pojawi się komunikat ‘Witam!’</p>
+
+<p><img src="/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/message.png" alt="message" /></p>
+
+<p>Dobrą praktyką jest organizowanie kilku akcji pluginu w ramach grupy. Co prawda nasz plugin będzie dostarczał tylko jedną akcję, niemniej warto w celach dydaktycznych to zaprezentować. Analogicznie do akcji, grupy rozszerzają dedykowaną klasę <code class="language-plaintext highlighter-rouge">ActionGroup</code>. Implementacja grupy jest już zadaniem nieco bardziej złożonym, dlatego platforma dostarcza domyślną implementację w postaci <code class="language-plaintext highlighter-rouge">DefaultActionGroup</code>. Tworzymy zatem nową klasę <code class="language-plaintext highlighter-rouge">DocGroup</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocGroup</span> <span class="kd">extends</span> <span class="nc">DefaultActionGroup</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Stworzoną wcześniej akcję dodajemy do nowej grupy, a następnie naszą grupę <code class="language-plaintext highlighter-rouge">DocGroup</code> dołączamy do menu kontekstowego edytora i drzewa projektu:</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;actions&gt;</span>
+        <span class="nt">&lt;group</span> <span class="na">id=</span><span class="s">"com.consdata.article.DocGroup"</span>
+               <span class="na">class=</span><span class="s">"com.consdata.article.DocGroup"</span> <span class="na">popup=</span><span class="s">"true"</span>
+               <span class="na">text=</span><span class="s">"Dokumentacja"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;add-to-group</span> <span class="na">group-id=</span><span class="s">"EditorPopupMenu"</span> <span class="na">anchor=</span><span class="s">"last"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;add-to-group</span> <span class="na">group-id=</span><span class="s">"ProjectViewPopupMenu"</span> <span class="na">anchor=</span><span class="s">"last"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;action</span> <span class="na">id=</span><span class="s">"com.consdata.article.DocAction"</span>
+                    <span class="na">class=</span><span class="s">"com.consdata.article.DocAction"</span>
+                    <span class="na">text=</span><span class="s">"Generuj"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;/action&gt;</span>
+        <span class="nt">&lt;/group&gt;</span>
+    <span class="nt">&lt;/actions&gt;</span>
+</code></pre></div></div>
+
+<p>Po uruchomieniu w miejscu przycisku ‘Generuj’ pojawi się przycisk ‘Dokumentacja’, kierujący do naszego podmenu.</p>
+
+<p>Plugin będzie generował dokumentację na podstawie adnotacji <code class="language-plaintext highlighter-rouge">Doc</code>, dlatego też nie ma sensu uruchamiać akcji na plikach, które takiej adnotacji nie zawierają. W naszym pluginie przycisk ‘Dokumentacja’ pozostawimy widocznym, ale jednocześnie, jeśli celem akcji jest plik niezawierający adnotacji Doc, to wówczas warto by był nieaktywny. Widoczność i aktywność przycisku aktualizujemy w metodzie <code class="language-plaintext highlighter-rouge">update</code> wywoływanej w przypadku, gdy użytkownik kliknie w jakiś element interfejsu zawierający tę akcję lub grupę:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocGroup</span> <span class="kd">extends</span> <span class="nc">DefaultActionGroup</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">AnActionEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">event</span><span class="o">.</span><span class="na">getPresentation</span><span class="o">().</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">event</span><span class="o">.</span><span class="na">getPresentation</span><span class="o">().</span><span class="na">setEnabled</span><span class="o">(</span><span class="n">ofNullable</span><span class="o">(</span><span class="nc">CommonDataKeys</span><span class="o">.</span><span class="na">PSI_FILE</span><span class="o">.</span><span class="na">getData</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getDataContext</span><span class="o">()))</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">hasDocAnnotation</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="kc">false</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">hasDocAnnotation</span><span class="o">(</span><span class="nc">PsiFile</span> <span class="n">psiFile</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">psiFile</span> <span class="k">instanceof</span> <span class="nc">PsiJavaFile</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">PsiJavaFile</span> <span class="n">javaFile</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PsiJavaFile</span><span class="o">)</span> <span class="n">psiFile</span><span class="o">;</span>
+            <span class="k">return</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">javaFile</span><span class="o">.</span><span class="na">getClasses</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(</span><span class="n">psiClass</span> <span class="o">-&gt;</span> <span class="n">psiClass</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">)</span>
+                            <span class="o">||</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getFields</span><span class="o">()).</span><span class="na">anyMatch</span><span class="o">(</span><span class="n">field</span> <span class="o">-&gt;</span> <span class="n">field</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                            <span class="o">||</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getAllMethods</span><span class="o">()).</span><span class="na">anyMatch</span><span class="o">(</span><span class="n">method</span> <span class="o">-&gt;</span> <span class="n">method</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">)));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>W powyższym kodzie skorzystaliśmy z jednego z podstawowych elementów platformy tj. <code class="language-plaintext highlighter-rouge">PSI</code> (<code class="language-plaintext highlighter-rouge">Program Structure Interface</code>). Najprościej rzecz ujmując, PSI odpowiada w platformie za parsowanie plików i generowanie modelu kodu, który zawierają. Dzięki temu w prosty sposób możemy, przejść po wszystkich klasach, ich polach i metodach zwartych w danym pliku. Pełny model PSI można w prosty sposób podejrzeć za pomocą pluginu np. <code class="language-plaintext highlighter-rouge">PsiViewer</code>. W powyższym przykładzie pobieramy model PSI z kontekstu zdarzenia akcji (podobnie możemy odnieść się do otwartego edytora, czy zaznaczonego fragmentu tekstu - patrz <code class="language-plaintext highlighter-rouge">com.intellij.openapi.actionSystem.CommonDataKeys</code>). Następnie weryfikujemy, czy jest to model Javy. Jeśli tak, to sprawdzamy, czy klasy, ich pola lub metody zawierają adnotację <code class="language-plaintext highlighter-rouge">Doc</code>. Po tej zmianie, kliknięcie prawym przyciskiem myszy w plik, który nie zawiera tej adnotacji zdezaktywuje przycisk ‘Generuj’. Na koniec pozostaje już tylko zaimplementować sam mechanizm generowania dokumentacji oraz zapisać tę dokumentację we wskazanym pliku.</p>
+
+<h4 id="generowanie-dokumentacji">Generowanie dokumentacji</h4>
+
+<p>Dokumentacja będzie składać się z wierszy zawierających nazwę dokumentowanego elementu (np. nazwa pola) oraz opisu z adnotacji. Przyjmując, że na wejsciu mamy model PSI pliku z kodem, wygenerowanie takiej dokumentacji może wyglądać mniej więcej tak:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getDoc</span><span class="o">(</span><span class="nc">PsiFile</span> <span class="n">psiFile</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">psiFile</span> <span class="k">instanceof</span> <span class="nc">PsiJavaFile</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">PsiJavaFile</span> <span class="n">javaFile</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PsiJavaFile</span><span class="o">)</span> <span class="n">psiFile</span><span class="o">;</span>
+
+            <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">doc</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">javaFile</span><span class="o">.</span><span class="na">getClasses</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">psiClass</span> <span class="o">-&gt;</span> <span class="n">psiClass</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="nl">PsiClass:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">psiClass</span> <span class="o">-&gt;</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiClass</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">))));</span>
+
+            <span class="n">doc</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">javaFile</span><span class="o">.</span><span class="na">getClasses</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">PsiClass:</span><span class="o">:</span><span class="n">getFields</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">Arrays:</span><span class="o">:</span><span class="n">stream</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">psiField</span> <span class="o">-&gt;</span> <span class="n">psiField</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="nl">PsiField:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">psiField</span> <span class="o">-&gt;</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiField</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiField</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">)))));</span>
+
+            <span class="n">doc</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">javaFile</span><span class="o">.</span><span class="na">getClasses</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">PsiClass:</span><span class="o">:</span><span class="n">getMethods</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">Arrays:</span><span class="o">:</span><span class="n">stream</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">psiMethod</span> <span class="o">-&gt;</span> <span class="n">psiMethod</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="nl">PsiMethod:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">psiMethod</span> <span class="o">-&gt;</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiMethod</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiMethod</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">)))));</span>
+
+            <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">"\n"</span><span class="o">,</span> <span class="n">doc</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">+</span> <span class="s">": "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">()).</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()));</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">""</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+</code></pre></div></div>
+<p>Korzystając z PSI przechodzimy po wszystkich klasach w pliku oraz ich polach i metodach. Jeśli zawierają adnotację <code class="language-plaintext highlighter-rouge">Doc</code>, to do wierszy dokumentacji dodajemy nazwę pola, znak ‘:’ oraz wartość adnotacji. Nie możemy jednak wartości adnotacji pobrać wprost, gdyż nie jest to String. Zależnie od tego co znajduje się w adnotacji będzie to model jakiegoś wyrażenia. Musimy takie wyrażenie wyliczyć (aby np. rozwiązać użyte w nim stałe). Dla ułatwienia tego typu zadań powstał ewaluator stałych, który jest częścią fasady Javy dla PSI:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">evaulate</span><span class="o">(</span><span class="nc">Project</span> <span class="n">project</span><span class="o">,</span> <span class="nc">PsiAnnotationMemberValue</span> <span class="n">expression</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">JavaPsiFacade</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">project</span><span class="o">).</span><span class="na">getConstantEvaluationHelper</span><span class="o">().</span><span class="na">computeConstantExpression</span><span class="o">(</span><span class="n">expression</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Helper ten automatycznie rozwiąże nam wszystkie wyrażenie z adnotacji. Należy jednak pamiętać o tym, aby projekt był zaindeksowany, a elementy wyrażenia widoczne w ramach projektu.
+Na koniec naszą mapę konwertujemy do oczekiwanego Stringa i zapisujemy w pliku:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">save</span><span class="o">(</span><span class="nc">String</span> <span class="n">doc</span><span class="o">,</span> <span class="nc">AnActionEvent</span> <span class="n">event</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">FileSaverDialog</span> <span class="n">dialog</span> <span class="o">=</span> <span class="nc">FileChooserFactory</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">createSaveFileDialog</span><span class="o">(</span>
+                <span class="k">new</span> <span class="nf">FileSaverDescriptor</span><span class="o">(</span><span class="s">"Generate to"</span><span class="o">,</span> <span class="s">""</span><span class="o">,</span> <span class="s">"txt"</span><span class="o">),</span> <span class="n">event</span><span class="o">.</span><span class="na">getProject</span><span class="o">());</span>
+        <span class="nc">VirtualFileWrapper</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getProject</span><span class="o">().</span><span class="na">getProjectFile</span><span class="o">(),</span> <span class="s">""</span><span class="o">);</span>
+        <span class="nc">VirtualFile</span> <span class="n">vFile</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="na">getVirtualFile</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">vFile</span><span class="o">.</span><span class="na">setCharset</span><span class="o">(</span><span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+        <span class="n">vFile</span><span class="o">.</span><span class="na">setBinaryContent</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+    <span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Przy zapisie do pliku zahaczamy o kolejny ważny element platformy - warstwę plików wirtualnych (Virtual File System). Udostępnia ona wspólne api do wszystkich operacji na plikach niezależnie od ich położenia. Pliki w tej warstwie nie są fizycznymi plikami z dysku, tylko snapshotem systemu plików z danego czasu. Czasami możemy spotkać się z komunikatem w IDE, pytającym o to, czy wczytać zmiany z dysku oraz czy korzystać wciąż z lokalnych plików. Zdarza się też, że zmiany w projekcie nie odzwierciedlają zmian na dysku. Wtedy klikamy zwykle w ‘Synchronize’ lub ‘Reload all from disk’ - synchornizując wtedy właśnie pliki wirtualne.</p>
+
+<p>Podobnie jak w innych systemach, IntelliJ udostępnia gotowe definicje okien dialogowych dla np. zapisu plików. W naszym przypadku jest to <code class="language-plaintext highlighter-rouge">FileSaverDialog</code>. Po wybraniu pliku i kliknięciu ‘zapisz’, dialog zwraca nam wrapper na pliku wirtualnym. Z wrappera pobieramy instancję pliku wirtualnego i zapisujemy do niego treść naszej dokumentacji.</p>
+
+<p>Tym samym zaimplementowaliśmy w pełni działającą akcję naszego pluginu. Teraz przyszedł czas na kolejny element rozszerzający działanie IDE - listenery.</p>
+
+<h2 id="listenery">Listenery</h2>
+<p>Listenery pozwalaja pluginowi reagować na eventy w ramach platformy, emitowane czy to przez IDE, czy przez inne pluginy. W przykładzie plugin najpierw wyemituje event po zapisie dokumentacji. Jeśli plugin otrzyma event z szyny, to otworzy plik z dokumentacją w edytorze. Takie przechodzenie pomiędzy plikami jest, co prawda trochę przekombinowane, ale w prosty sposób zaprezentuje działanie całego mechanizmu.</p>
+
+<p>W pierwszej kolejności musimy zdefiniować interfejs naszego listenera:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DocSaved</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">onSave</span><span class="o">(</span><span class="nc">VirtualFile</span> <span class="n">virtualFile</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Interfejs zawiera jedną definicję metody. Argumentem jest plik wirtualny, do którego dokumentacja została zapisana. W kolejnym korku tworzymy implementację listenera:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocListener</span> <span class="kd">implements</span> <span class="nc">DocSaved</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Project</span> <span class="n">project</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DocListener</span><span class="o">(</span><span class="nc">Project</span> <span class="n">project</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">project</span> <span class="o">=</span> <span class="n">project</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSave</span><span class="o">(</span><span class="nc">VirtualFile</span> <span class="n">virtualFile</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Optional</span><span class="o">.</span><span class="na">ofNullable</span><span class="o">(</span><span class="n">virtualFile</span><span class="o">).</span><span class="na">ifPresent</span><span class="o">(</span><span class="n">vFile</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">OpenFileDescriptor</span><span class="o">(</span><span class="n">project</span><span class="o">,</span> <span class="n">vFile</span><span class="o">).</span><span class="na">navigate</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Listener będzie operować na poziomie pojedynczego projektu. W metodzie <code class="language-plaintext highlighter-rouge">onSave</code> wykorzystaliśmy <code class="language-plaintext highlighter-rouge">OpenFileDescriptor</code>, który pozwala na otwarcie edytora danego pliku z poziomu kodu.
+Podobnie jak inne elementy rozszerzające działanie platformy, listenery także musimy zdefiniować w manifeście pluginu:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;projectListeners&gt;</span>
+        <span class="nt">&lt;listener</span> <span class="na">class=</span><span class="s">"com.consdata.article.DocListener"</span>
+                  <span class="na">topic=</span><span class="s">"com.consdata.article.DocSaved"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/projectListeners&gt;</span>
+</code></pre></div></div>
+<p>Atrybut <code class="language-plaintext highlighter-rouge">class</code> zawiera implementację interfejsu naszego listenera, zdefiniowanego w polu <code class="language-plaintext highlighter-rouge">topic</code>. Listenery działające w obrębie całej aplikacji definiujemy w węźle <code class="language-plaintext highlighter-rouge">applicationListeners</code>.</p>
+
+<p>Coś musi jeszcze wywołać event, na który nasłuchujemy. W metodzie <code class="language-plaintext highlighter-rouge">save</code> naszej akcji dodajemy linię:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="n">event</span><span class="o">.</span><span class="na">getProject</span><span class="o">().</span><span class="na">getMessageBus</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">syncPublisher</span><span class="o">(</span><span class="nc">Topic</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"com.consdata.article.DocSaved"</span><span class="o">,</span> <span class="nc">DocSaved</span><span class="o">.</span><span class="na">class</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">onSave</span><span class="o">(</span><span class="n">vFile</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>W efekcie po zapisie dokumentacji do pliku automatycznie otworzy nam się edytor pliku dokumentacji.</p>
+
+<h2 id="extension-points">Extension Points</h2>
+<p>Ostatnim elementem, jaki poznamy będą <code class="language-plaintext highlighter-rouge">Extension Pointy</code>. Są to wprost nazwane interfejsy, które pozwalają na rozszerzenie konkretnych elementów platformy lub innych pluginów. Pełna lista dostępnych extension pointów znajduje się na <a href="https://jetbrains.org/intellij/sdk/docs/appendix/resources/extension_point_list.html">https://jetbrains.org/intellij/sdk/docs/appendix/resources/extension_point_list.html</a>.</p>
+
+<p>W ramach naszego projektu stworzymy rozszerzenie dla extension pointa <code class="language-plaintext highlighter-rouge">com.intellij.documentationProvider</code>. Pozwala on na wzbogacenie  dokumetancji prezentowanej np. w <code class="language-plaintext highlighter-rouge">Quick Documentation</code> (Ctrl + Q) o własne treści.
+Tworzym klasę <code class="language-plaintext highlighter-rouge">DocProvider</code> implementująca interfejs <code class="language-plaintext highlighter-rouge">DocumentationProvider</code> oraz <code class="language-plaintext highlighter-rouge">ExternalDocumentationProvider</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DocProvider</span> <span class="kd">implements</span> <span class="nc">DocumentationProvider</span><span class="o">,</span> <span class="nc">ExternalDocumentationProvider</span> <span class="o">{</span>
+    <span class="nd">@Nullable</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">fetchExternalDocumentation</span><span class="o">(</span><span class="nc">Project</span> <span class="n">project</span><span class="o">,</span> <span class="nc">PsiElement</span> <span class="n">psiElement</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getDoc</span><span class="o">((</span><span class="nc">PsiClass</span><span class="o">)</span> <span class="n">psiElement</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasDocumentationFor</span><span class="o">(</span><span class="nc">PsiElement</span> <span class="n">psiElement</span><span class="o">,</span> <span class="nc">PsiElement</span> <span class="n">psiElement1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">psiElement</span> <span class="k">instanceof</span> <span class="nc">PsiClass</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">PsiClass</span> <span class="n">psiClass</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PsiClass</span><span class="o">)</span> <span class="n">psiElement</span><span class="o">;</span>
+            <span class="k">return</span> <span class="n">psiClass</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">)</span>
+                    <span class="o">||</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getFields</span><span class="o">()).</span><span class="na">anyMatch</span><span class="o">(</span><span class="n">field</span> <span class="o">-&gt;</span> <span class="n">field</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                    <span class="o">||</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getMethods</span><span class="o">()).</span><span class="na">anyMatch</span><span class="o">(</span><span class="n">field</span> <span class="o">-&gt;</span> <span class="n">field</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getDoc</span><span class="o">(</span><span class="nc">PsiClass</span> <span class="n">psiClass</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">doc</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiClass</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">)));</span>
+
+        <span class="n">doc</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getFields</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">psiField</span> <span class="o">-&gt;</span> <span class="n">psiField</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="nl">PsiField:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">psiField</span> <span class="o">-&gt;</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiField</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiField</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">)))));</span>
+
+        <span class="n">doc</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">psiClass</span><span class="o">.</span><span class="na">getMethods</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">psiMethod</span> <span class="o">-&gt;</span> <span class="n">psiMethod</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="nl">PsiMethod:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">psiMethod</span> <span class="o">-&gt;</span> <span class="n">evaulate</span><span class="o">(</span><span class="n">psiMethod</span><span class="o">.</span><span class="na">getProject</span><span class="o">(),</span> <span class="n">psiMethod</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="s">"com.consdata.doc.Doc"</span><span class="o">).</span><span class="na">findAttributeValue</span><span class="o">(</span><span class="s">"value"</span><span class="o">)))));</span>
+
+        <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="s">"&lt;b&gt;"</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">+</span> <span class="s">"&lt;/b&gt;: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">()).</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">joining</span><span class="o">(</span><span class="s">"&lt;br/&gt;"</span><span class="o">));</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">evaulate</span><span class="o">(</span><span class="nc">Project</span> <span class="n">project</span><span class="o">,</span> <span class="nc">PsiAnnotationMemberValue</span> <span class="n">expression</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">JavaPsiFacade</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">project</span><span class="o">).</span><span class="na">getConstantEvaluationHelper</span><span class="o">().</span><span class="na">computeConstantExpression</span><span class="o">(</span><span class="n">expression</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Nullable</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getUrlFor</span><span class="o">(</span><span class="nc">PsiElement</span> <span class="n">element</span><span class="o">,</span> <span class="nc">PsiElement</span> <span class="n">originalElement</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">canPromptToConfigureDocumentation</span><span class="o">(</span><span class="nc">PsiElement</span> <span class="n">psiElement</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">promptToConfigureDocumentation</span><span class="o">(</span><span class="nc">PsiElement</span> <span class="n">psiElement</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>W <code class="language-plaintext highlighter-rouge">fetchExternalDocumentation</code> generujemy dokumentację dla wskazanej klasy analogicznie jak w akcji, tylko dla jednej klasy. Dodatkowo wzbogacamy dokumentację o znacznik HTML (w oknie <code class="language-plaintext highlighter-rouge">QuickDocumentation</code> rednerowany jest HTML). W <code class="language-plaintext highlighter-rouge">hasDocumentationFor</code> decydujemy czy dla danego elementu powinniśmy wygenerować dodatkową dokumentację, podobnie jak w przypadku grupy, gdy decydowaliśmy o jej aktywności.
+Tak zdefiniowany provider możemy teraz zdefiniować w manifeście pluginu jako rozszerzenie dla <code class="language-plaintext highlighter-rouge">documentationProvider</code>:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;extensions</span> <span class="na">defaultExtensionNs=</span><span class="s">"com.intellij"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;documentationProvider</span> <span class="na">implementation=</span><span class="s">"com.consdata.article.DocProvider"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/extensions&gt;</span>
+</code></pre></div></div>
+
+<p>Po uruchomieniu pluginu, przechodzimy do klasy <code class="language-plaintext highlighter-rouge">UseCase</code>. Najeżdżamy na typ <code class="language-plaintext highlighter-rouge">TestClass</code> i wybieramy Ctrl + Q. Po wywołaniu skrótu pojawi się popup z wygenerowaną dokumentacją:</p>
+
+<p><img src="/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/quickPopup.png" alt="message" /></p>
+
+<p>Po ponownym użyciu skrótu otworzy się szuflada:</p>
+
+<p><img src="/assets/img/posts/2021-01-11-pisanie-pluginow-do-intellij/quickDrawer.png" alt="message" /></p>
+
+<p>Oczywiście w przypadku innych extension pointów potrzeba będzie zdefiniować inne mechanizmy. Co do zasady sprawa jest jednakowa dla wszystkich extension pointów. Definujemy implementację dla konkretnego przypadku i łączymy ją z określonym extensionPointem w manifeście.</p>
+
+<h2 id="plugin-w-intellij---dystrybucja">Plugin w IntelliJ - dystrybucja</h2>
+<p>Gotowy plugin pakujemy do paczki klikając prawym przyciskiem myszy na projekt pluginu i wybieramy <code class="language-plaintext highlighter-rouge">Prepare plugin module ... for deployment</code>. Wygenerowany JAR pluginu możemy opublikować w repo IntelliJ lub samodzielnie udostępniać go z <a href="https://jetbrains.org/intellij/sdk/docs/basics/getting_started/update_plugins_format.html">prywatnego repo</a>.</p>
+
+<h2 id="przydatne-linki">Przydatne linki</h2>
+<ul>
+  <li><a href="https://jetbrains.org/intellij/sdk/docs/basics/basics.html">Kompleksowe wprowadzenie do pluginów</a></li>
+  <li><a href="https://intellij-support.jetbrains.com/hc/en-us/community/topics/200366979-IntelliJ-IDEA-Open-API-and-Plugin-Development">Forum odnośnie api i pisania pluginów</a></li>
+  <li><a href="https://jetbrains.org/intellij/sdk/docs/appendix/resources/extension_point_list.html">Lista platformowych extension pointów</a></li>
+  <li><a href="https://jetbrains.org/intellij/sdk/docs/basics/getting_started/update_plugins_format.html">Tworzenie prywatnego repo pluginów</a></li>
+  <li><a href="https://github.com/m87/article-app">Repo z pluginem</a></li>
+  <li><a href="https://github.com/m87/article-test-app">Repo z testową aplikacją</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "intellij ide plugin";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

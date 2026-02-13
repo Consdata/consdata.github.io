@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok?" />
+<meta name="author" content="kdudek" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Wyjątki w Javie dzielą się na checked exceptions oraz unchecked exceptions. Unchecked exception reprezentuje błąd w logice programu, który może wystąpić w dowolnym miejscu - przykładowo odwołanie się do nieistniejącego elementu tablicy spowoduje rzucenie wyjątku ArrayIndexOutOfBoundsException. Kompilator nie jest w stanie przewidzieć błędów logicznych, które pojawiają się dopiero w czasie wykonywania programu, dlatego nie może sprawdzać tego typu problemów w czasie kompilacji, co sprawia, że wyjątki te nie muszą być obsłużone przez programistę." />
+<meta property="og:description" content="Wyjątki w Javie dzielą się na checked exceptions oraz unchecked exceptions. Unchecked exception reprezentuje błąd w logice programu, który może wystąpić w dowolnym miejscu - przykładowo odwołanie się do nieistniejącego elementu tablicy spowoduje rzucenie wyjątku ArrayIndexOutOfBoundsException. Kompilator nie jest w stanie przewidzieć błędów logicznych, które pojawiają się dopiero w czasie wykonywania programu, dlatego nie może sprawdzać tego typu problemów w czasie kompilacji, co sprawia, że wyjątki te nie muszą być obsłużone przez programistę." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2023/09/22/czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2023/09/22/czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-22T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/thumbnail.webp" />
+<meta property="twitter:title" content="Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"kdudek"},"image":"https://blog.consdata.tech/assets/img/posts/2023-09-22-czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok/thumbnail.webp","@type":"BlogPosting","headline":"Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok?","description":"Wyjątki w Javie dzielą się na checked exceptions oraz unchecked exceptions. Unchecked exception reprezentuje błąd w logice programu, który może wystąpić w dowolnym miejscu - przykładowo odwołanie się do nieistniejącego elementu tablicy spowoduje rzucenie wyjątku ArrayIndexOutOfBoundsException. Kompilator nie jest w stanie przewidzieć błędów logicznych, które pojawiają się dopiero w czasie wykonywania programu, dlatego nie może sprawdzać tego typu problemów w czasie kompilacji, co sprawia, że wyjątki te nie muszą być obsłużone przez programistę.","dateModified":"2023-09-22T02:00:00-05:00","datePublished":"2023-09-22T02:00:00-05:00","url":"https://blog.consdata.tech/2023/09/22/czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2023/09/22/czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2023/09/22/czy-wiesz-po-co-stosuje-sie-sneaky-throws-z-biblioteki-lombok.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">java</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Czy wiesz, po co stosuje się @SneakyThrows z biblioteki Lombok?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/kdudek.html">
+        <img class="author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+        <span class="author-name">Kamil Dudek</span>
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+22
+
+
+September
+
+
+2023
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Wyjątki w Javie dzielą się na <code class="language-plaintext highlighter-rouge">checked exceptions</code> oraz <code class="language-plaintext highlighter-rouge">unchecked exceptions</code>. Unchecked exception reprezentuje błąd w logice programu, który może wystąpić w dowolnym miejscu - przykładowo odwołanie się do nieistniejącego elementu tablicy spowoduje rzucenie wyjątku <code class="language-plaintext highlighter-rouge">ArrayIndexOutOfBoundsException</code>. Kompilator nie jest w stanie przewidzieć błędów logicznych, które pojawiają się dopiero w czasie wykonywania programu, dlatego nie może sprawdzać tego typu problemów w czasie kompilacji, co sprawia, że wyjątki te nie muszą być obsłużone przez programistę.</p>
+
+<p>Przykład <code class="language-plaintext highlighter-rouge">unchecked exception</code> - dzielenie przez zero wyrzuci wyjątek <code class="language-plaintext highlighter-rouge">ArithmeticException</code>:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">divideByZero</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">numerator</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">denominator</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Checked exception</code> to wyjątek reprezentujący przewidywalną, błędną sytuację, która może wystąpić nawet w przypadku poprawnej logiki programu - przykładowo próba otwarcia pliku, który nie istnieje, spowoduje rzucenie wyjątku <code class="language-plaintext highlighter-rouge">FileNotFoundException</code>. Wyjątki tego rodzaju są weryfikowane w czasie kompilacji, dlatego Java zmusza nas do ich obsługi - albo poprzez słowo kluczowe throws, albo poprzez złapanie wyjątku w bloku <code class="language-plaintext highlighter-rouge">try-catch</code>:</p>
+<ul>
+  <li>Przykład obsługi przez słowo kluczowe <code class="language-plaintext highlighter-rouge">throws</code> - przekazanie wyjątku w dół stosu wywołań:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">openFile</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">FileNotFoundException</span> <span class="o">{</span>
+    <span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"Nieistniejacy_plik.txt"</span><span class="o">);</span>
+    <span class="nc">FileInputStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileInputStream</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Przykład obsługi przez blok <code class="language-plaintext highlighter-rouge">try-catch</code> - złapanie wyjątku:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">openFile</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"Nieistniejacy_plik.txt"</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">FileInputStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileInputStream</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">FileNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="koncepcja-sneaky-throws">Koncepcja sneaky throws</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Sneaky throws</code> to koncepcja pozwalająca na rzucenie dowolnego <code class="language-plaintext highlighter-rouge">checked exception</code> bez jego jawnego definiowania w sygnaturze metody. Pozwala ona na ominięcie słowa kluczowego throws oraz imitowanie zachowania <code class="language-plaintext highlighter-rouge">unchecked exception</code> i jest możliwa, ponieważ obsługa wyjątków <code class="language-plaintext highlighter-rouge">checked exception</code> jest wymuszana tylko przez kompilator Javy.  W kodzie bajtowym każdy wyjątek może zostać rzucony z dowolnego miejsca i jest traktowany przez JVM tak samo - zostaje on propagowany w dół stosu wywołań. Od Javy 8 każde użycie throws <code class="language-plaintext highlighter-rouge">T</code>, gdzie <code class="language-plaintext highlighter-rouge">T</code> jest typem generycznym rozszerzajacym <code class="language-plaintext highlighter-rouge">Throwable</code>, oznacza, że metoda może rzucić <code class="language-plaintext highlighter-rouge">unchecked exception</code>. Dzięki temu możemy stworzyć metodę pomocniczą, która będzie rzucała wyjątek typu <code class="language-plaintext highlighter-rouge">checked</code>, jednak kompilator nie będzie wymagał jego przechwycenia.
+Metoda pomocnicza realizująca koncepcję <code class="language-plaintext highlighter-rouge">sneaky throws</code>:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span> <span class="kd">extends</span> <span class="nc">Throwable</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">sneakyThrow</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="kd">throws</span> <span class="no">T</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="n">t</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Metodę tę możemy następnie dowolnie wykorzystać w naszym kodzie:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">File</span> <span class="nf">getFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+ 
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">deleteFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+   <span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">getFile</span><span class="o">(</span><span class="n">fileName</span><span class="o">);</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">sneakyThrow</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileNotFoundException</span><span class="o">(</span><span class="s">"Nie znaleziono pliku"</span><span class="o">));</span>
+   <span class="o">}</span>
+   <span class="n">file</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+<span class="o">}</span>
+ 
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">tryToDeleteNotExistingFile</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">try</span> <span class="o">{</span>
+      <span class="n">deleteFile</span><span class="o">(</span><span class="s">"Nieistniejacy_plik.txt"</span><span class="o">);</span>
+   <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">exception</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">exception</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Warto zauważyć, że w takiej sytuacji w metodzie <code class="language-plaintext highlighter-rouge">tryToDeleteNotExistingFile()</code> nie możemy złapać już wyjątku <code class="language-plaintext highlighter-rouge">FileNotFoundException</code>, ponieważ nie jest on zadeklarowany - możemy jedynie ratować się złapaniem bardziej ogólnego <code class="language-plaintext highlighter-rouge">Exception</code>.</p>
+
+<h2 id="lombok---adnotacja-sneakythrows">Lombok - adnotacja <code class="language-plaintext highlighter-rouge">@SneakyThrows</code></h2>
+<p>Biblioteka <code class="language-plaintext highlighter-rouge">Lombok</code> udostępnia adnotację <code class="language-plaintext highlighter-rouge">@SneakyThrows</code>, która wykorzystuje powyższą sztuczkę i dzięki oszukaniu kompilatora pozwala rzucać <code class="language-plaintext highlighter-rouge">checked exception</code> bez deklarowania tego w sygnaturze metody.
+Przykład - użycie adnotacji <code class="language-plaintext highlighter-rouge">@SneakyThrows</code>:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">File</span> <span class="nf">getFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+ 
+<span class="nd">@SneakyThrows</span><span class="o">(</span><span class="nc">FileNotFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">deleteFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+   <span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">getFile</span><span class="o">(</span><span class="n">fileName</span><span class="o">);</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">FileNotFoundException</span><span class="o">(</span><span class="s">"Nie znaleziono pliku"</span><span class="o">);</span>
+   <span class="o">}</span>
+   <span class="n">file</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+<span class="o">}</span>
+ 
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">tryToDeleteNotExistingFile</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">try</span> <span class="o">{</span>
+      <span class="n">deleteFile</span><span class="o">(</span><span class="s">"Nieistniejacy_plik.txt"</span><span class="o">);</span>
+   <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">exception</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">exception</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Do adnotacji <code class="language-plaintext highlighter-rouge">@SneakyThrows</code> można przekazać dowolną liczbę wyjątków. Jeśli nie podamy żadnego, to adnotacja ta uwzględni dowolny wyjątek. Należy pamiętać także o tym, że <code class="language-plaintext highlighter-rouge">@SneakyThrows</code> nie dziedziczy.</p>
+
+<h2 id="kiedy-używać">Kiedy używać?</h2>
+
+<p>Dokumentacja @SneakyThrows wspomina o dwóch częstych przypadkach użycia:</p>
+<ul>
+  <li>niepotrzebnie rygorystyczne interfejsy takie jak <code class="language-plaintext highlighter-rouge">Runnable</code>,</li>
+  <li>“niemożliwe” wyjątki, które nie powinny nigdy być rzucone np. ze względu na specyfikację JVM.</li>
+</ul>
+
+<p>Inną sytuacją, w której można zastanowić się nad użyciem <code class="language-plaintext highlighter-rouge">@SneakyThrows</code> są wyrażenia lambda - użycie tej adnotacji pozwoli zwiększyć czytelność, ponieważ nie będziemy musieli przejmować się łapaniem wyjątków w blok <code class="language-plaintext highlighter-rouge">try-catch</code>. Przykład z użyciem <code class="language-plaintext highlighter-rouge">@SneakyThrows</code>:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SneakyThrows</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="nc">Instant</span> <span class="nf">sneakyParseStringDate</span><span class="o">(</span><span class="nc">String</span> <span class="n">date</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyy-MM-dd"</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">date</span><span class="o">).</span><span class="na">toInstant</span><span class="o">();</span>
+<span class="o">}</span>
+ 
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Instant</span><span class="o">&gt;</span> <span class="nf">getInstants</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"2022-05-18"</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">SneakyThrowsExample:</span><span class="o">:</span><span class="n">sneakyParseStringDate</span><span class="o">)</span>
+         <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ten sam przykład bez użycia @SneakyThrows:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="nc">Instant</span> <span class="nf">nonSneakyParseStringDate</span><span class="o">(</span><span class="nc">String</span> <span class="n">date</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ParseException</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="s">"yyyy-MM-dd"</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">date</span><span class="o">).</span><span class="na">toInstant</span><span class="o">();</span>
+<span class="o">}</span>
+ 
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Instant</span><span class="o">&gt;</span> <span class="nf">getInstants</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"2022-05-18"</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">date</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">try</span> <span class="o">{</span>
+         <span class="k">return</span> <span class="nf">nonSneakyParseStringDate</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+      <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ParseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+      <span class="o">}</span>
+   <span class="o">}).</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="dokumentacja">Dokumentacja</h2>
+<ul>
+  <li><a href="https://projectlombok.org/features/SneakyThrows">https://projectlombok.org/features/SneakyThrows</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "java lombok sneakythrows";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

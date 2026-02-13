@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Angular APP_INITIALIZER | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Angular APP_INITIALIZER" />
+<meta name="author" content="dmejer" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="APP_INITIALIZER to wbudowany w Angulara InjectionToken. Pod InjectionToken można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu." />
+<meta property="og:description" content="APP_INITIALIZER to wbudowany w Angulara InjectionToken. Pod InjectionToken można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu." />
+<link rel="canonical" href="https://blog.consdata.tech/2020/02/14/angular-app-initializer.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/02/14/angular-app-initializer.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-02-14-angular-app-initializer/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-14T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-02-14-angular-app-initializer/thumbnail.webp" />
+<meta property="twitter:title" content="Angular APP_INITIALIZER" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"dmejer"},"image":"https://blog.consdata.tech/assets/img/posts/2020-02-14-angular-app-initializer/thumbnail.webp","@type":"BlogPosting","headline":"Angular APP_INITIALIZER","description":"APP_INITIALIZER to wbudowany w Angulara InjectionToken. Pod InjectionToken można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu.","dateModified":"2020-02-14T01:00:00-06:00","datePublished":"2020-02-14T01:00:00-06:00","url":"https://blog.consdata.tech/2020/02/14/angular-app-initializer.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/02/14/angular-app-initializer.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2020/02/14/angular-app-initializer.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">Angular</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Angular APP_INITIALIZER</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/dmejer.html">
+        <img class="author-image" src="/assets/img/authors/dmejer.webp" alt="author">
+        <span class="author-name">Dorian Mejer</span><a class="author" href="https://github.com/dmejer">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+14
+
+lutego
+
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p><code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code> to wbudowany w Angulara <code class="language-plaintext highlighter-rouge">InjectionToken</code>.
+Pod <code class="language-plaintext highlighter-rouge">InjectionToken</code> można zarejestrować wartość, funkcję albo serwis. Token ten można wstrzyknąć do komponentu lub serwisu.
+Przykład zdefiniowania <code class="language-plaintext highlighter-rouge">MY_TOKEN</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">MY_TOKEN</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="nx">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">MY_TOKEN</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Zarejestrowanie wartości <code class="language-plaintext highlighter-rouge">Hello</code> pod <code class="language-plaintext highlighter-rouge">MY_TOKEN</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+<span class="c1">// (...)</span>
+<span class="na">providers</span><span class="p">:</span> <span class="p">[{</span>
+  <span class="na">provide</span><span class="p">:</span> <span class="nx">MY_TOKEN</span><span class="p">,</span>
+  <span class="na">useValue</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">,</span>
+<span class="p">}]</span>
+<span class="c1">// (...)</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>Wstrzyknięcie wartości <code class="language-plaintext highlighter-rouge">MY_TOKEN</code> do serwisu oraz wyświetlenie w konsoli przeglądarki <code class="language-plaintext highlighter-rouge">Hello</code>:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyService</span> <span class="p">{</span>
+
+  <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">MY_TOKEN</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Natomiast, dzięki tokenowi <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code>, możliwe jest wykonanie funkcji, lub zestawu funkcji, które zostaną wykonane przed uruchomieniem aplikacji (bootstraping).</p>
+
+<h2 id="przykład">Przykład</h2>
+<p>Prosty przykład wywołania dwóch funkcji przed startem aplikacji:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">appInit1</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello from appInit1!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">appInit2</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello from appInit2!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Parametr <code class="language-plaintext highlighter-rouge">multi</code> pozwala na rejestrację dwóch lub więcej funkcji pod <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code>:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+<span class="c1">// (...)</span>
+<span class="na">providers</span><span class="p">:</span> <span class="p">[{</span>
+  <span class="na">provide</span><span class="p">:</span> <span class="nx">APP_INITIALIZER</span><span class="p">,</span>
+  <span class="na">useFactory</span><span class="p">:</span> <span class="nx">appInit1</span><span class="p">,</span>
+  <span class="na">multi</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="p">{</span>
+  <span class="na">provide</span><span class="p">:</span> <span class="nx">APP_INITIALIZER</span><span class="p">,</span>
+  <span class="na">useFactory</span><span class="p">:</span> <span class="nx">appInit2</span><span class="p">,</span>
+  <span class="na">multi</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}],</span>
+<span class="c1">// (...)</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>W konsoli przeglądarki pojawią się poniższe komunikaty:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello from appInit1!
+Hello from appInit2!
+</code></pre></div></div>
+
+<h2 id="przykład-z-promise">Przykład z Promise</h2>
+<p>Do <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code> można także przekazać funkcję, która zwróci Promise! Angular poczeka, aż wszystkie zwrócone Promise’y zostaną rozwiązane (resolved).</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">appInit</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello from appInit</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nx">resolve</span><span class="p">();</span>
+    <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+<span class="c1">// (...)</span>
+<span class="na">providers</span><span class="p">:</span> <span class="p">[{</span>
+  <span class="na">provide</span><span class="p">:</span> <span class="nx">APP_INITIALIZER</span><span class="p">,</span>
+  <span class="na">useFactory</span><span class="p">:</span> <span class="nx">appInit</span><span class="p">,</span>
+  <span class="na">multi</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}],</span>
+<span class="c1">// (...)</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>W rezultacie, po 2 sekundach od wywołania funkcji <code class="language-plaintext highlighter-rouge">appInit</code>, w konsoli zostanie wyświetlona wiadomość: <code class="language-plaintext highlighter-rouge">Hello from appInit</code>.</p>
+
+<h2 id="zaawansowany-przykład">Zaawansowany przykład</h2>
+<p>Do funkcji uruchamianej przed bootstrapem aplikacji możliwe jest wstrzyknięcie serwisu.
+W poniższym przykładzie aplikacja frontendowa ściąga konfigurację wymaganą do poprawnego działania.
+Na backendzie wystawiony jest plik conf.json, serwowany przez http-server.
+Interface Configuration jest modelem danych z pliku conf.json, zawiera tylko pole name.
+Serwis <code class="language-plaintext highlighter-rouge">AppInitService</code> wywołuje żądanie typu GET na <code class="language-plaintext highlighter-rouge">/api/conf.json</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kr">interface</span> <span class="nx">Configuration</span> <span class="p">{</span>
+  <span class="nx">name</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppInitService</span> <span class="p">{</span>
+
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">httpClient</span><span class="p">:</span> <span class="nx">HttpClient</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+
+  <span class="nx">init</span><span class="p">():</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Configuration</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="o">&lt;</span><span class="nx">Configuration</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">api/conf.json</span><span class="dl">'</span><span class="p">)</span>
+           <span class="p">.</span><span class="nx">toPromise</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">appInit</span><span class="p">(</span><span class="nx">appInitService</span><span class="p">:</span> <span class="nx">AppInitService</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">appInitService</span><span class="p">.</span><span class="nx">init</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">configuration</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">configuration</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+<span class="c1">// (...)</span>
+<span class="na">providers</span><span class="p">:</span> <span class="p">[</span>
+  <span class="nx">AppInitService</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="na">provide</span><span class="p">:</span> <span class="nx">APP_INITIALIZER</span><span class="p">,</span>
+    <span class="na">useFactory</span><span class="p">:</span> <span class="nx">appInit</span><span class="p">,</span>
+    <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppInitService</span><span class="p">],</span>
+    <span class="na">multi</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}]</span>
+<span class="c1">// (...)</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+<p>Powyższy kod wyświetli w konsoli konfigurację z pliku conf.json.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{name: "Test App name"}
+</code></pre></div></div>
+
+<h2 id="implementacja-w-angularze">Implementacja w Angularze</h2>
+<p>Przyjrzyjmy się teraz, w jaki sposób <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code> został zaimplementowany w samym Angularze.
+W pliku <code class="language-plaintext highlighter-rouge">application_init.ts</code> znajduje się definicja <code class="language-plaintext highlighter-rouge">InjectionToken</code>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">APP_INITIALIZER</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">Application Initializer</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Początek bootstrapowania aplikacji w Angular wygląda następująco:</p>
+<h5 id="platformrefbootstrapmodulefactory"><em><code class="language-plaintext highlighter-rouge">platformRef#bootstrapModuleFactory()</code></em></h5>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="nx">_callAndReportToErrorHandler</span><span class="p">(</span><span class="nx">exceptionHandler</span><span class="p">,</span> <span class="nx">ngZone</span> <span class="o">!</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+       <span class="kd">const</span> <span class="na">initStatus</span><span class="p">:</span> <span class="nx">ApplicationInitStatus</span> <span class="o">=</span> <span class="nx">moduleRef</span><span class="p">.</span><span class="nx">injector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">ApplicationInitStatus</span><span class="p">);</span>
+       <span class="nx">initStatus</span><span class="p">.</span><span class="nx">runInitializers</span><span class="p">();</span> <span class="c1">// (1)</span>
+       <span class="k">return</span> <span class="nx">initStatus</span><span class="p">.</span><span class="nx">donePromise</span><span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">_moduleDoBootstrap</span><span class="p">(</span><span class="nx">moduleRef</span><span class="p">);</span> <span class="c1">// (2)</span>
+         <span class="k">return</span> <span class="nx">moduleRef</span><span class="p">;</span>
+       <span class="p">});</span>
+</code></pre></div></div>
+<p>W punkcie (1) w serwisie ApplicationInitStatus wywołana jest funkcja runInitializers. Po zakończeniu ApplicationInitStatus, Angular przeprowadza bootstrap komponentu.</p>
+<h5 id="applicationinitstatusruninitializers"><em><code class="language-plaintext highlighter-rouge">ApplicationInitStatus#runInitializers()</code></em></h5>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">runInitializers</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// (...)</span>
+    <span class="kd">const</span> <span class="nx">asyncInitPromises</span><span class="p">:</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">appInits</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">appInits</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">initResult</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">appInits</span><span class="p">[</span><span class="nx">i</span><span class="p">]();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isPromise</span><span class="p">(</span><span class="nx">initResult</span><span class="p">))</span> <span class="p">{</span>
+          <span class="nx">asyncInitPromises</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">initResult</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">asyncInitPromises</span><span class="p">).</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">complete</span><span class="p">();</span> <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> <span class="p">});</span>
+
+    <span class="c1">// (...)</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+<p>Metoda <code class="language-plaintext highlighter-rouge">runInitializers</code> sprawdza wywołania, które zwróciły Promise i czeka, aż wszystkie funkcje zostaną zakończone (resolve).</p>
+
+<h2 id="zastosowania">Zastosowania</h2>
+<p>Do czego można zastosować <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code>?</p>
+<ul>
+  <li>obsługa powiadomień push z serwera (comety),</li>
+  <li>pobranie konfiguracji np. CSRF token,</li>
+  <li>monitorowanie aktywności użytkownika,</li>
+  <li>keep alive,</li>
+  <li>keycloak - polecam świetny wpis Michała Hoji na ten temat <a href="https://blog.consdata.tech/2020/02/01/keycloak-uwierzytelnianie-autoryzacja-springboot-angular.html">źródło</a>.</li>
+</ul>
+
+<p>Nawet, jeżeli w swojej aplikacji nie używamy <code class="language-plaintext highlighter-rouge">APP_INITIALIZER</code>, sam Angular wykorzystuje go do poprawnego działania.
+Przykłady użycia w Angularze:</p>
+<ul>
+  <li><a href="https://github.com/angular/angular/blob/e35d9eaa7d5267e9ea4d3fe2b85b88e28aae3f22/packages/router/src/router_module.ts#L510">RouterModule</a>, używany jest do poprawnej pracy Guardów;</li>
+  <li><a href="https://github.com/angular/angular/blob/8.2.x/packages/docs/web_workers/web_workers.md">WorkerAppModule</a>;</li>
+  <li><a href="https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/service-worker/src/module.ts#L161">ServiceWorkerModule</a>;</li>
+  <li><a href="https://github.com/angular/angular/blob/8b88269ae1c0d609e098964e60d08e8472f5aa40/packages/platform-browser/src/dom/debug/ng_probe.ts#L41">NgProbe</a>. Angular 9 wprowadza nowy renderer <a href="https://angular.io/guide/ivy">Ivy</a> tym samym mechanizm NgProbe przestanie działać.</li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Angular APP_INITIALIZER Application Initializer InjectionToken DI Dependency Injection ApplicationInitStatus";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

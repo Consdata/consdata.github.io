@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Dobór limitów pamięci w Javie (w kontenerach i nie tylko) | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Dobór limitów pamięci w Javie (w kontenerach i nie tylko)" />
+<meta name="author" content="mmergo" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Geneza problemu Słowem wstępu: nasz projekt działa na OpenShifcie, który jest niczym innym jak Kubernetesem z dodatkowymi bajerami. Z tego też tytułu wszystko tutaj dzieje się w kontenerach. Natomiast część wniosków, do których doszliśmy, aplikuje się nie tylko do procesów Javy chodzących w kontenerze, ale też Javy odpalonej “po staremu”, bez kontenerów." />
+<meta property="og:description" content="Geneza problemu Słowem wstępu: nasz projekt działa na OpenShifcie, który jest niczym innym jak Kubernetesem z dodatkowymi bajerami. Z tego też tytułu wszystko tutaj dzieje się w kontenerach. Natomiast część wniosków, do których doszliśmy, aplikuje się nie tylko do procesów Javy chodzących w kontenerze, ale też Javy odpalonej “po staremu”, bez kontenerów." />
+<link rel="canonical" href="https://blog.consdata.tech/2022/12/15/memory-java.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2022/12/15/memory-java.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2022-12-01-memory-java/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-12-15T23:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2022-12-01-memory-java/thumbnail.webp" />
+<meta property="twitter:title" content="Dobór limitów pamięci w Javie (w kontenerach i nie tylko)" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mmergo"},"image":"https://blog.consdata.tech/assets/img/posts/2022-12-01-memory-java/thumbnail.webp","@type":"BlogPosting","headline":"Dobór limitów pamięci w Javie (w kontenerach i nie tylko)","description":"Geneza problemu Słowem wstępu: nasz projekt działa na OpenShifcie, który jest niczym innym jak Kubernetesem z dodatkowymi bajerami. Z tego też tytułu wszystko tutaj dzieje się w kontenerach. Natomiast część wniosków, do których doszliśmy, aplikuje się nie tylko do procesów Javy chodzących w kontenerze, ale też Javy odpalonej “po staremu”, bez kontenerów.","dateModified":"2022-12-15T23:00:00-06:00","datePublished":"2022-12-15T23:00:00-06:00","url":"https://blog.consdata.tech/2022/12/15/memory-java.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2022/12/15/memory-java.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2022/12/15/memory-java.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">Java</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Dobór limitów pamięci w Javie (w kontenerach i nie tylko)</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/mmergo.html">
+        <img class="author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+        <span class="author-name">Marcin Mergo</span><a class="author" href="https://github.com/mmergo">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a><a class="author authors-space" href="/authors/jwizla.html">
+        <img class="author-image" src="/assets/img/authors/jwizla.webp" alt="author">
+        <span class="author-name">Jakub Wizła</span>
+    </a>
+    
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+15
+
+grudnia
+
+
+
+2022
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <h2 id="geneza-problemu">Geneza problemu</h2>
+<p>Słowem wstępu: nasz projekt działa na OpenShifcie, który jest niczym innym jak Kubernetesem z dodatkowymi bajerami. Z tego też tytułu wszystko tutaj dzieje się w kontenerach. Natomiast część wniosków, do których doszliśmy, aplikuje się nie tylko do procesów Javy chodzących w kontenerze, ale też Javy odpalonej “po staremu”, bez kontenerów.</p>
+
+<p>A teraz do rzeczy: od pewnego czasu w tym projekcie obserwowaliśmy problemy z pamięcią - kontenery zaczęły być ubijane przez systemowy OOM Killer. <strong>Zwracam tutaj uwagę na różnicę pomiędzy standardowym javowym OOM Exception a systemowym OOM Killerem - to są dwie różne rzeczy</strong>. Kompletnie jednak nam się to nie spinało, tj. widzieliśmy kilka rozbieżności:</p>
+<ul>
+  <li>W momencie ubijania kontenera przez systemowy OOM killer, większość znanych nam narzędzi do monitoringu (z samym OpenShiftem na czele) wskazywała, że ten kontener jeszcze nie dobił do limitu przydzielonej mu pamięci. Np. limit pamięci dla kontenera to 640MB, a systemowy OOM zabijał go w momencie, kiedy kontener teoretycznie bierze 600MB. Co się stało z tymi 40MB?</li>
+  <li>W ramach kontenera chodzi wyłącznie jeden proces - Java. Posługując się poleceniem <code class="language-plaintext highlighter-rouge">ps aux</code>, możemy sprawdzić, ile zajmuje rzeczywistej pamięci, patrząc na kolumnę RSS. Na ogół potrafi to być spore przybliżenie (albo i wprost - mało prawdziwa wartość) z uwagi na współdzielenie pamięci pomiędzy procesami, jednak w przypadku kontenera, na którym chodzi pojedynczy proces, jest to dobra metryka. I tutaj dochodzimy do drugiej rozbieżności: RSS procesu Javy wskazywał na zużycie pamięci większe o jakieś 100-150MB niż by to wynikało z sumy wartości Heapa oraz Off-Heapa podawanej przez JVM w Native Memory Tracking.</li>
+</ul>
+
+<h2 id="analiza">Analiza</h2>
+<p>Krótko mówiąc, ginęło nam w porywach kilkaset MB pamięci per kontener. Przy kilkuset kontenerach, które są odpalone na naszych środowiskach, sumuje się to do sporego problemu. Żeby się doliczyć tej zaginionej pamięci, musieliśmy znaleźć odpowiedzi na kilka pytań:</p>
+
+<h3 id="w-jaki-sposób-faktycznie-jest-liczone-zużycie-pamięci-przez-kontener-z-punktu-widzenia-systemu-operacyjnego">W jaki sposób faktycznie jest liczone zużycie pamięci przez kontener z punktu widzenia systemu operacyjnego?</h3>
+<p>Sprawa jest trochę bardziej zawiła niż w przypadku zwykłych procesów chodzących na hoście. Czym w ogóle są kontenery? Wyizolowanym procesem. Wbrew teoriom, na które można trafić, kontenery nie mają praktycznie nic wspólnego z maszynami wirtualnymi, nie ma w nich żadnej warstwy emulacji sprzętu, ani tym bardziej systemu. W szczególności, w kontenerze nie chodzi cały system operacyjny - kontenery współdzielą kernel z hostem, a procesy chodzące w ramach kontenera są niczym innym, jak zwykłymi procesami chodzącymi na hoście, jedynie w izolacji. I ta izolacja jest tutaj kluczowa. Bez wdawania się w zbyt duże szczegóły, za izolację (i tak w sumie za działanie kontenerów w ogóle) odpowiadają dwa mechanizmy kernela – namespaces oraz cgroups. W szczególności interesuje nas tutaj ten drugi - cgroups. Jest to mechanizm, który ogranicza zasoby (np. dostępną pamięć) procesom lub grupom procesów. W dużym uproszczeniu każdy kontener jest “zamknięty” w ramach własnej cgroupy. A ponieważ systemowy OOM killer patrzy właśnie na zużycie pamięci liczone z punktu widzenia cgroups, to kluczowe staje się ustalenie, jak zużycie pamięci kontenera wygląda z punktu widzenia cgroups.</p>
+
+<p>Wszelkie komendy w stylu <code class="language-plaintext highlighter-rouge">htop</code>, <code class="language-plaintext highlighter-rouge">docker stats</code>, itp. są tutaj niewystarczające. Istnieje natomiast coś w rodzaju odpowiednika htop, który pokazuje zużycie pamięci dla poszczególych cgroup: <code class="language-plaintext highlighter-rouge">systemd-cgtop</code>. Przykładowe wyjście cgtopa wygląda tak:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Control Group            Procs   %CPU   Memory  Input/s Output/s
+/                           49   44.1    26.9G        -        -
+kubepods.slice               -   15.7    18.2G        -        -
+kubepod…urstable.slice       -   15.7    17.8G        -        -
+system.slice                32   16.6     7.7G        -        -
+system.…urnald.service       1    5.9     3.7G        -        -
+system.…e/crio.service       4    1.3     3.4G        -        -
+kubepod…d4422dd7.slice       -    2.1   928.3M        -        -
+kubepod…f83d3bc3.slice       -    0.6   638.1M        -        -
+kubepod…fb85c98b.slice       -    0.5   637.5M        -        -
+kubepod…07c41430.slice       -    0.3   630.1M        -        -
+</code></pre></div></div>
+
+<p>Widzimy tutaj poszczególne cgroupy, które między innymi odpowiadają poszczególnym kontenerom lub podom, wraz z rzeczywiście zajętą przez nie pamięcią. W zależności od rozwiązania (czy są to np. gołe dockerowe kontenery, czy kubernetes) identyfikator cgroupy może - ale nie musi - odpowiadać identyfikatorowi kontenera. W przypadku gołego dockera będzie to ten sam identyfikator. Generalnie zachęcam, żeby teraz sobie każdy lokalnie odpalił byle jaki kontener dockerowy i podejrzał go w <code class="language-plaintext highlighter-rouge">systemd-cgtop</code>.</p>
+
+<p>Natomiast w przypadku kubernetesa to nie będzie ten sam identyfikator - przede wszystkim z tego powodu, że na podzie może chodzić więcej niż jeden kontener, a cgroupa jest tworzona dla całego poda, a nie każdego kontenera z osobna (choć to też, ale o tym za chwilę). Najprościej ten identyfikator poda, odpowiadający identyfikatorowi cgroupy, pobrać z yamla, np.:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>oc get pod myapp-289-prt6s -o yaml | grep uid
+</code></pre></div></div>
+<p>(ewentualnie kubectl zamiast oc) Z tak pobranym identyfikatorem możemy w systemd-cgtop namierzyć realne zużycie pamięci poda, np:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cgtop | grep ed9802cc
+</code></pre></div></div>
+<p>I tutaj jak na dłoni będzie widać pierwszy rozjazd, pomiędzy tym, co pokazuje np. monitoring OpenShifta, a realnym zużyciem pamięci poda z punktu widzenia cgroupsów. A jako, że systemowy OOM killer patrzy dokładnie na tę samą wartość, którą zgłaszają cgroupy, to jest to pierwsze miejsce, gdzie w końcu można podejrzeć, ile tak naprawdę pamięci, z punktu widzenia systemu operacyjnego, zajmuje pod.</p>
+
+<p>Skąd zatem bierze się ten rozjazd, gdzie uciekają nam te dodatkowe megabajty powodujące OOM? Stoją za tym co najmniej dwie rzeczy.</p>
+
+<h4 id="cache-dyskowy">Cache dyskowy</h4>
+<p>cgroupy do zużycia pamięci liczą też cache dyskowy. Innymi słowy, jeśli proces uruchomiony w danym kontenerze wykonuje dużo zapisów/odczytów z dysku, to cgroupy będą liczyły rozmiar cache’a dyskowego tego procesu do ogólnego zużycia pamięci przez kontener. To jest szczególnie niebezpieczne w przypadku odpalania baz danych w kontenerach (pomijam tutaj całą ważną dyskusję nt. tego, czy odpalanie baz w kontenerach to dobry czy zły pomysł ;)). Może dojść do sytuacji, w której realnie zużyta pamięć przez kontener będzie kilkukrotnie wyższa niż ta, którą widać np. w docker stats. Natomiast w przypadku “zwykłych” kontenerów, gdzie mamy odpalonego, powiedzmy, spring boota, na ogół nie stanowi to większego problemu lub są to pomijalne wartości.</p>
+
+<h4 id="dodatkowe-kontenery-w-ramach-pojedynczej-cgroupy">Dodatkowe kontenery w ramach pojedynczej cgroupy</h4>
+<p>cgroupy są w rzeczywistości strukturą drzewiastą, tj. w ramach istniejących cgroup mogą istnieć kolejne, zagnieżdżone cgroupy. Tę strukturę można obejrzeć poleceniem systemd-cgls. Szczególnie ma to znaczenie w przypadku limitu zasobów. Aktualne zużycie np. pamięci przez cgroupę jest równe sumie zużyć potomnych cgroup. Wyszukując w wyjściu systemd-cgls naszego poda, prawdopodobnie traficie na sytuację, że w ramach cgroupy odpowiadającej waszemu podowi będzie istniało jeszcze kilka innych cgroup.</p>
+
+<p>Mogliście słyszeć, że Kubernetes porzucił Dockera jako runtime kontenerów (w skrócie, wciąż można używać obrazów zbudowanych dockerem na kubernetesie/openshifcie, ale do samego uruchamiania kontenerów wykorzystywany będzie już np. CRI-O). Jeśli chodzi o CRI-O (z którego korzystamy w naszym projekcie), razem z podem tworzonych jest jeszcze kilka dodatkowych kontenerów, które zajmują się przede wszystkim monitorowaniem “głównych” kontenerów należących do poda. Wszystkie te kontenery - te zdefiniowane przez nas w podzie oraz te dołożone przez CRI-O - żyją w ramach tej samej cgroupy.</p>
+
+<p>Dlaczego to jest problem?</p>
+
+<p>Po pierwsze, te dodatkowe kontenery też zajmą zasoby, a w szczególności pamięć! I to właśnie stąd bierze się rozjazd pomiędzy tym, co pokazuje np. monitoring OpenShifta w kontekście zużycia pamięci przez poda, a tym, co realnie pokazuje cgtop. OpenShift pokazuje zużycie pamięci jedynie “naszych” kontenerów, zupełnie pomijając kontenery CRI-O.</p>
+
+<p>Jak sprawdzić, ile zasobów wciągają bonusowe kontenery CRI-O? Jako że wiemy już, że cgroupy są strukturą drzewiastą, to pora wrócić do systemd-cgtop. Domyślnie pokazuje on cgroupy do trzeciego poziomu zagnieżdżenia. Wykonując systemd-cgtop –depth=5, zobaczymy też nasze bonusowe kontenery wraz z ich konsumpcją zasobów. Empirycznie doszliśmy do tego, że na ogół zajmują one kilkadziesiąt MB (choć potrafią spuchnąć nawet do około 100MB). Naturalnie pojawia się pytanie, czy dla tych kontenerów istnieją jakieś limity? Otóż… nie. Jak w ogóle sprawdzić limit pamięci dla cgroupy? Słyszeliście o tym, że na linuksach wszystko jest plikiem? No to trzeba namierzyć odpowiedni plik. Informacje o cgroupach zapisane są w /sys/fs/cgroup/. Struktura plików odpowiada drzewiastej strukturze cgroup. Chcąc poznać limit pamięci dla cgroupy/kontenera (nieważne, czy “naszego”, czy bonusowego od CRI-O), wystarczy puścić:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /sys/fs/cgroup/memory/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-poded9802cc_105e_4114_8e97_0d580d361e15.slice/crio-cd168e1ea893458a8f414fe4742d9d266087b3366f4b0f8c0ce9e00810be651d.scope/memory.limit_in_bytes
+</code></pre></div></div>
+<p>gdzie poszczególne identyfikatory katalogów odpowiadają identyfikatorom cgroup na kolejnych poziomach zagnieżdżenia.</p>
+
+<p>Sprawdźmy zatem, jak wygląda ten limit dla jednego z kontenerów CRI-O (w bajtach):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>9223372036854771712
+</code></pre></div></div>
+
+<p>Trochę sporo. Innymi słowy, kontenery CRI-O nie mają ustawionego limitu pamięci!</p>
+
+<p>I tu dochodzimy do sedna. Otóż limit zasobów cgroupy dla poda jest liczony jako suma limitów bezpośrednio zdefiniowanych kontenerów. Przykładowo, mam zdefiniowane dwa kontenery w podzie, każdy ma limit 256 MB pamięci. Sumarycznie limit pamięci dla poda (a więc i dla całej cgroupy) będzie wynosił 512MB. Nigdzie w tym limicie nie są uwzględnione dodatkowe kontenery CRI-O. I to właśnie z tego powodu systemowy OOM killer potrafi uwalić kontener, mimo że wcale nie doszedł do zdefiniowanego na nim limitu pamięci. Po prostu sumaryczne zużycie pamięci przez cgroupę poda (a więc pamięć zużyta przez nasz kontener/y oraz dodatkowa pamięć zjadana przez kontenery CRI-O) przekracza zdefiniowany na niej limit, który był policzony wyłącznie na bazie naszych kontenerów. W tym momencie system operacyjny odpala OOM killera, który ubije proces zabierający najwięcej pamięci. Praktycznie zawsze będzie to nasz kontener. Dla przykładu, mamy poda, którego limit pamięci to 640MB. Nasz kontener zajmuje 620MB, i w tym momencie odpala się OOM killer, ponieważ pamięć zajęta przez nasz kontener + kontenery CRI-O przekroczyła 640MB, a nasz kontener był pierwszy do odstrzału.</p>
+
+<p>Reasumując, aby poznać faktyczne zużycie pamięci przez poda należy zajrzeć do sysemd-cgtop -–depth=5. W ten sposób dowiemy się nie tylko, ile w rzeczywistości zajmują nasze kontenery, ale też ile w bonusie dorzuciło od siebie CRI-O. I to tłumaczy pierwszy z rozjazdów wymienionych na samej górze - cache dyskowy oraz dodatkowe kontenery CRI-O nie są nigdzie uwzględnione i praktycznie żadne monitoringi ich nie wychwytują, a potrafią rozdmuchać pamięć kontenerów oraz poda.</p>
+
+<p>Pora na drugi rozjazd, związany już wyłącznie z Javą.</p>
+
+<h3 id="jak-policzyć-pamięć-zużytą-przez-javę">Jak policzyć pamięć zużytą przez Javę?</h3>
+<p>Wszyscy słyszeli o heapie, ale potencjalnie nie wszyscy wiedzą o off-heapie. W największym uproszczeniu: heap to obszar pamięci, gdzie trafiają tworzone obiekty (te tworzone przez nas przy użyciu new, np. new ImportantService(), ale też te tworzone zakulisowo przez framework czy kontener aplikacji) i obszar ten podlega czyszczeniu przez GC. Z kolei off-heap to miejsce, gdzie trafiają rzeczy, którymi zarządza JVM, a nie my - skompilowane klasy, stack wywołań wątku i tym podobne. Off heap nie łapie się na GC. Istnieją też co prawda sposoby, aby z poziomu kodu władować nasze własne obiekty do off-heapa, ale w kontekście tego artykułu niewiele to zmienia.</p>
+
+<p>Posumowany rozmiar tych dwóch obszarów powinien nam powiedzieć, ile pamięci sumarycznie zajmuje nasz proces Javy. Jak zatem to sprawdzić? Metod jest kilka, ale polecamy jedną: native memory tracking. Jest to narzędzie, które pozwala na zrzucenie dosyć niskopoziomowego raportu z pamięci HotSpota. Żeby stało się dostępne, trzeba dorzucić dodatkowy parametr podczas uruchamiania: -XX:NativeMemoryTracking=detail. Tylko uwaga - literatura twierdzi, że włączenie native memory trackingu może mieć około dziesięcioprocentowy narzut na wydajność.</p>
+
+<p>Kiedy mamy już włączony NMT, pora na wykonanie zrzutu. Robi się to tak:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jcmd &lt;PID&gt; VM.native_memory
+</code></pre></div></div>
+
+<p>Przykładowy zrzut z jednej aplikacji naszego projektu wygląda tak:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Native Memory Tracking:
+
+Total: reserved=1943037KB, committed=610501KB
+-                 Java Heap (reserved=327680KB, committed=265820KB)
+                            (mmap: reserved=327680KB, committed=265820KB)
+
+-                     Class (reserved=1196453KB, committed=167509KB)
+                            (classes #28683)
+                            (  instance classes #27130, array classes #1553)
+                            (malloc=6565KB #106806)
+                            (mmap: reserved=1189888KB, committed=160944KB)
+                            (  Metadata:   )
+                            (    reserved=141312KB, committed=140720KB)
+                            (    used=135131KB)
+                            (    free=5589KB)
+                            (    waste=0KB =0.00%)
+                            (  Class space:)
+                            (    reserved=1048576KB, committed=20224KB)
+                            (    used=17072KB)
+                            (    free=3152KB)
+                            (    waste=0KB =0.00%)
+
+-                    Thread (reserved=102239KB, committed=12863KB)
+                            (thread #99)
+                            (stack: reserved=101764KB, committed=12388KB)
+                            (malloc=361KB #596)
+                            (arena=114KB #196)
+
+-                      Code (reserved=255775KB, committed=103615KB)
+                            (malloc=8087KB #29935)
+                            (mmap: reserved=247688KB, committed=95528KB)
+
+-                        GC (reserved=2104KB, committed=1908KB)
+                            (malloc=1032KB #4341)
+                            (mmap: reserved=1072KB, committed=876KB)
+
+-                  Compiler (reserved=1046KB, committed=1046KB)
+                            (malloc=914KB #2701)
+                            (arena=133KB #5)
+
+-                  Internal (reserved=1198KB, committed=1198KB)
+                            (malloc=1166KB #2425)
+                            (mmap: reserved=32KB, committed=32KB)
+
+-                     Other (reserved=302KB, committed=302KB)
+                            (malloc=302KB #39)
+
+-                    Symbol (reserved=28055KB, committed=28055KB)
+                            (malloc=25969KB #368221)
+                            (arena=2086KB #1)
+
+-    Native Memory Tracking (reserved=8867KB, committed=8867KB)
+     (malloc=509KB #7225)
+     (tracking overhead=8358KB)
+
+-        Shared class space (reserved=17148KB, committed=17148KB)
+                            (mmap: reserved=17148KB, committed=17148KB)
+
+-               Arena Chunk (reserved=179KB, committed=179KB)
+                            (malloc=179KB)
+
+-                   Logging (reserved=4KB, committed=4KB)
+                            (malloc=4KB #192)
+
+-                 Arguments (reserved=19KB, committed=19KB)
+                            (malloc=19KB #531)
+
+-                    Module (reserved=1365KB, committed=1365KB)
+                            (malloc=1365KB #6576)
+
+-              Synchronizer (reserved=594KB, committed=594KB)
+                            (malloc=594KB #5027)
+
+-                 Safepoint (reserved=8KB, committed=8KB)
+                            (mmap: reserved=8KB, committed=8KB)
+</code></pre></div></div>
+<p>Najbardziej interesujące są tutaj wartości <code class="language-plaintext highlighter-rouge">commited</code>, pokazujące faktycznie używaną pamięć.</p>
+
+<p>Co możemy z tego zrzutu wyczytać? Przede wszystkim, że z punktu widzenia samego JVMa, proces zajmuje 610501KB, czyli około 596MB pamięci.</p>
+
+<p>Ciekawymi wartościami są też te dotyczące heapa oraz wszystkich pozostałych rzeczy składających się na off-heap. Warto zdawać sobie sprawę, że offheap bez problemu potrafi wciągnąć kilkaset MB i trzeba to wziąć pod uwagę w trakcie strojenia pamięci. Nie będziemy się tu jednak wgłębiać we wszystkie składowe off heapa.</p>
+
+<p>Spójrzmy natomiast na wyjście ps aux dotyczące tej samej aplikacji.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+1000630+       1  0.8  2.0 2283920 721032 ?      Ssl  Nov22  12:27 Java -Dspring.config.location=classpath:/applic....
+</code></pre></div></div>
+<p>I tutaj widzimy drugi rozjazd - według NMT proces bierze niecałe 600MB RAMu, podczas gdy według systemu operacyjnego jest to około 700MB. Gdzie podziało się 100MB?</p>
+
+<p>Musimy zejść na poziom niżej niż JVM, żeby pokazać, gdzie leży problem. Alokacją pamięci na linuksie domyślnie zajmuje się <code class="language-plaintext highlighter-rouge">malloc()</code> pochodzący z <code class="language-plaintext highlighter-rouge">glibc</code> (a tak na serio, to malloc() w glibc wywołuje aktualnie podlinkowaną implementację alokatora, domyślnie ptmalloc2). Do glibc należy też zwalnianie do systemu nieużywanej pamięci. Zacznijmy od tego, jak alokowana jest pamięć przez glibc - proces ten generalnie należy do skomplikowanych i ma trochę niuansów, ale tutaj go uprościmy i skupimy się na ogólnej zasadzie działania.</p>
+
+<p>W aplikacji jednowątkowej sprawa jest prosta - ponieważ nie może dojść do sytuacji, w której dwa wątki naraz poproszą o pamięć, to może istnieć jeden worek pamięci, z którego pobierana jest pamięć. Sytuacja się komplikuje w aplikacjach wielowątkowych, czyli takich, z którymi przede wszystkim mamy do czynienia. Kilka wątków naraz może poprosić o pamięć, w związku z czym jeden worek z pamięcią staje się niewystarczający, ponieważ na moment alokowania pamięci trzeba założyć locka na worek, aby dwa wątki nie próbowały zaalokować tego samego obszaru pamięci. Ale kiedy pojawiają się locki, to istnieje też ryzyko czekania i zagłodzenia wątku, który czeka na pamięć, co może się mocno odbić wydajnościowo na aplikacji. Z tego też tytułu, dla aplikacji wielowątkowych tworzonych jest więcej worków, tak zwanych Aren (rzeczywistość jest tu bardziej zawiła, Areny składają się z Heapów, które z kolei są podzielone na Chunki, ale dla uproszczenia będziemy traktować Areny jako worki ciągłej pamięci). Kiedy wątek prosi o pamięć, to najpierw sprawdzana jest ostatnio użyta przez ten wątek Arena, a jeśli ona okaże się być zablokowana przez inny wątek, to odnajdywana jest pierwsza niezablokowana Arena, i z niej alokowana jest pamięć. Jeśli natomiast nie uda się znaleźć niezablokowanej Areny, to tworzona jest nowa. Dzięki temu, że istnieje więcej niż jeden worek (aka Arena), ryzyko czekania na locka jest zdecydowanie niższe, co pozytywnie wpływa na wydajność alokowania pamięci, a tym samym wydajność aplikacji ogólnie.</p>
+
+<p>Póki co brzmi to rozsądnie.</p>
+
+<p>Problem pojawia się w momencie zwalniania pamięci. W dużym uproszczeniu, areny działają trochę jak stos - zalokowane kawałki pamięci umieszczane są na górze tego stosu. Wyobraźmy sobie więc, że trzy wątki alokują trzy kawałki pamięci - nazwijmy je A, B i C - w tej właśnie kolejności. Najpierw A, potem B, na końcu C. Na górze stosu będzie leżało C. Dwa pierwsze wątki zwalniają pamięć, a więc kawałki A oraz B. Czy pamięć zajęta przez kawałki A oraz B zostaje oddana do systemu operacyjnego? Nie. Pomimo tego, że aplikacja przestała już używać tej pamięci, to z punktu widzenia systemu ona wciąż należy do aplikacji. Dzieje się tak, ponieważ domyślna implementacja glibc oddaje do systemu operacyjnego pamięć wyłącznie z samej góry stosu! Innymi słowy, kawałki pamięci A oraz B zostaną zwrócone systemowi operacyjnemu dopiero w momencie, kiedy aplikacja zwolni kawałek C - dopiero wtedy na górze stosu znajdzie się nieużywana pamięć, a glibc odda całą nieużywaną pamięć z góry stosu do systemu. Taki model zarządzania pamięcią powoduje, że z łatwością dochodzi do sytuacji, kiedy w głębi stosu znajduje się sporo nieużywanek pamięci, której nie da się oddać do systemu operacyjnego, ponieważ jakiś wątek aplikacji wciąż używa pamięci znajdującej się “wyżej” na stosie. Co prawda glibc podejmuje próby defragmentacji Aren, i w pewien sposób mityguje to problem, to jednak go nie rozwiązuje - przeciętnie obciążona aplikacja zawsze będzie chomikowała pewną ilość pamięci, z której w żaden sposób już nie korzysta. W skrócie, ten algorytm jest nastawiony na poprawę wydajności działania aplikacji, kosztem zwiększonego zużycia pamięci.</p>
+
+<p><strong>I to właśnie tutaj uciekło nam 100MB pamięci z powyższego przykładu - jest to pamięć nieużywana już przez aplikację, ale wciąż niezwrócona do systemu.</strong></p>
+
+<p>Jak można temu zaradzić?</p>
+
+<p>Pierwsza opcja to w ogóle tego nie ruszać - tego rodzaju nadwyżka w wielu aplikacjach może być po prostu akceptowalna. Natomiast im większa aplikacja, im więcej wątków, tym ten rozjazd będzie większy. W trakcie prowadzenia tego śledztwa widzieliśmy w internecie przypadki, kiedy ta niezwrócona do systemu pamięć szła w gigabajty.</p>
+
+<p>Druga opcja to wymiana domyślnego alokatora pamięci. Trochę tego jest do wyboru, np. jemalloc albo tcmalloc. Każdy alokator ma własne algorytmy związane z alokowaniem i zwalnianiem pamięci, i oczywiście każdy twierdzi, że ich algorytmy są najlepsze. ;) Udało nam się przetestować aplikację z jemalloc i wyniki były obiecujące - rozmiar niezwróconej pamięci do systemu spadł mniej więcej o połowę, do około 50MB. Natomiast wymiana domyślnych alokatorów może być nieco karkołomną opcją, albo wręcz nie wszędzie możliwą.</p>
+
+<p>Trzecią opcją jest zatem strojenie domyślnego malloca. Najważniejszą opcją, która pozwala na sterowanie zachowaniem malloca pod kątem zwalniania nieużywanej pamięci, jest maksymalna liczba Aren dostępnych dla procesu. Domyślnie maksymalna liczba Aren wynosi <strong>8 * liczba core’ów</strong>. Czyli dla 8 core’ów procesy będą miały do dyspozycji 64 Areny - sporo. Im więcej aren, tym większa szansa na chomikowanie pamięci. Z drugiej strony, im mniej aren tym większa szansa na zagłodzenie wątku czekającego na pamięć, co odbije się na ogólnej wydajności aplikacji. Ustawiając zmienną środowiskową <code class="language-plaintext highlighter-rouge">MALLOC_ARENA_MAX</code>, możemy kontrolować maksymalną liczbę aren. W przypadku Javy, wiele artykułów w internecie poleca ścięcie tego parametru do 2 lub 4. Wykonaliśmy próbę, ścinając tę wartość do 2. Aplikacja, która wcześniej chomikowała ponad 100MB pamięci, zaczęła chomikować jedynie kilkanaście MB. Natomiast nie istnieje tutaj ścisła matematyka - ograniczenie liczby aren zmniejsza rozmiar chomikowanej pamięci, jednak nie da się uniwersalnie przeliczyć tego na konkretnie zaoszczędzone megabajty - będzie to indywidualne dla każdej aplikacji. Manewrowanie tym parametrem powinno też zakończyć się testami wydajnościowymi, które potwierdzą, że rozwiązując problem pamięci, nie wywołaliśmy problemu z wydajnością.</p>
+
+<p>Mimo tego ewidentnego tradeoffu, jest to dobra informacja - dzięki temu udało się nam finalnie doliczyć całej pamięci oraz wyjaśnić drugi rozjazd z samego początku tego artykułu. A to z kolei pozwala świadomie dobierać takie parametry jak maksymalny rozmiar heapa czy limit pamięci dla kontenera.</p>
+<h2 id="rozkład-zużycia-pamięci">Rozkład zużycia pamięci</h2>
+<p>Poniższy diagram pokazuje, co faktycznie składa się na zużycie pamięci dla przeciętnej javowej aplikacji odpalonej na kubernetesie. Schodząc wgłąb diagramu można też wyczytać, jak wygląda rozkład pamięci w przypadku uruchomienia aplikacji javowej na “zwykłych” kontenerach (ramka “Application container”) oraz w przypadku uruchomienia aplikacji zupełnie z pominięciem kontenerów (ramka “JVM”).</p>
+
+<p>Elementy narysowane przerywaną linią są elementami raczej logicznymi i same w sobie nie konsumują ramu (ewentualnie ich narzut jest pomijalny). Elementy z ciągłym obramowaniem konsumują fizyczną pamięć i należy ją wziąć pod uwagę podczas strojenia pamięci.</p>
+
+<p><img src="/assets/img/posts/2022-12-01-memory-java/pod_cgroup.jpg" alt="Diagram zużycia pamięci dla przeciętniej aplikacji javowej na kubernetesie" /></p>
+
+<h2 id="jak-dobrać-parametry-pamięci">Jak dobrać parametry pamięci?</h2>
+<p>W świecie kontenerów sprowadza się to w praktyce do wyboru dwóch wartości - limitu pamięci dla kontenera i maksymalnego rozmiaru heapa. I to właśnie sumaryczny rozmiar heapa oraz offheapa jest tutaj najważniejszą metryką, która powinna determinować limit kontenera, nigdy na odwrót.</p>
+
+<p>Oczywiście rozmiar heapa i offheapa pozostaje kwestią specyficzną dla każdej aplikacji. Niewielkie aplikacje spring bootowe, które nie wykorzystują za bardzo zewnętrznych libów (poza spring bootem oczywiście ;)), np. będące jedynie prostą przelotką do innych serwisów, spokojnie poradzą sobie z heapem ściętym do 32MB. Natomiast nawet tak proste aplikacje na dzień dobry mogą wciągnąć około 100MB off heapa, głównie na klasy i wątki. Im większa aplikacja, im więcej zależności, tym bardziej obie te wartości będą rosnąć. W przypadku spring bootowych aplikacji naszego projektu standardem jest off heap wahający się pomiędzy 300 a 400MB. Trzeba też brać poprawkę na to, że rozmiar offheapa nie będzie stały, a w szczególności może rosnąć z czasem, wraz z wątkami czy kompilowaniem do kodu maszynowego kolejnych partii bytecode’u. Wydaje się, że ciężko poznać optymalny rozmiar heapa oraz docelowy rozmiar offheapa inaczej niż empirycznie. Można się oczywiście podpierać doświadczeniem, ale ostatecznie każda aplikacja jest inna, a wciągnięcie choćby jednej dodatkowej zależności może w skrajnym przypadku kompletnie zmienić obraz tych wartości.</p>
+
+<p>Wiedząc, ile pamięci potrzebujemy na heapa oraz offheapa, pozostała matematyka sprowadza się do podliczenia narzutów. Jeśli mówimy o prostych aplikacjach bezstanowych lub kiedy aplikacja nie chodzi w kontenerze, możemy właściwie zignorować kwestię cache’a dyskowego. Pozostaje zatem kwestia pamięci kiszonej przez glibc oraz w przypadku kubernetesa, kontenerów CRI-O. W przypadku CRI-O wydaje się, że warto zostawić co najmniej kilkadziesiąt MB zapasu, w porywach do 100. W przypadku pamięci kiszonej przez glibc, dla aplikacji, które zużywają średnio w okolicy 300MB heapa, konfiguracyjnie (zmienną środowiskową MALLOC_ARENA_MAX) da się zejść znacznie poniżej 100MB kiszonej pamięci, do około kilkunastu-kilkudziesięciu MB. Jednak dla większych aplikacji, utylizujących więcej pamięci, ta zakiszona pamięć będzie odpowiednio większa. Po doliczeniu narzutów otrzymamy limit pamięci dla kontenera.</p>
+
+<p>Można się więc pokusić o taki wzór:</p>
+
+<p><code class="language-plaintext highlighter-rouge">limit kontenera = heap + offheap + glibc + disk cache (dla kontenerów) + crio (dla kubernetesa)</code></p>
+
+<p>Sporą karierę ostatnimi czasy zrobiło procentowe ustawianie rozmiaru heapa, w zależności od rozmiaru pamięci dostępnej dla kontenera, przy pomocy flagi XX:MaxRAMPercentage. Sami zresztą użyliśmy jej w naszym projekcie. Motywacja jest oczywista - znacznie wygodniej zarządzać jedną wartością niż dwiema. Uzbrojeni jednak w powyższą wiedzę twierdzimy, że w większości przypadków jest zbyt duże uproszczenie, ponieważ zmieniając limit kontenera, wpływamy w ten sposób na właściwie wszystkie obszary pamięci, które warto wziąć pod uwagę - heap, offheap, glibc, crio-o. Co więcej, chcąc zwiększyć dostępną pamięć, np. na “wyciek” glibc, musimy też zmienić procentowy udział heapa w pamięci kontenera, żeby przy okazji nie rozszerzyć heapa, co w praktyce i tak oznacza przeliczanie od nowa procentowych wartości heapa. Przy okazji uniezależniając rozmiar heapa od rozmiaru kontenera, prościej analizuje się problemy związane generalnie z OOM - czy to systemowym, czy javowym, dzięki temu, że wszystkie obszary pamięci naraz nie zmieniają rozmiaru. Ostatecznie więc znalezienie uniwersalnej wartości XX:MaxRAMPercentage wydaje się na tyle trudne, że przychylamy się do staroświeckiego Xmx. No chyba, że mamy tyle RAMu, że każdy kontener może mieć sporą górkę pamięci - ale wtedy cały ten artykuł mija się z celem. ;)</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Java oom memory limit kubernetes openshift";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

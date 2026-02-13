@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Hystrix - praktyczne użycie circuit breaker’a | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Hystrix - praktyczne użycie circuit breaker’a" />
+<meta name="author" content="jwilczewski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Aby dodać circuit breakera do naszej aplikacji należy dodać klasę opakowującą klienta serwisu zewnętrznego komendą hystrixową (adnotacje dostarczane są przez bibliotekę javanica)." />
+<meta property="og:description" content="Aby dodać circuit breakera do naszej aplikacji należy dodać klasę opakowującą klienta serwisu zewnętrznego komendą hystrixową (adnotacje dostarczane są przez bibliotekę javanica)." />
+<link rel="canonical" href="https://blog.consdata.tech/2016/12/22/hystrix-praktyczne-uzycie-circuit-breakera.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2016/12/22/hystrix-praktyczne-uzycie-circuit-breakera.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breakera/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-12-22T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breakera/thumbnail.webp" />
+<meta property="twitter:title" content="Hystrix - praktyczne użycie circuit breaker’a" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"jwilczewski"},"image":"https://blog.consdata.tech/assets/img/posts/2016-12-22-hystrix-praktyczne-uzycie-circuit-breakera/thumbnail.webp","@type":"BlogPosting","headline":"Hystrix - praktyczne użycie circuit breaker’a","description":"Aby dodać circuit breakera do naszej aplikacji należy dodać klasę opakowującą klienta serwisu zewnętrznego komendą hystrixową (adnotacje dostarczane są przez bibliotekę javanica).","dateModified":"2016-12-22T01:00:00-06:00","datePublished":"2016-12-22T01:00:00-06:00","url":"https://blog.consdata.tech/2016/12/22/hystrix-praktyczne-uzycie-circuit-breakera.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2016/12/22/hystrix-praktyczne-uzycie-circuit-breakera.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2016/12/22/hystrix-praktyczne-uzycie-circuit-breakera.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">hystrix</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Hystrix - praktyczne użycie circuit breaker&#39;a</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/jwilczewski.html">
+        <img class="author-image" src="/assets/img/authors/jwilczewski.webp" alt="author">
+        <span class="author-name">Jakub Wilczewski</span><a class="author" href="https://github.com/jwilczewski">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+22
+
+grudnia
+
+
+
+2016
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <h2 id="awaria">Awaria:</h2>
+<p>Do katastrofy prowadzi często splot różnych czynników, które w pojedynkę nie stanowią większego zagrożenia. Wymieńmy więc:</p>
+<ul>
+  <li>system, z którym się komunikujemy miewa od czasu do czasu długi czas odpowiedzi - no, cóż zdarza się, cztery dziewiątki to wciąż 0,01% możliwych faili, przy 0.5 miliona requestów dziennie, wychodzi jakieś 5000 - rozwiązanie: dłuższe timeouty;</li>
+  <li>zdarzają się dłuższe przerwy, np. system nie działa parę minut - brak bezprzerwowych wdrożeń, problemy ze stabilnością środowiska - póki nie wpływa to bezpośrednio na user experience jest do ogrania, np. za pomocą kolejek;</li>
+  <li>ograniczona liczba wątków w kontenerze aplikacji - sprzęt kosztuje czy to w chmurze czy we własnej serwerowni.</li>
+</ul>
+
+<p>Całkiem prawdopodobny scenariusz awarii: System zewnętrzny przestaje odpowiadać. Z racji tego, że timeouty mamy dosyć wysokie do obsługi rosnącej liczby requestów w naszej aplikacji przydzielane są kolejne wątki kontenera. Dochodzimy do momentu, w którym wszystkie wątki są w użyciu (np. w Tomcacie domyślnie jest 100). Jeżeli w tym samym kontenerze działają inne usługi to obsługa requesta w każdej z nich czeka na wolny wątek. Co za tym idzie wywołania usług, które do tej pory odpowiadały bardzo szybko i nie potrzebują do swojego działania systemu zewnętrznego są de facto od niego zależne. Awaria występuje dosyć szybko do wykorzystania 100 wątków wystarczy ruch 50 requestów/s i timeout 2000 ms.</p>
+
+<p>Poniżej filmik z przykładowego scenariusza takiej awarii. W lewym oknie widzimy czasy odpowiedzi aplikacji niezależnej od systemu zewnętrznego, w prawej aplikacja korzystające z tego systemu z timeoutem 800 ms. W celach przykładu liczba wątków serwera webowego została ograniczona do pięciu. W 25 sekundzie zewnętrzny system zostaje wyłączony. Aplikacja korzystająca z niego, co zrozumiałe zwiększa czasy odpowiedzi do 800 ms. Niestety z powodu zajętości wątków serwera aplikacja niezależąca od zewnętrznego systemu (lewe okno) zwiększa czasy odpowiedzi z 12 ms do prawie 50 ms. Czyli czas odpowiedzi wydłuża się 4 krotnie.</p>
+
+<iframe class="youtube" src="https://www.youtube.com/embed/2_jwbTviNoI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Czy można jakoś takiej sytuacji zaradzić? Co chcielibyśmy osiągnąć?</p>
+
+<h2 id="próba-ograniczenia-skutków">Próba ograniczenia skutków:</h2>
+<p>Po pierwsze: Spróbujmy ograniczyć propagację awarii na pozostałe komponenty systemu. Skoro system zewnętrzny nie odpowiada w przewidzianym przez nas czasie nie ma sensu bombardowania go kolejnymi requestami. Może jeżeli damy mu trochę czasu dojdzie do ładu. Załóżmy, że system nie działa i nie czekajmy 800 ms na odpowiedź. Co jakiś czas sprawdźmy czy czasem nie wstał.</p>
+
+<p>Taki model działania realizuje <a href="http://martinfowler.com/bliki/CircuitBreaker.html">circuit breaker opisany przez Martina Fowlera</a>. Implementację możemy znaleźć np. w <a href="https://github.com/Netflix/Hystrix">hystrixie</a>, bibliotece wchodzącej w skład stacka Netflix’a.</p>
+
+<p>W testowanym przykładzie posługujemy się prostą spring boot’ową aplikacją składającą się z kontrolera:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
+
+<span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RandomGeneratorController</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RandomGeneratorController</span><span class="o">(</span><span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">randomGeneratorServiceClient</span> <span class="o">=</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/random"</span><span class="o">)</span>
+    <span class="nc">String</span> <span class="nf">getRandom</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">randomGeneratorServiceClient</span><span class="o">.</span><span class="na">getRandom</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>klienta serwisu zewnętrznego:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.cloud.netflix.feign.FeignClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+
+<span class="nd">@FeignClient</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"random-generator-service"</span><span class="o">,</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"http://localhost:8080"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">RandomGeneratorServiceClient</span> <span class="o">{</span>
+
+    <span class="nd">@RequestMapping</span>
+    <span class="nc">String</span> <span class="nf">getRandom</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Sama klasa aplikacji spring boot wygląda tak:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.cloud.netflix.feign.EnableFeignClients</span><span class="o">;</span>
+
+<span class="nd">@EnableFeignClients</span>
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HystrixApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">HystrixApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Używamy klienta <a href="https://github.com/OpenFeign/feign">Feign</a> pochodzącego również z biblioteki Netflixa. Feign zawiera w sobie wiele predefiniowanych konfiguracji co znacznie upraszcza powstający kod, aczkolwiek czasami utrudnia nieco zrozumienie co się dzieje w programie ;-) - szczegóły poniżej.</p>
+
+<p>W przykładowej aplikacji potrzebny jest jeszcze plik application.properties zawierający następujące ustawienia:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server.port<span class="o">=</span>8090                <span class="c">#zmiana portu serwera webowego</span>
+feign.hystrix.enabled<span class="o">=</span><span class="nb">false</span>     <span class="c">#wyłączenie domyślnej konfiguracji hystrixa</span>
+server.tomcat.max-threads<span class="o">=</span>5     <span class="c">#ograniczenie liczby wątków serwera dla celów naukowych (NIE UŻYWAJ NA PRODUKCJI!!!)</span>
+</code></pre></div></div>
+
+<h2 id="dodajemy-circuit-breakera">Dodajemy circuit breaker’a:</h2>
+<p>Aby dodać circuit breakera do naszej aplikacji należy:</p>
+
+<ul>
+  <li>Dodać klasę opakowującą klienta serwisu zewnętrznego komendą hystrixową (adnotacje dostarczane są przez bibliotekę <a href="https://github.com/Netflix/Hystrix/tree/master/hystrix-contrib/hystrix-javanica">javanica</a>):
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">org.springframework.stereotype.Service</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand</span><span class="o">;</span>
+
+  <span class="nd">@Service</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RandomGeneratorServiceClientHystrixAware</span> <span class="o">{</span>
+
+      <span class="kd">final</span> <span class="kd">private</span> <span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+
+      <span class="nd">@Autowired</span>
+      <span class="kd">public</span> <span class="nf">RandomGeneratorServiceClientHystrixAware</span><span class="o">(</span><span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">randomGeneratorServiceClient</span> <span class="o">=</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+      <span class="o">}</span>
+
+      <span class="nd">@HystrixCommand</span><span class="o">(</span><span class="n">commandKey</span> <span class="o">=</span> <span class="s">"randomCommand"</span><span class="o">)</span>
+      <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getRandom</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">randomGeneratorServiceClient</span><span class="o">.</span><span class="na">getRandom</span><span class="o">();</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>W kontrolerze zastąpić wywołania RandomGeneratorServiceClient’a wywołaniami RandomGeneratorServiceClientHystrixAware:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
+
+  <span class="nd">@RestController</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RandomGeneratorController</span> <span class="o">{</span>
+
+      <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RandomGeneratorServiceClientHystrixAware</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+
+      <span class="kd">public</span> <span class="nf">RandomGeneratorController</span><span class="o">(</span><span class="nc">RandomGeneratorServiceClientHystrixAware</span> <span class="n">randomGeneratorServiceClient</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">randomGeneratorServiceClient</span> <span class="o">=</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+      <span class="o">}</span>
+
+      <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/random"</span><span class="o">)</span>
+      <span class="nc">String</span> <span class="nf">getRandom</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">randomGeneratorServiceClient</span><span class="o">.</span><span class="na">getRandom</span><span class="o">();</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Dodać adnotację @EnableCircuitBreaker do konfiguracji aplikacji:
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">org.springframework.cloud.netflix.feign.EnableFeignClients</span><span class="o">;</span>
+
+  <span class="nd">@EnableCircuitBreaker</span>
+  <span class="nd">@EnableFeignClients</span>
+  <span class="nd">@SpringBootApplication</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HystrixApplication</span> <span class="o">{</span>
+
+      <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+          <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">HystrixApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Dodać konfigurację hystrixa w pliku application.properties:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  server.port<span class="o">=</span>8090
+  feign.hystrix.enabled<span class="o">=</span><span class="nb">false
+  </span>server.tomcat.max-threads<span class="o">=</span>5
+
+  hystrix.command.randomCommand.execution.isolation.thread.timeoutInMilliseconds<span class="o">=</span>800  <span class="c">#timeout komendy hystrixowej "randomCommand" zdefinowanej w klasie RandomGeneratorServiceClientHystrixAware adnotacją @HystrixCommand(commandKey = "randomCommand")</span>
+  hystrix.command.randomCommand.circuitBreaker.requestVolumeThreshold<span class="o">=</span>10              <span class="c">#liczba requestów, dla których musi wystąpić timeout w 10 sekundowym oknie, aby circuit breaker otworzył obwód</span>
+  hystrix.command.randomCommand.metrics.rollingStats.timeInMilliseconds<span class="o">=</span>10000         <span class="c">#czas okna, w którym zliczane są błędne requesty</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Dodać zależność na biblioteki hystrixowe:
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span>
+  <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+
+      <span class="nt">&lt;groupId&gt;</span>pl.consdata.hystrix.example<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>hystrixservice<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+
+      <span class="nt">&lt;dependencies&gt;</span>
+          <span class="nt">&lt;dependency&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;/dependency&gt;</span>
+          <span class="nt">&lt;dependency&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-feign<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;version&gt;</span>1.2.2.RELEASE<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;/dependency&gt;</span>
+          <span class="nt">&lt;dependency&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-hystrix<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;version&gt;</span>1.2.3.RELEASE<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;/dependencies&gt;</span>
+
+      <span class="nt">&lt;dependencyManagement&gt;</span>
+          <span class="nt">&lt;dependencies&gt;</span>
+              <span class="nt">&lt;dependency&gt;</span>
+                  <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+                  <span class="nt">&lt;artifactId&gt;</span>spring-boot-dependencies<span class="nt">&lt;/artifactId&gt;</span>
+                  <span class="nt">&lt;version&gt;</span>1.4.2.RELEASE<span class="nt">&lt;/version&gt;</span>
+                  <span class="nt">&lt;type&gt;</span>pom<span class="nt">&lt;/type&gt;</span>
+                  <span class="nt">&lt;scope&gt;</span>import<span class="nt">&lt;/scope&gt;</span>
+              <span class="nt">&lt;/dependency&gt;</span>
+          <span class="nt">&lt;/dependencies&gt;</span>
+      <span class="nt">&lt;/dependencyManagement&gt;</span>
+  <span class="nt">&lt;/project&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Poniższy film pokazuje jak zachowuje się zmodyfikowana aplikacja. W lewym oknie czas odpowiedzi aplikacji niekorzystającej z systemu zewnętrznego. W prawej tak jak poprzednio czasy aplikacji korzystającej z tego systemu.</p>
+
+<iframe class="youtube" src="https://www.youtube.com/embed/i535Xhhwabc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>W 20 sekundzie filmu wyłączony zostaje system zewnętrzny. Skutkuje to wzrostem czasów odpowiedzi aplikacji z niego korzystającej do 800 ms. Czasy odpowiedzi aplikacji niezależnej również wzrastają - do tej pory jeszcze nic się nie zmieniło względem pierwotnego zachowania. Po około 10 sekundach circuit breaker otwiera obwód i klient od razu odpowiada, że system jest niedostępny - czasy wywołania spadają, czasy wywołania niezależnej aplikacji wracają do normy. Co jakiś czas widać w prawym oknie nieco dłuższe czasy wywołania - to hystrix sprawdza czy system zewnętrzny jest już dostępny. Około 50 sekundy system zewnętrzny zostaje ponownie włączony.</p>
+
+<h2 id="próba-zachowania-funkcjonalności">Próba zachowania funkcjonalności:</h2>
+<p>Hystrix umożliwia nam podjęcie akcji naprawczej w momencie wystąpienia błędu. Aby skonfigurować taką akcję należy uzupełnić pole fallbackMethod w adnotacji HystrixCommand:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">pl.consdata.hystrix.example.hystrixservice</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Random</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Service</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand</span><span class="o">;</span>
+
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RandomGeneratorServiceClientHystrixAware</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="kd">private</span> <span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">RandomGeneratorServiceClientHystrixAware</span><span class="o">(</span><span class="nc">RandomGeneratorServiceClient</span> <span class="n">randomGeneratorServiceClient</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">randomGeneratorServiceClient</span> <span class="o">=</span> <span class="n">randomGeneratorServiceClient</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@HystrixCommand</span><span class="o">(</span><span class="n">commandKey</span> <span class="o">=</span> <span class="s">"randomCommand"</span><span class="o">,</span> <span class="n">fallbackMethod</span> <span class="o">=</span> <span class="s">"getRandomFallback"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getRandom</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">randomGeneratorServiceClient</span><span class="o">.</span><span class="na">getRandom</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getRandomFallback</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="k">new</span> <span class="nc">Random</span><span class="o">().</span><span class="na">nextInt</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>W tym przykładzie jako fallbackMethod podaliśmy metodę prywatną getRandomFallback, która bierze na siebie odpowiedzialność generowania liczby losowej. Taka implementacja powoduje, że każdy request do naszej aplikacji zwróci poprawną odpowiedź. Nawet kiedy system zewnętrzny będzie niedostępny. Od chwili wystąpienia awarii do momentu otworzenia obwodu przez circuit breakera czasy odpowiedzi będą zbliżone do timeoutu skonfigurowanego dla systemu zewnętrznego. Po otworzeniu obwodu metoda fallbackowa będzie wywoływana od razu - co oznacza, że czasy wywołania powrócą do standardowych lub niższych wartości.</p>
+
+<h2 id="ciekawostki">Ciekawostki:</h2>
+<h3 id="konfiguracja-klienta-feign">Konfiguracja klienta Feign:</h3>
+<p>FeignClient dostarcza wielu standardowych konfiguracji. W zasadzie wystarczy gdy w adnotacji wypełnimy pole url. Jeżeli chcemy jednak zmienić jakiś parametr konfiguracji możemy uzupełnić pole configuration podając nazwę klasy zawierająca springową konfigurację beanów. Jeżeli chcemy np. zmodyfikować standardową konfigurację timeoutów dodajemy beana:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="nc">Request</span><span class="o">.</span><span class="na">Options</span> <span class="nf">options</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">Request</span><span class="o">.</span><span class="na">Options</span><span class="o">(</span><span class="mi">750</span><span class="o">,</span> <span class="mi">200</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Pierwszy parametr konstruktora to connection timeout, drugi read timeout. Dostarczając taką konfigurację spodziewalibyśmy się, że po 750 ms dostaniemy timeout połączenia i tu niespodzianka, …dostaniemy go po 3750 ms. A to dlatego, że FeignClient zawiera w sobie retryer’a, który domyślnie 5 razy powtarza wywołanie. Aby to zmienić należy dostarczyć w klasie konfiguracji beana:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="nc">Retryer</span><span class="o">.</span><span class="na">Default</span> <span class="nf">retryer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">Retryer</span><span class="o">.</span><span class="na">Default</span><span class="o">(</span><span class="mi">10000L</span><span class="o">,</span> <span class="mi">3000</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Ostatni parametr to liczba powtórzeń.</p>
+
+<h3 id="leniwa-inicjalizacja-komend-hystrixa">Leniwa inicjalizacja komend hystrixa:</h3>
+<p>Zainstancjonowanie komendy hystrixowej odbywa się podczas pierwszego jej użycia. Może nieść to ze sobą pewne przykre konsekwencje, gdyż inicjalizacja takiej komendy co ciekawe potrafi trwać dość długo. Hystrix próbuje na różne sposoby ustalić wszystkie parametry komendy (jest ich dużo). W produkcyjnej konfiguracji zdarzało się czas ten wynosił nawet 1000 - 2000 ms. Oznacza to, że po restarcie serwera czas pierwszego wywołania komendy może się znacznie różnić od kolejnych i może to doprowadzić do przekroczenia jakiegoś ustalonego czasu odpowiedzi. Implementując w ten sposób usługi synchroniczne warto moim zdaniem rozważyć wprowadzenie specjalnego ‘pustego’ wywołania, które spowoduje zainicjalizowanie krytycznych komend. Takie rozwiązanie wydaje się być nieco infantylne, ale rzeczywiście nie ma na to rady.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "hystrix circuit breaker";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

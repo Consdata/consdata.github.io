@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>RxJS z Angularem - programowanie reaktywne aplikacji frontendowej | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="RxJS z Angularem - programowanie reaktywne aplikacji frontendowej" />
+<meta name="author" content="kgabara" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Czy wiesz jak efektywniej wykorzystać bibliotekę RxJS? Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable." />
+<meta property="og:description" content="Czy wiesz jak efektywniej wykorzystać bibliotekę RxJS? Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable." />
+<link rel="canonical" href="https://blog.consdata.tech/2020/01/09/rxjs-introduction.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/01/09/rxjs-introduction.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-01-09-rxjs-wstep/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-09T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-01-09-rxjs-wstep/thumbnail.webp" />
+<meta property="twitter:title" content="RxJS z Angularem - programowanie reaktywne aplikacji frontendowej" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"kgabara"},"image":"https://blog.consdata.tech/assets/img/posts/2020-01-09-rxjs-wstep/thumbnail.webp","@type":"BlogPosting","headline":"RxJS z Angularem - programowanie reaktywne aplikacji frontendowej","description":"Czy wiesz jak efektywniej wykorzystać bibliotekę RxJS? Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable.","dateModified":"2020-01-09T01:00:00-06:00","datePublished":"2020-01-09T01:00:00-06:00","url":"https://blog.consdata.tech/2020/01/09/rxjs-introduction.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/01/09/rxjs-introduction.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+    
+    
+    
+      
+        <link rel="alternate" hreflang="en" href="/2020/01/09/rxjs-with-angular-introduction.html"/>
+      
+        <link rel="alternate" hreflang="pl" href="/2020/01/09/rxjs-introduction.html"/>
+      
+    
+  
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2020/01/09/rxjs-introduction.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">Angular</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">RxJS z Angularem - programowanie reaktywne aplikacji frontendowej</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/kgabara.html">
+        <img class="author-image" src="/assets/img/authors/kgabara.webp" alt="author">
+        <span class="author-name">Konrad Gabara</span><a class="author" href="https://github.com/arg3s">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+9
+
+stycznia
+
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Pisząc aplikacje z wykorzystaniem Angulara mamy styczność z obiektami typu Observable. Na pewno zdarzyło Ci się użyć serwisu HttpClient do pobierania danych z serwera albo EventEmittera do komunikacji komponentów rodzic-dziecko. W każdym z tych przypadków użycia masz do czynienia z obiektem Observable. Czy zastanawiałeś się nad tym, czym w zasadzie jest ten typ obiektu, dlaczego musisz go zasubskrybować, aby otrzymać dane? A może już to wiesz, ale chciałbyś dowiedzieć się jak efektywniej wykorzystać bibliotekę RxJS?</p>
+
+<p>Jeżeli tak, to ten artykuł jest dla Ciebie!</p>
+
+<h2 id="czym-jest-rxjs">Czym jest RxJS?</h2>
+<p><em>Reactive Extensions for JavaScript (RxJS)</em> jest biblioteką ułatwiającą programowanie reaktywne w języku JavaScript. Dzięki tej bibliotece i komponentom, jakie udostępnia tworzenie asynchronicznych programów jest intuicyjne i proste - zaraz przekonasz się jak bardzo!</p>
+
+<h2 id="strumień-danych">Strumień danych</h2>
+<p>Zacznijmy jednak od podstaw. Czym jest strumień danych w programowaniu reaktywnym? Według definicji, jest on sekwencją danych dostępnych w danym okresie. Taką sekwencję możemy obserwować oraz pobrać z niej potrzebne nam obiekty lub wartości. Dane natomiast mogą pojawić się w każdym momencie jego życia, a o ich pojawieniu się jesteśmy powiadamiani callbackiem (czyli funkcją odwrotną wywoływaną przez strumień). Istnieją dwa typy strumieni - zimny i ciepły.</p>
+<h3 id="strumień-zimny">Strumień zimny</h3>
+<p>Strumień zimny nie będzie emitować (produkować) danych aż do momentu, gdy ktoś (obserwator) zacznie go obserwować. Wyemituje odrębną wartość dla każdego nowego obserwatora - te wartości nie są współdzielone. Przykładowo: wysłanie żądania GET do serwera.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="o">&lt;</span><span class="nx">ServerResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">someUrl</span><span class="dl">'</span><span class="p">)</span>
+</code></pre></div></div>
+<h3 id="strumień-ciepły">Strumień ciepły</h3>
+<p>Strumień ciepły, w przeciwieństwie do zimnego, emituje dane niezależnie od tego, czy ktoś na niego nasłuchuje. Każdy obserwator operuje na współdzielonym zasobie danych - dwóch obserwatorów otrzyma tą samą wartość w momencie wyemitowania danej przez strumień. Przykładowo: wydarzenia ‘click’</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">fromEvent</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rxjs</span><span class="dl">'</span><span class="p">;</span>
+ 
+<span class="nx">fromEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="observable-wzorzec-obserwator">Observable, wzorzec Obserwator</h2>
+<p>Mając już wiedzę czym jest strumień i z jakimi rodzajami strumieni możemy się spotkać, warto przejść do opisania podstawowego konceptu RxJS: Observable.
+Observable jest obiektem reprezentującym strumień danych. Implementuje wzorzec projektowy <em>Obserwator</em>, który zakłada istnienie bytu przechowującego listę obiektów - obserwatorów, nasłuchujących na jakiekolwiek zmiany stanu danego bytu, powiadamiającego każdego z nich o zmianie poprzez wywołanie funkcji przez nich przekazanych (callback).</p>
+
+<p>Najprostszego Observable możemy stworzyć za pomocą funkcji statycznej <em>of</em>.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// obiekt Observable, emitujący wartości liczbowe od 1 do 5</span>
+<span class="kd">const</span> <span class="nx">numbers$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">of</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+
+</code></pre></div></div>
+<p>Obiekt numbers$ jest definicją strumienia danych typu <em>number</em>. Jest to tylko i wyłącznie szablon strumienia. W tym przypadku stworzyliśmy strumień zimny. Znamy zbiór danych (1,2,3,4,5), jednak dane zaczną być emitowane dopiero w momencie rozpoczęcia nasłuchiwania na dany strumień przez obserwatora. Pod strumień ‘podłączamy’ się za pomocą funkcji subscribe().</p>
+<h3 id="subscribe-i-unsubscribe">subscribe() i unsubscribe()</h3>
+<p>Funkcja subscribe jako parametr oczekuje obiektu, który definiuje trzy funkcje: <em>next</em>, <em>error</em> oraz <em>complete</em>.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">numbers$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">({</span>
+    <span class="nx">next</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{},</span>
+    <span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{},</span>
+    <span class="nx">complete</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>Każda z tych funkcji jest <em>callbackiem</em>, który jest wywoływany w poszczególnych momentach przepływu danych przez strumień. Funkcja <em>next(value)</em> wywoływana jest za każdym razem, gdy strumień emituje pojedynczą wartość - czyli w naszym przypadku funkcja <em>next()</em> zostanie wywołana 5-krotnie, po razie dla każdej z cyfr z zakresu 1-5. Callback <em>error(err)</em> zostanie wywołany w momencie, gdy strumień zostanie nienaturalnie zamknięty lub przerwany. <em>Complete</em> jest ostatnim callbackiem, który wywoływany jest po zamknięciu strumienia.</p>
+
+<p>Wywołanie funkcji <em>subscribe()</em> dopisuje nas do listy obserwatorów danego strumienia.</p>
+
+<p>W momencie podpięcia się jako obserwator do danego Observable zostaje przekazany nam obiekt typu Subscription, na którym możemy wywołać metodę <em>unsubscribe()</em>, która usunie nas z listy obserwatorów.</p>
+
+<p>Odsubskrybowanie się jest bardzo ważne w przypadku strumieni gorących, które w większości przypadków są nieskończone - emitują wartość przez potencjalnie nieskończoną ilość czasu. Jeżeli zapomnimy o usunięciu nas z listy obserwatorów danego strumienia, referencja do stworzonego przez nas obserwatora będzie istnieć przez cały cykl życia aplikacji - tworząc nieskończoną dziurę w pamięci, która w sytuacji ekstremalnej może doprowadzić do zabicia karty, w której działa nasza aplikacja.</p>
+<h2 id="subject---tworzenie-własnych-strumieni">Subject - tworzenie własnych strumieni</h2>
+<p>RxJS oferuje nam również możliwość tworzenia własnych strumieni. Możemy to zrobić za pomocą obiektów typu Subject. Subject, tłumacząc na język polski, oznacza dosłownie: <em>temat</em>. Taki strumień jest więc tematem, potencjalnie nieskończonym, który emituje nowe wartości w kluczowych dla nas miejscach aplikacji. 
+Subject możemy stworzyć bardzo prosto - jak każdy inny obiekt:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">subject$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+</code></pre></div></div>
+<p>Do danego strumienia możemy teraz się subskrybować jako obserwatorzy:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">subject$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">value from subject$: </span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+</code></pre></div></div>
+<p>Zmienna <em>subject$</em> oferuje nam teraz metodę <em>next(value: number)</em>, dzięki której możemy rozesłać wszystkim obserwatorom nową wartość liczbową, w taki sposób:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">subject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="c1">// value from subject$: 5</span>
+</code></pre></div></div>
+<p>Strumień, jaki teraz stworzyliśmy jest strumieniem nieskończonym, więc musimy pamiętać o odsubskrybowaniu się po zakończeniu nasłuchiwania! Możemy również zamknąć strumień wywołując metodę <em>complete()</em>.</p>
+
+<p>Wyemitowaliśmy w powyższym przykładzie wartość numeryczną ‘5’, którą otrzymał pojedynczy obserwator. Jeżeli w momencie emisji nowej wartości nie istniałby żaden obserwator, to wartość ta przepadła by na wieki. Jest to dosyć smutne. Co w przypadku, gdy ta wartość jest dla nas ważna i nie chcemy jej stracić? Na szczęście z pomocą przychodzą nam specyficzne obiekty rozszerzające typ Subject.</p>
+<h3 id="replaysubject">ReplaySubject</h3>
+<p>ReplaySubject jest strumieniem, który dla każdego nowego obserwatora odtwarza N ostatnio emitowanych danych. Wartość N możemy przekazać w konstruktorze tego obiektu, o tak:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">replaySubject$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Jeżeli wcześniej przez ten strumień emitowane były wartości, to przy subskrypcji, zostaną one odtworzone danemu obserwatorowi, ale nie więcej niż 5 ostatnich. Przykładowo:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="nx">replaySubject$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">replayedValue</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">replayedValue</span><span class="p">));</span>
+<span class="c1">// 2</span>
+<span class="c1">// 3</span>
+<span class="c1">// 4</span>
+<span class="c1">// 5</span>
+<span class="c1">// 6</span>
+</code></pre></div></div>
+<h3 id="behaviorsubject">BehaviorSubject</h3>
+<p>BehaviorSubject jest specyficznym rodzajem strumienia. Zawsze posiada on wartość, gdyż jest ona wymagana przy tworzeniu danego obiektu. Ponadto, strumień ten zawsze przechowuje ostatnio emitowaną wartość i podobnie jak w przypadku ReplaySubject, odtwarza ją każdemu nowemu obserwatorowi.
+Tworzymy go w równie prosty sposób:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">behaviorSubject</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="o">&lt;</span><span class="nx">boolean</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">behaviorSubject</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span>
+<span class="c1">// true</span>
+<span class="nx">behaviorSubject</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">behaviorSubject</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">drugi obserwator: </span><span class="dl">"</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+<span class="c1">// false</span>
+<span class="c1">// drugi obserwator: false</span>
+</code></pre></div></div>
+<p>Teraz, każdy nowy obserwator otrzyma obecnie przechowywaną przez dany strumień wartość - logiczną wartość ‘true’.</p>
+<h3 id="asyncsubject">AsyncSubject</h3>
+<p>AsyncSubject jest specyficznym strumieniem, ponieważ wyemituję on ostatnią wartość przekazaną w funkcji next() dopiero po zamknięciu tego strumienia, czyli po wywołaniu na nim funkcji complete(). Po zamknięciu przechowuje on wyemitowaną wartość i wyemituję ją każdemu nowemu obserwatorowi, który spóźnił się z subskrypcją przed zamknięciem strumienia.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">asyncSubject</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsyncSubject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="nx">asyncSubject</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">wartosc z async subject: </span><span class="dl">"</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+<span class="nx">asyncSubject</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">asyncSubject</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">asyncSubject</span><span class="p">.</span><span class="nx">complete</span><span class="p">();</span>
+<span class="c1">// wartosc z async subject: 2</span>
+<span class="nx">asyncSubject</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">wartosc z async subject po zamknieciu strumienia: </span><span class="dl">"</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+<span class="c1">// wartosc z async subject po zamknieciu strumienia: 2</span>
+</code></pre></div></div>
+<h2 id="rxjs-operatory---operacje-na-strumieniu">RxJS operatory - operacje na strumieniu</h2>
+<p>Poznaliśmy różne sposoby tworzenia strumieni, co jeśli emitowane dane za każdym razem chcielibyśmy zmodyfikować pod nasz konkretny przypadek biznesowy? Z pomocą oczywiście przychodzi nam RxJS z szerokim wachlarzem operatorów, czyli funkcji operujących na naszym strumieniu. Poniżej przedstawię Ci parę z nich, które uważam za bardzo przydatne w codziennej pracy.</p>
+
+<p>Załóżmy, że operujemy na następującym strumieniu:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">strumien$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">15</span><span class="nx">_000</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">observable$</span> <span class="o">=</span> <span class="nx">strumien$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+</code></pre></div></div>
+<p>Strumień domyślnie emituje wartość liczbową ‘15000’.
+Możemy operować na danych produkowanych przez nasz strumień, przekazując potrzebne nam operatory jako argumenty funkcji <em>pipe()</em> wywołanej na observable$.</p>
+<h3 id="map">map</h3>
+<p>Map jest z pewnością znanym Ci operatorem, chociażby z API JS Arrays.map, którym RxJS się sugerował. Map transformuje dane zwracając nam nowy wynik dla każdej emitowanej danej. Przykładowo:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">observable$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">numerek</span> <span class="o">=&gt;</span> <span class="nx">numerek</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">zmapowana wartosc: </span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+<span class="c1">// zmapowana wartosc: 30000</span>
+</code></pre></div></div>
+
+<h3 id="first">first</h3>
+<p>Interesującym operatorem jest operator <em>first()</em>, który pobiera pierwszy element ze strumienia, następnie jako efekt uboczny - wypisuje obserwatora z listy obserwujących dany strumień! Jest to bardzo wygodne, jeżeli z danego gorącego strumienia potrzebujemy tylko jednej wartości - nie musimy przejmować się w tym momencie wywołaniem funkcji unsubscribe().
+Przykład:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">observable$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">first</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">pierwsza otrzymana wartosc: </span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
+<span class="c1">// pierwsza otrzymana wartosc: 15000</span>
+<span class="nx">strumien$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">25000</span><span class="p">);</span>
+<span class="c1">// nic sie nie stalo, observable$ odpisal sie z listy obserwatorow</span>
+</code></pre></div></div>
+<h3 id="withlatestfrom">withLatestFrom</h3>
+<p>Następnym operatorem wartym uwagi jest <em>withLatestFrom</em>, który umożliwia nam ‘skrzyżowanie strumieni’, czyli dołączenie do jednego strumienia ostatnio emitowanej wartości przez drugi strumień. Przykładowo:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">otherStream$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviourSubject</span><span class="o">&lt;</span><span class="nx">boolean</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">observable$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">withLatestFrom</span><span class="p">(</span><span class="nx">otherStream$</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(([</span><span class="nx">value</span><span class="p">,</span> <span class="nx">otherStreamValue</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">otrzymana wartosc z pierwszego strumienia: {}, z drugiego: {}</span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">otherStreamValue</span><span class="p">))</span>
+<span class="c1">// otrzymana wartosc z pierwszego strumienia: 15000, z drugiego: true</span>
+</code></pre></div></div>
+<h3 id="takeuntil">takeUntil</h3>
+<p>Operator takeUntil jest wygodnym operatorem, jeżeli chcemy w przejrzysty i prosty sposób wypisać się z listy obserwujących dany strumień.
+Rzućmy okiem na kod:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-some-component</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`</span><span class="err">
+        some template
+  </span><span class="s2">`</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">some-styles.scss</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">SomeComponent</span> <span class="k">implements</span> <span class="nx">OnDestroy</span><span class="p">,</span> <span class="nx">OnInit</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nx">destroySubject$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="k">private</span> <span class="nx">someValues$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviourSubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">initial value</span><span class="dl">'</span><span class="p">);</span>
+    
+    <span class="nx">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+       <span class="k">this</span><span class="p">.</span><span class="nx">someValues$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">().</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">takeUnitl</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">destroySubject$</span><span class="p">))</span>
+            <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="p">...)</span>
+    <span class="p">}</span>
+
+    <span class="nx">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+       <span class="k">this</span><span class="p">.</span><span class="nx">destroySubject</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+    <span class="p">}</span>   
+
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Powyższy fragment przedstawia nam SomeComponent, który nasłuchuje na wartości ze strumienia <em>someValues$</em> aż do momentu, gdy zostanie wyemitowana wartość z drugiego strumienia: <em>destroySubject$</em>. W taki oto sposób nie musimy pamiętać o ręcznym odsubskrybowaniu się z pierwszego strumienia, gdyż zostanie on automatycznie zamknięty w momencie zniszczenia komponentu przez Angulara. :)</p>
+<h3 id="switchmap">switchMap</h3>
+<p>Kolejnym przydatnym operatorem może być <em>switchMap()</em>, którego zastosowanie pozwala nam zachować czystość i powstrzyma nas przed tworzeniem tzw. <em>callback hell</em>, czyli zagnieżdżania wywołań <em>subscribe()</em> tworzących łańcuch wywołań trudny w czytaniu i utrzymywaniu. Dlatego też zamiast pisać:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">observable$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
+    <span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">someService</span><span class="p">.</span><span class="nx">processValue</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">someServiceResponse</span> <span class="o">=&gt;</span> <span class="nx">andYetAnotherService</span><span class="p">.</span><span class="nx">processAnotherValue</span><span class="p">(</span><span class="nx">someServiceResponse</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">yetAnotherResponse</span> <span class="o">=&gt;</span> <span class="nx">veryImportantService</span><span class="p">.</span><span class="nx">processVeryImportantValue</span><span class="p">(</span><span class="nx">yetAnotherResponse</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">veryImportantResponse</span> <span class="o">=&gt;</span> <span class="p">...))))</span>
+</code></pre></div></div>
+<p>Każdy z serwisów zwraca Observable do strumienia, z którego potrzebujemy wartości do wywołania kolejnego serwisu. Możemy zamiast tego napisać:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">observable$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">value</span> <span class="o">=&gt;</span> <span class="nx">someService</span><span class="p">.</span><span class="nx">processValue</span><span class="p">(</span><span class="nx">value</span><span class="p">)),</span>
+    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">someServiceResponse</span> <span class="o">=&gt;</span> <span class="nx">andYetAnotherService</span><span class="p">.</span><span class="nx">processAnotherValue</span><span class="p">(</span><span class="nx">someServiceResponse</span><span class="p">)),</span>
+    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">yetAnotherResponse</span> <span class="o">=&gt;</span> <span class="nx">veryImportantService</span><span class="p">.</span><span class="nx">processVeryImportantValue</span><span class="p">(</span><span class="nx">yetAnotherResponse</span><span class="p">)))</span>
+        <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">veryImportantResponse</span> <span class="o">=&gt;</span> <span class="p">...)</span>
+</code></pre></div></div>
+<p>SwitchMap automatycznie subskrybuje nas do kolejnego strumienia, przez co kod staje się czytelniejszy.
+Oczywiście zagnieżdżanie strumieni i tak wprowadza narzut przeszkadzający w szybkim zrozumieniu, co dany kod produkuje, lecz jest to bardziej eleganckie podejście.</p>
+<h3 id="więcej-operatorów">Więcej operatorów</h3>
+<p>Aby poznać więcej operatorów polecam stronę <a href="https://www.learnrxjs.io/operators">learnrxjs</a>, która świetnie opisuje interesujące operatory udostępnione w bibliotece RxJS.</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>RxJS jest potężnym narzędziem dającym wiele możliwości napisania kodu, który będzie reaktywny, asynchroniczny i intuicyjny dla czytającego go kolegi lub koleżanki z zespołu. Mam nadzieję, że będziesz kontynuować swoją przygodę z programowaniem reaktywnym i będziesz móc przekuć zebraną przy czytaniu tego artykułu wiedzę w kod asynchroniczny, napawający Cię dumą!</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "Angular rxjs asynchronous reactive reactive extensions rxjs operators";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

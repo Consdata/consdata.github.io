@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Zarządzanie transakcjami w Java - jak to robić dobrze? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Zarządzanie transakcjami w Java - jak to robić dobrze?" />
+<meta name="author" content="rmastalerek" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Czy ktokolwiek zamawiając w restauracji kawę i ciastka chciałby zapłacić za oba, a otrzymać tylko jedno? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Odpowiedzi na te pytania są oczywiste. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Podobnie jest z systemem zarządzania transakcjami w Javie, a podane przykłady świetnie ilustrują zależności, o jakich musimy pamiętać przy tym temacie." />
+<meta property="og:description" content="Czy ktokolwiek zamawiając w restauracji kawę i ciastka chciałby zapłacić za oba, a otrzymać tylko jedno? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Odpowiedzi na te pytania są oczywiste. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Podobnie jest z systemem zarządzania transakcjami w Javie, a podane przykłady świetnie ilustrują zależności, o jakich musimy pamiętać przy tym temacie." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2022/01/25/transactions.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2022/01/25/transactions.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2022-01-25-transactions/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-25T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2022-01-25-transactions/thumbnail.webp" />
+<meta property="twitter:title" content="Zarządzanie transakcjami w Java - jak to robić dobrze?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"rmastalerek"},"image":"https://blog.consdata.tech/assets/img/posts/2022-01-25-transactions/thumbnail.webp","@type":"BlogPosting","headline":"Zarządzanie transakcjami w Java - jak to robić dobrze?","description":"Czy ktokolwiek zamawiając w restauracji kawę i ciastka chciałby zapłacić za oba, a otrzymać tylko jedno? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Odpowiedzi na te pytania są oczywiste. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Podobnie jest z systemem zarządzania transakcjami w Javie, a podane przykłady świetnie ilustrują zależności, o jakich musimy pamiętać przy tym temacie.","dateModified":"2022-01-25T01:00:00-06:00","datePublished":"2022-01-25T01:00:00-06:00","url":"https://blog.consdata.tech/2022/01/25/transactions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2022/01/25/transactions.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2022/01/25/transactions.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">transactions</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Zarządzanie transakcjami w Java - jak to robić dobrze?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/rmastalerek.html">
+        <img class="author-image" src="/assets/img/authors/rmastalerek.webp" alt="author">
+        <span class="author-name">Robert Mastalerek</span><a class="author" href="https://github.com/robertmastalerek">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+25
+
+
+January
+
+
+2022
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Czy ktokolwiek zamawiając w restauracji kawę i ciastka chciałby zapłacić za oba, a otrzymać tylko jedno? Czy do zaakceptowania byłby fakt, że po wysłaniu przelewu na pokaźną kwotę, uszczuplony zostałby jedynie nasz rachunek, a kwota nie zasiliłaby konta odbiorcy? Odpowiedzi na te pytania są oczywiste. Pewne rzeczy mają sens tylko wtedy, gdy wykonywane są kompleksowo. Podobnie jest z systemem zarządzania transakcjami w Javie, a podane przykłady świetnie ilustrują zależności, o jakich musimy pamiętać przy tym temacie.</p>
+
+<p>W tym wpisie przedstawię krótkie wprowadzanie, ponieważ temat transakcji w programowaniu jest na tyle obszerny, że warto go podzielić na 2 części. W części pierwszej skupię się na przybliżeniu samej definicji oraz zasady działania transakcyjności w systemach baz danych oraz wykorzystaniu adnotacji <em>@Transactional</em> w Springu. Druga część poświęcona będzie problemom jakie napotkaliśmy w codziennej pracy, co pozwoliło je zidentyfikować oraz jak zostały wyeliminowane.</p>
+
+<h2 id="transakcja">Transakcja</h2>
+<p>Pewien zbiór operacji, które muszą zostać wykonane kompleksowo (wszystkie lub żadna), nazywamy właśnie <strong>transakcją</strong>. Odniesienie do operacji bankowej o takiej samej nazwie jest nieprzypadkowe, a wspomniany już przykład przelewu jest modelowym wzorem transakcji. Wykonując przelew w banku pieniądze muszą jedocześnie zostać odjęte z rachunku nadawcy, jak i dodane w tej samej kwocie do salda konta odbiorcy. Tylko wtedy transakcja kończy się sukcesem.</p>
+
+<p>W przypadku niepowodzenia, któregokolwiek z kroków, wykonane dotąd operacje muszą zostać cofnięte, a stan systemu przywrócony do chwili sprzed rozpoczęcia całej procedury.</p>
+
+<p>Transakcje cechują się pewnym zbiorem zasad, określanych mianem ACID. Jest to akronim 4 właściwości (konkretnie ich angielskich nazw), którymi charaktryzuje się transakcja:</p>
+
+<ul>
+  <li>
+    <p><strong>A</strong> (<em>ang. atomicity</em>) – atomowość – transakcja może zostać wykonana w całości albo anulowana. Jeżeli w trakcie wykonywania kroku objętego transakcją wystąpi problem, to wykonane zmiany powinny zostać cofnięte (rollback). Jeżeli wszystkie zakończone zostałyby sukcesem, to transakcja jest akceptowana (commit).</p>
+  </li>
+  <li>
+    <p><strong>C</strong> (<em>ang. consistency</em>) – spójność – mówiąc potocznie oznacza, że „baza jest w dobrym stanie”. Powracając do przykładu przelewu, spójność oznaczałaby, że konto, z którego wysyłane są środki, pozwala na dokonanie operacji. Po zakończeniu transakcji stan konta nie może być ujemny. Spójność jest zatem pewnym zestawem reguł i zasad, których należy przestrzegać.</p>
+  </li>
+  <li>
+    <p><strong>I</strong> (<em>ang. isolation</em>) – izolacja – właściwość, która odseparowuje od siebie operacje wykonywane jednocześnie tak, aby te nie miały na siebie wpływu. Chodzi np. o sytuację, gdy odwołujemy się do tej samej tabeli w bazie. Można też powiedzieć, że izolacja zapewnia, że w przypadku wykonywania operacji w sposób równoległy, baza danych pozostanie w takim stanie, jakby operacje te zostały wykonane sekwencyjnie.</p>
+  </li>
+  <li>
+    <p><strong>D</strong> (<em>ang. durability</em>) – trwałość – gwarancja, że zaakceptowana transakcja nie zniknie niespodziewanie z systemu np. w przypadku awarii. Trwałość uzyskuje się poprzez zastosowanie mechanizmu replikacji, odnotowywania operacji w dzienniku logów czy poprzez zapis danych na dysku.</p>
+  </li>
+</ul>
+
+<h3 id="poziomy-izolacji">Poziomy izolacji</h3>
+<p>W praktyce wiele transakcji wykonywanych jest równolegle przez System Zarządzania Bazą Danych. Oznacza to często równloegły dostęp aplikacji do tych samych danych w bazie. Warto zatem wspomnieć o sposobie ustawiania blokad w dostępie do danych. Sposób ustawiania blokad określany jest mianem <strong>poziomu izolacji</strong> transakcji i pomaga w zachowaniu integralności danych. Poziomy izolacji określają zasady <strong>równoległej</strong> realizacji kilku transakcji.</p>
+
+<p>System Zarządania Bazą Danych (<em>SZBD</em>) może np. zablokować wiersz tabeli, dopóki nie zostaną zatwierdzone aktualizacje. Efektem takiej blokady byłoby uniemożliwienie użytkownikowi uzyskania <strong>brudnego odczytu</strong>  (<em>ang. dirty read</em>). Odczyt tego typu polega na dostępie do zaktualizowanej wartości, która nie została jeszcze zatwierdzona, i której istnieje możliwość przywrócenia do wartości poprzedniej.</p>
+
+<p><strong>Niepowtarzalny odczyt</strong> (<em>ang. non-repeatable read</em>) ma miejsce wtedy, gdy transakcja A pobiera wiersz, transakcja B go aktualizuje, a następnie transakcja A pobiera ten sam wiersz ponownie. W takim przypadku transakcja A pobiera dwa razy ten sam wiersz, ale widzi różne dane.</p>
+
+<p><strong>Odczyt fantomowy</strong> (<em>ang. phantom read</em>) to sytuacja, gdy transakcja A pobiera zbiór wierszy będących w danym stanie. Transakcja B następnie wstawia lub aktualizuje wiersz do tabeli. Następnie transakcja A ponownie odczytuję zbiór wierszy widząc tym razem nowy lub zaktualizowany wiersz, określany jako fantom.</p>
+
+<p>Zgodnie ze standardem <em>SQL-92</em> definiuje się 4 poziomy izolacji transakcji. Poniżej widzicie “efekty uboczne”, które są akceptowalne na danym poziomie, poczynając od najmniej restrykcyjnego:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Poziom izolacji</th>
+      <th style="text-align: center">Brudne</th>
+      <th style="text-align: center">Niepowtarzalne</th>
+      <th style="text-align: center">Fantomowe</th>
+    </tr>
+    <tr>
+      <th> </th>
+      <th style="text-align: center">odczyty</th>
+      <th style="text-align: center">odczyty</th>
+      <th style="text-align: center">odczyty</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">READ_UNCOMMITTED</code></td>
+      <td style="text-align: center">Dozwolone</td>
+      <td style="text-align: center">Dozwolone</td>
+      <td style="text-align: center">Dozwolone</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">READ_COMMITTED</code></td>
+      <td style="text-align: center">Uniemożliwione</td>
+      <td style="text-align: center">Dozwolone</td>
+      <td style="text-align: center">Dozwolone</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">REPEATABLE_READ</code></td>
+      <td style="text-align: center">Uniemożliwione</td>
+      <td style="text-align: center">Uniemożliwione</td>
+      <td style="text-align: center">Dozwolone</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SERIALIZABLE</code></td>
+      <td style="text-align: center">Uniemożliwione</td>
+      <td style="text-align: center">Uniemożliwione</td>
+      <td style="text-align: center">Uniemożliwione</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Należy pamiętać, że zastosowanie wyższego poziomu izolacji wiążę się ze spadkiem wydajności aplikacji. Poziomy izolacji pozwalają zatem na zachowanie równowagi między wydajnością, a wymaganą izolacją.
+Projektując aplikację trzeba pamiętać także o tym, że różne SZBD dostarczają różną liczbę poziomów izolacji. Dla przykładu w MySQL mamy 4 poziomy izolacji, podczas gdy w bazie Oracle poziomy izolacji są tylko 3.</p>
+
+<h2 id="zarządzanie-transakcjami-w-jdbc">Zarządzanie transakcjami w JDBC</h2>
+<p>Każdy, kto korzysta z mechanizmu transakcji w Springu wie, że pomocna w tym jest adnotacja <strong>@Transactional</strong>. Dzięki niej możemy zaoszczędzić trochę czasu, bo sami nie musimy implementować całego mechanizmu, którym zarządza framework. Warto jednak wiedzieć co dzieje się „pod maską”. Zobaczmy zatem jak wygląda uproszczone zarządzanie transakcją w JDBC, na którym zawsze bazujemy.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nawiązanie połączenia z bazą danych</span>
+<span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+
+<span class="k">try</span> <span class="o">(</span><span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// Po utworzenia połączenia z bazą, połaczenie to jest w trybie tzw. „automatycznego zatwierdzania”. Oznacza to, że każda pojedyncza instrukcja SQL jest traktowana jako jedna transakcja i jest automatycznie zatwierdzana zaraz po jej wykonaniu. Ustawienie flagi autoCommit na false pozwala na wykonanie więcej niż jednej instrukcji w ramach jednej transakcji.</span>
+	<span class="n">connection</span><span class="o">.</span><span class="na">setAutoCommit</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+	<span class="c1">// ...</span>
+	<span class="c1">// operacje wchodzące w skład transakcji</span>
+	<span class="c1">// ...</span>
+
+	<span class="c1">// zatwierdzenie transakcji</span>
+	<span class="n">connection</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span> 
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// wycofanie zmian w przypadku błędów </span>
+	<span class="n">connection</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="punkty-zapisu-ang-save-points">Punkty zapisu (<em>ang. save points</em>)</h3>
+<p>Oprócz operacji zatwierdzania transakcji (<em>COMMIT</em>) oraz jej wycofywania w przypadku niepowodzenia (<em>ROLLBACK</em>),  istotna jest jeszcze jedna funkcja całego mechanizmu – <strong>punkty zapisu</strong>. Są to miejsca, do których nastąpi wycofanie transakcji, w przypadku awarii czy niepowodzenia. Posługując się fragmentem kodu, zastosowanie punktów zapisu, mogłoby wyglądać tak:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ustawienie poziomu izolacji</span>
+<span class="n">connection</span><span class="o">.</span><span class="na">setTransactionIsolation</span><span class="o">(</span><span class="nc">Connection</span><span class="o">.</span><span class="na">TRANSACTION_READ_UNCOMMITED</span><span class="o">);</span>
+
+<span class="c1">// instrukcje wykonywane w ramach transakcji – część 1</span>
+<span class="c1">// …</span>
+
+<span class="c1">// ustawienie punktu zapisu </span>
+<span class="nc">Savepoint</span> <span class="n">savepoint</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">setSavepoint</span><span class="o">();</span>
+
+<span class="c1">// instrukcje wykonywane w ramach transakcji – część 2 </span>
+<span class="c1">// … </span>
+
+<span class="c1">// przywrócenie zmian do stanu z punktu zapisu</span>
+<span class="n">connection</span><span class="o">.</span><span class="na">rollback</span><span class="o">(</span><span class="n">savePoint</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h2 id="transakcje-w-springu">Transakcje w Springu</h2>
+<p>O ile JDBC pozwala na zagregowanie wybranych instrukcji, jako odrębnych transakcji poprzez ręczne ustawienie flagi <em>setAutocommit(false)</em>, o tyle Spring daje kilka sposobów osiągnięcia tego samego w znacznie wygodniejszy sposób.</p>
+
+<h3 id="programowalne-zarządzanie-transakcją">Programowalne zarządzanie transakcją</h3>
+<p>Pierwsza, ale raczej rzadko wykorzystywana metoda to użycie <em>TransactionTemplate</em> albo <em>PlatformTransactionManager</em>. Sposób jej użycia wygląda następująco:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+
+	<span class="nd">@Autowired</span>
+	<span class="kd">private</span> <span class="nc">TransactionTemplate</span> <span class="n">template</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nc">Long</span> <span class="nf">addBook</span><span class="o">(</span><span class="nc">Book</span> <span class="n">book</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Long</span> <span class="n">id</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">status</span> <span class="err">→</span> <span class="o">{</span>
+			<span class="c1">// dodaj książkę do bazy i zwróć wygenerowany identyfikator </span>
+			<span class="c1">// … </span>
+			<span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+		<span class="o">});</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p><strong>Zalety</strong>:</p>
+<ul>
+  <li>nie trzeba zaprzątać sobie głowy otwieraniem i zamykaniem połączenia z bazą danych poprzez stosowanie bloku <em>try-catch-finally</em>. Zamiast tego wykorzystywany jest mechanizm callbacków (<code class="language-plaintext highlighter-rouge">Transaction Callbacks</code>).</li>
+  <li>nie trzeba przechwytywać wyjątków <em>SQLException</em>, ponieważ Spring konwertuje je na wyjątki <em>RuntimeException</em>.</li>
+  <li>lepsza integracja z ekosystemem Springa. <em>TransactionTemplate</em> wykorzystuje <em>TransactionManager</em> do konfiguracji połączenie z bazą danych. Ich implementacja wiążę się z koniecznością utworzenia odpowiednich beanów, jednak później nie musimy się już martwić o zarządzanie nimi.</li>
+</ul>
+
+<h3 id="deklaratywne-zarządzanie-transakcją">Deklaratywne zarządzanie transakcją</h3>
+<p>Spring daje też możliwość skorzystania z adnotacji <em>@Transactional</em>. Można ją umieścić zarówno nad definicją klasy, jak i <strong>publicznej</strong> metody. W pierwszym przypadku aplikacja zachowa się tak, jakby wszystkie <strong>publiczne</strong> metody wewnątrz klasy posiadały taką adnotację. Dzięki samej adnotacji, każda publiczna metoda, która zostanie oznaczona tą adnotacją, zostanie wykonana wewnątrz transakcji.</p>
+
+<p>Mając już wiedzę w jaki sposób wygląda zarządzanie transakcją w JDBC, zobaczmy jak łatwo przekształcić kod tak, aby wykorzystywał dobrodziejstwo frameworka Spring:</p>
+
+<p>Na początek spójrzmy ponownie na przykładowy kod z sekcji <a href="#programowalne-zarządzanie-transakcją">Programowalne zarządzanie transakcją</a> i zobaczmy jak wyglądałoby dodanie nowej książki do bazy przy użyciu JDBC.
+Następnie przyjrzyjmy się użyciu adnotacji <em>@Transactional</em> w Springu:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+	<span class="nd">@Transactional</span>
+	<span class="kd">public</span> <span class="nc">Long</span> <span class="nf">addBook</span><span class="o">(</span><span class="nc">Book</span> <span class="n">book</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// dodaj książkę do bazy i zwróć wygenerowany identyfikator </span>
+		<span class="c1">// bookDao.save(book);</span>
+		<span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Wygląda znacznie prościej, prawda? Aby skorzystać z adnotacji <em>@Transactional</em>, konieczne jest jedynie zdefiniowanie menadżera transakcji w konfiguracji Spring’a oraz dodanie adnotacji <em>@EnableTransactionManagement</em> (w Spring Boot nie jest to konieczne).</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableTransactionManagement</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyConfig</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">PlatformTransactionManager</span> <span class="nf">transactionManager</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">transactionManager</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="jak-działa-adnotacja-transactional">Jak działa adnotacja @Transactional</h3>
+<p>Spring pozwala na wykorzystanie usługi BookService w każdym innym beanie, który tego wymaga. Stosując adnotację <em>@Transactional</em> i odwołując się do metody, która jest nią opatrzona, Spring nie odwołuje się bezpośrednio do tej metody, ale tworzy tzw. <strong>proxy transakcyjne</strong>. Dzieje się to przy pomocy biblioteki <em>Cglib</em> i metody zwanej <em>proxy-through-sublcassing</em>. Zadaniem tego proxy jest zawsze:</p>
+<ul>
+  <li>otwieranie i zamykanie połączeń/transakcji z bazą danych</li>
+  <li>delegowanie zadania do rzeczywistej usługi, jak nasze <em>BookService</em></li>
+</ul>
+
+<p>Całą procedurę można zobrazować prostym diagramem:
+<img src="/assets/img/posts/2022-01-25-transactions/transaction-proxy.png" alt="2021-12-14-transaction-proxy.png" /></p>
+
+<p>Dodając adnotację <em>@Transactional</em> do naszej metody lub klasy, ale nie definiując ręcznie poziomu izolacji musimy zawsze pamiętać, że Spring ustawia ten poziom na domyślny. Co to oznacza? Otóż, w rezultacie, kiedy Spring tworzy transakcję, poziom izolacji będzie domyślną izolacją SZBD, z którego korzystamy. Niezwykle ważne jest zatem zachowanie ostrożności zarówno w momencie wyboru Systemu Zarządzania Bazą Danych, jak i jego późniejszej zmiany.
+Żeby samodzielnie określić poziom izolacji transakcji wystarczy wykorzystać atrybut adnotacji @Transational o nazwie <em>isolation</em>, np.:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@Transactional</span><span class="o">(</span><span class="n">isolation</span> <span class="o">=</span> <span class="nc">Isolation</span><span class="o">.</span><span class="na">REPEATABLE_READ</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addBook</span><span class="o">()</span> <span class="o">{</span>
+<span class="c1">//      ...</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="poziomy-propagacji-ang-propagation-levels">Poziomy propagacji (<em>ang. propagation levels</em>)</h3>
+<p>Spring pozwala na jeszcze jedną konfigurację mechanizmu zarządzania transakcjami. Daje bowiem możliwość ustawienia tzw. <strong>poziomów propagacji</strong>, które pozwalają niejako rozgraniczyć logikę biznesową w naszej aplikacji. Spring pozwala na wykorzystanie następujących rodzajów propagacji:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">REQUIRED</code> (domyślna) – Spring sprawdza czy istnieje aktywna transakcja, i jeżeli nie, tworzy ją. W przeciwnym razie logika biznesowa zostaje wykonana w ramach istniejącej transakcji.</li>
+  <li><code class="language-plaintext highlighter-rouge">SUPPORTS</code> – Spring najpierw sprawdza czy istnieje aktywna transakcja. Jeżeli tak, wtedy jest ona wykorzystywana do wykonania logiki biznesowej, w przeciwnym razie logika wykonana jest poza transakcją.</li>
+  <li><code class="language-plaintext highlighter-rouge">MANDATORY</code> – Podobnie, jak w przypadku <code class="language-plaintext highlighter-rouge">SUPPORTS</code>, Spring najpierw poszukuje aktywnej transakcji, i jeżeli ją znajdzie, to ją wykorzystuje. W przeciwnym razie rzucany jest wyjątek.</li>
+  <li><code class="language-plaintext highlighter-rouge">NEVER</code> – Spring rzuca wyjątek w przypadku wykrycia aktywnej transakcji.</li>
+  <li><code class="language-plaintext highlighter-rouge">NOT_SUPPORTED</code> – Jeżeli istenieje aktywna transakcja, Spring przerywa ją, a następnie logika biznesowa wykonywana jest poza transakcją.</li>
+  <li><code class="language-plaintext highlighter-rouge">REQUIRES_NEW</code> – Podobnie, jak w przypadku <code class="language-plaintext highlighter-rouge">NOT_SUPPORTED</code>, Spring przerywa aktywną transakcję, lecz tym razem tworzy nową na potrzebę wykonania logiki biznesowej w odrębnej transakcji.</li>
+  <li><code class="language-plaintext highlighter-rouge">NESTED</code> – Spring sprawdza czy istnieje aktywna transakcja. Jeżeli tak, to utworzony zostaje punkt zapisu. Oznacza to, że jeżeli wykonana następnie logika biznesowa zakończy się błędem, to stan systemu zostanie przywrócony do punktu zapisu. Jeżeli natomiast nie ma aktywnej transakcji, to system zachowa się tak, jak w przypadku <code class="language-plaintext highlighter-rouge">REQUIRED</code>.</li>
+</ul>
+
+<h3 id="wybór-metody-zarządzania-transakcjami-w-springu">Wybór metody zarządzania transakcjami w springu</h3>
+<p>Mając do dyspozycji dwie metody zarządzania transakcjami - programową i deklaratywną warto wiedzieć, kiedy stosować każdą z nich.</p>
+
+<p><strong>Programowe zarządzanie transakcjami:</strong></p>
+<ul>
+  <li>pozwala na “zakodowanie” logiki transakcji między logiką biznesową</li>
+  <li>jest elastyczne, ale trudne w utrzymaniu z dużą ilością logiki biznesowej</li>
+  <li>preferowane, gdy stosowana jest względnie mała logika obsługi transakcji</li>
+</ul>
+
+<p><strong>Deklaratywne zarządzanie transakcjami:</strong></p>
+<ul>
+  <li>pozwala na zarządzanie transakcjami poprzez konfigurację</li>
+  <li>oznacza oddzielenie logiki transakcji od logiki biznesowej</li>
+  <li>używa się adnotacji (lub XML) do zarządzania transakcjami</li>
+  <li>łatwe w utrzymaniu - <em>boilerplate</em> trzymany jest z dala od logiki biznesowej</li>
+  <li>preferowane podczas pracy z dużą ilością logiki obsługi transakcji</li>
+</ul>
+
+<h3 id="pułapka">Pułapka</h3>
+<p>Na zakończenie warto wspomnieć o częstym błędzie popełnianym głównie na początku przygody z transakcjami. Zdarza się, że adnotacją <em>@Transactional</em> oznacza się powiązane ze sobą metody w tej samej klasie oczekując, że te wykonane zostaną w ramach odrębnych transakcji. W takim przypadku należy spojrzeć ponownie na powyższy diagram. Spring tworzy proxy transakcyjne, ale w momencie, gdy znajdziemy się już w rzeczywistym beanie <em>BookService</em> i wywołamy inne metody w nim zaimplementowane, żadne nowe proxy nie będzie zaangażowane w te operacje. Innymi słowy, nie zostanie rozpoczęta żadna nowa transakcja.</p>
+
+<p>Spójrzmy na poniższy kod, który tworzy streszczenie wybranej książki, następnie zapisuje je w bazie i wysyła e-mail. Mimo oznaczenia obydwu metod adnotacją <em>@Transactional</em>, zgodnie z powyższym wyjaśnieniem, otwarta zostanie jedynie pojedyncza transakcja, nawet gdyby druga metoda jawnie wskazywała na konieczność utworzenia nowej transakcji poprzez ustawienie odpowiedniego <strong>poziomu propagacji</strong>.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">BookService</span> <span class="n">bookService</span><span class="o">;</span>
+<span class="c1">//  ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+    <span class="nd">@Transactional</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendBookSummary</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">createBookSummary</span><span class="o">();</span>
+        <span class="c1">// zapisz streszczenie w bazie</span>
+        <span class="c1">// wyślij streszczenie mailem, itd.</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Transactional</span><span class="o">(</span><span class="n">propagation</span> <span class="o">=</span> <span class="nc">Propagation</span><span class="o">.</span><span class="na">REQUIRES_NEW</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createBookSummary</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// ...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Jak sobie z tym poradzić? Wystarczy np. odseparować logikę biznesową tworząc dodatkową warstwę i dedykowane serwisy.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookService</span> <span class="o">{</span>
+    
+    <span class="kd">private</span> <span class="nc">BookSummaryService</span> <span class="n">bookSummaryService</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">MailService</span> <span class="n">mailService</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">BookService</span><span class="o">(</span><span class="nc">BookSummaryService</span> <span class="n">bookSummaryService</span><span class="o">,</span>
+                       <span class="nc">MailService</span> <span class="n">mailService</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">bookSummaryService</span> <span class="o">=</span> <span class="n">bookSummaryService</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">mailservice</span> <span class="o">=</span> <span class="n">mailService</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendBookSummary</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">bookSummaryService</span><span class="o">.</span><span class="na">createBookSummary</span><span class="o">();</span>
+        <span class="c1">// zapisz streszczenie w bazie</span>
+        <span class="n">mailService</span><span class="o">.</span><span class="na">send</span><span class="o">();</span>
+        <span class="c1">// itd.</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Mamy wtedy dedykowany serwis do tworzenia streszczenia książki:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BookSummaryService</span> <span class="o">{</span>
+<span class="c1">//  ... </span>
+    
+    <span class="nd">@Transactional</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createBookSummary</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// ...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>I np. serwis odpowiedzialny za wysyłkę streszczenia mailem:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MailService</span> <span class="o">{</span>
+<span class="c1">//  ... </span>
+    
+    <span class="nd">@Transactional</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">send</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// wyślij streszczenie mailem</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Teoretyczne wprowadzenie do systemu zarządzania transakcjami w Javie już za nami! Na początku dowiedzieliśmy się czym w ogóle są transakcje, dlaczego są ważne i co je cechuje. Następnie przedstawiony został mechanizm działania transakcji w JDBC po to, by na koniec zaprezentować uproszczenie implementacji tego mechanizmu w Springu. W kolejnym artykule z tej serii dowiemy się jakie problemy napotkaliśmy wykorzystując mechanizm zarządzania transakcjami, jak udało się go zlokalizować oraz na czym polegała poprawka.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "transactions spring java transactional";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Gatling! “Odłamkowym ładuj!”, czyli jak strzelać do aplikacji | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Gatling! “Odłamkowym ładuj!”, czyli jak strzelać do aplikacji" />
+<meta name="author" content="bbaron" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Gatling zawiera masę pomocniczych poleceń. Na stronie http://gatling.io/ dostępna jest użyteczna dokumentacja, w której w przejrzysty sposób wyjaśniono dostępne funkcje." />
+<meta property="og:description" content="Gatling zawiera masę pomocniczych poleceń. Na stronie http://gatling.io/ dostępna jest użyteczna dokumentacja, w której w przejrzysty sposób wyjaśniono dostępne funkcje." />
+<link rel="canonical" href="https://blog.consdata.tech/2017/08/01/gatling.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2017/08/01/gatling.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2017-08-01-gatling/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-08-01T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2017-08-01-gatling/thumbnail.webp" />
+<meta property="twitter:title" content="Gatling! “Odłamkowym ładuj!”, czyli jak strzelać do aplikacji" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"bbaron"},"image":"https://blog.consdata.tech/assets/img/posts/2017-08-01-gatling/thumbnail.webp","@type":"BlogPosting","headline":"Gatling! “Odłamkowym ładuj!”, czyli jak strzelać do aplikacji","description":"Gatling zawiera masę pomocniczych poleceń. Na stronie http://gatling.io/ dostępna jest użyteczna dokumentacja, w której w przejrzysty sposób wyjaśniono dostępne funkcje.","dateModified":"2017-08-01T02:00:00-05:00","datePublished":"2017-08-01T02:00:00-05:00","url":"https://blog.consdata.tech/2017/08/01/gatling.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2017/08/01/gatling.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2017/08/01/gatling.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">gatling</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Gatling! “Odłamkowym ładuj!”, czyli jak strzelać do aplikacji</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/bbaron.html">
+        <img class="author-image" src="/assets/img/authors/bbaron.webp" alt="author">
+        <span class="author-name">Błażej Baron</span><a class="author" href="https://github.com/2bbar">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+1
+
+sierpnia
+
+
+
+2017
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>W każdym projekcie pojawia się moment, w którym pada stwierdzenie: “A co z wydajnością? Damy radę na produkcji?”. I wtedy cały zespół zastanawia się, ile tak naprawdę zniesie owoc ich wielomiesięcznych prac. Kod po wnikliwych review, poprawkach architektonicznych i projektowych wygląda wspaniale w repozytorium, ale analizując go, trudno stwierdzić czy aplikacja wytrzyma ruch na produkcji oraz gdzie są najsłabsze ogniwa. Trzeba to sprawdzić w praktyce. Przygotowujemy środowisko zasobami zbliżone do produkcji albo odpowiednio wyskalowane i klikamy. A co tam, zespół duży, zacięcie klika i osiągamy ruch 5 użytkowników. Szybka analiza logów i wszystko jest OK. Ale zaraz, to nic nam nie daje. Nadal nie zidentyfikowaliśmy najsłabszego ogniwa. Zautomatyzujmy zatem użytkowników w systemie i wykonajmy symulację bardzo dużej liczby użytkowników. Pierwsze co przychodzi na myśl, to…</p>
+
+<p><img src="/assets/img/posts/2017-08-01-gatling/1.png" alt="JMeter" /></p>
+
+<p>Nasz stary znajomy - Apache JMeter. Aplikacja bardzo rozbudowana, gdzie można tworzyć skomplikowane przepływy użytkowników. Narzędzie bogate w liczne funkcje, ale jak dla mnie dość toporne. Pisanie w nim nowych scenariuszy zawsze idzie jakoś ciężko. Praca jest lżejsza, jeśli można oprzeć się na starych testach. Trudno jednak czeprać przyjemność z pracy tym narzędziem.</p>
+
+<p>Również w moim zespole, gdy pojawiła się kwestia testów wydajnościowych, pierwszą sugestią było użycie JMeter’a. Głównie z racji dostępnych scenariuszy dla podobnego przepływu użytkownika. W trakcie dyskusji na temat wydajności padło, że w firmie, jeden z zespołów użył narzędzia Gatling, które sprawdziło się dużo lepiej, niż narzędzie Apacha. Powód był bardzo prosty, scenariusze się programuje, a nie klika w GUI. Przez co są czytelniejsze i łatwiejsze do utrzymania w repo. Co prawda, w Gatlingu koduje się w języku scala, ale nawet jeśli, ktoś nigdy nie programował w tym języku, to bez problemu sobie poradzi. Podstawy w zupełności wystarczą. Nie jest potrzebna skomplikowana wiedza, o czym przekonują nawet twórcy na swojej stronie.</p>
+
+<p>Poniżej spróbuję przybliżyć owe narzędzie posługując się prostym przykładem.</p>
+
+<h2 id="co-by-tu-potestować">Co by tu potestować?</h2>
+<p>Na początku musimy przygotować środowisko do testów. Wystawimy jakiś prosty serwis z kilkoma metodami. Najszybciej będzie skorzystać ze springboot’a i zainicjować projekt. Wchodzimy na <a href="https://start.spring.io">https://start.spring.io</a>, klikamy co nas interesuje i ściągamy projekt. Importujemy i możemy zaczynać. Dodajemy prosty serwis.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">pl.consdata.server.controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.SecureRandom</span><span class="o">;</span>
+
+<span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleWaitController</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">GENERIC_RESPONSE</span> <span class="o">=</span> <span class="s">"{\"result\": %1$d}"</span><span class="o">;</span>
+
+  <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/getWaitTime"</span><span class="o">)</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getWaitTime</span><span class="o">()</span> <span class="o">{</span>
+     <span class="nc">SecureRandom</span> <span class="n">random</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SecureRandom</span><span class="o">();</span>
+     <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GENERIC_RESPONSE</span><span class="o">,</span> <span class="mi">5000</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">5500</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/wait"</span><span class="o">)</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">waitForNextStep</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">waitTime</span><span class="o">)</span> <span class="o">{</span>
+     <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">waitTime</span><span class="o">);</span>
+     <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+     <span class="o">}</span>
+     <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">GENERIC_RESPONSE</span><span class="o">,</span> <span class="n">waitTime</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/stop/{waitTime}"</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">stop</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">Integer</span> <span class="n">waitTime</span><span class="o">)</span> <span class="o">{</span>
+     <span class="k">return</span> <span class="s">"user end after: "</span> <span class="o">+</span> <span class="n">waitTime</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Funkcjonalność poszczególnych metod nie jest skomplikowana, ale do testu wystarczy. Zakładamy następujący przepływ użytkownika (każdy użytkownik postępuje tak samo):</p>
+<ul>
+  <li>Pobiera czas przetwarzania</li>
+  <li>Wywołuje przetwarzanie</li>
+  <li>Czeka 5 sekund - po stronie użytkownika</li>
+  <li>Opuszcza ten skomplikowany proces</li>
+</ul>
+
+<p>Skoro aplikacja jest gotowa, to spróbujmy zastanowić się: co jest słabym ogniwem? Bystre oko zauważy, że endpoint ‘/wait’ może sprawiać problemy, gdyż zawiera metodę ‘sleep’. OK, zgodzę się, ale pomimo tego - jaki ruch ta aplikacja wytrzyma i co pierwsze padnie? Tutaj odpowiedź już nie jest już taka oczywista. Przygotujmy zatem test wydajnościowy i sprawdźmy.</p>
+
+<h2 id="zaprogramujmy-scenariusz-wydajnościowy">Zaprogramujmy scenariusz wydajnościowy</h2>
+<p>Przejdźmy zatem do naszego zadania, czyli napisania scenariusza pokrywającego flow użytkownika. Zanim jednak do tego przystąpimy, musimy pobrać naszego frameworka. Skorzystamy z mojego ulubionego sposobu, czyli zaprzęgniemy mavena, aby się tym zajął. W głównym pom’ie dodajemy następujące konfiguracje:</p>
+<ul>
+  <li>biblioteka wykorzystywana przez Gatlinga
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;dependencies&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>io.gatling.highcharts<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>gatling-charts-highcharts<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>2.2.4<span class="nt">&lt;/version&gt;</span>
+         <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>plugin odpowiedzialny za uruchamianie z poziomu mavena
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;plugin&gt;</span>
+     <span class="nt">&lt;groupId&gt;</span>io.gatling<span class="nt">&lt;/groupId&gt;</span>
+     <span class="nt">&lt;artifactId&gt;</span>gatling-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+     <span class="nt">&lt;version&gt;</span>2.2.4<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;configuration&gt;</span>
+         <span class="nt">&lt;simulationsFolder&gt;</span>src/main<span class="nt">&lt;/simulationsFolder&gt;</span>
+         <span class="nt">&lt;simulationClass&gt;</span>scala.simulation.SimpleWaitSimulation<span class="nt">&lt;/simulationClass&gt;</span>
+     <span class="nt">&lt;/configuration&gt;</span>
+     <span class="nt">&lt;executions&gt;</span>
+         <span class="nt">&lt;execution&gt;</span>
+             <span class="nt">&lt;goals&gt;</span>
+                 <span class="nt">&lt;goal&gt;</span>execute<span class="nt">&lt;/goal&gt;</span>
+             <span class="nt">&lt;/goals&gt;</span>
+         <span class="nt">&lt;/execution&gt;</span>
+     <span class="nt">&lt;/executions&gt;</span>
+  <span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Dodatkowo, w konfiguracji dodajemy ścieżkę ze źródłami oraz domyślną klasę naszej symulacji. Klasa ta musi dziedziczyć po obiekcie ‘Simulation’ z pakietu Gatlinga. Po stworzeniu klasy ‘SimpleWaitSimulation’, uruchamiamy symulację w konsoli poleceniem:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn gatling:execute
+</code></pre></div></div>
+
+<p>Powinniśmy dostać błąd:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caused by: java.lang.IllegalArgumentException: requirement failed: No scenario set up
+</code></pre></div></div>
+
+<p>Błąd ten informuje nas, że nasza symulacja nie zawiera scenariusza, co oczywiście jest prawdą na tym etapie, ale potwierdza nam działanie szkieletu symulacji. Możemy zatem przejść dalej i skupić się na zakodowaniu naszego testu. Uruchamiamy wcześniej napisaną aplikację do testowania i ruszamy.</p>
+
+<p>W pierwszej kolejności definiujemy podstawy komunikacji naszego testu z serwerem.</p>
+
+<p>Aplikacja uruchamia się na standardowym adresie i porcie, zatem takie wartości przekazujemy. W Gatlingu za konfigurację komunikacji odpowiada klasa ‘http’. Ustawiamy adres bazowy, pod którym szukać należy naszej aplikacji. Nasz test będzie symulował uderzenia z przeglądarki, zatem ustawiamy odpowiednie nagłówki wykorzystywane przy requestach. Powstaje następujący kod:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">httpConf</span> <span class="k">=</span> <span class="n">http</span>
+    <span class="o">.</span><span class="py">baseURL</span><span class="o">(</span><span class="s">"http://localhost:8080"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">acceptHeader</span><span class="o">(</span><span class="s">"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">acceptEncodingHeader</span><span class="o">(</span><span class="s">"gzip, deflate"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">acceptLanguageHeader</span><span class="o">(</span><span class="s">"en-US,en;q=0.5"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">userAgentHeader</span><span class="o">(</span><span class="s">"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"</span><span class="o">)</span>
+</code></pre></div></div>
+<p>Teraz możemy zaprogramować scenariusz, czyli krok po kroku wykonać to, co wykonuje symulowany użytkownik. Za tworzenie scenariusza odpowiada polecenie ‘scenario’. Na początku powołajmy instancję tego obiektu.</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">scn</span> <span class="k">=</span> <span class="nf">scenario</span><span class="o">(</span><span class="s">"Simple Wait simulation"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>W tym momencie mamy zalążek scenariusza i możemy zacząć dodawać poszczególne wywołania. W pierwszym kroku użytkownik wywołuje metodą GET endpointa ‘/getWaitTime’, a w odpowiedzi otrzymuje dane, które musi zapamiętać i wykorzystać w kolejnym etapie. Praca z Gatlingiem jest bardzo wygodna. Dostajemy masę użytecznych poleceń, dzięki którym możemy wykonywać różne operacje. Zarówno na wejściowych, jak i wyjściowych danych z testu. Na początku dodajemy wywołanie GET:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"Take waiting time"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="s">"/getWaitTime"</span><span class="o">)</span>
+<span class="o">)</span>
+</code></pre></div></div>
+<p>Całkiem proste. Powyższy kod wywoła tylko wskazanego endpointa. Brakuje nam pobrania odpowiedzi i zapamiętania wartości. Dodatkowo powinniśmy dostać kod statusu http równy 200. W naszym przypadku oznacza to, że wywołanie powiodło się, a serwer wyśle do nas jsona z polem o nazwie ‘result’. Wartość tę musimy zapamiętać i wykorzystać do dalszego procesowania użytkownika. Uzupełnijmy nasze proste wywołanie o niezbędne elementy:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">scn</span> <span class="k">=</span> <span class="nf">scenario</span><span class="o">(</span><span class="s">"Simple Wait simulation"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"Take waiting time"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="s">"/getWaitTime"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">))</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">jsonPath</span><span class="o">(</span><span class="s">"$.result"</span><span class="o">).</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"waitTime"</span><span class="o">))</span>
+    <span class="o">)</span>
+</code></pre></div></div>
+<p>Podobnie jak wcześniej skorzystaliśmy z wbudowanych narzędzi Gatlinga. ‘Check’ operuje na odpowiedzi wszystkich requestów. Metodą ‘status’ sprawdzamy kod odpowiedzi, czyli oczekujemy wartości 200. Metodami ‘jsonPath’ wyciągamy niezbędne informacje z odpowiedzi, a poleceniem ‘saveAs’ zapamiętamy te dane. Warto wspomnieć, iż Gatling do każdego użytkownika tworzy sesję użytkownika, do której możemy zarówno zapisywać, jak i odczytywać wartości. Istnieje także możliwość odczytywania wielu wartości w ramach jednego żądania, wówczas musimy tylko skopiować polecenie ‘check’ i odpowiednio ustawić, co i jak chcemy zapisać.</p>
+
+<p>Idąc dalej, użytkownik wywołuje endpoint ‘/wait’ przekazując wartość z pierwszego żądania, a otrzymując inną wartość, którą także zapamiętujemy. Postępując zgodnie z opisem, kodujemy:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"Wait for"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">post</span><span class="o">(</span><span class="s">"/wait"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">formParam</span><span class="o">(</span><span class="s">"""waitTime"""</span><span class="o">,</span> <span class="s">"${waitTime}"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">))</span>
+    <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">jsonPath</span><span class="o">(</span><span class="s">"$.result"</span><span class="o">).</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"realWaitTime"</span><span class="o">))</span>
+    <span class="o">)</span>
+</code></pre></div></div>
+<p>Nowym elementem, jaki tutaj wykorzystaliśmy, jest polecenie ‘formParam’. Jak nazwa sugeruje, służy ono do przekazywania parametrów do wywołania. Poza nazwą, w formularzu podajemy wartość: bezpośrednio lub za pomocą zmiennej. W tym przypadku odczytaliśmy z sesji wcześniej zapisaną wartość.</p>
+
+<p>W kolejnym etapie użytkownik czeka kilka sekund, zanim wywoła następną operację. Aby to osiągnąć, w prosty sposób możemy wykorzystać wbudowaną metodę ‘pause’. Jako parametr przyjmujemy wartość, oznaczającą ilość czasu, którą symulowany użytkownik ma czekać przed wykonaniem następnego kroku. Polecenie proste, ale użyteczne. Możemy w ten sposób symulować np. wypełnianie formularza czy klikanie w jakiś przycisk.</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="py">pause</span><span class="o">(</span><span class="mi">5</span> <span class="n">seconds</span><span class="o">)</span>
+</code></pre></div></div>
+<p>W ostatnim kroku użytkownik wywołuje tak, jak na początku polecenie GET, ale tym razem przekazując wartość. W odpowiedzi nie otrzymuje JSONa, ale prosty ciąg znaków. Rezultat odpowiedzi sprawdzimy czy zawiera interesującą nas wartość przekazaną w żądaniu.</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"User stop"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="s">"/stop/${realWaitTime}"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">),</span> <span class="nv">bodyBytes</span><span class="o">.</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"endMessageBody"</span><span class="o">))</span>
+    <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">substring</span><span class="o">(</span><span class="s">"${realWaitTime}"</span><span class="o">).</span><span class="py">exists</span><span class="o">)</span>
+<span class="o">)</span>
+</code></pre></div></div>
+<p>Poza wykorzystywanymi poprzednio poleceniami, użyliśmy tutaj kolejnej metody Gatlinga, tym razem do operacji na stringach. ‘Substring’ pozwala w prosty sposób operować na ciągach znakó,w np. znajdując podaną na wejściu frazę. Serwer powinien wysłać nam “stringa” zawierającego przekazany na wejściu parametr. Dlatego też weryfikujemy, czy otrzymana odpowiedź zawiera ów wartość.</p>
+
+<p>Cały przepływ użytkownika mamy już zakodowany. Na końcu, zbierzmy wszystkie kroki w jednym miejscu. Każde polecenie do wykonania operacji użytkownika zwraca instancję scenariusza, zatem w prosty sposób możemy agregować polecenia. W efekcie nasz wynikowy scenariusz wygląda następująco:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">scn</span> <span class="k">=</span> <span class="nf">scenario</span><span class="o">(</span><span class="s">"Simple Wait simulation"</span><span class="o">)</span>
+    <span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"Take waiting time"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="s">"/getWaitTime"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">))</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">jsonPath</span><span class="o">(</span><span class="s">"$.result"</span><span class="o">).</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"waitTime"</span><span class="o">))</span>
+    <span class="o">)</span>
+    <span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"Wait for"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">post</span><span class="o">(</span><span class="s">"/wait"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">formParam</span><span class="o">(</span><span class="s">"""waitTime"""</span><span class="o">,</span> <span class="s">"${waitTime}"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">))</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">jsonPath</span><span class="o">(</span><span class="s">"$.result"</span><span class="o">).</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"realWaitTime"</span><span class="o">)))</span>
+        <span class="o">.</span><span class="py">pause</span><span class="o">(</span><span class="mi">5</span> <span class="n">seconds</span><span class="o">)</span>
+    <span class="o">)</span>
+    <span class="o">.</span><span class="py">exec</span><span class="o">(</span><span class="nf">http</span><span class="o">(</span><span class="s">"User stop"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="s">"/stop/${realWaitTime}"</span><span class="o">)</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nv">status</span><span class="o">.</span><span class="py">is</span><span class="o">(</span><span class="mi">200</span><span class="o">),</span> <span class="nv">bodyBytes</span><span class="o">.</span><span class="py">saveAs</span><span class="o">(</span><span class="s">"endMessageBody"</span><span class="o">))</span>
+        <span class="o">.</span><span class="py">check</span><span class="o">(</span><span class="nf">substring</span><span class="o">(</span><span class="s">"${realWaitTime}"</span><span class="o">).</span><span class="py">exists</span><span class="o">)</span>
+    <span class="o">)</span>
+</code></pre></div></div>
+<p>W następnym kroku zajmiemy się konfiguracją i przygotowaniem ruchu użytkowników.</p>
+
+<h2 id="pierwsze-strzały">Pierwsze strzały</h2>
+<p>Mamy gotowy scenariusz, aby jednak nasza symulacja została poprawnie uruchomiona, trzeba ją jeszcze skonfigurować. W tym celu musimy wywołać metodę ‘setUp()’, która połączy nam wszystkie elementy tzn.: komunikację, scenariusz i ruch użytkowników. Nie jest to skomplikowana operacja. W jej efekcie powstanie jedna linijka kodu:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">setUp</span><span class="o">(</span><span class="nv">scn</span><span class="o">.</span><span class="py">inject</span><span class="o">(</span><span class="nf">atOnceUsers</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="py">protocols</span><span class="o">(</span><span class="n">httpConf</span><span class="o">))</span>
+</code></pre></div></div>
+<p>Na początek, w celu sprawdzenia czy wszystko poprawnie działa, uruchomimy test tylko z jednym użytkownikiem. Użyjemy tutaj polecenia ‘atOnceUsers(1)’, które symuluje właśnie określoną liczbę użytkowników na start testu. Wszystko gotowe, zatem możemy uruchamiać. Odpalamy konsolę i uruchamiamy polecenie:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn gatling:execute
+</code></pre></div></div>
+<p>Jeśli wszystko poszło OK, to dostajemy:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] BUILD SUCCESS
+</code></pre></div></div>
+<p>Przeglądamy logi i weryfikujemy czy otrzymaliśmy następujące wyniki:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--- Requests ------------------------------------------------------------------
+Global (OK=3 KO=0 )
+Take waiting time (OK=1 KO=0 )
+Wait for (OK=1 KO=0 )
+User stop (OK=1 KO=0 )
+</code></pre></div></div>
+
+<p>Jeśli mamy takie wypiski, to wszystko jest w jak najlepszym porządku.</p>
+
+<p>Przy takiej konfiguracji testu mamy w sumie 3 uderzenia do aplikacji, zatem ciężko wnioskować i mówić tu o jakichś wynikach do analizy. Testowo możemy spojrzeć sobie na raport, który wygenerowany został automatycznie na koniec testu. Wystarczy poszukać ‘Please open the following file:’ gdzie znajduje się strona html z wszystkimi wynikami naszego testu. Dokładniej przyjrzymy się temu, gdy uderzeń będzie o wiele więcej. Ustalmy zatem większy ruch.</p>
+
+<h2 id="och-ilu-tych-użytkowników">“Och, ilu tych użytkowników”</h2>
+<p>Ruch jednego użytkownika nie jest w stanie zbadać nam wydajności aplikacji. Dlatego musimy zastanowić się, jaki ruch chcemy wygenerować. Oczywiście, jeśli mowa o prawdziwych aplikacjac,h to musimy wziąć pod uwagę charakterystykę działania naszej aplikacji w środowisku produkcyjnym. Czy jest to ruch liniowy, skokowy, impulsowy itp. I to właśnie rozkład ruchu na produkcji powinien determinować, w jaki sposób generujemy ruch użytkowników w systemie w trakcie testu.</p>
+
+<p>Gatling ma kilka sposobów generowania ruchu. Ponieważ metod jest wiele, warto spojrzeć do dokumentacji - <a href="http://gatling.io/docs/current/general/simulation_setup/">http://gatling.io/docs/current/general/simulation_setup/</a>. My zakładamy, że w każdej sekundzie do systemu będzie wpadać określona liczba nowych użytkowników, postępujących według poprzednio opisanego scenariusza. Przy konfiguracji symulacji wykorzystamy dwie metody:</p>
+<ul>
+  <li>’nothingFor()’ - do rozładowania poprzedniego ruchu</li>
+  <li>‘constantUsersPerSec() during() randomized’ - do symulowania określonej liczby użytkowników przez ustalony czas.</li>
+</ul>
+
+<p>W początkowej fazie należy wykonać wstępne testy i określić wartości w jakich będziemy się poruszać. Nie ma sensu przeprowadzać godzinnego testu, jeśli aplikacja “wywali się” w ciągu pierwszych sekund. Po wykonaniu takich szybkich testów, możemy przystąpić do finalnej konfiguracji.</p>
+
+<p>Dobrym rozwiązaniem jest przeprowadzanie testów w ramach kilku iteracji. Każda z nich składa się z fazy obciążenia aplikacji użytkownikami, a następnie czasu potrzebnego na zakończenie przetwarzania wszystkich użytkowników. Wówczas możemy uruchomić następne powtórzenie, ale zwiększając liczbę użytkowników. O tym jak przeprowadzać testy wydajnościowe, można by napisać następny artykuł czy nawet książkę.</p>
+
+<p>Wróćmy zatem do naszej symulacji. Wykonamy pięć iteracji, każda będzie się składać z obciążenia użytkownikami trwającym 100 sekund, następnie przez 60 sekund będziemy czekać zanim uruchomimy następne powtórzenie. Zaczniemy od 20 nowych użytkowników na sekundę i będziemy zwiększać ich liczbę o kolejnych 10 w następnych iteracjach. Podobnie jak w przypadku scenariusza, możemy agregować poszczególne fazy testu. Dla powyższych założeń mamy następującą konfigurację:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">setUp</span><span class="o">(</span><span class="nv">scn</span><span class="o">.</span><span class="py">inject</span><span class="o">(</span><span class="nf">constantUsersPerSec</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span> <span class="nf">during</span><span class="o">(</span><span class="mi">100</span> <span class="n">seconds</span><span class="o">)</span> <span class="n">randomized</span><span class="o">,</span>
+<span class="nf">nothingFor</span><span class="o">(</span><span class="mi">60</span> <span class="n">seconds</span><span class="o">),</span>
+<span class="nf">constantUsersPerSec</span><span class="o">(</span><span class="mi">30</span><span class="o">)</span> <span class="nf">during</span><span class="o">(</span><span class="mi">100</span> <span class="n">seconds</span><span class="o">)</span> <span class="n">randomized</span><span class="o">,</span>
+<span class="nf">nothingFor</span><span class="o">(</span><span class="mi">60</span> <span class="n">seconds</span><span class="o">),</span>
+<span class="nf">constantUsersPerSec</span><span class="o">(</span><span class="mi">40</span><span class="o">)</span> <span class="nf">during</span><span class="o">(</span><span class="mi">100</span> <span class="n">seconds</span><span class="o">)</span> <span class="n">randomized</span><span class="o">,</span>
+<span class="nf">nothingFor</span><span class="o">(</span><span class="mi">60</span> <span class="n">seconds</span><span class="o">),</span>
+<span class="nf">constantUsersPerSec</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span> <span class="nf">during</span><span class="o">(</span><span class="mi">100</span> <span class="n">seconds</span><span class="o">)</span> <span class="n">randomized</span><span class="o">,</span>
+<span class="nf">nothingFor</span><span class="o">(</span><span class="mi">60</span> <span class="n">seconds</span><span class="o">),</span>
+<span class="nf">constantUsersPerSec</span><span class="o">(</span><span class="mi">60</span><span class="o">)</span> <span class="nf">during</span><span class="o">(</span><span class="mi">100</span> <span class="n">seconds</span><span class="o">)</span> <span class="n">randomized</span>
+<span class="o">).</span><span class="py">protocols</span><span class="o">(</span><span class="n">httpConf</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>Konfiguracja gotowa, czas na uruchomienie.</p>
+
+<h2 id="wielkie-strzelanie">Wielkie strzelanie</h2>
+<p>W końcu dotarliśmy do momentu, w którym możemy sprawdzić, jak zachowuje się nasza aplikacja przy dużym obciążeniu. Wszystko gotowe, uruchamiamy symulację i idziemy na kawę. Jak już wypijemy, jest szansa, że nasz test się zakończył. Wówczas w logach, tak jak poprzednio, otrzymamy:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] BUILD SUCCESS
+</code></pre></div></div>
+<p>Następnie szukamy, gdzie wygenerowany został raport: ‘Please open the following file:’. Odpalamy i naszym oczom pojawia się automatycznie wygenerowany raport.</p>
+
+<p>Przejrzyjmy otrzymane wyniki. Pierwsze błędy zaczęły się pojawiać przy ruchu 50 nowych użytkowników na sekundę. Całkiem nieźle. Widać jednak, że aplikacja przetwarzała cały ruch tylko przy 20 nowych użytkownikach na sekundę. Już przy kolejnej iteracji widać tendencję wzrostową aktywnych użytkowników. Oznacza to, że aplikacja nie radziła sobie z całym ruchem, jaki był generowany i część żądań była kolejkowana. Przy kolejnych fazach widać, że tendencja się jeszcze zaostrzała i przy 50 użytkownikach czas oczekiwania na aplikację był tak długi, że “leciały” timeouty. Wiemy oczywiście z czego to wynika. Użycie “sleep” z dużymi wartościami jest mało wydajne. Jeśli to usuniemy, otrzymamy dużo większe wartości.</p>
+
+<p><img src="/assets/img/posts/2017-08-01-gatling/2.png" alt="Wyniki testów" /></p>
+
+<p>Czy nie jest wspaniałe, że Gatling wygenerował za nas wyniki i pokazał w graficznej formie? Jak dla mnie super. Możemy sprawdzić podstawowe dane, takie jak liczbę aktywnych użytkowników, czasy odpowiedzi, liczbę żądań i odpowiedzi w czasie. Dodatkowo, możemy wybrać jeden krok i przeanalizować w izolacji w ten sam sposób. Poza tym, przedstawione mamy statystyki w liczbach, takie jak, minimalny i maksymalny czas, średnia, odchylenie standardowe czy liczba requestów z podziałem na zakończone sukcesem i błędem. Gatling przedstawia także czasy poszczególnych udziałów procentowych obsługi żądań. Dostajemy zatem informacje ile trwało 50%, 75%, 95% i 99% wywołań. Ten prosty raport naprawdę sprawia, że praca z Gatlingiem i testami wydajnościowymi jest przyjemnością.</p>
+
+<h2 id="testowanie-wydajności-poprzez-gatling">Testowanie wydajności poprzez Gatling</h2>
+<p>Podsumowując moje doświadczenia w pracy z Gatlingiem, mogę stwierdzić, że wybór tego narzędzia był “strzałem w dziesątkę”. Jego istotną zaletą jest to, że scenariusze testowe są pisane jako zwykły kod. Nie ma problemu, aby scenariusz przygotowywało więcej osób. Problemy z “mergowaniem” zazwyczaj są minimalne. Kod jest czytelny i nie ma potrzeby pisania dodatkowej dokumentacji.</p>
+
+<p>Gatling zawiera ponadto masę pomocniczych poleceń. Na stronie <a href="http://gatling.io/">http://gatling.io/</a> dostępna jest użyteczna dokumentacja, w której w przejrzysty sposób wyjaśniono dostępne funkcje. Możemy korzystać bezpośrednio z poleceń JMX’a naszego serwera, czy tworzyć komunikaty na kolejkach JMS. Produkt jest rozwijany. Powstają nowe wersje, a błędy są rozwiązywane. W przypadku problemów, można skorzystać z pomocy społeczności odpowiedzialnej za rozwój narzędzia.</p>
+
+<p>Jak każde narzędzie, również Gatling ma ograniczoną liczbę funkcji. Jeśli w dokumentacji nie znajdziemy potrzebnych poleceń, możemy spróbować zapisać np. dane w sesji i posiłkować się kodem napisanym przez nas w scali. Daje nam to ogrom możliwości. Zapewnia elastyczność w rozwiązywaniu specyficznych przypadków, które niestety spotykamy praktycznie codziennie.</p>
+
+<p>Kolejnym ważnym ułatwieniem wykonywania testów jest raport końcowy. Automatycznie generowane wykresy i podstawowe statystyki bardzo przydają się w początkowej i końcowej fazie testu. Jeśli chcemy, szybko przetestować aplikację z ogromnym ruchem, nie ma problemu -zmieniamy 2-3 linijki i odpalamy. Po kilku chwilach mamy dostępne wyniki i wiemy, czy aplikacja daje radę, czy już nie. Tej funkcjonalności mi zawsze brakowało np. w JMeterze, gdzie raportem było trzeba zająć się samemu po testach. W przypadku Gatlinga wyniki możemy bez problemu dołączyć do dokumentacji produktu, jako potwierdzenie naszej ciężkiej i dobrze wykonanej pracy przy pisaniu aplikacji i testach wydajnościowych. Polecam każdemu wypróbowanie Gatlinga do testów wydajnościowych. Mi narzędzie to bardzo mocno przypadło do gustu.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "gatling tests";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

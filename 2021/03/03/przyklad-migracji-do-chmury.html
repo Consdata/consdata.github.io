@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Migracja aplikacji do chmury Google Cloud Platform w praktyce | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Migracja aplikacji do chmury Google Cloud Platform w praktyce" />
+<meta name="author" content="mhoja" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="W tym wpisie chciałbym przedstawić jak wygląda migracja do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich." />
+<meta property="og:description" content="W tym wpisie chciałbym przedstawić jak wygląda migracja do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich." />
+<link rel="canonical" href="https://blog.consdata.tech/2021/03/03/przyklad-migracji-do-chmury.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2021/03/03/przyklad-migracji-do-chmury.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-03T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/thumbnail.webp" />
+<meta property="twitter:title" content="Migracja aplikacji do chmury Google Cloud Platform w praktyce" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mhoja"},"image":"https://blog.consdata.tech/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/thumbnail.webp","@type":"BlogPosting","headline":"Migracja aplikacji do chmury Google Cloud Platform w praktyce","description":"W tym wpisie chciałbym przedstawić jak wygląda migracja do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.","dateModified":"2021-03-03T01:00:00-06:00","datePublished":"2021-03-03T01:00:00-06:00","url":"https://blog.consdata.tech/2021/03/03/przyklad-migracji-do-chmury.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2021/03/03/przyklad-migracji-do-chmury.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2021/03/03/przyklad-migracji-do-chmury.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">cloud</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Migracja aplikacji do chmury Google Cloud Platform w praktyce</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/mhoja.html">
+        <img class="author-image" src="/assets/img/authors/mhoja.webp" alt="author">
+        <span class="author-name">Michał Hoja</span><a class="author" href="https://github.com/Michuu93">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+3
+
+marca
+
+
+
+2021
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>W poprzednim wpisie pt. <a href="/2020/11/03/proces-migracji-do-chmury.html">“Migracja do chmury - czyli od czego zacząć?”</a><br />
+przedstawiłem etapy procesu migracji aplikacji do chmury, a także opisałem poszczególne strategie migracji.</p>
+
+<p>W tym wpisie chciałbym przedstawić migrację do chmury Google Cloud Platform w praktyce. Na warsztat wezmę działającą aplikację demo, która w żaden sposób nie jest przystosowana do uruchomienia w chmurze, przedstawię architekturę docelową przy wykorzystaniu każdej z opisywanych wcześniej strategii oraz zaimplementuję jedną z nich.</p>
+
+<h2 id="słowem-wstępu">Słowem wstępu</h2>
+
+<p><strong>Kody źródłowe aplikacji demo są dostępne na GitHubie:</strong></p>
+
+<ul>
+  <li><a href="https://github.com/Michuu93/before-migrate-to-google-cloud-app">aplikacja źródłowa (przed migracją)</a></li>
+  <li><a href="https://github.com/Michuu93/after-migrate-to-google-cloud-app">aplikacja docelowa (po migracji)</a></li>
+</ul>
+
+<p>Dla przypomnienia, 4 etapy procesu migracji do chmury, opisane w poprzednim wpisie:
+<img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/etapy_migracji.jpg" alt="Etapy migracji do chmury" /></p>
+
+<h2 id="szacowanie">Szacowanie</h2>
+
+<p>Na etapie szacowania powinniśmy dokonać analizy istniejącego systemu/infrastruktury. Na potrzeby wpisu przygotowałem aplikację demo, która nie jest uruchomiona produkcyjnie, stąd trudno byłoby oszacować wykorzystywane zasoby. Nie chcąc wróżyć z fusów, na etapie szacowania przedstawię jedynie architekturę aplikacji oraz jej działanie.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/on_premise_architecture.png" alt="Architektura aplikacji źródłowej" /></p>
+
+<p>Zadaniem aplikacji jest przyjęcie danych od użytkownika za pomocą formularza, przetworzenie ich, utrwalenie w bazie danych oraz umożliwienie użytkownikowi odczytu tych danych. System składa się z kilku elementów:</p>
+
+<ul>
+  <li><strong>aplikacji frontendowej</strong> - napisanej w Angularze (TypeScript), której zadaniem jest przyjmowanie danych od użytkownika oraz ich prezentacja;</li>
+  <li><strong>aplikacji backendowej</strong> - napisanej w Javie (Spring Boot), której zadaniem jest przyjęcie danych z aplikacji frontendowej i przesłanie ich do kolejki oraz odczytanie z bazy danych;</li>
+  <li><strong>kolejki</strong> - opartej o RabbitMQ, której celem jest optymalizacja zapisu;</li>
+  <li><strong>bazy danych</strong> - w postaci nierelacyjnej bazy MongoDB, która przechowuje przesłane dane.</li>
+</ul>
+
+<p>Wykorzystałem kolejkę, aby dane przesyłane przez użytkowników były od razu przyjmowane, a użytkownik otrzymywał potwierdzenie przyjęcia ich przez system. Przetwarzanie danych może być w teorii czasochłonnym procesem, dlatego dzięki wykorzystaniu kolejki, użytkownik nie musi czekać na przetworzenie danych, aby uzyskać odpowiedź.</p>
+
+<p>Dane pobierane są z kolejki przez aplikację backendową, następnie przetwarzane (w przykładowej aplikacji pominąłem element przetwarzania - możemy wyobrazić sobie tutaj jakiś złożony i czasochłonny proces) i utrwalane w bazie danych. Odczyt danych z bazy wykonywany jest również przez aplikację backendową, za pośrednictwem sterownika bazy danych, a następnie dane te są przesyłane do aplikacji frontendowej w formacie JSON.</p>
+
+<p>Infrastruktura systemu źródłowego może być oparta o maszyny fizyczne, wirtualne, kontenery (Docker, Kubernetes, OpenShift) lub o dowolne inne rozwiązanie. Na potrzeby wpisu wykorzystałem Docker Compose, co ułatwia uruchomienie całej aplikacji lokalnie.</p>
+
+<p>Zakładając znajomość podstawowych usług oferowanych przez Google Cloud Platform, przejdźmy do kolejnego etapu migracji.</p>
+
+<h2 id="planowanie">Planowanie</h2>
+
+<p>Planując architekturę systemu w chmurze, pierwszą czynnością, jaką należy wykonać, jest wybór strategii migracji. Od niej zależeć będzie to, jak będzie wyglądał system docelowy oraz jakie narzędzia i usługi zostaną wykorzystane.</p>
+
+<p><strong>Wybierając strategię migracji, przyjąłem kilka założeń:</strong></p>
+
+<ul>
+  <li>nie ma żadnych ograniczeń budżetowych oraz czasowych na wykonanie migracji;</li>
+  <li>system musi być gotowy obsłużyć każdy ruch użytkowników (automatyczne skalowanie);</li>
+  <li>utrzymanie infrastruktury powinno wymagać jak najmniejszego udziału człowieka (automatyzacja);</li>
+  <li>koszt utrzymania powinien być możliwie jak najniższy, szczególnie w przypadku braku ruchu użytkowników.</li>
+</ul>
+
+<p>Zanim podejmiemy ostateczną decyzją, zastanówmy się, jaka będzie architektura systemu docelowego, w zależności od wykorzystanej strategii. Zalety oraz wady każdej ze strategii opisałem już w poprzednim wpisie, a podane tutaj rozwiązania mają jedynie charakter przykładowy. To jak zaplanujemy architekturę docelową, zależy od wielu czynników, a strategie mają jedynie pomóc nam w podjęciu decyzji.</p>
+
+<h2 id="strategia-lift-and-shift">Strategia “Lift and shift”</h2>
+
+<p>Migracja strategią “Lift and shift” polega na wykorzystaniu maszyn wirtualnych (Compute Engine) na których uruchomione zostaną poszczególne elementy systemu. Wyjątek stanowi aplikacja frontendowa, której pliki statyczne będące wynikiem zbudowania aplikacji, umieszczone zostaną w buckecie (Cloud Storage).</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/lift_and_shift.png" alt="Architektura aplikacji docelowej - &quot;Lift and shift&quot;" /></p>
+
+<p><strong>Plusy:</strong>
+Proces migracji w tym wypadku jest nieskomplikowany, wymaga od nas minimalnej znajomości platformy i zajmie stosunkowo niewiele czasu. W przypadku, gdy infrastruktura źródłowa oparta jest o <em>VMware vSphere</em>, chmurę <em>AWS</em> lub <em>Azure</em>, możemy zautomatyzować cały proces, wykorzystując do tego celu narzędzie <a href="https://cloud.google.com/migrate/compute-engine">Migrate for Compute Engine</a>.</p>
+
+<p><strong>Minusy:</strong>
+Nie wykorzystujemy praktycznie wcale potencjału chmury, odpowiedzialność za system stoi w większości po naszej stronie, a kolejka oraz baza danych nie jest skalowana automatycznie. Musimy również z góry określić typ maszyn Compute Engine oraz skonfigurować ich skalowanie <a href="https://cloud.google.com/compute/docs/instance-groups">(managed instance groups)</a>.</p>
+
+<h2 id="strategia-improve-and-move">Strategia “Improve and move”</h2>
+
+<p>Migracja strategią “Improve and move” polega na zastąpieniu bazy danych oraz kolejki usługami SaaS. Są to elementy, które najłatwiej jest zastąpić, przy jak najmniejszym nakładzie pracy. Bazę danych zastępuje w tym przypadku odpowiadająca jej usługa Cloud Firestore, a kolejkę usługa Cloud Pub/Sub.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/improve_and_move.png" alt="Architektura aplikacji docelowej - &quot;Improve and move&quot;" /></p>
+
+<p><strong>Plusy:</strong>
+Eliminujemy problem braku automatycznego skalowania bazy danych i kolejki, przesuwając również odpowiedzialność za te elementy na usługodawcę.</p>
+
+<p><strong>Minusy:</strong>
+Wymagana jest znajomość wykorzystywanych usług SaaS, a także ingerencja w kody źródłowe aplikacji (warstwa komunikacji z bazą/kolejką). Backend nadal oparty jest o maszyny wirtualne, ze wszelkimi tego konsekwencjami.</p>
+
+<h2 id="strategia-rip-and-replace">Strategia “Rip and replace”</h2>
+
+<p>Migracja strategią “Rip and replace” polega na całkowitym wykorzystaniu natywnych rozwiązań chmury. Oprócz usług SaaS, wykorzystujemy dodatkowo Cloud Functions, dzięki czemu eliminujemy minusy poprzednich dwóch strategii.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/rip_and_replace.png" alt="Architektura aplikacji docelowej - &quot;Rip and replace&quot;" /></p>
+
+<p><strong>Plusy:</strong>
+Optymalizujemy architekturę systemu, przesuwając granicę odpowiedzialności prawie całkowicie na stronę usługodawcy. Cloud Functions umożliwia wywoływanie funkcji po pojawieniu się wiadomości w usłudze Cloud Pub/Sub, dzięki czemu aplikacja frontendowa może zapisywać dane przyjęte od użytkownika bezpośrednio do kolejki, bez pośrednictwa aplikacji backendowej. Przepisując aplikację backendową na funkcję można zrezygnować również z jej pośrednictwa w odczycie danych z Cloud Firestore, ponieważ usługa ta udostępnia REST API, które umożliwia odczyt danych bezpośrednio przez aplikację frontendową. Dzięki automatycznemu skalowaniu (również do zera), optymalizujemy koszty utrzymania infrastruktury, które w przypadku zerowego ruchu użytkowników, można ograniczyć całkowicie do zera (w ramach <a href="https://cloud.google.com/free">GCP Free Tier</a>).</p>
+
+<p><strong>Minusy:</strong>
+Wykorzystanie natywnych rozwiązań wymaga od nas bardzo dobrej znajomości platformy, usług oraz komunikacji między nimi. Jak okaże się za chwilę, pojawiają się również nowe problemy, jak na przykład ograniczenia API usług, czy problem zimnego startu funkcji. Migracja z wykorzystaniem strategii “Rip and replace” jest również najbardziej czasochłonna, ponieważ wymaga całkowitego przepisania części systemu. Wykorzystując natywne rozwiązania platformy uzależniamy się również od usługodawcy (<a href="/2020/10/21/modele-wdrozenia-w-chmurze.html">vendor lock-in</a>).</p>
+
+<h2 id="architektura-systemu-docelowego">Architektura systemu docelowego</h2>
+
+<p>Ponieważ złożoność systemu źródłowego jest niewielka i chciałbym w tym wpisie pokazać jak najwięcej, przeprowadzimy migrację z wykorzystaniem strategii “Rip and replace”. Architektura systemu docelowego będzie więc wyglądać następująco:</p>
+
+<ul>
+  <li><strong>aplikacja frontendowa</strong> (pliki statyczne) zostanie umieszczona w Cloud Storage i udostępniona publicznie, wykorzystując <a href="https://cloud.google.com/load-balancing/docs/https">HTTP/S Load Balancer</a>. Alternatywą jest wykorzystanie platformy <a href="https://firebase.google.com/">Firebase</a>, w praktyce jednak, Firebase przechowuje pliki statyczne również w Cloud Storage, przykrywając wszystko własnym interfejsem graficznym;</li>
+  <li><strong>aplikacja backendowa</strong>, z racji niskiej złożoności, zostanie przepisana całkowicie na Cloud Functions. Utracona zostanie walidacja danych wejściowych, ale dzięki temu użytkownik będzie mógł przesyłać dane do Cloud Pub/Sub bezpośrednio z aplikacji frontendowej. Dane te mogą być walidowane przez funkcję, która pobiera je z Cloud Pub/Sub, przetwarza i utrwala w Firestore. Gdyby walidacja była wymagana przed wrzuceniem danych do Cloud Pub/Sub, to pomiędzy aplikacją frontendową a Cloud Pub/Sub musiałaby znaleźć się dodatkowa funkcja, której zadaniem byłoby przyjęcie lub odrzucenie danych oraz przesłanie ich do Cloud Pub/Sub;</li>
+  <li><strong>kolejka RabbitMQ</strong> zostanie zastąpiona całkowicie przez usługę Cloud Pub/Sub;</li>
+  <li><strong>baza danych MongoDB</strong> zostanie zastąpiona całkowicie przez odpowiadającą jej usługę Cloud Firestore, która jest bazą nierelacyjną, przechowującą dane w formie dokumentów JSON.</li>
+</ul>
+
+<p>W systemie docelowym, jako że jest on w infrastrukturze chmury (czyli dostępny publicznie przez Internet), w celu zabezpieczenia przed nieupoważnionym dostępem, musimy zaimplementować mechanizm uwierzytelniania (chyba, że nie obawiamy się rachunków od Google). W tym celu wykorzystamy <a href="https://developers.google.com/identity">Google Sign-In</a>. Aby to zrobić, musimy w <a href="https://console.cloud.google.com/apis/credentials">APIs &amp; Services</a> stworzyć credential <strong>OAuth client ID</strong> i skonfigurować w Cloud IAM przykładowego użytkownika, który posiadać będzie uprawnienia do korzystania z aplikacji (może to być nasze główne konto, które posiada rolę właściciela).</p>
+
+<p>Dzięki wykorzystaniu Cloud Functions, zoptymalizujemy koszt utrzymania systemu. Funkcje generują koszt wyłącznie wtedy, kiedy działają - za liczbę wywołań oraz czas ich wykonywania. W przypadku bardzo niskiego ruchu (łapiącego się w darmowe limity wywołań funkcji), lub jego braku, opłaty mogą zostać zminimalizowane do zera. Funkcje skalują się automatycznie, dlatego cała odpowiedzialność za obsłużenie ruchu użytkowników i zapewnienie dostępności systemu leży po stronie usługodawcy.</p>
+
+<p>Usługa Cloud Pub/Sub działa na zasadzie kolejki, więc idealnie zastąpi RabbitMQ. Zazwyczaj Cloud Pub/Sub dostarcza każdą wiadomość jeden raz oraz w takiej kolejności, w jakiej została opublikowana. Google w dokumentacji usługi informuje, że mogą zdarzyć się sytuacje, w których wiadomość zostanie dostarczona poza kolejnością lub więcej niż jeden raz. Wiedząc o tym, należy zaimplementować odbiorcę wiadomości w sposób idempotentny, czyli odporny na wielokrotne dostarczenie tej samej wiadomości. W przypadku aplikacji demo nie stanowi to problemu, ponieważ każda wiadomość posiadać będzie unikalny identyfikator, a wielokrotne zapisanie tej samej wiadomości do Cloud Firestore spowoduje jej nadpisanie. W systemie źródłowym, wykorzystanie RabbitMQ również wymagało idempotentnego odbiorcy wiadomości.</p>
+
+<p>Pojawienie się wiadomości w Cloud Pub/Sub triggerować będzie wywołanie funkcji odpowiedzialnej za przetworzenie wiadomości i utrwalenie jej w Cloud Firestore. Zrezygnujemy z funkcji pomiędzy aplikacją frontendową a Cloud Pub/Sub, ponieważ zakładamy, że nie ma potrzeby walidacji danych przed wysłaniem ich do Cloud Pub/Sub. W aplikacji źródłowej taka walidacja była wykonywana przez aplikację backendową, zanim wiadomość została wysłana do kolejki RabbitMQ. Dzięki temu, podczas migracji zoptymalizujemy system, upraszczając jego architekturę. Oczywiście taka optymalizacja byłaby możliwa również w systemie źródłowym, ponieważ RabbitMQ umożliwia dostarczanie wiadomości poprzez REST API, wykorzystując w tym celu dodatkową wtyczkę.</p>
+
+<p>Odpowiednikiem bazy MongoDB jest usługa Cloud Firestore. Umożliwia ona zapis i odczyt za pomocą REST API, dzięki czemu odczyt może być wykonywany w samej aplikacji frontendowej, bez udziału aplikacji backendowej (nie jest potrzebny sterownik do bazy danych). To upraszcza jeszcze bardziej architekturę systemu docelowego.</p>
+
+<h2 id="wdrażanie">Wdrażanie</h2>
+
+<p>Wszystkie elementy zostaną wdrożone ręcznie, za pomocą <a href="https://cloud.google.com/sdk">Cloud CLI</a> (które umożliwia wykonywanie poleceń GCP w lokalnym terminalu) oraz Cloud Console.</p>
+
+<h2 id="aplikacja-frontendowa">Aplikacja frontendowa</h2>
+
+<p>Migracja aplikacji frontendowej wymaga drobnych zmian. Po pierwsze, musimy zaimplementować uwierzytelnianie, wykorzystujące Google Sign-In. W tym celu, w pliku <code class="language-plaintext highlighter-rouge">environment.ts</code> musimy skonfigurować <strong>Client ID</strong>, który wygenerowaliśmy wcześniej. Po drugie, główne zmiany zajdą w serwisie odpowiedzialnym za zapis oraz odczyt danych (w systemie źródłowym, wszystko odbywa się przez aplikację backendową). Przykładowy zapis oraz odczyt w aplikacji frontendowej (w systemie źródłowym), wygląda następująco:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">upsertData</span><span class="p">(</span><span class="nx">data</span><span class="p">:</span> <span class="nx">Data</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Object</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Sending </span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">environment</span><span class="p">.</span><span class="nx">apiUrl</span><span class="p">}</span><span class="err">/api</span><span class="s2">`</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">findByUuid</span><span class="p">(</span><span class="nx">uuid</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Object</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Find by uuid: </span><span class="p">${</span><span class="nx">uuid</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">environment</span><span class="p">.</span><span class="nx">apiUrl</span><span class="p">}</span><span class="err">/api/</span><span class="p">${</span><span class="nx">uuid</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Funkcja <strong>upsertdata</strong> przesyła dane do aplikacji backendowej, za pomocą żądania HTTP POST. Odczyt danych za pośrednictwem aplikacji backendowej wykonywany jest przez funkcję <strong>findByUuid</strong>, za pomocą żądania HTTP GET.</p>
+
+<p>W systemie docelowym, zapis wykonywany jest bezpośrednio z aplikacji frontendowej do usługi Cloud Pub/Sub, a odczyt bezpośrednio z Cloud Firestore:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">upsertData</span><span class="p">(</span><span class="nx">data</span><span class="p">:</span> <span class="nx">Data</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Object</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Sending </span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">dataToSend</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="nx">dataToSend</span><span class="p">.</span><span class="nx">uuid</span> <span class="o">=</span> <span class="nx">uuid</span><span class="p">.</span><span class="nx">v4</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">environment</span><span class="p">.</span><span class="nx">pubSubUrl</span><span class="p">,</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">messages</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="nx">btoa</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">dataToSend</span><span class="p">))</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">({</span>
+      <span class="na">messageId</span><span class="p">:</span> <span class="nx">response</span><span class="p">[</span><span class="dl">'</span><span class="s1">messageIds</span><span class="dl">'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+      <span class="na">uuid</span><span class="p">:</span> <span class="nx">dataToSend</span><span class="p">.</span><span class="nx">uuid</span>
+    <span class="p">})));</span>
+  <span class="p">}</span>
+
+<span class="nx">findByUuid</span><span class="p">(</span><span class="nx">documentUuid</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Data</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Find by uuid: </span><span class="p">${</span><span class="nx">documentUuid</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">environment</span><span class="p">.</span><span class="nx">firestoreUrl</span><span class="p">}</span><span class="err">/</span><span class="p">${</span><span class="nx">documentUuid</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">object</span> <span class="o">=&gt;</span>
+            <span class="p">({</span>
+                <span class="na">uuid</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">uuid</span><span class="p">.</span><span class="nx">stringValue</span><span class="p">,</span>
+                <span class="na">manufacturer</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">manufacturer</span><span class="p">.</span><span class="nx">stringValue</span><span class="p">,</span>
+                <span class="na">model</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">stringValue</span>
+            <span class="p">})));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Funkcja <strong>upsertData</strong> przygotowuje obiekt do wysłania do usługi Cloud Pub/Sub, dodając do niego unikalny identyfikator UUID i kodując wiadomość do formatu Base64. Odpowiedź z usługi jest mapowana na odpowiedni model.<br />
+Funkcja <strong>findByUuid</strong> pobiera dane z usługi Cloud Firestore i mapuje je na odpowiedni model.</p>
+
+<p>Główna różnica w zapisie, to nadanie unikalnego identyfikatora UUID, który wcześniej był nadawany przez aplikację backendową, przygotowanie wiadomości Cloud Pub/Sub oraz przemapowanie odpowiedzi.</p>
+
+<p>Odczyt różni się natomiast tym, że z odpowiedzi usługi Cloud Firestore, wyciągane są jedynie potrzebne dane (oryginalna odpowiedź zawiera wiele dodatkowych informacji, takich jak znaczniki czasowe zapisu/aktualizacji itp., które nie są prezentowane użytkownikowi).</p>
+
+<p>Cała logika odpowiedzialna za przemapowanie żądania/odpowiedzi, która do tej pory była zaimplementowana w aplikacji backendowej, musi zostać zaimplementowana po stronie aplikacji frontendowej. Dzięki temu architektura znacząco się upraszcza.</p>
+
+<p>Aby uruchomić aplikację w chmurze, potrzebny jest bucket w Cloud Storage oraz usługa <strong>HTTP(S) Load Balancer</strong>. Po zbudowaniu aplikacji frontendowej, wygenerowane pliki statyczne (JS oraz CSS) umieszczamy w buckecie.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/storage_bucket_files.png" alt="Zawartość bucketu serwującego pliki statyczne" /></p>
+
+<p>Musimy pamiętać jeszcze o skonfigurowaniu go w taki sposób, aby pliki były dostępne publicznie. W tym celu, należy dodać w konfiguracji bucketu użytkownika o nazwie <strong>allUsers</strong> oraz nadać mu uprawnienie <strong>Storage Object Viewer</strong>.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/bucket_public_permission.png" alt="Konfiguracja bucketa publicznego" /></p>
+
+<p>Po umieszczeniu plików w Cloud Storage, będą one dostępne publicznie, np. plik <strong>index.html</strong> będzie dostępny pod adresem:<br />
+<a href="https://storage.googleapis.com/BUCKET_NAME/index.html">https://storage.googleapis.com/BUCKET_NAME/index.html</a></p>
+
+<p>Aplikacja nie będzie jednak działać, gdyż do jej uruchomienia potrzebna będzie jeszcze usługa <strong>Cloud Load Balancing</strong>. Bez niej, po wejściu na podany wyżej adres, zostanie wyświetlona jedynie zawartość pliku <strong>index.html</strong>, a zawarte w nim skrypty JavaScript nie zostaną w żaden sposób zinterpretowane przez przeglądarkę, w efekcie czego wyświetli się jedynie pusta strona.</p>
+
+<p>Podczas konfiguracji usługi Cloud Load Balancing, jako <strong>backend</strong> musimy skonfigurować bucket zawierający pliki statyczne oraz musimy nadać statyczny adres IP. Dodatkowo możemy wykorzystać usługę <a href="https://cloud.google.com/cdn">Cloud CDN</a>. Więcej na ten temat znajdziemy w dokumentacji: <a href="https://cloud.google.com/load-balancing/docs/https/ext-load-balancer-backend-buckets">Setting up a load balancer with backend buckets</a>.</p>
+
+<p>Dzięki temu, aplikacja będzie działać poprawnie pod adresem IP:<br />
+<a href="http://LOAD_BALANCER_IP/index.html">http://LOAD_BALANCER_IP/index.html</a></p>
+
+<p>Do pełni szczęścia potrzebna jest jeszcze domena, która musi zostać skonfigurowana w usłudze Cloud Load Balancing. Google Sign-In, które zostało wykorzystane do uwierzytelniania, wymaga skonfigurowania adresu <strong>Origin</strong> dla wygenerowanego <strong>Client ID</strong>, czyli adresu, pod którym będzie dostępna aplikacja internetowa. Nie może to być adres IP, ponieważ mimo możliwości wpisania w tym miejscu adresu IP, podczas próby zalogowania się otrzymamy błąd <strong>redirect_uri_mismatch</strong>:<br />
+<strong>The JavaScript origin in the request, does not match the ones authorized for the OAuth client</strong>,<br />
+czyli taki sam, jak w przypadku braku adresu Origin.</p>
+
+<p>Po skonfigurowaniu domeny, możemy skonfigurować odpowiednio Client ID:</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/google_oauth_configuration.png" alt="Okno konfiguracji OAuth 2.0 Client ID" /></p>
+
+<h2 id="kolejka">Kolejka</h2>
+
+<p>W konsoli usługi Cloud Pub/Sub musimy skonfigurować nowy topic, którego identyfikator zostanie przekazany do aplikacji frontendowej, ponieważ adres na który są wysyłane wiadomości (<strong>environment.pubSubUrl</strong>) musi wskazywać, na jaki topic wiadomość jest wysyłana (a także musi zawierać id projektu):<br />
+<a href="https://pubsub.googleapis.com/v1/projects/PROJECT_ID/topics/TOPIC_NAME:publish">https://pubsub.googleapis.com/v1/projects/PROJECT_ID/topics/TOPIC_NAME:publish</a></p>
+
+<p>Konfiguracja kolejki w zasadzie na tym się kończy, ponieważ usługa Cloud Pub/Sub nie wymaga żadnych dodatkowych konfiguracji.</p>
+
+<h2 id="aplikacja-backendowa">Aplikacja backendowa</h2>
+
+<p>Aplikacja backendowa, która odpowiedzialna jest za komunikację aplikacji frontendowej z kolejką RabbitMQ oraz bazą danych MongoDB, zostanie zastąpiona krótką funkcją.</p>
+
+<p>Zapis danych do usługi Cloud Pub/Sub oraz odczyt z Cloud Firestore odbywa się bezpośrednio przez REST API, dlatego jedyną odpowiedzialnością funkcji jest pobieranie danych pojawiających się w Cloud Pub/Sub, przetwarzanie ich (jak już wspomniałem, pominąłem przetwarzanie) oraz utrwalenie w Cloud Firestore.</p>
+
+<p>Funkcję napiszemy w jednym z dostępnych w Cloud Functions języków, a dokładnie w <strong>JavaScript</strong>, który wykorzystuje środowisko uruchomieniowe <strong>Node.js</strong> (w wersji 10).</p>
+
+<p>Aplikacja źródłowa składa się z kilku klas Javy, z których najważniejszą jest klasa <strong>DataService</strong>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DataService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RabbitService</span> <span class="n">rabbitService</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MongoService</span> <span class="n">mongoService</span><span class="o">;</span>
+
+    <span class="nc">Data</span> <span class="nf">saveInQueue</span><span class="o">(</span><span class="nc">Data</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&gt; saveInQueue [data={}]"</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setTimestamp</span><span class="o">(</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+        <span class="n">rabbitService</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&lt; saveInQueue [data={}]"</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nc">Data</span> <span class="nf">findByUuid</span><span class="o">(</span><span class="nc">String</span> <span class="n">uuid</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&gt; findByUuid [uuid={}]"</span><span class="o">,</span> <span class="n">uuid</span><span class="o">);</span>
+        <span class="nc">Data</span> <span class="n">data</span> <span class="o">=</span> <span class="n">mongoService</span><span class="o">.</span><span class="na">findByUuid</span><span class="o">(</span><span class="n">uuid</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&lt; findByUuid [data={}]"</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="nf">findAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&gt; findAll"</span><span class="o">);</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">mongoService</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&lt; findAll [data={}]"</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&gt; deleteAll"</span><span class="o">);</span>
+        <span class="n">mongoService</span><span class="o">.</span><span class="na">deleteAll</span><span class="o">();</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"&lt; deleteAll"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Składa się ona z metody <strong>saveInQueue</strong>, która zapisuje dane przesłane przez aplikację frontendową do kolejki RabbitMQ, za pomocą serwisu <strong>RabbitService</strong> oraz metod odczytujących dane z bazy MongoDB (metody <strong>findByUuid</strong> oraz <strong>findAll</strong>) za pomocą serwisu <strong>MongoService</strong>. Oprócz tego, zawiera ona metodę <strong>deleteAll</strong>, która usuwa wszystkie dane zapisane w bazie.</p>
+
+<p>Implementacja serwisu <strong>RabbitService</strong> wygląda następująco:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RabbitService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RabbitTemplate</span> <span class="n">rabbitTemplate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MongoService</span> <span class="n">mongoService</span><span class="o">;</span>
+
+    <span class="nd">@RabbitListener</span><span class="o">(</span><span class="n">queues</span> <span class="o">=</span> <span class="nc">RabbitConfig</span><span class="o">.</span><span class="na">QUEUE_NAME</span><span class="o">)</span>
+    <span class="kt">void</span> <span class="nf">listen</span><span class="o">(</span><span class="nc">Data</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Received data from queue [queue={}, data={}]"</span><span class="o">,</span> <span class="nc">RabbitConfig</span><span class="o">.</span><span class="na">QUEUE_NAME</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="n">mongoService</span><span class="o">.</span><span class="na">saveInDatabase</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">send</span><span class="o">(</span><span class="nc">Data</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Send data to queue [queue={}, data={}]"</span><span class="o">,</span> <span class="nc">RabbitConfig</span><span class="o">.</span><span class="na">QUEUE_NAME</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="n">rabbitTemplate</span><span class="o">.</span><span class="na">convertAndSend</span><span class="o">(</span><span class="nc">RabbitConfig</span><span class="o">.</span><span class="na">QUEUE_NAME</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Składa się ona z metody <strong>send</strong>, z której korzysta serwis <strong>DataService</strong>. Zapisuje ona dane w kolejce RabbitMQ za pomocą klasy <strong>RabbitTemplate</strong>, która jest częścią biblioteki <strong>spring-boot-starter-amqp</strong>. Druga metoda (<strong>listen</strong>), odpowiada za pobieranie wiadomości pojawiających się w kolejce i zapisywanie ich w bazie danych za pomocą serwisu <strong>MongoService</strong>.</p>
+
+<p>Serwis <strong>MongoService</strong> wygląda następująco:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MongoService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MongoOperations</span> <span class="n">mongoOperations</span><span class="o">;</span>
+
+    <span class="kt">void</span> <span class="nf">saveInDatabase</span><span class="o">(</span><span class="nc">Data</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">mongoOperations</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Saved data in database"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">DuplicateKeyException</span> <span class="n">ignore</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Duplicated data from queue ignored"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error saving data in database"</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nc">Data</span> <span class="nf">findByUuid</span><span class="o">(</span><span class="nc">String</span> <span class="n">uuid</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">mongoOperations</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">uuid</span><span class="o">,</span> <span class="nc">Data</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="nf">findAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">mongoOperations</span><span class="o">.</span><span class="na">findAll</span><span class="o">(</span><span class="nc">Data</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">mongoOperations</span><span class="o">.</span><span class="na">dropCollection</span><span class="o">(</span><span class="nc">Data</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Wykorzystuje on klasę <strong>MongoOperations</strong> do komunikacji z bazą danych MongoDB, za pomocą odpowiedniego sterownika. Klasa ta jest częścią biblioteki <strong>spring-boot-starter-data-mongodb</strong>. Implementacja serwisu składa się z 4 metod, odpowiedzialnych za zapis danych w bazie (<strong>saveInDatabase</strong>), odczyt (<strong>findByUuid</strong> oraz <strong>findAll</strong>) oraz usunięcie wszystkich danych (<strong>deleteAll</strong>).</p>
+
+<p>W celu komunikacji aplikacji backendowej z aplikacją frontendową za pomocą REST API, zaimplementowany został kontroler <strong>DataController</strong>, wystawiający metody serwisu <strong>DataService</strong> jako endpointy REST API. Jego implementacja wygląda następująco:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/api"</span><span class="o">)</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DataController</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DataService</span> <span class="n">dataService</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="nf">save</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="nd">@Valid</span> <span class="nc">Data</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&gt; save [data={}]"</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+        <span class="nc">Data</span> <span class="n">savedData</span> <span class="o">=</span> <span class="n">dataService</span><span class="o">.</span><span class="na">saveInQueue</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&lt; save [savedData={}]"</span><span class="o">,</span> <span class="n">savedData</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">ACCEPTED</span><span class="o">).</span><span class="na">body</span><span class="o">(</span><span class="n">savedData</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{uuid}"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="nf">getById</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">uuid</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&gt; getById [uuid={}]"</span><span class="o">,</span> <span class="n">uuid</span><span class="o">);</span>
+        <span class="nc">Data</span> <span class="n">dataFromDb</span> <span class="o">=</span> <span class="n">dataService</span><span class="o">.</span><span class="na">findByUuid</span><span class="o">(</span><span class="n">uuid</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&lt; getById [dataFromDb={}]"</span><span class="o">,</span> <span class="n">dataFromDb</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">dataFromDb</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">notFound</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="n">dataFromDb</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GetMapping</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;&gt;</span> <span class="nf">getAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&gt; getAll"</span><span class="o">);</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Data</span><span class="o">&gt;</span> <span class="n">dataFromDb</span> <span class="o">=</span> <span class="n">dataService</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&lt; getAll [resultSize={}]"</span><span class="o">,</span> <span class="n">dataFromDb</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">dataFromDb</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">notFound</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="n">dataFromDb</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@DeleteMapping</span>
+    <span class="nd">@ResponseStatus</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">ACCEPTED</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&gt; deleteAll"</span><span class="o">);</span>
+        <span class="n">dataService</span><span class="o">.</span><span class="na">deleteAll</span><span class="o">();</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"&lt; deleteAll"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ResponseStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">BAD_REQUEST</span><span class="o">)</span>
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">MethodArgumentNotValidException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">handleValidationExceptions</span><span class="o">(</span>
+            <span class="nc">MethodArgumentNotValidException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">errors</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">ex</span><span class="o">.</span><span class="na">getBindingResult</span><span class="o">().</span><span class="na">getAllErrors</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">error</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">fieldName</span> <span class="o">=</span> <span class="o">((</span><span class="nc">FieldError</span><span class="o">)</span> <span class="n">error</span><span class="o">).</span><span class="na">getField</span><span class="o">();</span>
+            <span class="nc">String</span> <span class="n">errorMessage</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="na">getDefaultMessage</span><span class="o">();</span>
+            <span class="n">errors</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">fieldName</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+        <span class="o">});</span>
+        <span class="k">return</span> <span class="n">errors</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Oprócz wystawienia metod serwisu <strong>DataService</strong> jako endpointy REST API, kontroler obsługuje również błędy (np. wynikające z niepoprawnego wywołania lub niepoprawnego modelu przekazywanych danych do zapisu) za pomocą metody <strong>handleValidationExceptions</strong>.</p>
+
+<p>Oprócz wyżej wymienionych klas, aplikacja backendowa składa się dodatkowo z konfiguracji kolejki RabbitMQ (klasa <strong>RabbitConfig</strong> - 24 linie kodu), konfiguracji CORS (klasa <strong>WebConfig</strong> - 19 linii kodu), modelu danych (klasa <strong>Data</strong> - 26 linii kodu) oraz głównej klasy <strong>BackendApplication</strong>, odpowiedzialnej za uruchomienie aplikacji (12 linii kodu). Cała aplikacja składa się z 8 klas Javy oraz pliku konfiguracyjnego <strong>application.yml</strong>.</p>
+
+<p>Implementacja funkcji, zastępująca aplikację backendową wygląda następująco:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">Firestore</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">@google-cloud/firestore</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">firestore</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Firestore</span><span class="p">({</span>
+    <span class="na">projectId</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">GCP_PROJECT</span>
+<span class="p">});</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">main</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Save Pub/Sub message in db [data=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">message</span><span class="p">)}</span><span class="err">, context=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">context</span><span class="p">)}</span><span class="err">]</span><span class="s2">`</span><span class="p">);</span>
+
+    <span class="kd">const</span> <span class="nb">document</span> <span class="o">=</span> <span class="nx">firestore</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">COLLECTION_NAME</span><span class="p">).</span><span class="nx">doc</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">uuid</span><span class="p">);</span>
+    <span class="nb">document</span><span class="p">.</span><span class="kd">set</span><span class="p">({</span>
+        <span class="na">uuid</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">uuid</span><span class="p">,</span>
+        <span class="na">manufacturer</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">manufacturer</span><span class="p">,</span>
+        <span class="na">model</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">model</span>
+    <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">doc</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Data saved [doc=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doc</span><span class="p">)}</span><span class="err">]</span><span class="s2">`</span><span class="p">);</span>
+    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">`</span><span class="err">Error saving data...</span><span class="s2">`</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Składa się ona z jednej funkcji <strong>main</strong>, której zadaniem jest zdekodowanie wiadomości z usługi Cloud Pub/Sub z formatu Base64 oraz zapisanie danych w usłudze Cloud Firestore.</p>
+
+<p>Funkcja wykorzystuje do komunikacji z usługą Cloud Firestore bibliotekę <strong>@google-cloud/firestore</strong>, a samo wywołanie funkcji wyzwalane jest przez usługę Cloud Pub/Sub, w momencie pojawienia się wiadomości w odpowiednim topicu.</p>
+
+<p>Ilość kodu została drastycznie zmniejszona. Aplikacja backendowa została całkowicie zastąpiona przez funkcję, składającą się z 21 linii kodu JavaScript. Dzięki migracji z wykorzystaniem strategii “Rip and replace”, udało się znacząco uprościć architekturę i zredukować tzw. boilerplate code, który często występuje w aplikacjach napisanych w języku Java.</p>
+
+<p>Funkcję możemy wdrożyć z poziomu GUI (Cloud Console), lub za pomocą polecenia:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud functions deploy demo-function <span class="se">\</span>
+    <span class="nt">--entry-point</span> main <span class="se">\</span>
+    <span class="nt">--runtime</span> nodejs10 <span class="se">\</span>
+    <span class="nt">--trigger-topic</span> demo-topic <span class="se">\</span>
+    <span class="nt">--region</span> europe-west3 <span class="se">\</span>
+    <span class="nt">--timeout</span> 10 <span class="se">\</span>
+    <span class="nt">--memory</span> 128MB <span class="se">\</span>
+    <span class="nt">--max-instances</span> 1 <span class="se">\</span>
+    <span class="nt">--set-env-vars</span> <span class="nv">COLLECTION_NAME</span><span class="o">=</span>demo-collection <span class="se">\</span>
+    <span class="nt">--project</span> PROJECT_ID
+</code></pre></div></div>
+
+<p>Niezależnie od sposobu wdrażania, musimy odpowiednio skonfigurować funkcję:</p>
+
+<ul>
+  <li><strong>entry-point</strong> - nazwa metody (w języku JavaScript zwanej funkcją), która jest wywoływana przy triggerowaniu funkcji;</li>
+  <li><strong>runtime</strong> - środowisko uruchomieniowe;</li>
+  <li><strong>trigger-topic</strong> - topic w Cloud Pub/Sub, w którym pojawienie się wiadomości triggeruje wywołanie funkcji;</li>
+  <li><strong>region</strong> - region, w który funkcja fizycznie będzie uruchamiana;</li>
+  <li><strong>timeout</strong> - maksymalny czas wykonywania funkcji, po przekroczeniu którego funkcja jest automatycznie zakańczana błędem;</li>
+  <li><strong>memory</strong> - rozmiar pamięci, jaka będzie przydzielona funkcji w trakcie wywołania;</li>
+  <li><strong>max-instances</strong> - maksymalna liczba instancji, które mogą zostać utworzone (automatyczne skalowanie);</li>
+  <li><strong>set-env-vars</strong> - zmienne środowiskowe, które będą wykorzystane w funkcji, w naszym wypadku jest to nazwa kolejki w Cloud Firestore, do której będą zapisywane dane;</li>
+  <li><strong>project</strong> - id projektu.</li>
+</ul>
+
+<p>Dodatkowo moglibyśmy skonfigurować ponawianie przetwarzania wiadomości, w przypadku błędu wywołania funkcji, ale nie będziemy tego robić.</p>
+
+<h2 id="baza-danych">Baza danych</h2>
+
+<p>Konfiguracja Cloud Firestore jest jeszcze łatwiejsza, niż konfiguracja Cloud Pub/Sub, ponieważ nie wymaga absolutnie żadnych czynności do jej uruchomienia.</p>
+
+<p>Dane zapisywane i odczytywane są poprzez REST API, wskazując w adresie url identyfikator projektu, domyślną bazę danych oraz strukturę w której dane mają być utrwalone. Zapis danych nie wymaga istnienia struktury, ponieważ zostanie ona utworzona przy pierwszym zapisie.</p>
+
+<p>Adres url do zapisu oraz odczytu (<strong>environment.firestoreUrl</strong>) danych do kolekcji o nazwie <strong>demo-collection</strong> wygląda następująco:<br />
+<a href="https://firestore.googleapis.com/v1/projects/PROJECT_ID/databases/(default)/documents/demo-collection">https://firestore.googleapis.com/v1/projects/PROJECT_ID/databases/(default)/documents/demo-collection</a></p>
+
+<p>Zamiana bazy danych MongoDB, z którą komunikacja odbywała się poprzez sterownik bazodanowy w aplikacji backendowej, na usługę Cloud Firestore, niesie ze sobą pewne ograniczenia. Wynikają one z interfejsu REST API, który udostępnia usługa, przez co pewne operacje mogą być niemożliwe.</p>
+
+<p>W przypadku bazy MongoDB, można było wykonać dowolne zapytanie, na przykład usuwające wszystkie dane z bazy (w przykładzie wykorzystałem wysokopoziomowy interfejs MongoOperations, ale można również wywołać dowolne polecenie na bazie danych):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">mongoOperations</span><span class="o">.</span><span class="na">dropCollection</span><span class="o">(</span><span class="nc">Data</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Według dokumentacji REST API usługi Cloud Firestore, nie ma możliwości usunięcia wszystkich danych jednym żądaniem HTTP. Aby usunąć wszystkie dane z poziomu aplikacji, należałoby najpierw pobrać ich identyfikatory, a następnie usuwać je pojedynczo lub w paczkach, co byłoby mało wydajne. Zakładamy jednak, że usuwanie wszystkich danych przez aplikację, jest raczej mało realnym przypadkiem użycia, dlatego nie będziemy implementować takiej operacji. Chciałem jedynie na jej przykładzie przedstawić problemy, na jakie możemy trafić w przypadku usług SaaS i ich interfejsów.</p>
+
+<p>Gdybyśmy chcieli jednak zaimplementować taką operację, moglibyśmy na przykład utworzyć dodatkową funkcję, która przyjmowałaby polecenie z aplikacji frontendowej, a następnie pobierała dokumenty w paczkach z Cloud Firestore i usuwała je. Taka operacja powinna być wykonywana asynchronicznie i w sposób umożliwiający ponawianie, ponieważ w przypadku dużej ilości danych, proces ten może być czasochłonny.</p>
+
+<h2 id="uprawnienia">Uprawnienia</h2>
+
+<p>Aby umożliwić komunikację z usługami (zapis danych do usługi Cloud Pub/Sub oraz odczyt z usługi Cloud Firestore), należy skonfigurować uprawnienie dla użytkownika w usłudze Cloud IAM. Komunikacja z usługami odbywa się bezpośrednio z aplikacji frontendowej, dlatego do uwierzytelnienia wykorzystywane jest konto zalogowanego użytkownika. W przypadku, kiedy operacje te byłyby wykonywane przez inną usługę GCP, np. Compute Engine, to musielibyśmy utworzyć odpowiednie konto serwisowe (service account) i nadać mu odpowiednie uprawnienia. Konta serwisowe są wykorzystywane przez usługi GCP, w celu uwierzytelniania przed innymi usługami.</p>
+
+<p>W celach demonstracyjnych, możemy wykorzystać nasze konto, które posiada uprawnienie właściciela projektu. Gdybyśmy chcieli umożliwić korzystanie z systemu innym użytkownikom, powinniśmy utworzyć odpowiednią rolę, posiadającą wymagane uprawnienia oraz nadać tę rolę każdemu użytkownikowi. Jest wiele sposobów na zarządzanie użytkownikami w Google Cloud. Można zaimportować ich z pliku CSV, utworzyć ręcznie, wykorzystać rozwiązania zewnętrzne takie jak <a href="https://www.okta.com/">Okta</a> czy <a href="https://www.pingidentity.com/">Ping</a> lub skorzystać z zalecanego rozwiązania, czyli narzędzia <a href="https://seqred.pl/google-cloud-directory-sync-gcds-do-czego-sluzy-jak-skonfigurowac/">Google Cloud Directory Sync</a>.</p>
+
+<h2 id="optymalizacja">Optymalizacja</h2>
+
+<p>Etap optymalizacji polega na monitorowaniu aplikacji w poszukiwaniu błędów, optymalizacji wydajności oraz wykonywaniu zmian, na które nie było czasu lub budżetu przed wdrożeniem.</p>
+
+<h2 id="poprawa-błędów">Poprawa błędów</h2>
+
+<p>Monitorowanie logów aplikacji w usłudze Cloud Monitoring pozwoliło na wykrycie błędu w kodzie funkcji.</p>
+
+<p>Podczas jednego z zapisów, w logach zabrakło informacji o pomyślnym zapisaniu danych w Cloud Firestore, nie było również żadnego błędu. W efekcie, po wykonaniu trzech zapisów, utrwalone zostały jedynie dane z dwóch ostatnich:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2020-08-12T18:29:51 g8xx0fyvsqhl Function execution started
+2020-08-12T18:29:51 g8xx0fyvsqhl Save Pub/Sub message in db
+2020-08-12T18:29:51 g8xx0fyvsqhl Function execution took 217 ms, finished with status: 'ok'
+
+2020-08-12T18:50:15 2kcnvesdjzpp Function execution started
+2020-08-12T18:50:16 2kcnvesdjzpp Save Pub/Sub message in db
+2020-08-12T18:50:16 2kcnvesdjzpp Function execution took 413 ms, finished with status: 'ok'
+2020-08-12T18:51:18 2kcnvesdjzpp Data saved
+
+2020-08-12T18:52:59 2kcnvlflowql Function execution started
+2020-08-12T18:52:59 2kcnvlflowql Save Pub/Sub message in db
+2020-08-12T18:52:59 2kcnvlflowql Function execution took 19 ms, finished with status: 'ok'
+2020-08-12T18:53:00 2kcnvlflowql Data saved
+</code></pre></div></div>
+
+<p>Jak widać w powyższym logu, w pierwszym z trzech wywołań funkcji, brakuje informacji <strong>Data saved</strong>. Fakt, że informacja ta jest w pozostałych przypadkach logowana po informacji o zakończeniu wywołania funkcji sugeruje, że zapis do Cloud Firestore jest wykonywany asynchronicznie, czyli może trwać dłużej niż czas wykonywania samej funkcji. Przeglądając kod funkcji, szybko udaje się znaleźć błąd, w postaci brakującego słowa kluczowego <strong>return</strong>, dzięki któremu funkcja będzie czekała na zakończenie się wywołania asynchronicznej metody <strong>document.set</strong>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">main</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Save Pub/Sub message in db [data=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">message</span><span class="p">)}</span><span class="err">, context=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">context</span><span class="p">)}</span><span class="err">]</span><span class="s2">`</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nb">document</span> <span class="o">=</span> <span class="nx">firestore</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">COLLECTION_NAME</span><span class="p">).</span><span class="nx">doc</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">uuid</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="kd">set</span><span class="p">({</span>
+        <span class="na">uuid</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">uuid</span><span class="p">,</span>
+        <span class="na">manufacturer</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">manufacturer</span><span class="p">,</span>
+        <span class="na">model</span><span class="p">:</span> <span class="nx">message</span><span class="p">.</span><span class="nx">model</span>
+    <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">doc</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="err">Data saved [doc=</span><span class="p">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">doc</span><span class="p">)}</span><span class="err">]</span><span class="s2">`</span><span class="p">);</span>
+    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">`</span><span class="err">Error saving data...</span><span class="s2">`</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="usprawnienia">Usprawnienia</h2>
+
+<p>Na etapie optymalizacji można również wykonywać zmiany, które są wynikiem dalszego zdobywania wiedzy po wdrożeniu lub pojawiania się nowych możliwości w Google Cloud. Jednym z nich jest na przykład możliwość utworzenia konfiguracji strony www w Cloud Storage.</p>
+
+<p>W dokumentacji usługi Cloud Storage znajduje się informacja o tym, że w przypadku nadania bucketowi nazwy, będącej poprawnym adresem URL, pojawi się dodatkowa opcja konfiguracji dla witryny internetowej. Dzięki temu, można skonfigurować plik, który ma być udostępniany użytkownikowi po wejściu na adres www.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/bucket_website_configuration.png" alt="Konfiguracja www bucketa" /></p>
+
+<p>Aby nadać bucketowi nazwę domeny, należy wcześniej wykonać weryfikację własności domeny <a href="https://console.cloud.google.com/apis/credentials/domainverification">(pod tym adresem)</a>. Konfigurując w ten sposób bucket, nie potrzebujemy <strong>HTTP/S Load Balancera</strong> do działania aplikacji. Nie jest to jednak dobre rozwiązanie w przypadku środowiska produkcyjnego, ponieważ bez usługi Cloud Load Balancing nie ma możliwości skonfigurowania certyfikatu HTTPS, a wykorzystywanie nieszyfrowanego połączenia pomiędzy użytkownikiem a aplikacją internetową, jest złą praktyką.</p>
+
+<p>Dodatkowo, w konfiguracji domeny, zamiast podawać adres IP w rekordzie typu <strong>A</strong>, należy podać adres <strong>c.storage.googleapis.com</strong>, w rekordzie typu <strong>CNAME</strong>.</p>
+
+<p>Więcej informacji znajdziemy tutaj: <a href="https://cloud.google.com/storage/docs/hosting-static-website">Hosting a static website</a>, <a href="https://cloud.google.com/storage/docs/static-website">Static website examples and tips</a>.</p>
+
+<h2 id="automatyzacja">Automatyzacja</h2>
+
+<p>Innym elementem etapu optymalizacji mogą być na przykład usprawnienia w procesie wdrażania aplikacji. Stwórzmy zatem proste CI/CD, wykorzystując do tego celu repozytorium GitHub, usługę Cloud Build oraz infrastrukturę jako kod (IaC), opartą o Terraform. Jako alternatywę dla Terraform moglibyśmy wykorzystać <a href="https://cloud.google.com/deployment-manager">Cloud Deployment Manager</a>, ale wtedy uzależnilibyśmy się od chmury Google (vendor lock).</p>
+
+<p>Przed implementacją, musimy jeszcze:</p>
+
+<ul>
+  <li>utworzyć bucket w usłudze Cloud Storage, który przechowywać będzie stan infrastruktury, wykorzystywany przez Terraform:</li>
+</ul>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/terraform_bucket.png" alt="Bucket zawierający stan Terraform" /></p>
+
+<ul>
+  <li>połączyć repozytorium GitHub, zawierające kody aplikacji, z usługą Cloud Build. W celu integracji, w repozytorium GitHub należy zainstalować aplikację <strong>Google Cloud Build</strong>, a następnie połączyć repozytorium z usługą Cloud Build:</li>
+</ul>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/github_cloud_build_application.png" alt="Konfiguracja aplikacji Cloud Build w GitHub" /></p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/cloud_build_repository.png" alt="Konfiguracja repozytorium w Cloud Build" /></p>
+
+<ul>
+  <li>w Cloud IAM przydzielić uprawnienia do konta serwisowego, z którego korzysta Cloud Build: <strong>Cloud Build Service Account, Cloud Functions Admin, Cloud Functions Developer, Service Account User, Pub/Sub Editor, Storage Admin</strong>:</li>
+</ul>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/cloud_build_service_account.png" alt="Konfiguracja uprawnień konta serwisowego Cloud Build" /></p>
+
+<ul>
+  <li>nadać uprawnienie do zweryfikowanej domeny dla konta serwisowego Cloud Build <a href="https://www.google.com/webmasters/verification/home">(pod tym adresem)</a>:</li>
+</ul>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/additional_domain_owner.png" alt="Konfiguracja dodatkowego właściciela domeny" /></p>
+
+<p>Konfiguracja automatyzująca tworzenie infrastruktury oraz wdrażanie aplikacji składa się z dwóch części:</p>
+
+<ul>
+  <li>konfiguracji Terraform, definiującej infrastrukturę, np. trigger w Cloud Build, który na podstawie zmian kodu w repozytorium uruchamia zadanie;</li>
+  <li>konfiguracji Cloud Build, czyli definicji zadań do wykonania, które są uruchamiane przez triggery utworzone przez Terraform.</li>
+</ul>
+
+<h3 id="konfiguracja-terraform">Konfiguracja Terraform</h3>
+
+<p>Konfiguracja Terraform jest umieszczona w folderze <strong>infrastructure</strong> i składa się z:</p>
+
+<ul>
+  <li>konfiguracji tzw. <strong>backendu</strong>, który w Terraform jest abstrakcją, określającą m.in. w jaki sposób ładowany jest stan infrastruktury (<strong>infrastructure/backend.tf</strong>):</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">terraform</span> <span class="p">{</span>
+  <span class="nx">backend</span> <span class="dl">"</span><span class="s2">gcs</span><span class="dl">"</span> <span class="p">{</span>
+    <span class="nx">bucket</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">demo-infrastructure</span><span class="dl">"</span>
+    <span class="nx">prefix</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">terraform/state</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>W drugiej linii definiujemy typ backendu, w tym przypadku <strong>gcs</strong>, który przechowuje stan w usłudze Cloud Storage. Następnie definiujemy nazwę utworzonego wcześniej bucketu, w którym będzie przechowywany stan, oraz prefix, będący ścieżką folderów, w których stan będzie się znajdował,</p>
+
+<ul>
+  <li>konfiguracji providera (<strong>infrastructure/main.tf</strong>):</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">provider</span> <span class="dl">"</span><span class="s2">google-beta</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">project</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">project</span>
+  <span class="nx">region</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">region</span>
+  <span class="nx">zone</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">zone</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Terraform udostępnia dwóch dostawców dla Google Cloud: <strong>google</strong>, <strong>google-beta</strong>. W pierwszej linii definiujemy dostawcę <strong>google-beta</strong>, który umożliwia wykorzystywanie API, które w GCP jest w wersji beta. W kolejnych liniach definiujemy projekt, region oraz strefę, które w tym przypadku są pobierane ze zmiennych,</p>
+
+<ul>
+  <li>
+    <p>definicji zmiennych, wykorzystywanych przez konfigurację Terraform (<strong>infrastructure/variables.tf</strong> i <strong>infrastructure/terraform.tfvars</strong>) (niektóre ze zmiennych są również przekazywane przez Terraform do Cloud Build);</p>
+  </li>
+  <li>
+    <p>konfiguracji triggera Cloud Build, który na podstawie zmian kodów konfiguracji infrastruktury w repozytorium (folder <strong>infrastructure</strong>), uruchamia zdefiniowane zadanie w Cloud Build:</p>
+  </li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_cloudbuild_trigger</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">deploy-demo-infrastructure</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">provider</span> <span class="o">=</span> <span class="nx">google</span><span class="o">-</span><span class="nx">beta</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">deploy-demo-infrastructure</span><span class="dl">"</span>
+  <span class="nx">description</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">[demo] Deploy main: infrastructure</span><span class="dl">"</span>
+  <span class="nx">filename</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">infrastructure/build/deploy.cloudbuild.yaml</span><span class="dl">"</span>
+  <span class="nx">included_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">infrastructure/**</span><span class="dl">"</span>
+  <span class="p">]</span>
+  <span class="nx">github</span> <span class="p">{</span>
+    <span class="nx">owner</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">owner</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">repository</span>
+    <span class="nx">push</span> <span class="p">{</span>
+      <span class="nx">branch</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">^main$</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>W pierwszej linii określamy rodzaj tworzonego zasobu (<strong>google_cloudbuild_trigger</strong> - trigger w usłudze Cloud Build). W kolejnych liniach definiujemy providera, nazwę triggera, jego opis, ścieżkę pod którą znajduje się definicja zadań do wykonania przez Cloud Build, ścieżkę w której zmiana plików spowoduje uruchomienie zadania oraz konfigurację repozytorium GitHub. W konfiguracji repozytorium definiujemy jego położenie (parametr <strong>owner</strong> i <strong>name</strong>) oraz sposób triggerowania zadania Cloud Build, w tym przypadku jest to wypushowanie zmian kodów do brancha <strong>main</strong> (dostępne są m.in. opcje triggerowania na push taga lub utworzenie pull requesta w aplikacji GitHub),</p>
+
+<ul>
+  <li>konfiguracji tworzącej buckety w Cloud Storage (<strong>infrastructure/frontend-bucket.tf</strong> i <strong>infrastructure/yarn-cache.storage.tf</strong>), które wykorzystywane są m.in. do przechowywania plików statycznych aplikacji frontendowej oraz kopii podręcznej zależności, wykorzystywanych przez aplikację frontendową i funkcję (w dalszej części wyjaśnię o co chodzi);</li>
+  <li>konfiguracji topicu w usłudze Cloud Pub/Sub (<strong>infrastructure/pubsub.tf</strong>);</li>
+  <li>konfiguracji triggerów w usłudze Cloud Build, które na podstawie zmian w repozytorium GitHub, uruchamiają zdefiniowane zadania (o tym też za chwilę).</li>
+</ul>
+
+<h3 id="konfiguracja-cloud-build">Konfiguracja Cloud Build</h3>
+
+<p>Drugą z konfiguracji, jest konfiguracja usługi Cloud Build, czyli definicja wykonania zadań, potrzebnych do zbudowania i wdrożenia poszczególnych elementów systemu. Definicja wdrażania dla każdego elementu systemu znajduje się w folderze zawierającym jego kody źródłowe. Składa się ona z:</p>
+
+<ul>
+  <li>konfiguracji wdrażania infrastruktury (<strong>infrastructure/build/deploy.cloudbuild.yml</strong>):</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">hashicorp/terraform:0.12.26'</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sh'</span>
+    <span class="na">args</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s1">'</span><span class="s">-c'</span>
+      <span class="pi">-</span> <span class="pi">|</span>
+        <span class="s">terraform init &amp;&amp; terraform apply -auto-approve</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">infrastructure'</span>
+</code></pre></div></div>
+
+<p>Składa się ona z jednego kroku, który za pomocą powłoki systemu Linux (sh), wykonuje w folderze <strong>infrastructure</strong> następujące polecenia: <strong>terraform init</strong> (inicjalizujące Terraform), <strong>terraform apply -auto-approve</strong> (tworzące infrastrukturę za pomocą konfiguracji Terraform),</p>
+
+<ul>
+  <li>konfiguracji budowania i wdrażania aplikacji frontendowej (<strong>frontend/deploy.cloudbuild.yml</strong>);</li>
+  <li>konfiguracji wdrażania funkcji (<strong>function/deploy.cloudbuild.yml</strong>).</li>
+</ul>
+
+<h3 id="dependency-cache">Dependency cache</h3>
+
+<p>Kopia podręczna zależności, wykorzystywanych przez aplikację frontendową oraz funkcję, przechowywana jest w przeznaczonym do tego celu buckecie.</p>
+
+<p>Aplikacje JavaScript (a więc te oparte o framework Angular, jak i funkcje napisane w czystym JavaScript) wykorzystują zewnętrzne zależności (biblioteki, moduły), które przechowują w folderze <strong>node_modules</strong>. Za każdym razem, kiedy aplikacja lub funkcja są budowane, muszą one pobrać wszystkie zależności z których korzystają. Bardzo często, zależności liczone są w dziesiątkach, a nawet setkach, a pobranie wszystkich za każdym razem, powoduje niepotrzebne wykorzystywanie łącza internetowego oraz dłuższy czas wykonywania zadania w usłudze Cloud Build (która posiada darmowy limit w postaci 120 minut, za które w ciągu dnia nie trzeba dodatkowo płacić).</p>
+
+<p>Chcąc zoptymalizować czas budowania i wdrażania, a także koszty z tym związane, utworzone zostały skrypty (w folderze <strong>yarn-cache-builder</strong>), które przed pobraniem zależności z Internetu, sprawdzają najpierw, czy nie istnieje już paczka (plik .zip), zawierająca te zależności w Cloud Storage. Jeśli tak, to zależności te pobierane są z bucketu i wypakowywane, co zajmuje o wiele mniej czasu, niż pobieranie ich ponownie.</p>
+
+<p>Kopia podręczna tworzona jest na podstawie sumy kontrolnej <strong>MD5</strong> pliku <strong>yarn.lock</strong>, który zawiera listę wymaganych zależności. Jeśli zależności te się nie zmieniły (np. nie dodano nowych lub nie zmieniono wersji którejś z nich), to można wykorzystać zależności przechowywane w buckecie. Jeśli jednak coś się zmieniło, to zostaną one pobrane z Internetu, a następnie spakowane do archiwum .zip, zawierającego w nazwie sumę kontrolną i umieszczone w buckecie.</p>
+
+<p>Konfiguracja Terraform (<strong>infrastructure/yarn-cache.storage.tf</strong>) tworząca bucket, przeznaczony na kopie podręczne zależności, wygląda następująco:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_storage_bucket</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">demo-yarn-cache</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">provider</span> <span class="o">=</span> <span class="nx">google</span><span class="o">-</span><span class="nx">beta</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">cache</span><span class="o">-</span><span class="nx">bucket</span><span class="o">-</span><span class="nx">name</span>
+  <span class="nx">location</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">region</span>
+  <span class="nx">lifecycle_rule</span> <span class="p">{</span>
+    <span class="nx">condition</span> <span class="p">{</span>
+      <span class="nx">age</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">7</span><span class="dl">"</span>
+    <span class="p">}</span>
+    <span class="nx">action</span> <span class="p">{</span>
+      <span class="nx">type</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Delete</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>W pierwszej linii określamy rodzaj tworzonego zasobu (<strong>google_storage_bucket</strong> - bucket w usłudze Cloud Storage). W kolejnych liniach definiujemy providera, nazwę tworzonego bucketu, region w którym będzie utworzony oraz regułę cyklu życia plików. Reguła definiuje akcję usunięcia plików starszych niż 7 dni.</p>
+
+<p>Skrypt tworzący kopię podręczną zależności (<strong>yarn-cache-builder/yarn-cache-push.sh</strong>) wygląda następująco:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">lockChecksum</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="nx">md5sum</span> <span class="nx">yarn</span><span class="p">.</span><span class="nx">lock</span> <span class="o">|</span> <span class="nx">cut</span> <span class="o">-</span><span class="nx">d</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span> <span class="o">-</span><span class="nx">f1</span><span class="p">)</span>
+<span class="nx">cacheArchive</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="nx">basename</span> <span class="dl">"</span><span class="s2">$PWD</span><span class="dl">"</span><span class="p">).</span><span class="nx">node_modules</span><span class="p">.</span><span class="nx">$</span><span class="p">{</span><span class="nx">lockChecksum</span><span class="p">}.</span><span class="nx">tar</span><span class="p">.</span><span class="nx">gz</span>
+
+<span class="k">if</span> <span class="nx">gsutil</span> <span class="o">-</span><span class="nx">q</span> <span class="nx">stat</span> <span class="nx">$</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="sr">/"$cacheArchive"; the</span><span class="err">n
+</span>  <span class="nx">echo</span> <span class="dl">"</span><span class="s2">cache archive already exists (${cacheArchive})</span><span class="dl">"</span>
+<span class="k">else</span>
+  <span class="nx">tar</span> <span class="o">-</span><span class="nx">czf</span> <span class="dl">"</span><span class="s2">$cacheArchive</span><span class="dl">"</span> <span class="nx">node_modules</span>
+  <span class="nx">gsutil</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">cp</span> <span class="dl">"</span><span class="s2">$cacheArchive</span><span class="dl">"</span> <span class="nx">$</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="sr">/</span><span class="err">
+</span><span class="nx">fi</span>
+</code></pre></div></div>
+
+<p>W pierwszej linii tworzy on sumę kontrolną MD5 pliku <strong>yarn.lock</strong>. W drugiej definiuje nazwę archiwum .zip, zawierającą sumę kontrolną. W kolejnych liniach definiuje warunek sprawdzający, czy plik o takiej nazwie już istnieje (co sugeruje brak potrzeby odkładania do bucketu kopii podręcznej zasobów), w przeciwnym wypadku tworząc archiwum zawierające folder <strong>node_modules</strong> i umieszczając je w buckecie. Do komunikacji z usługą Cloud Storage wykorzystywane jest narzędzie <strong>gsutil</strong>, a nazwa bucketu przekazywana jest do skryptu w parametrze <strong>${1}</strong>.</p>
+
+<p>Skrypt pobierający kopię podręczną zależności (<strong>yarn-cache-builder/yarn-cache-push.sh</strong>) wygląda następująco:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">lockChecksum</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="nx">md5sum</span> <span class="nx">yarn</span><span class="p">.</span><span class="nx">lock</span> <span class="o">|</span> <span class="nx">cut</span> <span class="o">-</span><span class="nx">d</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span> <span class="o">-</span><span class="nx">f1</span><span class="p">)</span>
+<span class="nx">cacheArchive</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="nx">basename</span> <span class="dl">"</span><span class="s2">$PWD</span><span class="dl">"</span><span class="p">).</span><span class="nx">node_modules</span><span class="p">.</span><span class="nx">$</span><span class="p">{</span><span class="nx">lockChecksum</span><span class="p">}.</span><span class="nx">tar</span><span class="p">.</span><span class="nx">gz</span>
+
+<span class="k">if</span> <span class="nx">gsutil</span> <span class="o">-</span><span class="nx">q</span> <span class="nx">stat</span> <span class="nx">$</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="sr">/"$cacheArchive"; the</span><span class="err">n
+</span>  <span class="nx">gsutil</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">cp</span> <span class="nx">$</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="sr">/"$cacheArchive" </span><span class="err">.
+</span>  <span class="nx">tar</span> <span class="o">-</span><span class="nx">xzf</span> <span class="dl">"</span><span class="s2">$cacheArchive</span><span class="dl">"</span>
+<span class="nx">fi</span>
+</code></pre></div></div>
+
+<p>Pierwsze dwie linie są identyczne, jak w skrypcie tworzącym. W kolejnych liniach zdefiniowany jest warunek, sprawdzający czy plik o odpowiedniej nazwie istnieje. W przypadku istnienia pliku z odpowiednią sumą kontrolną, archiwum .zip pobierane jest za pomocą narzędzia <strong>gsutil</strong>, a następnie wypakowywane. Dzięki temu, zależności w trakcie budowania aplikacji, będą już istnieć w folderze <strong>node_modules</strong> i nie będą pobierane z Internetu.</p>
+
+<h3 id="konfiguracja-frontendu">Konfiguracja frontendu</h3>
+
+<p>Konfiguracja aplikacji frontendowej składa się z:</p>
+
+<ul>
+  <li>konfiguracji Terraform (<strong>infrastructure/frontend.deploy.tf</strong>):</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_cloudbuild_trigger</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">deploy-main-demo-frontend</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">provider</span> <span class="o">=</span> <span class="nx">google</span><span class="o">-</span><span class="nx">beta</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">deploy-main-demo-frontend</span><span class="dl">"</span>
+  <span class="nx">description</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">[demo] Deploy main: frontend</span><span class="dl">"</span>
+  <span class="nx">filename</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">frontend/deploy.cloudbuild.yaml</span><span class="dl">"</span>
+  <span class="nx">included_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">frontend/**</span><span class="dl">"</span>
+  <span class="p">]</span>
+  <span class="nx">github</span> <span class="p">{</span>
+    <span class="nx">owner</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">owner</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">repository</span>
+    <span class="nx">push</span> <span class="p">{</span>
+      <span class="nx">branch</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">^main$</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">substitutions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">_CACHE_BUCKET</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">gs://${var.cache-bucket-name}</span><span class="dl">"</span>
+    <span class="nx">_FRONTEND_BUCKET</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">gs://${var.frontend-bucket-name}</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Konfiguracja Terraform aplikacji frontendowej nie różni się za bardzo od konfiguracji infrastruktury, ponieważ również tworzy trigger w usłudze Cloud Build. Różnicą jest tutaj inna ścieżka do definicji zadań Cloud Build oraz inna ścieżka do folderu, w którym zmiany wyzwolą uruchomienie zadania, a także przekazanie zmiennych do konfiguracji Cloud Build,</p>
+
+<ul>
+  <li>konfiguracji Cloud Build (<strong>frontend/deploy.cloudbuild.yaml</strong>):</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fetch-dependencies-cache</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gsutil</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">bash</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">../yarn-cache-builder/yarn-cache-fetch.sh'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_CACHE_BUCKET}'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">frontend'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">yarn-install</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">node:12.13.1</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">yarn</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">install'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">frontend'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">yarn-build</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">node:12.13.1</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">yarn</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">build'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">frontend'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">copy-dist</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gsutil</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">cp'</span><span class="pi">,</span><span class="s1">'</span><span class="s">-r'</span><span class="pi">,</span><span class="s1">'</span><span class="s">frontend/dist/frontend-app/*'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_FRONTEND_BUCKET}'</span><span class="pi">]</span>
+    <span class="na">waitFor</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">yarn-build</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">push-dependencies-cache</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gsutil</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">bash</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">../yarn-cache-builder/yarn-cache-push.sh'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_CACHE_BUCKET}'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">frontend'</span>
+</code></pre></div></div>
+
+<p>Konfiguracja Cloud Build składa się z kolejnych kroków, których wykonanie zbuduje i wdroży aplikację frontendową. W kroku <strong>fetch-dependencies-cache</strong> pobierana jest kopia podręczna zależności (jeśli taka istnieje), następnie wykonywane są polecenia <strong>yarn-install</strong> oraz <strong>yarn-build</strong>, które budują aplikację. Po zbudowaniu aplikacji, pliki statyczne są kopiowane do bucketa w usłudze Cloud Storage, a po zakończeniu, tworzona jest nowa kopia podręczna zależności. Wszystkie kroki są wykonywane w katalogu <strong>frontend</strong> (parametr <strong>dir</strong>), a nazwy bucketów przekazane są w postaci zmiennych: <strong>${_FRONTEND_BUCKET}</strong> (bucket przeznaczony na pliki statyczne), <strong>${_CACHE_BUCKET}</strong> (bucket zawierający kopię podręczną zależności). Do komunikacji z usługą Cloud Storage wykorzystywane jest narzędzie <strong>gsutil</strong>,</p>
+
+<ul>
+  <li>konfiguracji Terraform, tworzącej bucket na pliki statyczne (<strong>infrastructure/frontend-bucket.tf</strong>):</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_storage_bucket</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">frontend-website-bucket</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">provider</span> <span class="o">=</span> <span class="nx">google</span><span class="o">-</span><span class="nx">beta</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">frontend</span><span class="o">-</span><span class="nx">bucket</span><span class="o">-</span><span class="nx">name</span>
+  <span class="nx">location</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">region</span>
+  <span class="nx">force_destroy</span> <span class="o">=</span> <span class="kc">true</span>
+  <span class="nx">website</span> <span class="p">{</span>
+    <span class="nx">main_page_suffix</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">index.html</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_storage_bucket_iam_member</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">frontend-website-bucket-public-permissions</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">bucket</span> <span class="o">=</span> <span class="nx">google_storage_bucket</span><span class="p">.</span><span class="nx">frontend</span><span class="o">-</span><span class="nx">website</span><span class="o">-</span><span class="nx">bucket</span><span class="p">.</span><span class="nx">name</span>
+  <span class="nx">role</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">roles/storage.objectViewer</span><span class="dl">"</span>
+  <span class="nx">member</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">allUsers</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Składa się ona z dwóch części. W pierwszej tworzony jest bucket w Cloud Storage. Konfiguracja jest podobna do tej, która tworzy bucket przeznaczony na kopię podręczną zależności. Główną różnicą jest tutaj parametr <strong>force_destroy</strong>, który umożliwia usunięcie bucketu, nawet jeśli zawiera on pliki, a także konfiguracja witryny internetowej (opisana wcześniej). W drugiej części nadawane są uprawnienia publiczne do bucketu (rola <strong>roles/storage.objectViewer</strong> dla <strong>allUsers</strong>).</p>
+
+<h3 id="konfiguracja-funkcji">Konfiguracja funkcji</h3>
+
+<p>Konfiguracja funkcji składa się z:</p>
+
+<ul>
+  <li>konfiguracji Terraform (<strong>infrastructure/function.deploy.tf</strong>):</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">resource</span> <span class="dl">"</span><span class="s2">google_cloudbuild_trigger</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">deploy-main-demo-function</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">provider</span> <span class="o">=</span> <span class="nx">google</span><span class="o">-</span><span class="nx">beta</span>
+  <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">deploy-main-demo-function</span><span class="dl">"</span>
+  <span class="nx">description</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">[demo] Deploy main: function</span><span class="dl">"</span>
+  <span class="nx">filename</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">function/deploy.cloudbuild.yaml</span><span class="dl">"</span>
+  <span class="nx">included_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">function/**</span><span class="dl">"</span>
+  <span class="p">]</span>
+  <span class="nx">github</span> <span class="p">{</span>
+    <span class="nx">owner</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">owner</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">github</span><span class="o">-</span><span class="nx">repository</span>
+    <span class="nx">push</span> <span class="p">{</span>
+      <span class="nx">branch</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">^main$</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">substitutions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">_CACHE_BUCKET</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">gs://${var.cache-bucket-name}</span><span class="dl">"</span>
+    <span class="nx">_PUBSUB_TOPIC</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">pubsub</span><span class="o">-</span><span class="nx">topic</span>
+    <span class="nx">_FIRESTORE_COLLECTION</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">firestore</span><span class="o">-</span><span class="nx">collection</span>
+    <span class="nx">_GCP_REGION</span> <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">gcp</span><span class="o">-</span><span class="nx">region</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Konfiguracja Terraform funkcji jest podobna do konfiguracji aplikacji frontendowej. Jedynymi różnicami są inne ścieżki, a także przekazywane zmienne.</p>
+
+<ul>
+  <li>konfiguracji Cloud Build (<strong>function/deploy.cloudbuild.yaml</strong>):</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fetch-dependencies-cache</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gsutil</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">bash</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">../yarn-cache-builder/yarn-cache-fetch.sh'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_CACHE_BUCKET}'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">function'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">yarn-install</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">node:12.13.1</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">yarn</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">install'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">function'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">deploy-function</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gcloud</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span>
+      <span class="s1">'</span><span class="s">beta'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">functions'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">deploy'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">demo-function'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--runtime'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">nodejs10'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--trigger-topic'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_PUBSUB_TOPIC}'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--region'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_GCP_REGION}'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--timeout'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">10'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--memory'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">128MB'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--max-instances'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">1'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--entry-point'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">main'</span><span class="pi">,</span>
+      <span class="s1">'</span><span class="s">--set-env-vars'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">COLLECTION_NAME=${_FIRESTORE_COLLECTION}'</span>
+    <span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">function'</span>
+  <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">push-dependencies-cache</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gcr.io/cloud-builders/gsutil</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">bash</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">../yarn-cache-builder/yarn-cache-push.sh'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">${_CACHE_BUCKET}'</span><span class="pi">]</span>
+    <span class="na">dir</span><span class="pi">:</span> <span class="s1">'</span><span class="s">function'</span>
+</code></pre></div></div>
+
+<p>Konfiguracja Cloud Build składa się z kolejnych kroków, których efektem będzie działająca funkcja, wyzwalana za pomocą Cloud Pub/Sub. Kroki związane z kopią podręczną zależności są analogiczne do konfiguracji aplikacji frontendowej. Ponieważ funkcja jest napisana w czystym JavaScript, to nie wymaga budowania z TypeSript do JavaScript (jak w przypadku aplikacji frontendowej), dlatego pominięty został krok wykonujący polecenie <strong>yarn-build</strong>. W linii 7 wykonywane jest jedynie polecenie <strong>yarn-install</strong>, które pobiera wymagane przez funkcję zależności. W kroku <strong>deploy-function</strong> tworzona jest funkcja na podstawie kodów źródłowych, zawartych w folderze <strong>function</strong>. Do konfiguracji zostały przekazane zmienne: <strong>${_PUBSUB_TOPIC}</strong> (zawierająca nazwę topicu, który triggeruje funkcję), <strong>${_GCP_REGION}</strong> (zawierająca nazwę regionu, w którym zostanie uruchomiona funkcja), <strong>${_FIRESTORE_COLLECTION}</strong> (zawierająca nazwę kolekcji w Cloud Firestore, w której funkcja będzie utrwalać dane) oraz zmienna zawierająca nazwę bucketu przechowującego kopię podręczną zależności.</p>
+
+<p>Ponieważ triggery uruchamiające Cloud Build po zmianach konfiguracji infrastruktury (w folderze <strong>infrastructure</strong>) są tworzone przez ten sam kod, to za pierwszym razem trzeba utworzyć je ręcznie. W tym celu, w folderze <strong>infrastructure</strong> należy wykonać polecenia:</p>
+
+<ul>
+  <li><strong>terraform init</strong> - inicjalizuje Terraform, tworząc folder <strong>.terraform</strong> zawierający stan i wykorzystywane wtyczki;</li>
+  <li><strong>terraform plan</strong> - wykonuje plan działania Terraform, dzięki czemu można zweryfikować konfigurację pod kątem błędów, jeszcze przed uruchomieniem narzędzia;</li>
+  <li><strong>terraform apply</strong> - akceptuje zmiany wynikające ze stanu aktualnego oraz wynikającego z konfiguracji, czyli wdraża infrastrukturę do chmury. W efekcie tego polecenia, utworzone zostaną wszystkie zasoby (triggery Cloud Build, buckety Cloud Storage, topic Cloud Pub/Sub).</li>
+</ul>
+
+<p>Kolejne zmiany kodu infrastruktury będą uruchamiać zadanie w Cloud Build, dzięki czemu zmiany infrastruktury będą automatycznie nanoszone w chmurze.</p>
+
+<p>Utworzone triggery Cloud Build można również wyzwolić ręcznie, za pomocą Cloud Console. Można tam znaleźć historię wykonywanych zadań oraz logi zawierające ich przebieg.</p>
+
+<p><img src="/assets/img/posts/2021-03-03-przyklad-migracji-do-chmury/cloud_build_triggers.png" alt="Triggery Cloud Build" /></p>
+
+<p>W przedstawionym rozwiązaniu, kody aplikacji przechowywane są w repozytorium GitHub i zawierają wrażliwe dane (konfigurację w plikach <strong>frontend/src/environments/environment.ts</strong> oraz <strong>infrastructure/terraform.tfvars</strong>). Jeśli chcemy wykorzystać takie rozwiązanie, powinniśmy utworzyć prywatne repozytorium GitHub, w przeciwnym wypadku, nasza konfiguracja wycieknie do sieci. Do przechowywania konfiguracji możemy wykorzystać np. usługę <a href="https://cloud.google.com/secret-manager">Cloud Secret Manager</a> lub zaimplementować własne rozwiązanie, oparte chociażby o Cloud Storage.</p>
+
+<p>Zaletą IaC, oprócz automatyzacji tworzenia infrastruktury, jest również wersjonowanie. Każda zmiana infrastruktury wiąże się ze zmianą kodu Terraform i może wymagać np. pull requesta, lub napisania testów, sprawdzających poprawność konfiguracji. Dzięki temu, proces wdrażania infrastruktury jest powtarzalny oraz bardziej odporny na błędy, niż ręczne tworzenie zasobów z poziomu GUI, czy konsoli.</p>
+
+<h2 id="migracja-do-chmury---podsumowanie">Migracja do chmury - podsumowanie</h2>
+
+<p>Opisany przeze mnie proces migracji do chmury Google Cloud Platform, jest jedynie przykładem, zawierającym minimalną ilość wiedzy, potrzebnej do rozpoczęcia przygody z chmurą Google. Nie powinniśmy podejmować się takiego procesu nie posiadajac wcześniej wiedzy na temat usług GCP, ponieważ w najgorszym wypadku, może się to skończyć bardzo wysokimi rachunkami.</p>
+
+<p>Przed rozpoczęciem zabawy z GCP, proponuję zapoznać się z materiałami od Google, np. w formie kursów wideo, dostępnych na platformach Coursera czy Pluralsight. Bardzo dużo informacji znajdziemy również w oficjalnej dokumentacji GCP - od specyfikacji i API usług, po gotowe rozwiązania w formie “best practices” czy “how to”.</p>
+
+<p>Warto pamiętać również o GCP Free Tier, w ramach którego otrzymujemy na start $300, które w połączeniu z darmowymi limitami, w zupełności wystarczą do zapoznania się z platformą. Kursy wideo zawierają również zadania techniczne (Qwiklabs), które wykonujemy na prawdziwej chmurze, wykorzystując do tego wygenerowane na potrzeby zadania konta - z tego również warto skorzystać.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "cloud serverless gcp googlecloud cloud migration google cloud platform";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

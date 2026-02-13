@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Czy Apache Kafka nadaje się do Event Sourcingu? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Czy Apache Kafka nadaje się do Event Sourcingu?" />
+<meta name="author" content="mmergo" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę." />
+<meta property="og:description" content="Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę." />
+<link rel="canonical" href="https://blog.consdata.tech/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-15T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu/thumbnail.webp" />
+<meta property="twitter:title" content="Czy Apache Kafka nadaje się do Event Sourcingu?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"mmergo"},"image":"https://blog.consdata.tech/assets/img/posts/2018-11-15-czy-apache-kafka-nadaje-sie-do-event-sourcingu/thumbnail.webp","@type":"BlogPosting","headline":"Czy Apache Kafka nadaje się do Event Sourcingu?","description":"Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę.","dateModified":"2018-11-15T01:00:00-06:00","datePublished":"2018-11-15T01:00:00-06:00","url":"https://blog.consdata.tech/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2018/11/15/czy-apache-kafka-nadaje-sie-do-event-sourcingu.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">event sourcing</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Czy Apache Kafka nadaje się do Event Sourcingu?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/mmergo.html">
+        <img class="author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+        <span class="author-name">Marcin Mergo</span><a class="author" href="https://github.com/mmergo">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+15
+
+listopada
+
+
+
+2018
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Nietrudno jest natknąć się na głosy mówiące, że Apache Kafka nie nadaje się do implementacji wzorca, jakim jest Event Sourcing [1]. Czy jest tak w istocie? W artykule tym postaram się przedstawić swój punkt widzenia na tę sprawę.</p>
+
+<p>Aby móc debatować nad przydatnością (bądź nie) Apache Kafki do implementacji Event Sourcingu należy najpierw odpowiedzieć na pytanie - czym tak właściwie jest Event Sourcing? Z miejsca natrafiamy na problem, bowiem nie istnieje jedna, uniwersalna definicja Event Sourcingu. W zależności od źródła, natrafimy na różne definicje, nierzadko kładące nacisk na zupełnie odmienne aspekty tego modelu. W tej sytuacji najlepszym wyjściem będzie zwrócenie się do uznanych autorytetów, a konkretniej niezawodnego Martina Fowlera. W wolnym tłumaczeniu definiuje on Event Sourcing następująco:</p>
+
+<blockquote>
+  <p>Każda zmiana stanu systemu reprezentowana jest przez ciąg uszeregowanych eventów. [2]</p>
+</blockquote>
+
+<h2 id="z-czym-to-się-je">Z czym to się je?</h2>
+<p>Jednak na pierwszy rzut oka definicja ta może wydawać się co najmniej enigmatyczna. Czym jest stan systemu? Czym są, i jak mają się do niego eventy?</p>
+
+<p>W tym ujęciu jako stan systemu należy rozumieć aktualną postać obiektów domenowych, utrwaloną w specyficzny dla danej aplikacji sposób - w pamięci, na dysku w postaci plików, w bazie danych. W praktyce stan systemu najczęściej przechowywany jest w bazie danych.</p>
+
+<p>Jak wobec tego eventy mają się do stanu? Weźmy na warsztat klasyczny przykład sklepu internetowego, w ramach którego istnieje obiekt zamówienia, na chwilę zapominając o Event Sourcingu.</p>
+
+<p><strong>Standardowy przepływ w takim przykładzie mógłby wyglądać następująco:</strong></p>
+<ol>
+  <li>klient rozpoczyna składanie zamówienia - na bazie danych tworzona jest krotka zamówienia - przy pomocy bezpośredniego bazodanowego inserta,</li>
+  <li>klient finalizuje zamówienie - aktualizujemy krotkę zamówienia na bazie, zmieniając status zamówienia - przy pomocy bazodanowego update’a,</li>
+  <li>klient porzuca zamówienie - usuwamy obiekt zamówienia z bazy - bezpośrednio na bazie wywołując delete’a.</li>
+</ol>
+
+<p>Jest to do bólu klasyczny przepływ, który można odnieść do większości systemów webowych. Jak jednak wyglądałoby to w świecie Event Sourcingu? Każda z powyższych akcji nie kończyłaby się bezpośrednim uderzeniem do bazy danych. Zamiast tego, generowany byłby odpowiedni event. A więc:</p>
+
+<ol>
+  <li>klient rozpoczyna składanie zamówienia - tworzony jest event mówiący, że klient utworzył zamówienie,</li>
+  <li>klient finalizuje zamówienie - tworzony jest event mówiący, że klient sfinalizował zamówienie,</li>
+  <li>klient porzuca zamówienie - tutaj analogicznie tworzymy event wyrażający akcję biznesową.</li>
+</ol>
+
+<p>Jak wobec tego, dysponując jedynie eventami, poznać aktualny stan obiektu zamówienia?</p>
+
+<p><strong>Wyróżniamy tutaj dwa podejścia:</strong></p>
+
+<ul>
+  <li>pierwsze z nich mówi, że chcąc poznać stan danego obiektu, należy zebrać wszystkie dotyczące go eventy i je zagregować - to znaczy przetworzyć po kolei, “nałożyć na siebie”, aż do uzyskania wynikowego stanu obiektu. Takie podejście w praktyce jest jednak często niepraktyczne, szczególnie w dużych systemach, przetwarzających dużą liczbę eventów;</li>
+  <li>w praktyce częściej wykorzystuje się rozwiązanie zwane state storage lub state store. Jest to odzwierciedlenie aktualnego stanu systemu, np. w formie bazy danych. Powyższe eventy byłyby w związku z tym “tłumaczone” na odpowiednie wywołania na bazie - odpowiednio insert, update oraz delete.</li>
+</ul>
+
+<p>Należy tutaj zwrócić uwagę na dwie bardzo ważne cechy eventów. Po pierwsze, eventy powinny być domenowe, a więc abstrahować od technicznych szczegółów wybranego przez nas state store’a. Stąd też eventy niosą za sobą informację domenową - “zamówienie zostało sfinalizowane”, a nie - “wykonaj w bazie danych update na polu status, ustawiając je na final”. Po drugie, eventy powinny być idempotentne, tj. niezależnie od tego ile razy dany event zostanie przetworzony (o ile nie zostanie utracona kolejność eventów) system powinien znajdywać się w tym samym stanie.</p>
+
+<p>Wracając do przykładu sklepu - po odzwierciedleniu eventów na bazie danych, będącej naszym state storem, otrzymujemy w wyniku identyczny stan bazy danych jak w przykładzie bez event sourcingu - obiekt zamówienia nie istnieje na bazie, ponieważ został usunięty. Na usta ciśnie się więc pytanie: jaki jest wobec tego sens Event Sourcingu? Po co zaprzątać sobie głowę kolejną abstrakcją i dokładać kolejne elementy do systemu, kiedy finalnie dochodzimy do identycznego stanu?</p>
+
+<p><strong>Na szczęście, istnieje szereg zalet takiego podejścia:</strong></p>
+
+<ul>
+  <li><strong>ponowne przetworzenia strumienia zdarzeń</strong> - ponieważ każda zmiana stanu systemu reprezentowana jest przez event, możemy w bardzo prosty sposób ponownie ten strumień przetworzyć - kiedy chcemy wymienić state store (np. zamienić jedną bazę danych na inną), dołożyć nowy mechanizm raportowy do systemu, który musi od nowa przeanalizować aktywność naszej aplikacji, czy po prostu naprawić błędy lub rozbieżności, które wkradły się do state store’a. W ujęciu tym strumień eventów staje się źródłem prawdy w systemie,</li>
+  <li><strong>łatwe odpytanie o stan każdego z obiektów w dowolnym momencie</strong> - nietrudno jest sobie wyobrazić sytuację, w której chcemy poznać stan jednego z obiektów w systemie w konkretnym punkcie czasu. Bez Event Sourcingu mamy do dyspozycji jedynie aktualny stan obiektu lub jesteśmy skazani na analizę logów w celu odtworzenia cyklu życia obiektu. Wykorzystując Event Sourcing staje się to proste i bezproblemowe,</li>
+  <li><strong>możliwość zrzutu stanu z dowolnego momentu</strong> - chcąc przeanalizować aplikację w konkretnym momencie jej działania wystarczy przetworzyć eventy aż do tego momentu w czasie, “zrzucając” je do stojącej na boku bazy danych - tym samym, nie przeszkadzając w żaden sposób produkcyjnej bazie danych, można włączyć oraz zdebugować aplikację znajdującą się w perfekcyjnie tym samym stanie co np. w momencie wystąpienia błędu na produkcji,</li>
+  <li><strong>wiele różnych odzwierciedleń stanu aplikacji</strong> - pewne reprezentacje stanu aplikacji są lepsze do konkretnych zastosowań niż inne. Np. chcąc łatwo przeszukiwać nasze obiekty pod kątem tekstu wybierzemy Solra lub Elastic Search. Jednak chcąc wykonywać klasyczne zapytania bazodanowe na naszym stanie, lepszy będzie PostgreSQL. Dzięki Event Sourcingowi łatwe staje się odzwierciedlanie stanu w różnych technologiach - sprowadza się to jedynie do “przetłumaczenia” eventów na odpowiednią technologię i ponownego przetworzenia strumienia zdarzeń,</li>
+  <li><strong>prostsze debugowanie oraz audyt systemu</strong> - mając jawnie zdefiniowaną i zapisaną każdą zmianę każdego obiektu, debugowanie oraz audyt systemu stają się prostsze - prześledzenie zmian sprowadza się do prześledzenia eventów, bez konieczności odszyfrowywania nierzadko zawiłych logów aplikacji.</li>
+</ul>
+
+<p>Pozostawiając za nami przykład ze sklepem internetowym, świetną ilustracją Event Sourcingu oraz jego zalet są systemy kontroli wersji, np. git:</p>
+
+<ul>
+  <li>każda zmiana reprezentowana jest w postaci eventu (commit),</li>
+  <li>mamy możliwość powrotu do dowolnego punktu na strumieniu zdarzeń,</li>
+  <li>jeśli przydarzy nam się pomyłka w kodzie, możemy w każdej chwili powrócić do poprawnego stanu,</li>
+  <li>tworzenie wynikowego stanu (w postaci plików) jest niczym innym jak agregacją pojedynczych eventów,</li>
+  <li>debugowanie jest uproszczone, dzięki możliwości prześledzenia zmian każdej linijki kodu.</li>
+</ul>
+
+<h2 id="wejście-kafki">Wejście Kafki</h2>
+<p>Pozostaje więc pytanie - gdzie przechowywać eventy? Jedną z możliwych opcji jest wykorzystanie Apache Kafki jako <strong>event store’a</strong>, a więc składnicy eventów.</p>
+
+<p>Czym jednak jest Kafka? U absolutnych podstaw można o Kafce myśleć jako o brokerze komunikatów - o funkcjonalności zbliżonej do ActiveMQ lub RabbitMQ. Po bliższym przyjrzeniu się tym technologiom okazuje się jednak, że Kafka jest brokerem o diametralnie innej filozofii działania niż te wcześniej wspomniane.</p>
+
+<p><img src="/assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na-pytanie/1.png" alt="Filozofia" /></p>
+
+<p>Klasyczne systemy, jak ActiveMQ, dostarczając wiadomości do konsumentów wykorzystują model Smart Broker / Dumb Consumer. Oznacza to, że broker bierze na siebie ciężar obsługi dostarczania wiadomości do konsumentów - a więc wybiera i przesyła wiadomości do odpowiednich konsumentów, oczekuje na ACK, a w przypadku błędów zajmuje się obsługą DLQ. Kafka jednak wychodzi z dokładnie odwrotnego założenia, przyjmując filozofię <strong>Dumb Broker / Smart Consumer</strong>, przerzucając na konsumentów konieczność obsługi dostarczania wiadomości.</p>
+
+<p>Jak działa to w praktyce? Kiedy do Kafki wpływa nowy rekord, zostaje on umieszczony na topiku, gdzie otrzymuje swój offset - w najprostszym ujęciu jest to numer porządkowy danego rekordu na topiku. Kiedy konsument chce skonsumować jeden z rekordów musi, w uproszczeniu, wskazać konkretny offset tego rekordu - jest to więc zupełne odwrócenie klasycznego modelu, w którym to broker decyduje, który rekord należy dostarczyć do konsumenta. Takie odwrócenie kontroli jest niezwykle istotne z punktu widzenia Event Sourcingu, którego jedną z podstaw jest możliwość ponownego przetworzenia strumienia zdarzeń. Ponieważ to konsument wskazuje, który rekord chce odczytać, może ustawić się na początku strumienia i przetworzyć ten strumień od nowa. Jednak możliwości są zdecydowanie większe, na przykład konsument może rozpocząć przetwarzanie od połowy strumienia w dowolnym kierunku. Co więcej, z punktu widzenia Kafki pobranie dowolnego rekordu, niekoniecznie w naturalnej kolejności, jest bardzo tanią operacją. Jest to pierwsza duża zaleta Kafki w kontekście Event Sourcingu - natywne wsparcie dla ponownego przetwarzania strumienia zdarzeń.</p>
+
+<p><img src="/assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na-pytanie/2.png" alt="Koncepcja" /></p>
+
+<p>Kolejną zaletą jest obsługa pokaźnych wolumenów danych. Duże systemy mogą generować miliardy eventów. Nawet jeśli rozmiar pojedynczych eventów jest bardzo mały, to efekt skali powoduje, że ich sumaryczna wielkość może swobodnie przekraczać terabajty. Również tutaj Kafka nie zawodzi, obsługując liniowo zarówno wolumen danych o wielkości 50 KB jak i 50 TB [3]. Jest to kolejna duża zaleta bezpośrednio związana z Event Sourcingiem - Kafka świetnie sprawdza się w charakterze event store’a.</p>
+
+<p>Na tym zalety Kafki się nie kończą, a jedną z największych jest ujednolicenie modeli kolejek oraz publisher-subscriber. Niestety, jest to już poza zakresem niniejszego artykułu.</p>
+
+<h2 id="zarzuty">Zarzuty</h2>
+<p>Jak wobec tego prezentują się zarzuty wobec Kafki w kontekście Event Sourcingu?</p>
+
+<p>Pierwszy z nich dotyczy trudności z odczytem eventów dla konkretnego obiektu. Postuluje on konieczność przetworzenia całego strumienia zdarzeń celem odnalezienia eventów dotyczących interesującej nas instancji obiektu [1]. Jest to jednak błędny argument - z co najmniej kilku powodów. Po pierwsze, w dobie rozwiązań takich jak KSQL, odczytanie konkretnych eventów jest jak najbardziej możliwe [4]. Po drugie, argument ten rozmija się z faktyczną ideą Event Sourcingu, którego podstawą nie jest sposób wyznaczania wynikowego stanu, a sam fakt odzwierciedlania wszystkich zmian stanu w postaci eventów. Kwestia agregacji eventów do wynikowego (lub pośredniego) stanu jest już drugorzędna, w sporej mierze zależy od konkretnego rozwiązania i jako taka nie definiuje Event Sourcingu.</p>
+
+<p>Kolejne zarzuty dotyczą spójności zapisu [1] - kiedy po odczytaniu stanu konkretnego obiektu w wyniku logiki biznesowej generujemy kolejny event zmieniający stan tego obiektu, może dojść do sytuacji, w której inny wątek w międzyczasie nadpisze lub usunie obiekt, na którym działamy. Zarzut dotyczy w praktyce braku blokad na obiektach, znanych z klasycznych baz danych. W ogólności rozwiązaniem tego problemu jest zapewnienie jednowątkowych zapisów, jednak autor przywołanego artykułu sugeruje, że będzie to miało drastyczny wpływ na wydajność zapisu. I tutaj Kafka przychodzi nam z pomocą - topiki na Kafce mogą zostać podzielone na partycje, co w połączeniu z łatwym umieszczaniem eventów dotyczących pojedynczego obiektu na jednej partycji, pozwala bezproblemowo zrównoleglić przetwarzanie, nie naruszając zasady jednowątkowego zapisu - tym samym obalając niniejszy zarzut.</p>
+
+<p><img src="/assets/img/posts/2018-12-13-podsumowanie-consdata-tech-odpowiedzi-na-pytanie/3.png" alt="Topics" /></p>
+
+<p>Podsumowując, nie mam wątpliwości, że Kafka nadaje się do implementacji Event Sourcingu. Z jednej strony, dzięki natywnemu wsparciu dla ponownego przetwarzania eventów oraz radzeniu sobie z dużym wolumenem danych, jest to naturalny wybór jako event store. Prostą pochodną tych dwóch właściwości są pozostałe zalety Event Sourcingu - zrzuty stanu z dowolnego momentu, łatwe odzwierciedlanie stanu w innej technologii, czy też prostsze debugowanie. Z drugiej strony, dzięki bardziej zaawansowanym możliwościom przetwarzania eventów - jak streamy, KSQL, czy zrównoleglanie przetwarzania topików - Kafka staje się świetną podstawą do implementacji szeroko rozumianego Event Sourcingu.</p>
+
+<p>Na zakończenie należy jeszcze zauważyć, że Event Sourcing jest wzorcem technologicznie agnostycznym - nieprzywiązanym do żadnej konkretnej technologii. Istnieją rozwiązania, jak Apache Kafka, które znacząco ułatwiają implementację Event Sourcingu, jednak nic nie stoi na przeszkodzie, żeby zaimplementować go w oparciu o MySQL, MongoDB lub jeszcze inną technologię pozwalającą na przechowywanie uszeregowanych eventów. Ostatecznie idea Event Sourcingu jest prosta: każda zmiana stanu systemu reprezentowana jest przez ciąg uszeregowanych eventów - a technologia jest już sprawą drugorzędną.</p>
+
+<p>Jeśli chcecie dowiedzieć się więcej na temat Event Sourcingu, zapraszamy na pierwszą edycję Consdata Tech! Więcej informacji na temat całego wydarzenia znajdziecie pod tym linkiem: <a href="https://consdata.tech/">https://consdata.tech/</a>. Co ważne, podczas tego meetupu będzie streaming, na którym warto być: <a href="http://consdata.tech/streaming">http://consdata.tech/streaming</a>.</p>
+
+<h2 id="źródła">Źródła:</h2>
+
+<ul>
+  <li>[1] <a href="https://medium.com/serialized-io/apache-kafka-is-not-for-event-sourcing-81735c3cf5c">https://medium.com/serialized-io/apache-kafka-is-not-for-event-sourcing-81735c3cf5c</a></li>
+  <li>[2] <a href="https://martinfowler.com/eaaDev/EventSourcing.html">https://martinfowler.com/eaaDev/EventSourcing.html</a></li>
+  <li>[3] <a href="https://kafka.apache.org/intro">https://kafka.apache.org/intro</a></li>
+  <li>[4] <a href="https://www.confluent.io/product/ksql/">https://www.confluent.io/product/ksql/</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "event sourcing apache kafka";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

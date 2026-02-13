@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Ansible - jak uporządkować chaos? | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Ansible - jak uporządkować chaos?" />
+<meta name="author" content="rmastalerek" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (KISS – Keep it simple, stupid). Doskonale w ten trend wpasowuje się Ansible. To kupione przez firmę Red Hat opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka YAML, w prosty sposób pozwala opisać wzajemne relacje między systemami." />
+<meta property="og:description" content="Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (KISS – Keep it simple, stupid). Doskonale w ten trend wpasowuje się Ansible. To kupione przez firmę Red Hat opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka YAML, w prosty sposób pozwala opisać wzajemne relacje między systemami." />
+<link rel="canonical" href="https://blog.consdata.tech/2020/07/08/ansible-jak-uporzadkowac-chaos.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2020/07/08/ansible-jak-uporzadkowac-chaos.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-08T02:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/thumbnail.webp" />
+<meta property="twitter:title" content="Ansible - jak uporządkować chaos?" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"rmastalerek"},"image":"https://blog.consdata.tech/assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/thumbnail.webp","@type":"BlogPosting","headline":"Ansible - jak uporządkować chaos?","description":"Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (KISS – Keep it simple, stupid). Doskonale w ten trend wpasowuje się Ansible. To kupione przez firmę Red Hat opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka YAML, w prosty sposób pozwala opisać wzajemne relacje między systemami.","dateModified":"2020-07-08T02:00:00-05:00","datePublished":"2020-07-08T02:00:00-05:00","url":"https://blog.consdata.tech/2020/07/08/ansible-jak-uporzadkowac-chaos.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2020/07/08/ansible-jak-uporzadkowac-chaos.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2020/07/08/ansible-jak-uporzadkowac-chaos.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">ansible</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Ansible - jak uporządkować chaos?</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/rmastalerek.html">
+        <img class="author-image" src="/assets/img/authors/rmastalerek.webp" alt="author">
+        <span class="author-name">Robert Mastalerek</span><a class="author" href="https://github.com/robertmastalerek">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+8
+
+lipca
+
+
+
+2020
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Czy istnieje możliwość usprawnienia istniejących procesów instalacji aplikacji lub nawet całych systemów mimo, że te sprawdzają się już od wielu lat? Okazuje się, że tak. Można dzięki temu zaoszczędzić trochę czasu na analizę występujących problemów, a także zwiększyć czytelność skryptów wykorzystywanych do instalacji. Ponadto można z administratora zdjąć obowiązek orientowania się w konfiguracji dziesiątek serwerów.</p>
+
+<p>Wystarczy w tym celu zastosować oprogramowanie do automatyzacji procesów. Takim narzędziem może być Ansible od Red Hat’a. W poniższym artykule opisano przykłady wykorzystania Ansible’a do instalacji platformy Eximee oraz kilku mikroserwisów wykorzystywanych przez klientów firmy. Opisane zostały podstawowe elementy oprogramowania i ich wykorzystanie. Wspomniano o sytuacjach, które można było zrobić lepiej podczas implementacji. Na koniec wymieniono główne zalety migracji ze skryptów bashowych na Ansible.</p>
+
+<h2 id="jak-było-kiedyś">Jak było kiedyś?</h2>
+<p>Zręczność tworzenia skryptów w bashu od dawna jest ważną umiejętnością administratorów systemów informatycznych i osób działających w obszarze DevOps. Pozwala automatyzować dowolne zadania od tworzenia plików i nadawania im odpowiednich uprawnień, po wdrażanie i konfigurowanie gotowych aplikacji na docelowych serwerach. Skoro więc istnieją już sprawdzone i stosowane od wielu lat sposoby automatyzacji procesów, to czy warto je modyfikować lub usprawniać? Innymi słowy, czy jest sens zmieniać coś, co działa?</p>
+
+<p>Platforma Eximee, którą rozwijamy, instalowana była właśnie przy użyciu skryptów bashowych. Wszystkie wykorzystywane tam funkcje przez lata zostały doszlifowane, aby spałniały konkretne wymagania klientów i były na tyle uniwersalne, aby ograniczyć liczbę wprowadzanych w nich zmian. Napisany kod spełniał wszystkie założenia – tworzył odpowiednią strukturę katalogów, nadawał uprawnienia, zastępował placeholdery odpowiednimi wartościami z pliku konfiguracyjnego, startował poszczególne aplikacje osadzone wcześniej w katalogach docelowych, itp.</p>
+
+<p>Choć proces wydaje się prosty, to nie każda instalacja platformy kończyła się sukcesem. Przyczyn bywało kilka – niechęć instalującego do dokładnego zapoznania się z dokumentacją, czy choćby brak wcześniejszego doświadczenia we wdrażaniu platformy. Zawsze mogła zdarzyć się sytuacja, że nie wszystkie parametry instalacyjne zostały ustawione. Także użytkownik, z którego uruchamiano skrypt był nie bez znaczenia. Musiał on posiadać wszystkie uprawnienia do wykonania zawartych w kodzie instrukcji. Każda z wymienionych przyczyn wymagała analizy. Aby ta była możliwa konieczne było logowanie poszczególnych etapów wykonania skryptu i wartości, które miały wpływ na nieudaną instalację. Fakt ten wymagał przygotowania dodatkowych instrukcji tworzących plik z logiem i wypisujących stan instalacji na ekran konsoli użytkownika, tym samym zwiększajac złożoność i rozmiar skryptu.</p>
+
+<p>Sam start instalacji był dość prosty. Wystarczyło rozpakować archiwum ZIP, zawierające piki instalacyjne platformy Eximee i wykonać znajdujący się tam skrypt, przekazując plik z ustawieniami dostosowanymi dla danego serwera. Plik z ustawieniami tworzony był po stronie klienta i rozwijany w oparciu o załączane instrukcje.</p>
+
+<p>Uruchomienie skryptu instalacyjnego:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./update.sh ~/config/settings.sh
+</code></pre></div></div>
+
+<p>Co działo się po uruchomieniu skryptu update.sh? Zasadniczo za każdym razem to samo. Zatrzymywane były kluczowe procesy (Tomcat, Servicemix, itd.), usuwane były „ślady” po poprzedniej instalacji, rozpakowywana była zawartość archiwum, a wszystkie pliki trafiały do ustalonej struktury katalogów na serwerze klienta. Na koniec ponownie uruchamiane były kluczowe aplikacje. Przykładowa funkcja usuwająca dotychczas wyglądała tak:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>cleanOldVersion <span class="o">{</span>
+     	log <span class="s2">"Czyszczenie poprzedniej instalacji"</span>
+    	
+   	<span class="nv">CONFIGS</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">installSettings</span><span class="p">[</span><span class="s1">'ROOT'</span><span class="p">]</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">installSettings</span><span class="p">[</span><span class="s1">'CONFIG_FOLDER'</span><span class="p">]</span><span class="k">}</span><span class="s2">"</span>
+    	<span class="nv">BINS</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">installSettings</span><span class="p">[</span><span class="s1">'ROOT'</span><span class="p">]</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">installSettings</span><span class="p">[</span><span class="s1">'BINARIES_FOLDER'</span><span class="p">]</span><span class="k">}</span><span class="s2">"</span>
+    
+   	log <span class="s2">"Usuwanie: </span><span class="nv">$CONFIGS</span><span class="s2">/eximee/bundles_config"</span>
+    	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$CONFIGS</span>/eximee/bundles_config <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu poprzedniej instalacji"</span>
+    
+   	log <span class="s2">"Usuwanie: </span><span class="nv">$CONFIGS</span><span class="s2">/eximee/logback"</span>
+    	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$CONFIGS</span>/eximee/logback <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu poprzedniej instalacji"</span>
+    
+   	log <span class="s2">"Usuwanie: find </span><span class="nv">$CONFIGS</span><span class="s2">/eximee/ -maxdepth 1 -type f -name </span><span class="se">\*</span><span class="s2">.xml"</span>
+    	find <span class="nv">$CONFIGS</span>/eximee/ <span class="nt">-maxdepth</span> 1 <span class="nt">-type</span> f <span class="nt">-name</span> <span class="k">*</span>.xml | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"konfiguracja-partnera"</span> | 
+   	<span class="nb">grep</span> <span class="nt">-v</span> 	<span class="s2">"knowledge-base"</span> | xargs <span class="nb">rm</span> <span class="nt">-rf</span> <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu 	poprzedniej instalacji"</span>
+    
+   	log <span class="s2">"Czyszczenie tomcata.</span><span class="se">\n</span><span class="s2">Usuwanie plików i katalogów bez webapps"</span>
+    	find <span class="nv">$BINS</span>/tomcat/ <span class="nt">-maxdepth</span> 1 <span class="nt">-mindepth</span> 1 <span class="nt">-not</span> <span class="nt">-name</span> <span class="s2">"webapps"</span> | xargs <span class="nb">rm</span> <span class="nt">-rf</span>
+    
+   	log <span class="s2">"Usuwanie aplikacji bez knowledgebase"</span>
+    	find <span class="nv">$BINS</span>/tomcat/webapps/ <span class="nt">-maxdepth</span> 1 <span class="nt">-mindepth</span> 1 <span class="nt">-not</span> <span class="nt">-name</span> <span class="s2">"knowledgebase*"</span> | 	xargs <span class="nb">rm</span> <span class="nt">-rf</span>
+   
+   	log <span class="s2">"Czyszczenie tomcata 9 na JVM 11.</span><span class="se">\n</span><span class="s2">Usuwanie plików i katalogów bez webapps"</span>
+    	find <span class="nv">$BINS</span>/tomcat-jvm11/ <span class="nt">-maxdepth</span> 1 <span class="nt">-mindepth</span> 1 <span class="nt">-not</span> <span class="nt">-name</span> <span class="s2">"webapps"</span> | xargs <span class="nb">rm</span> <span class="nt">-rf</span>
+    
+   	log <span class="s2">"Usuwanie aplikacji bez knowledgebase"</span>
+    	find <span class="nv">$BINS</span>/tomcat-jvm11/webapps/ <span class="nt">-maxdepth</span> 1 <span class="nt">-mindepth</span> 1 <span class="nt">-not</span> <span class="nt">-name</span> <span class="s2">"knowledgebase*"</span> | 	xargs <span class="nb">rm</span> <span class="nt">-rf</span>
+   
+    	log <span class="s2">"Usuwanie: </span><span class="nv">$BINS</span><span class="s2">/eximee/bundles/</span><span class="se">\*</span><span class="s2">"</span>
+    	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$BINS</span>/eximee/bundles/<span class="k">*</span> <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu poprzedniej instalacji"</span>
+    
+   	log <span class="s2">"Usuwanie: </span><span class="nv">$BINS</span><span class="s2">/eximee/bundles-jvm11/</span><span class="se">\*</span><span class="s2">"</span>
+    	<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$BINS</span>/eximee/bundles-jvm11/<span class="k">*</span> <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu poprzednieji instalacji"</span>
+    
+   	<span class="k">if</span> <span class="o">[</span> <span class="nt">-d</span> <span class="nv">$BINS</span>/servicemix/data/cache/bundle212 <span class="o">]</span><span class="p">;</span> <span class="k">then
+     		</span>log <span class="s2">"Usuwanie: </span><span class="nv">$BINS</span><span class="s2">/servicemix/data/cache/bundle212"</span>
+     		<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$BINS</span>/servicemix/data/cache/bundle212 <span class="o">||</span> fail <span class="s2">"Blad przy czyszczeniu 				poprzedniej instalacji"</span>
+    	<span class="k">fi
+    
+   	</span>log <span class="nv">$PHASE_SEPARATOR</span>
+    
+   	log <span class="s2">"Czyszczenie zalezne od platformy"</span>
+    	cleanSystemBased <span class="o">||</span> fail <span class="s2">"Blad czyszczenia czesci zaleznej od platformy"</span>
+    	log <span class="nv">$PHASE_SEPARATOR</span>
+   <span class="o">}</span>
+</code></pre></div></div>
+<p>Niby nic nadzwyczajnego, a jednak na samo logowanie postępu i usunięcie plików, które i tak zostaną ponownie wgrane na środowisko wraz z nową paczką, przeznaczono jakieś 30 linii kodu. Choć logowanie niekoniecznie było niezbędne, to jednak pozwalało śledzić kolejne etapy procesu instalacji, dając większą wiedzę osobom analizującym ewentualne przyczyny nieudanej instalacji.</p>
+
+<p>W takim razie, co miał zrobić administrator systemu, który chciałby skrócić proces i zainstalować tylko te komponenty, które uległy zmianie? No cóż, musiał on wykazać się nie lada cierpliwością i pewnością siebie, modyfikując dołączony do paczki skrypt instalacyjny lub po prostu pogodzić się z faktem, że nie da się tego zrobić „na skróty”.</p>
+
+<p>Jakby tego było mało, chcąc zainstalować kompletną platformę na „świeżym” środowisku konieczna była praca z kilkoma archiwami zip, które zawierały poszczególne składowe systemu. Osobno bowiem dostarczano strukturę bazy danych, frontend, backend czy aplikacje do zarządzania systemem plików. W skrócie, aby administrator zainstalował platformę Eximee musiał co najmniej 4 razy powtórzyć podobny proces dla każdej części platformy.</p>
+
+<h2 id="era-ansible-">Era Ansible <img src="/assets/img/posts/2020-07-08-ansible-jak-uporzadkowac-chaos/ansible.png" alt="Logo Ansible" /></h2>
+<p>Już od wczesnych lat studiów programistom wpaja się, aby dążyć do utrzymania eleganckiej i czytelnej struktury swoich aplikacji (<code class="language-plaintext highlighter-rouge">KISS – Keep it simple, stupid</code>). Doskonale w ten trend wpasowuje się <strong>Ansible</strong>. To kupione przez firmę <strong>Red Hat</strong> opensource’owe oprogramowanie m.in. do automatyzacji procesu wdrażania aplikacji i zarządzania konfiguracją. Za pomocą języka <strong>YAML</strong>, w prosty sposób pozwala opisać wzajemne relacje między systemami.</p>
+
+<p>Czytając dokumentację dostajemy obietnicę ujednolicenia konfiguracji, organizacji złożonych procesów i jednocześnie łatwą do zarządzania architekturę. Ponadto czytamy, że Ansible pozwala osiągnąć wzrost wydajności i nie nakłada dodatkowych wymagań na otoczenie, w którym działa.</p>
+
+<p>Do pracy z Ansible wymagane jest tylko, aby na maszynie sterującej zainstalowane były:</p>
+<ul>
+  <li>Python 2.7 lub Python 3.5+</li>
+  <li>Ansible (np. przy użyciu Python Package Manager’a)</li>
+</ul>
+
+<p>Ansible wymaga hasła lub klucza SSH w celu rozpoczęcia zarządzania systemami i może rozpocząć zarządzanie nimi bez instalowania oprogramowania agenta, unikając problemu „zarządzania zarządzaniem” powszechnego w wielu systemach do automatyzacji.</p>
+
+<p>Ansible łączy się z systemami poprzez mechanizmy transportowe – SSH (Unix) lub PowerShell (Windows). <strong>Moduły</strong>, które są małymi programami, zawierające uzupełnione argumenty, przenoszone są do tymczasowego katalogu przez wspomniane mechanizmy na zarządzane maszyny. Tam są wykonywane, a następnie usuwane w ramach jednej akcji. Moduły zwracają obiekty JSON na standardowe wyjście, a te z kolei przetwarzane są przez program Ansible na maszynie sterującej. Mogą one zarządzać zasobami w sposób indempotentny. Oznacza to, że moduł działa w sposób deklaratywny, czyli może zdecydować np. czy dany pakiet powinien zostać zainstalowany w określonej wersji lub nie wykonać żadnej akcji, gdy system jest już w pożądanym stanie. Można je też uruchamiać pojedynczo (imperatywnie).</p>
+
+<p>Do zarządzania administrowanymi systemami służą pliki <strong>inventory</strong>. Pozwalają one na grupowanie serwerów i definiowanie zmiennych, które później wykorzystywane będą w tzw. <strong>playbookach</strong>. Plik inventory może być użyty globalnie, w ramach instalacji Ansible, lub wykorzystać lokalne pliki inventory dedykowane dla konkretnego projektu. Przykładowy fragment pliku inventory wygląda następująco:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># eximee-ansible/settings/settings-template.yml</span>
+
+<span class="c1">### Ogólne parametry instalacji</span>
+
+<span class="na">validation_protocol</span><span class="pi">:</span> <span class="s">http</span>
+<span class="na">validation_host</span><span class="pi">:</span> <span class="s">eximee-validation</span>
+<span class="na">validation_port</span><span class="pi">:</span> <span class="m">8080</span>
+<span class="na">services_protocol</span><span class="pi">:</span> <span class="s">http</span>
+<span class="na">services_host</span><span class="pi">:</span> <span class="s">eximee-services</span>
+<span class="na">services_port</span><span class="pi">:</span> <span class="m">8080</span>
+<span class="na">servicemix_host</span><span class="pi">:</span> <span class="s">eximee-servicemix</span>
+<span class="na">validation_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">{{</span><span class="nv"> </span><span class="s">validation_protocol</span><span class="nv"> </span><span class="s">}}://{{</span><span class="nv"> </span><span class="s">validation_host</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">validation_port</span><span class="nv"> </span><span class="s">}}/osgi-bridge/validation/"</span>
+<span class="na">services_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">{{</span><span class="nv"> </span><span class="s">services_protocol</span><span class="nv"> </span><span class="s">}}://{{</span><span class="nv"> </span><span class="s">services_host</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">services_port</span><span class="nv"> </span><span class="s">}}/osgi-bridge/serviceproxy/"</span>
+<span class="na">eximee_status_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">{{</span><span class="nv"> </span><span class="s">eximee_status_protocol</span><span class="nv"> </span><span class="s">}}://{{</span><span class="nv"> </span><span class="s">eximee_status_host</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">eximee_status_port</span><span class="nv"> </span><span class="s">}}/eximee-status/"</span>
+<span class="na">repository_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">{{</span><span class="nv"> </span><span class="s">repository_protocol</span><span class="nv"> </span><span class="s">}}://{{</span><span class="nv"> </span><span class="s">repository_host</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">repository_port</span><span class="nv"> </span><span class="s">}}/repository/"</span>
+<span class="na">repository_username</span><span class="pi">:</span> <span class="s">UZUPELNIJ</span>
+<span class="na">repository_password</span><span class="pi">:</span> <span class="s">UZUPELNIJ</span>
+<span class="na">mongodb_host</span><span class="pi">:</span> <span class="s">eximee-mongo</span>
+<span class="na">mongo_db_auth</span><span class="pi">:</span> <span class="s">MONGODB-CR</span>
+<span class="nn">...</span>
+</code></pre></div></div>
+<p>W pliku inventory znajdują się zatem dane dotyczące hostów czy używanych portów. W inventory warto umieścić również takie zmienne, które są częściej wykorzystywane w playbookach lub zależne są np. od serwerów, na których instalujemy aplikację. Nie powinno się bowiem modyfikować playbooków przy okazji każdej instalacji, a utrzymywać dla danego serwera odpowiednią konfigurację. W przypadku platformy Eximee takimi zmiennymi są np. adresy URL różnych aplikacji. Warto też zwrócić uwagę, że adresy w powyższym przykładzie nie są zdefiniowane „na sztywno”. Zawierają one odwołania do kilku innych zmiennych tworząc nową wartość, na co również pozwala Ansible.</p>
+
+<p>Do zapamiętania haseł i innych danych uwierzytelniających pomocne okaże się <strong>Ansible Vault</strong>. Właściwość ta pozwala na przechowywanie poufnych i wrażliwych danych (np. haseł) w inny sposób, niż w postaci zwykłego tekstu w plikach inventory, rolach lub playbookach. 
+Wykorzystując poniższe polecenie i podając hasło, przy użyciu którego konfiguracja zostanie zaszyfrowana, można w prosty sposób zabezpieczyć wskazany plik.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ansible-vault encrypt /path/to/file
+New Vault password: 
+Confirm New Vault password: 
+Encryption successful
+</code></pre></div></div>
+<p>Zawartość takiego zasobu, który przed wykonaniem operacji wyglądał następująco:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">repository_username</span><span class="pi">:</span> <span class="s">repoUser</span>
+<span class="na">repository_password</span><span class="pi">:</span> <span class="s">^$asdY$4-(56as</span>
+</code></pre></div></div>
+<p>po użyciu Ansible Vault wygląda znacznie bezpieczniej:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ANSIBLE_VAULT</span><span class="p">;</span>1.1<span class="p">;</span>AES256
+39303839656563346138653734383861363937643934323563356533366437333633383339323739
+3135386136336365316535346630333261316232393238360a353437383762386665363662316138
+63636139373162306165396231386265333264636537616463633935373637366164623762353135
+3263663338323163350a386230383034653538363538303537376435356166346337386637623662
+38613839356538336530636136333065343935393034656434666464623033633330656162643838
+64376165663330366463313165336237343863636437666437303964313362313935366332346362
+33313438383262383933643332663539373139376637626537393439323633366231653534356465
+31366662633837353562
+</code></pre></div></div>
+<p>Uruchomienie <strong>playbooka</strong>, który wykorzystuje zaszyfrowane pliki możliwe jest poprzez użycie dyrektywy <code class="language-plaintext highlighter-rouge">--ask-vault-pass</code>, np.:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ansible-playbook <span class="nt">--ask-vault-pass</span> <span class="nt">--inventory</span> inventory_file sample_playbook.yml
+</code></pre></div></div>
+
+<p>Wiedząc już czym jest moduł oraz gdzie należy umieścić konfigurację, potrzebna jest jeszcze wiedza, jak definiować pewien stan systemu, który chcemy osiągnąć. Do tego właśnie służą <strong>playbooki</strong>. Definicja takiego stanu dzieli się na taski. Zwiększa to nie tylko czytelność kodu playbooka, ale też oddziela od siebie niezależne etapy instalacji.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># eximee-ansible/platform.yml</span>
+
+<span class="nn">---</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Create installation_tmp dir</span>
+  <span class="na">hosts</span><span class="pi">:</span> <span class="s">localhost</span>
+  <span class="na">become</span><span class="pi">:</span> <span class="s">no</span>
+  <span class="na">connection</span><span class="pi">:</span> <span class="s">local</span>
+  <span class="na">tasks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">file</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/installation_tmp"</span>
+        <span class="na">state</span><span class="pi">:</span> <span class="s">directory</span>
+
+<span class="pi">-</span> <span class="na">import_playbook</span><span class="pi">:</span> <span class="s">check-settings.yml</span>
+<span class="pi">-</span> <span class="na">import_playbook</span><span class="pi">:</span> <span class="s">eximee-common.yml</span>
+<span class="pi">-</span> <span class="na">import_playbook</span><span class="pi">:</span> <span class="s">dmzzew.yml</span>
+<span class="pi">-</span> <span class="na">import_playbook</span><span class="pi">:</span> <span class="s">dmz.yml</span>
+<span class="pi">-</span> <span class="na">import_playbook</span><span class="pi">:</span> <span class="s">formstore.yml</span>
+
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Remove installation_tmp dir</span>
+  <span class="na">hosts</span><span class="pi">:</span> <span class="s">localhost</span>
+  <span class="na">become</span><span class="pi">:</span> <span class="s">no</span>
+  <span class="na">gather_facts</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">connection</span><span class="pi">:</span> <span class="s">local</span>
+  <span class="na">tasks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">file</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/installation_tmp"</span>
+        <span class="na">state</span><span class="pi">:</span> <span class="s">absent</span>
+</code></pre></div></div>
+<p>W powyższym przykładzie widoczne są dwa proste zadania. Pierwsze, o nazwie Create installation_tmp dir tworzy tymczasowy katalog instalacyjny installation_tmp w lokalizacji, która zdefiniowana została pod zmienną eximee_platform_dest. Drugie (<code class="language-plaintext highlighter-rouge">Remove installation_tmp dir</code>) ten katalog usuwa. Pomiędzy tymi zadaniami zaimportowane zostały odseparowane logicznie playbooki. Każdy z nich instaluje odrębną część platformy, a ich rozdzielenie jeszcze bardziej zwiększa czytelność kodu. Co ciekawe, również importowane playbooki zostały odpowiednio podzielone na <strong>role</strong>, które, na podstawie określonej struktury plików, pozwalają na automatyczne ładowanie zmiennych czy tasków. Ponadto, grupowanie zadań w role pozwala na ich łatwe reużywanie.</p>
+
+<p>Jak uruchomić taki skrypt instalacyjny? Nic prostszego – wystarczy poniższa instrukcja:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ansible-playbook nazwa_playbooka.yml
+</code></pre></div></div>
+
+<p>Docelowo więc pierwotna struktura paczki wdrożeniowej, składającej się ze skryptów bashowych, domyślnych parametrów konfiguracyjnych i plików z platformą, nabrała nowego charakteru. Wprowdzone modyfikacje pozwoliły na wydzielenie wielu plików z odseperowanymi logicznie zadaniami, które nie musiały już być rozpakowywane na maszynie docelowej, a jedynie uruchomione z odpowiednim użytkownikiem z poziomu maszyny kontrolnej:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eximee-ansible
+|──common
+|──roles                                   # katalog agregujący role
+|   |──java8                               # rola java8
+|   |   |──tasks                           # taski zdefiniowane w ramach roli java8
+|   |   |   |  ensure-dir-exists.yml     
+|   |   |   |  install.yml
+|   |   |   |  main.yml
+|   |   |   |  unarchive.yml
+|   |──java11
+|   |   |──tasks                           # taski zdefiniowane w ramach roli java11
+|   |   |   |  ...
+|   |──tomcat-server                       # rola tomcat-server
+|   |   |──tasks                           # taski zdefiniowane w ramach roli tomcat-server
+|   |   |   |  main.yml
+|   |   |   |  server.yml
+|   |   |   |  setup.yml
+|   ...
+|──settings                                # ogólne parametry instalacji 
+|   |   settings-template.yml             
+|   check-settings.yml                     # playbook weryfikujący czy wszystkie wymagane parametry instalacyjne zostały zdefiniowane
+|   formstore.yml                          # playbook instalacyjny dla roli formstore
+|   platform.yml                           # główny playbook instalacyjny
+|   ...
+</code></pre></div></div>
+
+<p>Jakie korzyści niosła za sobą taka zmiana? Tych było kilka:</p>
+<ul>
+  <li>idempotenetność stanu docelowego – nie instalujemy czegoś, co już jest w pożądanym stanie;</li>
+  <li>możliwość zarządzania konfiguracjami poszczególnych komponentów platformy Eximee;</li>
+  <li>platforma dostarczana jest jedną paczką, zawierającą wszystkie komponenty;</li>
+  <li>instalacja odbywać się będzie bardzo podobnie, jak miało to miejsce w przypadku skryptów bashowych – uruchamiany będzie główny playbook wraz ze wskazanaiem pliku konfiguracyjnego;</li>
+  <li>możliwość uruchomienia skryptów z poziomu maszyny sterującej – system będzie wiedział na jakim serwerze ma zostać zainstalowana platforma;</li>
+  <li>instalowane będą tylko te aplikacje, których konfiguracja się zmieniła;</li>
+  <li>wbudowany mechanizm logowania postępu instalacji;</li>
+  <li>znaczna poprawa czytelności;</li>
+  <li>łatwa możliwość rozszerzerzania skryptów – np. o tagi, pozwalające na wykonanie skryptów tylko dla danego komponentu lub grupy komponentów.</li>
+</ul>
+
+<h2 id="ansible-a-instalacja-mikroserwisów">Ansible, a instalacja mikroserwisów</h2>
+<p>Przejście na nowy sposób instalacji wykonane zostało nie tylko dla komponentów platformy, ale też dla mikroserwisów dostarczanych dla jednego z klientów. W każdym takim mikroserwisie, będącym klasyczną aplikacją Spring Bootową, wydzielono dodatkowy moduł, w którym zdefiniowano taski odpowiedzialne za:</p>
+<ul>
+  <li>kopiowanie wykonywalnego jara na docelowe środowisko, pod określoną w konfiguracji lokalizację;</li>
+  <li>utworzenie katalogu z konfiguracją;</li>
+  <li>kopiowanie konfiguracji do utworzonego katalogu;</li>
+  <li>utworzenie katalogu z logami;</li>
+  <li>kopiowanie konfiguracji logback’a na środowisko docelowe;</li>
+  <li>restart aplikacji, jeżeli ta jest już uruchomiona na środowisku;</li>
+  <li>weryfikację działania aplikacji.</li>
+</ul>
+
+<p>Instalacja takiego mikroserwisu sprowadzała się do uzupełnienia parametrów konfiguracyjnych w pliku hosts-template.yml oraz wykonania polecenia:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ansible-playbook <span class="nt">--inventory</span> hosts-template.yml microservice-x.yml <span class="nt">-vvvv</span>
+</code></pre></div></div>
+
+<p>Plik microservice-x.yml to nic innego, jak główny playbook grupujący w rolach wszystkie powyższe zadania. Playbook jest bardzo prosty i wygląda następująco:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">deploy microservice-x</span>
+  <span class="na">hosts</span><span class="pi">:</span> <span class="s">lan</span>
+  <span class="na">become</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+  <span class="na">become_user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+  <span class="na">roles</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">microservice-x</span>
+</code></pre></div></div>
+<p>Już na pierwszy rzut oka widać, że wspomniane taski mogły zostać z powodzeniem wydzielone do osobnego projektu. Ten odrębny byt mógłby stać się wspólnym elementem dla wszystkich mikroserwisów po to, by nie powielać kodu i zmniejszyć złożoność dodatkowego modułu. W takich kwestiach bardzo pomocny jest rozdział poświęcony dobrym praktykom w samej dokumentacji Ansible, dostępny pod adresem: <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html"><strong>dobre praktyki</strong></a>.</p>
+
+<p>Podczas pierwszych wdrożeń na środowisku klienckim okazało się, że konieczne jest wprowadzenie dodatkowej konfiguracji. Powyższa definicja playbooka jest już w nią zaopatrzona. Chodzi bowiem o dyrektywy <code class="language-plaintext highlighter-rouge">become</code> oraz <code class="language-plaintext highlighter-rouge">become_user</code>. Pierwsze instalacje aplikacji kończyły się niepowodzeniem z powodu braku odpowiednich uprawnień. Dyrektywa <code class="language-plaintext highlighter-rouge">become</code> pozwala na ich tzw. eskalację czyli wykonanie zadania z uprawnieniami innego użytkownika, niż obecnie zalogowany (zdalny). Innymi słowy zastosowanie dyrektywy <code class="language-plaintext highlighter-rouge">become</code> pozwala na wykonanie poleceń przy użyciu takich narzędzi jak sudo, su, runas, itd. Jeżeli zdefiniowana zostanie jedynie dyrektywa <code class="language-plaintext highlighter-rouge">become</code>, użytkownik domyślnie otrzymuje uprawnienia root’a. Problem w tym, że nie zawsze to właśnie ten użytkownik był tym pożądanym. Tu z pomocą przyszła dyrektywa <code class="language-plaintext highlighter-rouge">become_user</code>, która pozwala na zdefiniowanie nazwy użytkownika, z którym mamy np. wykonać odpowiednie zadanie. Wykorzystanie w powyższym przykładzie playbooka następujących wartości:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">switch_user</span><span class="pi">:</span> <span class="s">yes</span>            <span class="c1"># włączenie eskalacji uprawnień</span>
+<span class="na">switched_user</span><span class="pi">:</span> <span class="s">tomcat</span>       <span class="c1"># przełączenie na użytkownika o nazwie tomcat</span>
+</code></pre></div></div>
+<p>pozwoli na wykonanie zadań z poziomu użytkownika o nazwie tomcat, a nie tego, który jest obecnie zalogowany na serwerze.</p>
+
+<h2 id="śledzenie-postępów-instalacji">Śledzenie postępów instalacji</h2>
+<p>Ansible dostarcza wbudowany mechanizm logowania, pozwalający na śledzenie postępów instalacji oraz uzyskanie informacji, które zadania zostały wykonane, a które nie. Przykładowy log procesu instalacji mikroserwisu wygląda następująco:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PLAY [deploy microservice-x] ********************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [lan]
+
+TASK [microservice-x : copy microservice-x jar] *****************************************************************************************************************************************************************
+[WARNING]: Unable to find '../files/bundles' in expected paths (use -vvvvv to see paths)
+
+TASK [microservice-x : create config directory] *************************************************************************************************************************************************************
+ok: [lan]
+
+TASK [ microservice-x : copy application properties] *********************************************************************************************************************************************************
+ok: [lan] =&gt; (item=/home/users/rmastalerek/Projects/Eximee/microservice-x/microservice-x-deploy/src/main/ansible/install/roles/microservice-x/files/../templates/application.properties.j2)
+
+TASK [microservice-x : make sure logs directory exists] *****************************************************************************************************************************************************
+ok: [lan]
+
+TASK [microservice-x : create logs directory] ***************************************************************************************************************************************************************
+skipping: [lan]
+
+TASK [microservice-x : make sure sensitive logs directory exists] *******************************************************************************************************************************************
+ok: [lan]
+
+TASK [microservice-x : create sensitive logs directory] *****************************************************************************************************************************************************
+skipping: [lan]
+
+TASK [microservice-x : copy logback conf] *******************************************************************************************************************************************************************
+ok: [lan]
+
+TASK [microservice-x : get pid of microservice-x] ***************************************************************************************************************************************************************
+changed: [lan]
+
+TASK [microservice-x : kill microservice-x processes] ***********************************************************************************************************************************************************
+changed: [lan] =&gt; (item=14454)
+
+TASK [microservice-x : wait_for] ****************************************************************************************************************************************************************************
+ok: [lan] =&gt; (item=14454)
+
+TASK [microservice-x : stop microservice-x] *********************************************************************************************************************************************************************
+
+TASK [microservice-x : start/restart microservice-x] ************************************************************************************************************************************************************
+changed: [lan]
+
+TASK [microservice-x : check if microservice-x process exists] **************************************************************************************************************************************************
+ok: [lan]
+
+TASK [microservice-x : report status of service] ************************************************************************************************************************************************************
+skipping: [lan]
+
+TASK [microservice-x : report status of service] ************************************************************************************************************************************************************
+ok: [lan] =&gt; {
+    "msg": "Microservice-x works"
+}
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+lan             : ok=12   changed=3    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0 
+</code></pre></div></div>
+<p>Sposób prezentowania informacji przez Ansible jest dość czytelny. Instalację rozpoczyna uruchomienie playbooka o nazwie deploy microservice-x. Następnie wykonywany jest domyślny, ansible’owy task <code class="language-plaintext highlighter-rouge">Gathering Facts</code>, który zbiera informację o hostach, na których wykonywane będą zmiany. Później już wykonywane są wszystkie zadania zdefiniowane w playbooku i wykorzystywanych rolach. Każde zadanie kończy się pewnym statusem. Na powyższym przykładzie widać, że zadania uzyskały takie statusy, jak: <strong>ok</strong>, <strong>changed</strong> czy <strong>skipping</strong>. Dzięki wspomnianej na początku idempotentności niektóre zadania zostały pominięte, ponieważ system był już w pożądanym stanie. Tym zadaniom system przypisał status <strong>ok</strong>. Taski, które wymagały wykonania jakiejś zmiany na serwerze oznaczone zostały statusem <strong>changed</strong>. Status <strong>skipping</strong> został przypisany zadaniom, których wykonanie zostało oparte o pewien warunek, a ten z kolei nie został spełniony.</p>
+
+<p>Każde wykonanie playbooka kończy się podsumowaniem. Zawiera ono zbiorczą informację dotyczącą wszystkich zadań oraz ich końcowych statusach. Gdyby okazało się, że jeden z kluczowych tasków nie może zostać wykonany, np. z powodu braku połączenia z serwerem docelowym, to skrypt zakończyłby swoje wykonanie na tym zadaniu, np.:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PLAY [deploy microservice-x] ********************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+fatal: [lan]: UNREACHABLE! =&gt; {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname some.host.consdata.local: Temporary failure in name resolution", "unreachable": true}
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+lan                        : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
+</code></pre></div></div>
+<p>Ansible daje możliwość wykonania playbooka z większą ilością informacji poprzez użycie przełącznika verbose (-vvv lub -vvvv z możliwością debugowania połączenia)</p>
+
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Zgrabne zarządzanie konfiguracją, automatyzacja i uproszczenie procesu instalacji, do tego czytelność i większa kontrola nad procesem wdrażania aplikacji. To główne zalety tego, co udało się wprowadzić zastępując nieco archaiczne podejście oparte o bashowe skrypty.</p>
+
+<p>Wymienione korzyści wpływają przede wszystkim na skrócenie czasu wykonywania powtarzalnych czynności. Sama automatyzacja pozwala ograniczyć do minimum ryzyko popełnienia błędu ludzkiego podczas instalowania aplikacji. Zapis kroków instalacji aplikacji czy systemu w postaci prostych tasków oraz grupowanie ich w moduły a następnie playbooki pozwala na standaryzację procesu. To z kolei wyklucza niepotrzebne wykonywanie ręcznych zmian i późniejszą, często czasochłonną analizę problemu, gdy taki wystąpi. Dzięki plikom inventory nie jest konieczne utrzymywanie przez administratora konfiguracji do znacznej ilości serwerów i dokumentacji do nich. Niewątpliwą zaletą Ansible jest przewidywalność. Zapewnia ona efektywną pracę administratora czy DevOpsa i ogranicza wystąpienie nieoczekiwanych problemów.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "ansible automation devops";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

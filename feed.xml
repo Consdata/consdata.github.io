@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/" rel="alternate" type="text/html" />
+  <updated>2026-02-13T04:42:09-06:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest narzędzie artillery?</title>
+      <link href="https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest narzędzie artillery?" />
+      <published>2026-02-13T01:00:00-06:00</published>
+      <updated>2026-02-13T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kamil Dudek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="artillery" />
+      
+        <category term="tests" />
+      
+
+      
+        <summary type="html">Artillery to oparte o Node.js narzędzie do wykonywania testów wydajnościowych, które może być prostszą alternatywą dla np. Gatlinga. Charakteryzuje się ono prostotą użycia, wspiera różne technologie (np. HTTP API, WebSockety), daje możliwość testowania rozproszonego oraz może być rozszerzane przez pluginy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</title>
+      <link href="https://blog.consdata.tech/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" rel="alternate" type="text/html" title="Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?" />
+      <published>2025-12-03T23:00:00-06:00</published>
+      <updated>2025-12-03T23:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Stolarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="typescript" />
+      
+
+      
+        <summary type="html">W TypeScript, poza string czy number, mamy też kilka specjalnych typów do obsługi sytuacji, gdy nie znamy typu danych. Przyjrzyjmy się im z bliska.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że za pomocą operatora shareReplay możesz cache’ować dane z observable?</title>
+      <link href="https://blog.consdata.tech/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" rel="alternate" type="text/html" title="Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?" />
+      <published>2025-11-17T01:00:00-06:00</published>
+      <updated>2025-11-17T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Tatarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="rxjs" />
+      
+        <category term="observable" />
+      
+
+      
+        <summary type="html">Często zdarza się, że nie chcemy za każdym razem ponownie wykonywać całej logiki z danego Observable — zamiast tego wolimy przechować jego wynik w pamięci. W Angularze (i ogólnie w RxJS) możemy to zrobić za pomocą operatora shareReplay.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Jak wykryć i naprawić błędne konfiguracje w działającym klastrze Kubernetes</title>
+      <link href="https://blog.consdata.tech/2025/09/26/jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s.html" rel="alternate" type="text/html" title="Jak wykryć i naprawić błędne konfiguracje w działającym klastrze Kubernetes" />
+      <published>2025-09-26T02:00:00-05:00</published>
+      <updated>2025-09-26T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/09/26/jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartłomiej Domżalski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="kubernetes" />
+      
+
+      
+        <summary type="html">Kubernetes na dobre wpisał się w krajobraz nowoczesnych technologii. To narzędzie, które usprawnia codzienną pracę zespołów DevOps, pozwalając łatwo uruchamiać, skalować i utrzymywać aplikacje oparte na kontenerach. Nic dziwnego, że tak szybko zdobyło popularność – daje sporą swobodę i elastyczność w budowaniu usług.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-09-26-jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?</title>
+      <link href="https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html" rel="alternate" type="text/html" title="Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?" />
+      <published>2025-09-01T01:00:00-05:00</published>
+      <updated>2025-09-01T01:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Robert Mastalerek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="transactions" />
+      
+        <category term="spring" />
+      
+        <category term="java" />
+      
+        <category term="transactional" />
+      
+
+      
+        <summary type="html">Testy integracyjne z użyciem Springa i Hibernate mają za zadanie możliwie wiernie odwzorować zachowanie aplikacji na środowisku produkcyjnym. Często, aby uprościć ich tworzenie, sięgamy po adnotację @Transactional, która automatycznie rollbackuje wszystkie zmiany w bazie danych po zakończeniu testu. Brzmi idealnie – nie musimy martwić się o „czystość” bazy, a każdy scenariusz startuje od świeżego punktu.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, do czego służy untracked w Angular?</title>
+      <link href="https://blog.consdata.tech/2025/07/31/angular-untracked.html" rel="alternate" type="text/html" title="Czy wiesz, do czego służy untracked w Angular?" />
+      <published>2025-07-31T18:00:00-05:00</published>
+      <updated>2025-07-31T18:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/07/31/angular-untracked</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">W bibliotekach opartych na reaktywnych sygnałach, takich jak Angular Signals, każda zmiana wartości sygnału używanego w funkcjach computed() lub effect() powoduje automatyczną rekalkulację lub ponowne wykonanie efektu. Dzięki temu aplikacja utrzymuje spójny stan i dynamicznie reaguje na zmiany danych. W niektórych sytuacjach jednak warto pobrać wartość sygnału bez uruchamiania reakcji. Można to osiągnąć za pomocą funkcji untracked(), która pozwala na odczyt wartości sygnału z pominięciem mechanizmu śledzenia zależności.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-06-09-angular-untracked/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w Jest można automatycznie testować dostępność (a11y)?</title>
+      <link href="https://blog.consdata.tech/2025/05/19/automatyczne-testowanie-dostepnosci.html" rel="alternate" type="text/html" title="Czy wiesz, że w Jest można automatycznie testować dostępność (a11y)?" />
+      <published>2025-05-19T02:00:00-05:00</published>
+      <updated>2025-05-19T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/05/19/automatyczne-testowanie-dostepnosci</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Stolarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="wcag" />
+      
+
+      
+        <summary type="html">Standard WCAG (Web Content Accessibility Guidelines) to zbiór wytycznych mających na celu zapewnienie dostępności treści cyfrowych dla wszystkich użytkowników, w tym osób z niepełnosprawnościami. Do testowania zgodności z tym standardem można wykorzystać różne narzędzia - jednym z nich jest “jest-axe”. W tym wpisie przybliżymy jego działanie, krok po kroku pokażemy, jak przeprowadzić testy dostępności oraz wskażemy, na co warto zwrócić uwagę podczas jego użycia.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-05-19-automatyczne-testowanie-dostepnosci/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Dostępność w PDF - dokumenty bez barier</title>
+      <link href="https://blog.consdata.tech/2025/04/28/dostepnosc-w-pdf-dokumenty-bez-barier.html" rel="alternate" type="text/html" title="Dostępność w PDF - dokumenty bez barier" />
+      <published>2025-04-28T02:00:00-05:00</published>
+      <updated>2025-04-28T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/04/28/dostepnosc-w-pdf-dokumenty-bez-barier</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kacper Hoffman</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="WCAG" />
+      
+
+      
+        <summary type="html">PDF (Portable Document Format) to jeden z najczęściej wykorzystywanych formatów do prezentacji tekstu, grafik, tabel czy formularzy. Jego popularność przynosi jednak konkretne pytania dotyczące dostępności., Czy każdy tego typu dokument możemy nazwać dostępnym? Czy będzie on dostosowany pod kątem różnego typu ograniczeń i niepełnosprawności ruchowych, sensorycznych, oraz kognitywnych. Czy jego przygotowanie umożliwia takim osobom samodzielne korzystanie z niego? Wymogi te są określane poprzez wytyczne WCAG.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-04-28-dostepnosc-w-pdf-dokumenty-bez-barier/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że z pomocą @starting-style można animować elementy z display: none za pomocą samego CSS?</title>
+      <link href="https://blog.consdata.tech/2025/04/07/starting-style.html" rel="alternate" type="text/html" title="Czy wiesz, że z pomocą @starting-style można animować elementy z display: none za pomocą samego CSS?" />
+      <published>2025-04-07T02:00:00-05:00</published>
+      <updated>2025-04-07T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/04/07/starting-style</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Tatarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">Do tej pory, aby wykonać animację po przejściu z display: none na inną wartość (pozwalającą wyrenderować element) konieczne było użycie dodatkowych trików. Dzięki regule @starting-style ten krok jest już zbędny i można uzyskać ten sam efekt, stosując jedynie CSS.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-04-07-starting-style/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngSwitch?</title>
+      <link href="https://blog.consdata.tech/2025/03/10/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngswitch.html" rel="alternate" type="text/html" title="Czy wiesz, że w Angular 17 została wprowadzona alternatywa dla *ngSwitch?" />
+      <published>2025-03-10T02:00:00-05:00</published>
+      <updated>2025-03-10T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/03/10/czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngswitch</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">W Angular 17 pojawiło się built-it control flow, które zostało ustabilizowane w wersji 18. Są to zamienniki dyrektyw *ngIf (opisaliśmy to tutaj), *ngFor (opisane tutaj), *ngSwitch.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-03-10-czy-wiesz-ze-w-angular-17-zostala-wprowadzona-alternatywa-dla-ngswitch/thumbnail.webp" />
+      
+    </entry>
+  
+</feed>

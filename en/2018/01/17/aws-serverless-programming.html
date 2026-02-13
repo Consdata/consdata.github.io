@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>AWS - serverless programming | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="AWS - serverless programming" />
+<meta name="author" content="jwilczewski" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="W kwestii AWS architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe." />
+<meta property="og:description" content="W kwestii AWS architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe." />
+<link rel="canonical" href="https://blog.consdata.tech/en/2018/01/17/aws-serverless-programming.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2018/01/17/aws-serverless-programming.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2018-01-17-aws-serverless-programming/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-01-17T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2018-01-17-aws-serverless-programming/thumbnail.webp" />
+<meta property="twitter:title" content="AWS - serverless programming" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"jwilczewski"},"image":"https://blog.consdata.tech/assets/img/posts/2018-01-17-aws-serverless-programming/thumbnail.webp","@type":"BlogPosting","headline":"AWS - serverless programming","description":"W kwestii AWS architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe.","dateModified":"2018-01-17T01:00:00-06:00","datePublished":"2018-01-17T01:00:00-06:00","url":"https://blog.consdata.tech/2018/01/17/aws-serverless-programming.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2018/01/17/aws-serverless-programming.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/en/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/en/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/en/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/en/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Find an article..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/en/">Technical blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Business blog</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">HR department</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate(' /2018/01/17/aws-serverless-programming.html')">PL</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">aws</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">AWS - serverless programming</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/en/authors/jwilczewski.html">
+        <img class="author-image" src="/assets/img/authors/jwilczewski.webp" alt="author">
+        <span class="author-name">Jakub Wilczewski</span><a class="author" href="https://github.com/jwilczewski">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+17
+
+
+January
+
+
+2018
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Trudno dziś wyobrazić sobie branżę IT bez chmury obliczeniowej. Przeniesienie naszych serwerów do clouda i zastosowanie Infrastructure as Code (IaC) pozwala często na zoptymalizowanie kosztów, a także na zapewnienie lepszej dostępności i skalowalności rozwiązania. Architektura serverless przenosi nas jeszcze poziom wyżej - przestajemy myśleć o maszynach wirtualnych, skupiamy się na kodzie rozwiązującym konkretne potrzeby biznesowe. Wymusza ona również pewną zmianę mentalną w środowisku inżynierów IT - praca z arkuszem kalkulacyjnym i liczenie kosztów przygotowywanego rozwiązania staje się nieodłączną częścią procesu produkcji. Wraz z wprowadzeniem przez Amazon usługi AWS Lambda w 2014 roku programowanie w architekturze serverless stało się jeszcze prostsze. W artykule przedstawię przykład serwisu do przechowywania notatek, przygotowany w oparciu o architekturę serverless, dostarczaną przez AWS. Pokażę również koszty takiego rozwiązania.</p>
+
+<p>Wymagania biznesowe:</p>
+<ul>
+  <li>Użytkownik może zapisywać notatki tekstowe.</li>
+  <li>Użytkownik może pobrać zapisane wcześniej notatki tekstowe.</li>
+</ul>
+
+<p>Środowisko deweloperskie:</p>
+<ul>
+  <li>Potrzebne będzie aktywne konto w Amazon AWS. Założenie takiego konta jest dość proste i dla większości usług darmowe przez pierwszy rok użytkowania. Konto możemy założyć tutaj: <a href="https://aws.amazon.com/free">https://aws.amazon.com/free</a>. Podczas tworzenia konta konieczne jest podanie danych karty kredytowej, ale przy okazji tworzenia opisanego tu serwisu będziemy używali jedynie usług wchodzących w skład rocznego free tier. W każdym momencie istnieje również możliwość sprawdzenia jakie są nasze należności dla Amazona. Niestety nie ma możliwości ustalenia granicy kwotowej, której nie chcemy przekroczyć, po której nastąpi wyłączenie naszej usługi. Można za to zdefiniować alerty, które powiadomią nas w przypadku przekroczenia ustalonej należności. Konfigurując konto w AWS warto włączyć Multi-Factor Authentication (MFA), ustrzeże nas to przed najgorszym możliwym scenariuszem, czyli przejęciem konta przez nieuprawnioną osobę. To może pociągnąć za sobą spore koszty obciążające nasz rachunek.</li>
+</ul>
+
+<h2 id="implementacja-odczytu-notatek">Implementacja odczytu notatek</h2>
+<h3 id="warstwa-persystencji">Warstwa persystencji</h3>
+<p>Aby zaimplementować odczyt notatek będziemy potrzebowali jakąś warstwę persystencji, gdzie przechowywane będą dane naszych notatek, komponent który wystawi nam restowe API i coś w czym zaimplementujemy “logikę biznesową” reagującą na wywołanie API pobraniem danych z warstwy persystencji.</p>
+
+<p>AWS udostępnia warstwę persystencji na różne sposoby. Mamy do dyspozycji storage plikowy S3, bazy relacyjne RDS a także bazę NoSql DynamoDB. Jeżeli chcemy być w 100% serverless, nie używamy RDS, gdyż wymaga ona utrzymywania ciągle działającej instancji (nadal nie musimy się w tym przypadku przejmować vm’kami - baza jest uruchamiana jako niezależny serwis, ale płacimy za cały czas, w którym dostępna jest baza). Do naszego zastosowania dobrze nadaje się baza DynamoDB. Aby utworzyć instancję bazy, logujemy się do konsoli AWS <a href="https://aws.amazon.com/console/">https://aws.amazon.com/console/</a> i przechodzimy do serwisu DynamoDB. Zanim utworzymy jakikolwiek zasób w konsoli AWS ważne jest określenie regionu, w którym chcemy działać. Mapa przedstawia jakie regiony są dostępne (pomarańczowe okręgi) i ile “availability zones” znajduje się w każdym regionie. Zielone okręgi oznaczają dodatkowe regiony, które będą dostępne w przyszłości.</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/1.png" alt="Regiony" /></p>
+
+<p>Najlepiej wybrać region, znajdujący się najbliżej lokalizacji, dla której oferujemy nasze rozwiązanie (mniejsze opóźnienia w komunikacji). Wszystkie komponenty składające się na nasze rozwiązanie powinny w miarę możliwości znajdować się w tym samym regionie. Możliwa jest oczywiście komunikacja, między różnymi regionami, ale pociąga to za sobą dodatkowe koszty. Region wybieramy klikając nazwę miasta w prawym górnym rogu konsoli:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/2.png" alt="Wybór regionu" /></p>
+
+<p>Po wybraniu regionu klikamy przycisk “Create table” i przechodzimy do widoku tworzenia tabeli. Tutaj musimy określić nazwę tabeli, np.: “notes” oraz klucz. Klucz tabeli DynamoDB może składać się z jednej lub dwóch kolumn. Pojedynczy klucz zawiera tylko tzw. partition key - kolumna, którą wybierzemy będzie używana do rozkładu danych w różnych partycjach bazy danych. Wybierając partition key pamiętajmy, że pożądane jest, aby podczas działania systemu odwoływać się do różnych partycji - to zapewnia lepsze skalowanie. W przypadku aplikacji do przechowywania notatek dobrym wyborem wydaje się nazwa użytkownika. Nie możemy jednak poprzestać na jednoczęściowym kluczu, gdyż moglibyśmy zapisać tylko jedną notatkę dla użytkownika - podobnie jak w RDS wartości klucza muszą być unikalne. Dodamy więc drugą część klucza tzw. sort key. W naszym przypadku będzie to timestamp dodania notatki:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/3.png" alt="Wybór klucza" /></p>
+
+<p>Wybór klucza tabeli jest bardzo istotnym krokiem - decyzja jest wiążąca i później nie można zmienić już klucza. Co ważne, wyszukiwanie w tabeli DynamoDB możliwe jest jedynie po kluczu lub indeksie. W innym przypadku wyszukiwanie realizowane jest jako scan tabeli. Warto tu napisać, że indeksy wyglądają inaczej niż indeksy w relacyjnej bazie danych. Indeks w DynamoDB jest de facto kopią tabeli (określamy nawet jakie kolumny znajdą się w kopii i jedynie one będą dostępne dla wyszukanego rekordu). Kopia ta jest synchronizowana w sposób asynchroniczny! z oryginalną tabelą. Przy okazji: DynamoDB zapewnia transakcyjność jedynie na poziomie pojedynczego wiersza tabeli - możliwe są tzw. conditional updates, czyli modyfikacja wiersza jeżeli spełnia on określone kryteria. Klasyczna transakcyjność typu przelew z konta A na konto B nie jest wspierana!</p>
+
+<p>W tej chwili dodamy kilka rekordów do naszej tabeli, aby możliwe było przetestowanie funkcjonalności odczytu notatek. Przechodzimy na zakładkę items i klikamy przycisk “Create item”. Wpisujemy nazwę użytkownika oraz timestamp. Dodajemy również nową kolumnę o nazwie “content” i typie “String”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/4.png" alt="Dodawanie rekordów" /></p>
+
+<p>Wpisujemy przykładową treść notatki. Dodajmy jeszcze kilka przykładowych notatek:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/5.png" alt="Wpisanie treści notatki" /></p>
+
+<h2 id="logika-biznesowa">Logika biznesowa</h2>
+<p>Warstwę persystencji mamy gotową, zajmiemy się teraz częścią biznesową. Zaimplementujemy ją w postaci lambd udostępnianych przez AWS. Wybieramy w lewym górnym rogu konsoli Services i przechodzimy do serwisu Lambda. Tutaj klikamy przycisk “Create a function” i przechodzimy do określania parametrów naszej lambdy. Określamy nazwę funkcji np.:”getNotes” oraz wybieramy język, w którym tworzona jest nasza funkcja. Do wyboru mamy C#, Javę 8, Node.js 4.3, Node.js 6.10, Python 2.7, Python 6.10. Wybieramy Node.js 6.10.</p>
+
+<p>Za wyborem języka idą nie tylko określone cechy danego języka, ale także sposób jego działania w AWS. Przykładowo implementacja w Javie będzie zdecydowanie najszybciej działającym kodem na AWS, z drugiej jednak strony powołanie nowej instancji lambdy napisanej w Javie będzie trwało dość długo, bo aż kilka sekund. Przy założeniu, że nasz system będzie doświadczał peek’ów wywołań może to oznaczać, że w jednym momencie AWS będzie próbował zainstancjonować tysiąc (w zależności od liczby jednoczesnych wywołań) lambd w tym samym czasie, a dalej przełoży się to na kilkusekundowe opóźnienie w realizacji tych requestów. Będziemy musieli również ponieść koszt za czas jaki został poświęcony na wystartowanie każdej instancji lambdy. Analogiczny przypadek dla lambd zaimplementowanych w którymś z języków skryptowych może mymagać znacząco mniejszej liczby instancji, gdyż lambdy będą wcześniej dostępne do obsługi requestów (kilkaset milisekund w porównaniu do kilku sekund). Ciekawe porównianie szybkości działania dla poszczególnych języków można znaleźć na stronie: <a href="https://read.acloud.guru/comparing-aws-lambda-performance-when-using-node-js-java-c-or-python-281bef2c740f">https://read.acloud.guru/comparing-aws-lambda-performance-when-using-node-js-java-c-or-python-281bef2c740f</a>.</p>
+
+<p>W polu Role wybieramy “Create a custom role” i przechodzimy do tworzenia nowej roli dla tworzonej przez nas lambdy. Rola ta będzie przydatna do definiowania uprawnień, które umożliwią lambdzie dostęp do różnych serwisów AWS. Pozostawiamy domyślnie wypełnione wartości i klikamy przycisk Allow. Następnie na ekranie tworzenia lambdy wybieramy w polu Existing role* utworzoną przez nas rolę, powinna to być rola o nazwie “lambda_basic_execution”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/6.png" alt="Tworzenie roli" /></p>
+
+<p>Klikamy przycisk “Create function”. Funkcja zostaje utworzona, a my widzimy ekran konfiguracji utworzonej przez nas funkcji. W polu “Function code” znajduje się inline’owy edytor, w którym możemy edytować kod naszej lambdy.</p>
+
+<p>Oczywiście tworzenie kodu w konsoli pozwala jedynie na tworzenie prostych funkcji. Bardziej skomplikowane lambdy tworzymy w zewnętrznych narzędziach i upload’ujemy w postaci archiwów zip. W polu “Code entry type” wybieramy “Upload a .ZIP file”.</p>
+
+<p>Implementacja lambdy w Node.js 6.10 polega na implementacji trój-argumentowej funkcji. Pierwszy argument zawiera dane event’a, który uruchomił lambdę, drugi to informacje kontekstowe dot. środowiska uruchomieniowego, trzeci to metoda callbackowa pozwalająca na zwrócenie wyniku lub zaraportowanie błędu. Poniżej znajduje się kod lambdy umożliwiający pobieranie notatek z DynamoDB dla użytkownika przekazanego w argumencie event:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// dołączamy sdk AWS</span>
+<span class="kd">const</span> <span class="nx">AWS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">aws-sdk</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">event=</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span><span class="p">);</span>
+    <span class="c1">// tworzymy instancję DocumentClient, która umożliwia zapytanie bazy danych</span>
+    <span class="kd">let</span> <span class="nx">documentClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">DynamoDB</span><span class="p">.</span><span class="nx">DocumentClient</span><span class="p">();</span>
+    <span class="c1">// definicja parmetrów zapytania do bazy danych</span>
+    <span class="c1">// szukamy rekordów, dla których userName jest równe userName przekazanemu w event</span>
+    <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">TableName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">notes</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">KeyConditionExpression</span><span class="p">:</span> <span class="dl">'</span><span class="s1">userName = :userName</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">ExpressionAttributeValues</span><span class="p">:</span> <span class="p">{</span>
+            <span class="dl">'</span><span class="s1">:userName</span><span class="dl">'</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">userName</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// wykonanie zapytania do bazy</span>
+    <span class="nx">documentClient</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// w przypdaku błędu logujemy błąd i zwracamy błąd w funkcji callback</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// logujemy odpowiedź z bazy u zwracamy odpowiedź w funkcji callback</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Po dodaniu kodu określimy jeszcze kilka parametrów konfiguracyjnych lambdy. W polu “Basic setting” określamy timeout dla wywołania lambdy, warto zauważyć, że maksymalny timeout to 5 minut, co oznacza, że żadna lambda nie może wykonywać się dłużej niż 5 minut. Dodatkowo możemy określić rozmiar pamięci i co ciekawe przekłada się to również na moc procesora, którą dostanie nasza lambda (rozmiar pamięci przekłada się oczywiście na koszt usługi). W polu concurrency możemy określić maksymalną liczbę instancji naszej lambdy.</p>
+
+<p>Ten wprowadzony niedawno parametr ma bardzo ważne znaczenie dla lambd napisanych w języku Java. Pozwala bowiem obejść problem uruchomienia bardzo dużej liczby instancji lambdy w przypadku peek’u - spowolni obsługę wszystkich requestów (co i tak by nastąpiło ze względu na długi czas tworzenia nowej instancji lambdy w Javie), ale jednocześnie pozwoli na zmniejszenie kosztów usługi - następne wywołania będą już działały na zainstancjonowanych lambdach i będą szybkie.</p>
+
+<p>Zapisujemy lambdę przyciskiem “Save”. Teraz możemy przetestować napisany przez nas kod. Klikamy przycisk “Test” i definiujemy json’a, który zostanie przekazany w evencie podczas uruchamiania naszej lambdy.</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>Po uruchomieniu testu powinniśmy otrzymać błąd oznaczający brak autoryzacji zdefiniowanej przez nas lambdy do odczytu danych z bazy DynamoDB:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/7.png" alt="Komunikat błędu" /></p>
+
+<p>Aby nadać odpowiednie uprawnienia musimy przejść do usługi IAM (Services-&gt;IAM). Wybrać z menu po lewej stronie “Roles”, a następnie wybrać rolę, którą zdefiniowaliśmy podczas tworzenia lambdy (lambda_basic_execution). Klikamy przycisk “Attach policy”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/8.png" alt="Nadawanie uprawnień" /></p>
+
+<p>W polu wyszukiwania “policy type” wpisujemy DynamoDB i po wyszukaniu dołączamy policy “AmazonDynamoDBFullAccess”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/9.png" alt="Dodanie polityki" /></p>
+
+<p>Po ponownym wywołaniu testu lambdy powinniśmy otrzymać w wyniku dane pobrane z bazy DanamoDB:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/10.png" alt="Ponowny test" /></p>
+
+<h2 id="rest-api">Rest API</h2>
+
+<p>Pozostaje nam udostępnienie naszego serwisu do notatek w formie API restowego. Komponent AWS, który umożliwi nam zrobienie tego to API Gateway. W konsoli AWS przechodzimy do Serices-&gt;API Gateway i po załadowaniu strony klikamy przycisk “Get started”. W polu wyboru wybieramy New API i wpisujemy nazwę np.: “notes”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/11.png" alt="Nowe API" /></p>
+
+<p>Klikamy przycik “Create API”. W polu “Actions” wybieramy “Create Resource”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/12.png" alt="Tworzenie API" /></p>
+
+<p>W polu “Resource Name” wpisujemy “userName”, a w “Resource Path” “{username}”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/13.png" alt="Tworzenie zasobu" /></p>
+
+<p>Klikamy przycisk “Create Resource”. Będąc na nowoutworzonym resource z menu “Actions” wybieramy “Create Method”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/14.png" alt="Tworzenie metody" /></p>
+
+<p>Z listy rozwijanej wybieramy metodę GET i zatwierdzamy:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/15.png" alt="Tworzenie endpointu" /></p>
+
+<p>W polu wyboru “Integration type” wybieramy “Lambda function”. Poniżej w polu “Lambda region” wybieramy region, w którym utworzyliśmy lambdę getNotes. W polu “Lambda Function” podajemy nazwę funkcji np.: “getNotes” (po wpisaniu pierwszej litery nazwa powinna się podpowiedzieć):</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/16.png" alt="Wybór lambdy" /></p>
+
+<p>Klikamy przycisk “Save” i zatwierdzamy nadanie uprawnienia wykonywania lambdy (popup). Ponieważ chcemy, aby nazwa użytkownika, dla którego chcemy pobrać notatki przekazywana była w ścieżce potrzebujemy jeszcze dodatkowej konfiguracji. Kliknij na link “Integration Request”. Rozwiń “URL Path Parameters” i kliknij “Add path”. W polu name wpisz “username”, w “mapped from” “method.request.path.username” i zatwierdź:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/17.png" alt="Parametryzacja ścieżki" /></p>
+
+<p>Rozwiń “Body Mapping Templates” i kliknij “Add mapping template”. W polu “Content-Type” wpisz “application/json” i zatwierdź. W polu edycji dodaj mapowanie:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+   </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$input.params('username')"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/18.png" alt="Mapowanie" /></p>
+
+<p>Zapisz mapowanie przyciskiem “Save”.</p>
+
+<p>Kliknij w drzewie “Resources” metodę “GET”. Po prawej stronie powinien pojawić się przepływ danych łączący API Gateway i lambdę. Kliknij przycisk “Test” aby przetestować konfigurację API Gateway. Jako parametr “{username}” podaj “user1” i kliknij przycisk “Test”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/19.png" alt="Test" /></p>
+
+<p>API Gateway powinno zwrócić notatki znajdujące się w bazie danych DynamoDB:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/20.png" alt="Wynik działania" /></p>
+
+<p>Aby wystawić naszą usługę na świat musimy jeszcze wdrożyć konfigurację API Gateway. W tym celu z menu “Actions” wybieramy “Deploy API”. W polu “Deployment stage” wybieramy “[New Stage]”, w polu “Stage name” wpisujemy nazwę naszego środowiska np.: “test” i klikamy przycisk “Deploy”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/21.png" alt="Deploy API" /></p>
+
+<p>Od tej chwili nasz serwis dostępny jest w sieci. Aktualnie nie jest on niczym zabezpieczony, więc każdy znający jego adres może go wywołać. Aby sprawdzić działanie z zewnętrznej aplikacji, przechodzimy na zakładkę “Export” i pobieramy json’a dla postmana:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/22.png" alt="Pobranie kolekcji Postmana" /></p>
+
+<p>Pobraną kolekcję importujemy do Postmana. W ścieżce wywołania zamieniamy “:username” na faktyczną nazwę użytkownika i wysyłamy żądanie. W odpowiedzi powinniśmy dostać dane z bazy DynamoDB:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/23.png" alt="Zaimportowana kolekcja Postmana" /></p>
+
+<p>Dostęp do logów możliwy jest za pomocą serwisu CloudWatch. Aby dotrzeć do logów konkretnej lambdy należy wejść na jej konfigurację, np.: Lambda-&gt;Functions-&gt;getNotes i przejść na zakładkę “Monitoring”. Dalej na jednym z paneli klikamy link “Jump to Logs”. W to samo miejsce możemy również dotrzeć z poziomu serwisów: Services-&gt;CloudWatch-&gt;Logs.</p>
+
+<h2 id="implementacja-zapisu-notatek">Implementacja zapisu notatek</h2>
+<p>Warstwę persystencji mamy już przygotowaną i ona nie wymaga żadnych modyfikacji. Aby umożliwić zapis notatek, musimy zaimplementować dodatkową lambdę. Tworzymy ją w taki sam sposób jak lambdę do odczytu podając inną nazwę, np.: addNote i wybierając utworzoną wcześniej rolę “lambda_basic_execution”. Kod lambdy powinien wyglądać mniej więcej tak:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">AWS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">aws-sdk</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">event=</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span><span class="p">);</span>
+    <span class="c1">// tworzymy instancję DocumentClient, która umożliwia wstawienie do bazy danych</span>
+    <span class="kd">let</span> <span class="nx">documentClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">DynamoDB</span><span class="p">.</span><span class="nx">DocumentClient</span><span class="p">();</span>
+    <span class="c1">// definicja parmetrów wstawienia do bazy</span>
+    <span class="c1">// nazwę użytkownika i treść notatki pobieramy z przekazanego event'a</span>
+    <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">TableName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">notes</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">Item</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">userName</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">userName</span><span class="p">,</span>
+            <span class="na">timestamp</span><span class="p">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">(),</span>
+            <span class="na">content</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">content</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// próba wstawienia do bazy</span>
+    <span class="nx">documentClient</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Aby przetestować lambdę definiujemy nowy event testowy w formie json’a:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nowo dodana notatka"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>i klikamy przycisk test. Notatka powinna być zwrócona podczas pobierania notatek użytkownika “user1”.</p>
+
+<p>Pozostaje jeszcze konfiguracja API Gateway. W tym celu wchodzimy na Services-&gt;API Gateway i odnajdujemy utworzone wcześniej API “notes”. W drzewie “Resources” wybieramy “/” i w menu “Actions” wybieramy akcję “Create Method”.</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/24.png" alt="Konfiguracja API Gateway" /></p>
+
+<p>Z listy metod wybierramy “POST” i zatwierdzamy wybór. W polu “Integration type” wybieramy “Lambda Function”. Określamy region naszej lambdy i podajemy jej nazwę w polu “Lambda Function”:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/25.png" alt="Konfiguracja API Gateway" /></p>
+
+<p>Klikamy przycisk “Save” i zatwierdzamy dodanie uprawnienia do funkcji. I to tyle z konfiguracji API Gateway. Podobnie jak w przypadku odczytu również na zapisie możemy przetestować konfigurację API Gateway. Klikamy przycisk “Test” i w polu “Request Body” podajemy treść eventa:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/26.png" alt="Konfiguracja API Gateway" /></p>
+
+<p>W odpowiedzi powinniśmy otrzymać status http 200, a nowododana notatka powinna być widoczna w pobieranych notatkach użytkownika “user1”. Aby nowa metoda była dostępna z zewnątrz, należy zdeployować jeszcze raz nasze api wybierając z menu “Actions” “Deploy API” i podać utworzony wcześniej stage “test”. Teraz ponownie możemy wyeksportować konfigurację do postmana i wykonać test:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/27.png" alt="Test w Postmanie" /></p>
+
+<p>Diagram użytych przez nas komponentów AWS wygląda następująco:</p>
+
+<p><img src="/assets/img/posts/2018-01-17-aws-serverless-programming/28.png" alt="Użyte komponenty" /></p>
+
+<h2 id="ile-to-kosztuje">Ile to kosztuje</h2>
+<p>Praca w cloudzie AWS daje nam możliwość dokładnego policzenia kosztów naszego rozwiązania. Trzeba przy tym pamiętać również o tym, że AWS daje nam tzw. “Free tier” czyli pewną pulę zasobów, która jest dostępna bezkosztowo.</p>
+
+<h3 id="koszty-dynamodb">Koszty DynamoDB</h3>
+<p>I tak zaczynając od warstwy persystencji na koszty DynamoDB składają się koszty przestrzeni, które zajmują dane oraz koszty operacji odczytu i zapisu wykonywane w jednostce czasu. Przy kosztach zapisu i odczytu AWS posługuje się jednostkami:</p>
+<ul>
+  <li>RCU (read capacity unit) - jeden RCU umożliwia wykonywanie dwóch odczytów na sekundę,</li>
+  <li>WCU (write capacity unit) - jeden WCU umożliwia wykonywanie jednego zapisu na sekundę.</li>
+</ul>
+
+<p>Jeżeli nasza aplikacja obsługuje ruch, w którym maksymalnie wykonywane są 2 odczyty na sekundę przez cały czas jej działania to AWS naliczy opłatę za 1 RCU.</p>
+
+<p>W przypadku DynamoDB Free Tier wynosi:</p>
+<ul>
+  <li>25 RCU,</li>
+  <li>25 WCU,</li>
+  <li>25 GB zaindeksowanych danych.
+Oznacza to, że aplikacja generująca 25 zapisów na sekundę i 50 odczytów na sekundę, której dane mieszczą się w 25 GB nie generuje kosztów. Free tier dla DynamoDB jest stały, nie ma ograniczenia czasowego. Po przekroczeniu wartości Free tier koszt wynosi odpowiednio:</li>
+  <li>1 RCU: $0.09 miesięcznie,</li>
+  <li>1 WCU: $0.47 miesięcznie,</li>
+  <li>1 GB: $0.25 miesięcznie.
+Szczegóły naliczania kosztów dla DynamoDB można znaleźć na stronie <a href="https://aws.amazon.com/dynamodb/pricing/">https://aws.amazon.com/dynamodb/pricing/</a>.</li>
+</ul>
+
+<h3 id="koszty-lambdy">Koszty Lambdy</h3>
+<p>W przypadku lambd płacimy za liczbę wykonanych żądań oraz za tzw. gigabajto-sekundy (GB-seconds). W konfiguracji lambdy możemy określić ile maksymalnie pamięci chcemy jej przydzielić. Minimalnie to 128 MB, maksimum 3008 MB. Liczbę GB-s zużytych przez lambdę określamy jako:
+-liczba skonfigurowanej pamięci w MB / 1024 * czas wykonania lambdy w sekundach (zaokrąglony do 100 ms w górę).</p>
+
+<p>Czas wykonania lambdy, za który AWS naliczy nam opłatę jest zawsze podawany w logu po wykonaniu danej lambdy, np.:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REPORT RequestId: 31aaeaec-ef26-11e7-9892-57823db0c303    Duration: 316.42 ms    Billed Duration: 400 ms Memory Size: 128 MB    Max Memory Used: 34 MB
+</code></pre></div></div>
+<p>W tym przypadku nasza lambda zużyła 128/1024 GB * 0.4 s = 0.125 GB * 0.4 s = 0.05 GB-s. Free tier dla lambd wynosi:</p>
+<ul>
+  <li>1 000 000 żądań miesięcznie,</li>
+  <li>400 000 GB-s miesięcznie.</li>
+</ul>
+
+<p>Po przekroczeniu tych wartości płacimy:</p>
+<ul>
+  <li>za każde 1 000 000 żądań $0.20,</li>
+  <li>za 1 GB-s $0.00001667.
+Szczegóły możemy znaleźć na stronie <a href="https://aws.amazon.com/lambda/pricing/">https://aws.amazon.com/lambda/pricing/</a>.</li>
+</ul>
+
+<h3 id="koszty-api-gateway">Koszty API-Gateway</h3>
+<p>Zdecydowanie najdroższym komponentem, którego użyliśmy w naszym przykładzie jest API-Gateway. W tym przypadku płacimy za liczbę żądań oraz dane, które transferujemy przez api. Warstwa darmowa obejmuje 1 000 000 żądań miesięcznie, ale jest dostępna przez pierwsze 12 miesięcy używania API-Gateway. Po tym czasie koszty wyglądają następująco:</p>
+<ul>
+  <li>1 000 000 żądań: $3.70,</li>
+  <li>pierwsze 10 TB transferowanych danych $0.09 za 1 GB,</li>
+  <li>kolejne 40 TB transferowanych danych $0.085 za 1 GB,</li>
+  <li>kolejne 100 TB transferowanych danych $0.07 za 1 GB,</li>
+  <li>kolejne 350 TB transferowanych danych $0.05 za 1 GB.
+Szczegóły dot. kosztów API-Gateway dostępne są na stronie <a href="https://aws.amazon.com/api-gateway/pricing/">https://aws.amazon.com/api-gateway/pricing/</a>.</li>
+</ul>
+
+<h2 id="koszty-przykładowej-aplikacji">Koszty przykładowej aplikacji</h2>
+<p>Proponuję teraz ćwiczenie polegające na policzeniu kosztów przygotowanej przez nas aplikacji. Załóżmy, że chcemy obsługiwać milion użytkowników i każdy z nich będzie zapisywał 10 notatek dziennie i odczytywał 30. Zakładamy że jedna notatka ma wielkość 1 KB.</p>
+
+<h3 id="koszty-dynamodb-1">Koszty DynamoDB</h3>
+<p>Mamy więc 1 000 000 użytkowników zapisujących 10 notatek każdego dnia. Policzmy ile zapisów na sekundę potrzebujemy:</p>
+<ul>
+  <li>1 000 000 użytkowników * 10 notatek * 31 dni = 310 000 000 zapisywanych notatek miesięcznie,</li>
+  <li>310 000 000 / (31 dni * 24h * 60m * 60s) = 310 000 000 / 2678400s = 116 zapisów na sekundę,
+czyli potrzebujemy 116 WCU.</li>
+</ul>
+
+<p>Każdy z użytkowników odczytuje 30 notatek każdego dnia:</p>
+<ul>
+  <li>1 000 000 użytkowników * 30 notatek * 31 dni = 930 000 000 odczytywanych notatek miesięcznie,</li>
+  <li>930 000 000 / (31 dni * 24h * 60m * 60s) = 930 000 000 / 2678400s = 348 odczytów na sekundę,
+ponieważ jeden RCU pozwala na 2 odczyty na sekundę potrzebujemy 348 / 2 = 174 RCU.</li>
+</ul>
+
+<p>Maksymalna liczba notatek jaką będziemy przechowywać w systemie po upływie 1 roku to:</p>
+<ul>
+  <li>12 miesięcy * 310 000 000 notatek = 3 720 000 000 * 1 KB = 3720 GB danych.</li>
+</ul>
+
+<p>Koszty wyniosą odpowiednio:</p>
+<ul>
+  <li>koszt zapisów, czyli WCU to 116 - 25 (free tier) = 91 WCU * $0.47 = $42.77 miesięcznie,</li>
+  <li>koszt odczytów, czyli RCU to 174 - 25 (free tier) = 149 RCU * $0.09 = $13.41 miesięcznie,</li>
+  <li>koszt przechowywania danych to 3720 GB * $0.25 = $930 miesięcznie.</li>
+</ul>
+
+<p>W sumie za użycie DynamoDB zapłacimy miesięcznie <strong>$986.18</strong>.</p>
+
+<h3 id="koszty-lambd">Koszty lambd</h3>
+<p>Lambda getNotes:</p>
+<ul>
+  <li>będzie wywoływana 930 000 000 razy miesięcznie,</li>
+  <li>możemy odjąć od tej liczby 1 000 000 requestów (free tier),</li>
+  <li>zostaje 929 000 000 requestów,</li>
+  <li>za każdy 1 000 000 requestów płacimy $0.20,</li>
+  <li>w sumie mamy więc 929 * $0.20 = $185.8 miesięcznie.</li>
+</ul>
+
+<p>Lambda addNote:</p>
+<ul>
+  <li>będzie wywoływana 310 000 000 razy miesięcznie,</li>
+  <li>koszt wynosi więc 310 * $0.20 = $62 miesięcznie.</li>
+</ul>
+
+<p>Oprócz opłat za liczbę requestów płacimy jeszcze za gigabajto-sekundy. Załóżmy w przybliżeniu, że wywołanie lambdy odczytującej będzie mieściło się w 100 ms, a lambdy zapisującej w 200 ms.</p>
+
+<p>Dla getNotes mamy więc:</p>
+<ul>
+  <li>930 000 000 * 0.1s * 128 / 1024 MB = 11 625 000 GB-s,</li>
+  <li>od tej wartości możemy odjąć 400 000 GB-s (free tier),</li>
+  <li>koszt wynosi: 11 225 000 GB-s * $0.00001667 = $187.12 miesięcznie.</li>
+</ul>
+
+<p>Odpowiednio dla addNote:</p>
+<ul>
+  <li>310 000 000 * 0.2s * 128 / 1024 MB = 7 750 000 GB-s,</li>
+  <li>koszt wynosi 7 750 000 * $0.00001667 = $129.19 miesięcznie.</li>
+</ul>
+
+<p>Sumaryczny koszt lambd wynosi <strong>$316.31</strong> miesięcznie.</p>
+
+<h3 id="koszty-api-gateway-1">Koszty API-Gateway</h3>
+<p>Koszty API-Gateway podzielone są na koszty wykonanych żądań oraz koszty transferu danych. Miesięcznie wykonujemy:</p>
+<ul>
+  <li>1 000 000 użytkowników * (10 zapisów + 30 odczytów) * 31 dni = 1 240 000 000 wywołań API-Gateway,</li>
+  <li>za 1 000 000 wywołań płacimy $3.70, koszt wynosi więc 1 240 * $3.70 = $4 588.</li>
+</ul>
+
+<p>Przy założeniu, że pojedyncza notatka ma średnio 1 KB transferujemy:</p>
+<ul>
+  <li>1 000 000 użytkowników * (10 zapisów + 30 odczytów) * 31 dni * 1KB = 1.24 TB danych,</li>
+  <li>koszt transferu dla pierwszy 10 TB to $0.09 za 1 GB,</li>
+  <li>koszt wynosi więc 1 240 GB * $0.09 = $111.6 miesięcznie.</li>
+</ul>
+
+<p>W sumie koszty API-Gateway to <strong>$4 699.6</strong> miesięcznie.</p>
+
+<h3 id="podsumowanie">Podsumowanie</h3>
+<p>Przy przyjętych założeniach całkowity koszt naszej przykładowej aplikacji wyniesie <strong>$6 002.09</strong> miesięcznie. Wydaje się to sporą kwotą, jeżeli jednak podzielimy to przez liczbę użytkowników, dostajemy koszt około $0.006 na jednego użytkownika miesięcznie. Wynika z tego, że roczne utrzymanie jednego użytkownika zamknie się w $0.08 - jeżeli zaoferujemy użytkownikom cenę $0.99 za roczny dostęp do usługi na jednym użytkowniku zarobimy $0.91 rocznie :-)</p>
+
+<h2 id="wady-i-zalety-rozwiązania">Wady i zalety rozwiązania</h2>
+<p>Rozwiązanie oparte o AWS wydaje się być dość proste do wykonania, a także atrakcyjne cenowo. Płacimy tylko za faktyczne zużycie zasobów nie ma więc niebezpieczeństwa, że w przypadku małego zainteresowania naszą aplikacją poniesiemy straty związane z kosztami utrzymania infrastruktury. Dodatkowo w standardzie dostajemy dużą skalowalność rozwiązania. Wady? - W takiej implementacji bardzo mocno uzależniamy się od komponentów AWS, przeniesienie rozwiązania na inną infrastrukturę wiąże się praktycznie z jego przepisaniem.</p>
+
+<p>Już wkrótce na naszym blogu pojawi się artykuł omawiający automatyzację tworzenia zasobów na AWS w oparciu o narzędzie terraform. Zapraszamy.</p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Newest posts
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/13/kafka-retry-dlq.html" lang="pl">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html" lang="pl">Event Tracking - finding a needle in a haystack</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/en/2021/08/30/kouncil-introduction.html" lang="pl">Kouncil - a modern Kafka frontend</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">technical</h2>
+        <h2 class="newsletter-tile-title">newsletter</h2>
+    
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Sign up</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/13/kafka-retry-dlq.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-13-kafka-retry-dlq/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">Reliable event delivery in Apache Kafka based on retry and DLQ</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/13/kafka-retry-dlq.html">
+                
+                Why is there no DLQ in Kafka? Most popular queueing systems such as RabbitMQ or ActiveMQ have built-in systems responsible for reliable message delivery. So why doesn't Kafka offer one?...
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+13
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-09-08-kouncil-event-tracking-kafka/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">Event Tracking - finding a needle in a haystack</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/09/08/kouncil-event-tracking-kafka.html">
+                
+                Event tracking allows for tracking and visualising the path of a given event or process through Kafka topics.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/mmergo.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/mmergo.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/mmergo.html" class="author-name">Marcin Mergo</a>
+                <span class="post-date">
+8
+
+
+Sep
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/en/2021/08/30/kouncil-introduction.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2021-08-30-kouncil-introduction/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">kouncil</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">Kouncil - a modern Kafka frontend</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/en/2021/08/30/kouncil-introduction.html">
+                
+                Kouncil is a modern Kafka frontend equipped with features essential for developers.
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/en/authors/jgrobelny.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/jgrobelny.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/en/authors/jgrobelny.html" class="author-name">Jacek Grobelny</a>
+                <span class="post-date">
+30
+
+
+Aug
+
+
+2021
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Join us
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Sign up for a </h2>
+        <h2>technical </h2>
+        <h2 class="newsletter">newsletter</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Name *" name="sm-form-name"/>
+                <input required type="email" placeholder="E-mail" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*.</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Sign up</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'en';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "aws serverless";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Contact</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Office</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Solutions</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/en/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Join us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>

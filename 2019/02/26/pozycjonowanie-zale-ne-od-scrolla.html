@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pl">
+<script src="/js/lunr.min.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Pozycjonowanie zależne od scrolla | Consdata - blog techniczny</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Pozycjonowanie zależne od scrolla" />
+<meta name="author" content="glipecki" />
+<meta property="og:locale" content="pl" />
+<meta name="description" content="Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM." />
+<meta property="og:description" content="Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM." />
+<link rel="canonical" href="https://blog.consdata.tech/2019/02/26/pozycjonowanie-zale-ne-od-scrolla.html" />
+<meta property="og:url" content="https://blog.consdata.tech/2019/02/26/pozycjonowanie-zale-ne-od-scrolla.html" />
+<meta property="og:site_name" content="Consdata - blog techniczny" />
+<meta property="og:image" content="https://blog.consdata.tech/assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/thumbnail.webp" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-02-26T01:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.consdata.tech/assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/thumbnail.webp" />
+<meta property="twitter:title" content="Pozycjonowanie zależne od scrolla" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"glipecki"},"image":"https://blog.consdata.tech/assets/img/posts/2019-02-26-pozycjonowanie-zale-ne-od-scrolla/thumbnail.webp","@type":"BlogPosting","headline":"Pozycjonowanie zależne od scrolla","description":"Custom Elements to jedna z zestawu czterech specyfikacji występujących pod wspólną nazwą Web Components - wspólnie pozwalają one na tworzenie własnych typów elementów DOM.","dateModified":"2019-02-26T01:00:00-06:00","datePublished":"2019-02-26T01:00:00-06:00","url":"https://blog.consdata.tech/2019/02/26/pozycjonowanie-zale-ne-od-scrolla.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.consdata.tech/2019/02/26/pozycjonowanie-zale-ne-od-scrolla.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,600,500,300,200,100,800,900" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://blog.consdata.tech/feed.xml" title="Consdata - blog techniczny" /><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFV6DPR');</script>
+
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body><nav class="site-header">
+    <div class="container">
+        <div class="header navbar-default" role="navigation">
+            <div class="header-brand">
+                <a class="header-logo" href="/">
+                    <img src="/assets/img/logo.png" alt="consdata.com">
+                </a>
+                <div class="mobile-search">
+                    
+<form action="/search.html" method="get">
+
+    <div class="search-input-container">
+        <input type="text" placeholder="Znajdź artykuł..." id="search-box-mobile" name="query" class="search-input" autocomplete="off">
+        <i class="fa fa-search search-icon" onclick="expandInputMobile()"></i>
+    </div>
+</form>
+
+<script>
+    const inputMobile = document.getElementById("search-box-mobile");
+    const logo = document.getElementById("header-logo");
+    const expandInputMobile = () => {
+        inputMobile.classList.toggle("expanded");
+        logo.classList.toggle("header-logo");
+        logo.classList.toggle("logo-invisible");
+    };
+</script>
+
+                </div>
+            </div>
+            <div id="header-links">
+                <div>
+                    <a class="nav-link" href="/">Blog techniczny</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/biznesowy">Blog biznesowy</a>
+                    <a class="nav-link" href="https://consdata.com/pl/blog/hr">Dział HR</a>
+                </div>
+                
+                <a class="language-switch" onclick="navigate('/en/2019/02/26/pozycjonowanie-zale-ne-od-scrolla.html')">EN</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+<script>
+    function navigate(baseUrl) {
+        const queryParams = window.location.search;
+        window.location.href = baseUrl + queryParams;
+    }
+</script>
+<main class="page-content" aria-label="Content">
+    
+
+
+<div class="blog">
+    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-content-sidebar">
+            <div class="post-content">
+                <div class="badge">frontend</div>
+                <h1 class="post-big-title p-name" itemprop="name headline">Pozycjonowanie zależne od scrolla</h1>
+                <div class="post-metadata">
+    <div>
+    <a class="author" href="/authors/glipecki.html">
+        <img class="author-image" src="/assets/img/authors/glipecki.webp" alt="author">
+        <span class="author-name">Grzegorz Lipecki</span><a class="author" href="https://github.com/glipecki">
+            <img class="github-icon" src="/assets/icon/github.svg">
+        </a>
+        
+    </a>
+</div>
+
+    <div class="metadata">
+        
+        <span class="publish-date">
+26
+
+lutego
+
+
+
+2019
+</span>
+    </div>
+</div>
+
+                <div itemprop="articleBody" class="post-content-container">
+                    <div class="post-content-left-pane">
+                        <div class="post-content">
+                            <p>Czasem zachodzi potrzeba uzależnienia pozycji elementu od scrolla okna, czy to na potrzeby przyklejenia w widocznym obszarze, czy też stworzenia efektu paralaksy lub niestandardowego flow nawigacji. Temat wydawałby się oczywisty, gdyby nie to, że celowo wprowadzimy sobie dodatkowe ograniczenia (co wcale nie jest takie niecodziennie, uwzględniając fantazję działów UI/UX ;-)).</p>
+
+<h2 id="podejście-1-tylko-css">Podejście 1: tylko CSS</h2>
+<p>Mamy dwa sposoby przyklejenia elementu do ekranu wykorzystujące tylko CSS. Oba opierają się o zmianę pozycjonowania:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">position: fixed</code>,</li>
+  <li><code class="language-plaintext highlighter-rouge">position: sticky</code>.</li>
+</ul>
+
+<p>Oba też mają swoje problemy i ograniczenia.</p>
+
+<p>Stosując pozycjonowanie fixed:</p>
+<ul>
+  <li>musimy uwzględnić pozostawione przez niego miejsce w oryginalnym fragmencie drzewa DOM,</li>
+  <li>jeżeli element będzie wyższy niż viewport to nie będziemy mieli możliwości obejrzeć niemieszczącej się zawartości,</li>
+  <li>fixed zawsze tworzy nowy stacking context.</li>
+</ul>
+
+<p>Stosując pozycjonowanie sticky:</p>
+<ul>
+  <li>jeżeli element będzie wyższy niż viewport, to nie będziemy mieli możliwości obejrzeć niemieszczącej się zawartości,</li>
+  <li>sticky zawsze tworzy nowy stacking context,</li>
+  <li>sticky czasem może zaskoczyć swoim działaniem (przykładowo <a href="https://github.com/w3c/csswg-drafts/issues/865">issue w3c</a>).</li>
+</ul>
+
+<p>O ile uwzględnienie oderwanego przez fixed elementu w layoucie nie stanowi wyzwania, o tyle brak wsparcia dla przewijania treści i zmiana stacking context (co wpłynie np. na liczenie kolejności na osi z) mogą stanowić już zbyt duże ograniczenia.</p>
+
+<p>W wielu przypadkach fixed lub sticky załatwią problem. Jeśli jednak potrzebujesz czegoś więcej, czytaj dalej.</p>
+
+<h2 id="podejście-2-javascript">Podejście 2: JavaScript</h2>
+<p>„Nie ma takiej rzeczy, której bym nie napisał w JavaScript.” 😉</p>
+
+<p>Przeglądarki oferują nam zdarzenie związane ze scrollowaniem treści. Na zdarzenie możemy nasłuchiwać przez zdefiniowanie własności <code class="language-plaintext highlighter-rouge">target.onscroll</code>, czy też bardziej elastycznie, dodając listener przez <code class="language-plaintext highlighter-rouge">target.addEventListner(’scroll’)</code>. Teoretycznie wystarczyłoby już tylko przeliczać pozycję przyklejanego elementu, obsłużyć przewijanie w dwóch kierunkach i nie zapomnieć o użyciu najmniej obciążającej metody przesuwania elementów po ekranie. Co może pójść źle? Sprawdźmy prosty przykład.</p>
+
+<p>Implementujemy proste przeliczanie pozycji nasłuchując na zdarzenie scroll:</p>
+
+<iframe width="100%" height="300" src="//jsfiddle.net/gregorry/gof6we57/embedded/" allowfullscreen="allowfullscreen" allowpaymentrequest="" frameborder="0"></iframe>
+
+<p>Uzyskany efekt:</p>
+<iframe class="youtube" src="https://www.youtube.com/embed/86dZ7HguQWY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Okazuje się, że funkcjonalnie możemy uzyskać wszystko, czego potrzebujemy, jednak jakość rozwiązania nie jest zadowalająca. Gdy przyjrzymy się sprawie bliżej, zauważymy, że na różnych przeglądarkach mamy różne problemy z płynnym rysowaniem UI. Obserwujemy lekki pościg naszego elementu względem reszty strony - to stanowczo nie jest efekt, z którym chcemy być kojarzeni.</p>
+
+<p>Możemy jeszcze raz przeanalizować nasze kody, przekonać się, że ani throttlowanie zdarzeń, ani przesuwanie transformem, ani nawet wymyślne funkcje wygładzające nic nie dają. Okazuje się, że odpowiedź jest równocześnie dobra i zła, dobra - bo z naszym kodem nie ma większych problemów; zła - bo tak po prostu działają przeglądarki, na co niespecjalnie mamy wpływ!</p>
+
+<p>Całe zamieszanie wynika z tego, że większość nowoczesnych przeglądarek obsługuje rysowanie oraz scrollowanie w osobnych wątkach. W praktyce oznacza to, że pozycja strony oraz jej zawartość liczone są w różnych momentach. Brak synchronizacji na tych operacjach objawia się skakaniem przesuwanego elementu. O ile takie rozwiązanie ułatwia przeglądarkom uzyskiwać upragnione 60 fps przy renderowaniu, o tyle dla nas oznacza skreślenie tego rozwiązania z listy wartościowych.</p>
+
+<h2 id="co-dalej">Co dalej?</h2>
+<p>Czy to oznacza, że jeśli rozwiązanie z pozycjonowaniem CSS oferuje za mało funkcjonalności, a na lag przy rysowaniu z JavaScript nie możemy sobie pozwolić, to musimy rozłożyć ręce? Oczywiście, że nie! Na początek chwyćmy się wyjaśnienia z poprzednich akapitów - problemem jest, że scroll viewportu i DOM strony rysowane są niezależnie, w różnych momentach czasu. Gdybyśmy jednak potrafili zapewnić, że obie te rzeczy będą się działy synchronicznie? O ile nie możemy do tego zmusić przeglądarki, o tyle możemy ją oszukać 😉</p>
+
+<p>Załóżmy że:</p>
+<ul>
+  <li>to nie przeglądarka odpowiada za przewijanie treści strony,</li>
+  <li>scroll przeglądarki wyraża jedynie intencję, w którym miejscu strona ma się znajdować,</li>
+  <li>faktyczne przesuwanie treści odbywa się w naszym kodzie,</li>
+  <li>również w naszym kodzie znajduje się obsługa przesuwania przyklejonych elementów,</li>
+  <li>obliczenia wykonujemy co żądanie klatki animacji.</li>
+</ul>
+
+<p>Przy takich założeniach możliwe okazuje się uzyskanie płynnego przewijania i przyklejania elementów. Dodatkowo, proponowane rozwiązanie poza przyklejaniem pierwszy raz oferuje opcję realizacji paralaksy czy niestandardowych przejść strony (kto powiedział, że kolejne ekrany nie mają być po skosie lub na spirali ;-)).</p>
+
+<h2 id="rozwiązanie">Rozwiązanie</h2>
+<p>Przykładowe rozwiązanie może wyglądać następująco:</p>
+<ul>
+  <li>dotychczasową strukturę DOM opakowujemy we wrapper,</li>
+  <li>wrapper pozycjonujemy jako fixed na cały ekran (<code class="language-plaintext highlighter-rouge">top, bottom, left, right</code> na 0),
+    <ul>
+      <li>to będzie nadrzędny element strony odpowiedzialny za prezentowanie viewport, w tym obsługę przewijania,</li>
+    </ul>
+  </li>
+  <li>obok wrappera definiujemy sztuczny element replikujący wysokość wrappera,
+    <ul>
+      <li>to będzie element odpowiedzialny za symulowanie wysokości strony, dzięki niemu przeglądarka będzie wyświetlała prawidłowy pasek przewijania i poprawnie rozgłaszała związane z nim zdarzenia,</li>
+    </ul>
+  </li>
+  <li>definiujemy metodę renderującą ekran co klatkę animacji,
+    <ul>
+      <li>odpowiada za faktycznie rysowanie pozycji elementów, zarówno standardowo przewijanej zawartości, jak i przyklejonych elementów,</li>
+    </ul>
+  </li>
+  <li>zawartość wrappera przewijamy zgodnie z bieżącym scrollem,</li>
+  <li>przyklejony element przewijamy odwrotnie, kompensując przesunięcie wrappera.</li>
+</ul>
+
+<p>Przykładowa implementacja</p>
+
+<iframe width="100%" height="300" src="//jsfiddle.net/gregorry/yatd97hv/embedded/" allowfullscreen="allowfullscreen" allowpaymentrequest="" frameborder="0"></iframe>
+
+<p>Przedstawione rozwiązanie jest najprostszym z możliwych potwierdzających teoretyczne założenia.</p>
+
+<p>W docelowym rozwiązaniu na pewno warto pomyśleć o rozdzieleniu funkcji pętli od faktycznego rysowania, wygładzaniu przesunięcia scrolla, dorzuceniu wskazówki <code class="language-plaintext highlighter-rouge">will-change</code> dla przesuwanych elementów, czy ogólnym sposobie na nasłuchiwanie na zmiany scrolla globalnie.</p>
+
+<p>Po wprowadzeniu zmian nasz rozwiązanie prezentuje się znacznie lepiej:</p>
+<iframe class="youtube" src="https://www.youtube.com/embed/GqopRJ1vuC8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="sukces">Sukces?</h2>
+<p>Samodzielna obsługa scrollowania może być kusząca przy realizacji niestandardowych przepływów ekranów, animacji, czy skomplikowanych interfejsów użytkownika. Zawsze jednak należy pamiętać, że przerzucamy na siebie ciężar obsługi czegoś, co jest robione dobrze przez każdą przeglądarkę. Czasem lepszym rozwiązaniem będzie znalezienie uproszczeń w wymaganiach, a czasem będziemy mogli wziąć na siebie taki trade-off 🙂</p>
+
+<p>Czy ktoś stosuje takie podejścia? Tak, przykładem niech będzie apple.com, gdzie przewijane początkowo jest pionowe, następnie poziome i na końcu znowu pionowe 😉</p>
+<iframe class="youtube" src="https://www.youtube.com/embed/wMdNDHM2wrc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="przydatne-linki">Przydatne linki</h2>
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Performance/Scroll-linked_effects">Scroll-linked effects @ MDN</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context">The stacking context</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">Własności pozycjonowania elementów drzewa DOM @ MDN</a></li>
+  <li><a href="https://philipwalton.com/articles/what-no-one-told-you-about-z-index/">What No One Told You About Z-Index</a></li>
+</ul>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-desktop">
+                
+<div class="sidebar-container latest-posts">
+    <div class="sidebar-title">
+        Najnowsze wpisy
+    </div>
+    <hr class="latest-posts-separator">
+    <div class="sidebar-latest-posts-container">
+        <ul class="sidebar-posts"><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" lang="pl">Czy wiesz, czym jest narzędzie artillery?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" lang="pl">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+            </li><li class="sidebar-post no-breaking-word star-icon">
+                <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" lang="pl">Czy wiesz, że za pomocą operatora shareReplay możesz cache&#39;ować dane z observable?</a>
+            </li></ul>
+    </div>
+</div>
+
+                <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                
+<div class="sidebar-container newsletter-sidebar-tile">
+    <div class="newsletter-tile-title-container">
+        
+        <h2 class="newsletter-tile-title">newsletter</h2>
+        <h2 class="newsletter-tile-title">techniczny</h2>
+        
+    </div>
+    <a href="#newsletter-form" class="sign-up-btn">Zapisz się</a>
+</div>
+
+            </div>
+        </div>
+        <div class="recommended-container" id="recommended-posts-container">
+    <h2 class="title">
+        Podobne wpisy
+    </h2>
+    <div id="latest-posts-container" class="latest-posts-container">
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">artillery</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">Czy wiesz, czym jest narzędzie artillery?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/kdudek.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/kdudek.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/kdudek.html" class="author-name">Kamil Dudek</a>
+                <span class="post-date">
+13
+
+lut
+
+
+
+2026
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">typescript</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/wstolarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/wstolarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/wstolarski.html" class="author-name">Wojciech Stolarski</a>
+                <span class="post-date">
+3
+
+gru
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+
+
+
+
+<div class="post-tile">
+    <a class="small-post-image" href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+        <img class="tile-image small-post-image" src="/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" alt="post-image"/>
+    </a>
+    <div class="post-tile-content">
+        <div class="badge-panel">
+            <div class="badge">rxjs</div>
+        </div>
+        <h4 class="post-title no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?</a>
+        </h4>
+
+        <p class="post-description no-breaking-word">
+            <a href="/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html">
+                
+                
+                
+            </a>
+        </p>
+
+        <div class="tile-author"><a href="/authors/ptatarski.html" class="author-name author-img">
+                <img class="small-author-image" src="/assets/img/authors/ptatarski.webp" alt="author">
+            </a>
+            <div class="post-info">
+                <a href="/authors/ptatarski.html" class="author-name">Piotr Tatarski</a>
+                <span class="post-date">
+17
+
+lis
+
+
+
+2025
+</span>
+            </div></div>
+    </div>
+</div>
+</div>
+    <img id="arrow-icon" onclick="toggleRecommendation()" class="arrow rotated" src="/assets/icon/arrow.svg">
+</div>
+
+<script>
+
+    let expended = false;
+    const arrowIcon = document.getElementById("arrow-icon")
+
+    function toggleRecommendation() {
+        if (expended) {
+            document.getElementById("latest-posts-container").classList.remove("hide");
+            arrowIcon.classList.add("rotated");
+        } else {
+            document.getElementById("latest-posts-container").classList.add("hide");
+            arrowIcon.classList.remove("rotated");
+        }
+        
+        expended = !expended;
+    }
+
+</script>
+
+        <div class="consdata-offers-mobile">
+            <div class="sidebar-container offers" id="offers-sidebar">
+    <div class="sidebar-title offers-title">
+        Dołącz do nas
+    </div>
+    <hr class="offers-separator">
+    <ul class="sidebar-posts offers-list">
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/senior-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">SENIOR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 14 900 - 20 590 PLN brutto <br/>
+                            B2B 19 680 - 27 220 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje/poznan/regular-fullstack-developer-java-angular"
+               lang="pl">
+                <div class="job-offer">
+                    <span class="job-title">REGULAR FULLSTACK DEVELOPER (JAVA + ANGULAR)</span>
+                    <span class="job-description">Poznań (hybrydowo) lub zdalnie</span>
+                    <span class="job-salary">
+                            UoP 11 300 - 15 900 PLN brutto <br/>
+                            B2B 14 950 - 21 000 PLN netto
+                        </span>
+                </div>
+            </a>
+        </li>
+        <li class="sidebar-post no-breaking-word">
+            <a class="clickable-offer" href="https://www.consdata.com/pl/kariera/trwajace-rekrutacje#tag-developer">
+                <div class="other-job-offers">
+                    <span class="job-title">ZOBACZ WSZYSTKIE OGŁOSZENIA</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+        </div>
+        <div class="newsletter-sub-container" id="newsletter-sub-container">
+    <div class="title">
+        
+        <h2>Zapisz się na </h2>
+        <h2 class="newsletter">newsletter </h2>
+        <h2>techniczny</h2>
+        
+    </div>
+    <div id="newsletter-form" class="newsletter-agreement-form-content">
+        <form class="newsletter-form" action="https://app2.salesmanago.pl/form/e7yrrpjmxbm7bahc/contact.htm" method="post" target="_blank" onsubmit="">
+            <input type="hidden" name="lang" value="pl">
+            <input type="hidden" name="formId" value="fe234ba7-932a-438e-aca0-0cf324930910">
+            <input type="hidden" value="true" name="sm-form-consent-id-2634-NEWSLETTER_JAVA">
+            <div class="form-inputs">
+                <input required placeholder="Imię *" name="sm-form-name"/>
+                <input required type="email" placeholder="Adres e-mail *" name="sm-form-email"/>
+            </div>
+            <div class="form-checkbox-container">
+                <label class="form-checkbox">
+                    <input required type="checkbox" name="sm-form-consent-name-NEWSLETTER_JAVA"/>
+                    <div class="form-checkbox-input"></div>
+                    <span>Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*</span>
+                </label>
+            </div>
+            <button class="sign-up-btn">Zapisz się</button>
+        </form>
+    </div>
+</div>
+
+    </article>
+</div>
+<script>
+    const language = 'pl';
+    const jsonPath = language === 'en' ? '/en/json/posts.json' : '/json/posts.json';
+    fetch(jsonPath)
+        .then(response => response.json())
+        .then(store => {
+            function displayResults(results) {
+                if (results.length > 0) {
+                    const container = document.getElementById("recommended-posts");
+                    results
+                        .forEach(result => {
+                            const item = store[result.ref];
+                            if (item.lang === language) {
+                                const listElement = document.createElement('li');
+                                const anchor = document.createElement('a');
+                                const postTitle = document.createTextNode(item.title);
+                                listElement.classList.add('sidebar-post');
+                                listElement.classList.add('no-breaking-word');
+                                anchor.setAttribute('href', item.url);
+                                anchor.setAttribute('lang', 'pl');
+                                anchor.appendChild(postTitle);
+                                listElement.appendChild(anchor);
+                                container.appendChild(listElement);
+                            }
+                        });
+                    if (container.children.length < 1) {
+                        hideRecommendedPosts();
+                    }
+                } else {
+                    hideRecommendedPosts();
+                }
+
+            }
+
+            const tags = "frontend javascript";
+            const idx = lunr(function () {
+                this.field('tags');
+
+                for (let key in store) {
+                    this.add({
+                        'id': key,
+                        'title': store[key].title,
+                        'tags': store[key].tags,
+                    });
+                }
+            });
+            const results = idx.search(tags).slice(1, 4);
+            displayResults(results);
+        })
+
+    function hideRecommendedPosts() {
+        document.getElementById("recommended-posts-container").style.display = 'none';
+    }
+</script>
+
+</main><footer>
+    <div class="container">
+        <a class="footer-logo" href="https://consdata.com/pl">
+            <img src="/assets/img/logo.png" alt="consdata.com">
+        </a>
+        <div class="footer-content">
+            <div class="footer-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <p class="menu-title">Kontakt</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="mailto:sales@consdata.com">sales@consdata.com</a>
+                            </li>
+                            <li>
+                                <p>+48 61 41 51 000</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Biuro</p>
+                        <ul class="submenu">
+                            <li>
+                                <p>K9Office<br>Krysiewicza 9/14<br>61-825 Poznań<br>Polska</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <p class="menu-title">Rozwiązania</p>
+                        <ul class="submenu">
+                            <li>
+                                <a href="https://eximee.com" target="_blank">Eximee</a>
+                            </li>
+                            <li>
+                                <a href="https://kouncil.io" target="_blank">Kouncil</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/" class="menu-title">Blog</a>
+                        <a href="https://consdata.com/pl/kariera/trwajace-rekrutacje" class="menu-title"
+                           target="_blank">Dołącz do nas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="small-footer-container">
+        <div class="footer-copyright">
+            <span>Copyright © 2024 Consdata. All rights reserved.</span>
+            <span>
+                <a href="https://consdata.com/pl/polityka-prywatnosci"
+                     class="privacy-policy">Privacy Policy & Cookies</a>
+            </span>
+        </div>
+        <div class="social-footer">
+            <a target="_blank" href="https://www.facebook.com/consdatacom">
+                <img class="icon" src="/assets/icon/social-f.svg">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/consdata">
+                <img class="icon" src="/assets/icon/social-in.svg">
+            </a>
+            <a target="_blank" href="https://github.com/Consdata">
+                <img class="icon" src="/assets/icon/github.svg">
+            </a>
+            <a target="_blank" href="https://forum.eximee.com/">
+                <img class="icon" src="/assets/icon/social-icon.svg">
+            </a>
+        </div>
+    </div>
+</footer>
+<div class="cookie-notice" id="cookie-notice">
+    <i onclick="hideConsent()" class="close-consent fa fa-times close"></i>
+    <div class="cookie-container">
+        <span>
+            
+            Chcemy używać plików cookie oraz skryptów podmiotów trzecich do polepszania funkcjonowania tej strony
+        </span>
+        <a id="cookie-notice-accept" class="consent-button">Zgadzam się</a>
+    </div>
+        <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=300808861525851&ev=PageView&noscript=1"
+    /></noscript>
+</div>
+
+<script>
+    function createCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+
+    function hideConsent() {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    if (readCookie('cookie-notice-dismissed') === 'true') {!function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+        n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+}(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '300808861525851');
+fbq('track', 'PageView');
+} else {
+        document.getElementById('cookie-notice').style.display = 'flex';
+    }
+
+    document.getElementById('cookie-notice-accept').addEventListener("click", function () {
+        createCookie('cookie-notice-dismissed', 'true', 31);
+        hideConsent();
+        location.reload();
+    });
+</script>
+
+</body>
+</html>
