@@ -15,7 +15,7 @@ tags:
 ---
 
 Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`. Jest mało intuicyjny: 
-po otwarciu widać listę warunków, ale… *po co to jest*? Kto z tego korzysta i jaki wpływ mają zmiany w środku?
+po otwarciu widać listę warunków, ale… po co to jest? Kto z tego korzysta i jaki wpływ mają zmiany w środku?
 
 Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje ważne najczęściej **na etapie kompilacji** aplikacji. 
 Na przykład:
