@@ -38,7 +38,7 @@ not dead
 last 5 iOS major versions
 ```
 
-Każda linia to informacja o **wspieraniu** (albo wykluczaniu) konkretnych przeglądarek/urządzeń.
+Każda linia to informacja o **wspieraniu** konkretnych przeglądarek/urządzeń.
 
 ## Omówienie linia po linii
 Przejdźmy sobie po każdym wpisie i wyjaśnijmy co on oznacza:
@@ -53,8 +53,6 @@ Przykładowo, jeśli w momencie budowania danych najnowszy Chrome ma numer 144, 
 
 Oznacza: przeglądarki, które mają **ponad 0,5% udziału w rynku**.
 
-Te dane nie pochodzą z Twoich statystyk. Są agregowane z różnych źródeł i udostępniane przez Can I Use. 
-
 ### Firefox ESR
 
 Oznacza: **najnowszą wersję Firefox Extended Support Release**.
@@ -67,7 +65,7 @@ Oznacza: wyklucza przeglądarki uznane za „martwe”, czyli takie, które **ni
 
 ### last 5 iOS major versions
 
-Oznacza: zostawia **tylko 5 ostatnich głównych wersji iOS**.
+Oznacza: zostawia **tylko 5 ostatnich głównych wersji iOS**, czyli od 15 do 26 (w numerach wersji był przeskok).
 
 Słowo kluczowe `major` jest tu ważne. Bez niego (`last 5 iOS versions`) wynik mógłby obejmować „punktowe” wersje, np. `26.2`, `26.1`, `26.0`, `18.7`, `18.6` — czyli niekoniecznie to, co masz na myśli, kiedy mówisz „5 ostatnich wersji”.
 
