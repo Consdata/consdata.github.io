@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz, że zależności w Springu powinniśmy wstrzykiwać przez konstruktor?"
-date:      2026-03-12T08:00:00+01:00
+date:      2026-03-16T08:00:00+01:00
 published: true
 didyouknow: false
 lang: pl
 author: bpietrowiak
-image: /assets/img/posts/2026-03-12-czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor/thumbnail.webp
+image: /assets/img/posts/2026-03-16-czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor/thumbnail.webp
 description: "Poznaj zalety tego podejścia, przykłady kodu i wskazówki dotyczące testowania oraz bezpieczeństwa aplikacji."
 tags:
 - spring boot
