@@ -7,24 +7,25 @@ didyouknow: false
 lang: pl
 author: pgrobelny
 image: /assets/img/posts/2026-03-27-czy-wiesz-czym-jest-i-jak-działa-browserslist/thumbnail.webp
-description: "Browserslist to niepozorny plik, który steruje tym, jakie przeglądarki wspiera Twoja aplikacja — a pośrednio: jak budujesz CSS i JavaScript. Zobacz, kto z niego korzysta i co zmienia jedna linijka konfiguracji."
+description: "Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`. Kto z niego korzysta i na co wpływają dokonywane w nim zmiany?"
 tags:
 - frontend
 - javascript
 - angular
 ---
 
-Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`. Jest mało intuicyjny: 
-po otwarciu widać listę warunków, ale… po co to jest? Kto z tego korzysta i jaki wpływ mają zmiany w środku?
+Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`. Jest mało intuicyjny:
+z jednej strony, po jego otwarciu wiadomo, co jest jego treścią, ale z drugiej strony, po co on jest? 
+Kto z niego korzysta i na co wpływają dokonywane w nim zmiany?
 
-Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje ważne najczęściej **na etapie kompilacji** aplikacji. 
+Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje ważne najczęściej **na etapie kompilacji**. 
 Na przykład:
 - jakie polyfille zastosować,
-- jaka wersja JavaScript będzie „bezpieczna”,
-- które prefiksy CSS dodać (np. `-webkit-`, `-moz-`).
+- jaka wersja JS będzie „bezpieczna”,
+- które prefiksy dodać do CSS (np. `-webkit-`, `-moz-`).
 
-Sama biblioteka Browserslist to „czytnik” konfiguracji + logika selekcji przeglądarek. Źródłem danych o wsparciu funkcji i popularności jest paczka `caniuse-lite`, 
-budowana na bazie danych Can I Use.
+Sam Browserslist jest tylko biblioteką, która czyta informacje z caniuse, a następnie przekazuje je dalej do innych narzędzi, 
+które ich potrzebują.
 
 ## Przykładowy plik browserslist
 Przejdźmy teraz do tego, jak wygląda przykładowy plik konfiguracyjny i omówmy sobie, z czego się składa.
@@ -38,43 +39,34 @@ not dead
 last 5 iOS major versions
 ```
 
-Każda linia to informacja o **wspieraniu** konkretnych przeglądarek/urządzeń.
+Każda linia pliku to informacja o wspieraniu lub niewspieraniu konkretnych urządzeń i przeglądarek.
 
 ## Omówienie linia po linii
-Przejdźmy sobie po każdym wpisie i wyjaśnijmy co on oznacza:
+Przejdźmy sobie po każdym wpisie i wyjaśnijmy, co on oznacza:
 
 ### last 2 versions
 
-Oznacza: **dwie ostatnie wersje każdej wspieranej przeglądarki**.
-
-Przykładowo, jeśli w momencie budowania danych najnowszy Chrome ma numer 144, to warunek obejmie Chrome 144 i 143 (analogicznie dla innych). 
+Są to dwie ostatnie wersje każdej wspieranej przeglądarki. Na przykład dla chrome są to wersje 144 i 143.
 
 ### > 0.5%
-
-Oznacza: przeglądarki, które mają **ponad 0,5% udziału w rynku**.
-
+Przeglądarki z ponad 0,5% udziału w rynku. 
+Informacje o rynku pochodzą z różnych źródeł, są agregowane i przygotowywane później przez caniuse i następnie udostępniane.
 ### Firefox ESR
-
-Oznacza: **najnowszą wersję Firefox Extended Support Release**.
-
-To częsty wymóg w środowiskach enterprise, gdzie przeglądarki bywają aktualizowane wolniej, ale wciąż trzymają się wspieranej gałęzi.
-
+Najnowsza wersja Firefox Extended Support Release.
 ### not dead
-
-Oznacza: wyklucza przeglądarki uznane za „martwe”, czyli takie, które **nie były aktualizowane przez ostatnie 2 lata**.
-
+Wyklucza przeglądarki, które nie były aktualizowane przez ostatnie dwa lata.
 ### last 5 iOS major versions
-
-Oznacza: zostawia **tylko 5 ostatnich głównych wersji iOS**, czyli od 15 do 26 (w numerach wersji był przeskok).
-
-Słowo kluczowe `major` jest tu ważne. Bez niego (`last 5 iOS versions`) wynik mógłby obejmować „punktowe” wersje, np. `26.2`, `26.1`, `26.0`, `18.7`, `18.6` — czyli niekoniecznie to, co masz na myśli, kiedy mówisz „5 ostatnich wersji”.
+Wyklucza wszystko z wyjątkiem 5 ostatnich wersji systemu iOS, czyli od 15 do 26 (w numerach wersji był przeskok). 
+Jeżeli byśmy nie umieścili w parametrze major (czyli last 5 iOS versions), to wynikiem byłyby wersje:  26.2, 26.1, 26.0, 18.7, 18.6.
 
 ## Angular 20 i plik .browserslistrc
 
 Warto jeszcze wspomnieć, że od wersji Angulara 20 pojawił się nowy plik o nazwie `.browserslistrc` o podobnej roli. 
-Jest on jednak bardziej szczegółowy i zwykle polega na określaniu **konkretnych wersji przeglądarek**, żeby lepiej panować nad stabilnością i powtarzalnością buildów.
+Jest on jednak bardziej szczegółowy i zwykle polega na określaniu **konkretnych wersji przeglądarek**, 
+żeby lepiej panować nad stabilnością i powtarzalnością buildów.
 
-W praktyce Angular (Angular CLI) najpierw próbuje znaleźć `.browserslistrc`, a jeśli go nie ma, próbuje skorzystać z konfiguracji `browserslist`.
+W praktyce Angular najpierw próbuje znaleźć `.browserslistrc`, a jeśli go nie ma, 
+próbuje skorzystać z konfiguracji `browserslist`.
 
 ## Gdzie szukać więcej (dokumentacja)
 - [Składnia i przykłady konfiguracji](https://github.com/browserslist/browserslist)
