@@ -45,9 +45,7 @@ Każda linia pliku to informacja o wspieraniu lub niewspieraniu konkretnych urz�
 Przejdźmy sobie po każdym wpisie i wyjaśnijmy, co on oznacza:
 
 ### last 2 versions
-
 Są to dwie ostatnie wersje każdej wspieranej przeglądarki. Na przykład dla chrome są to wersje 144 i 143.
-
 ### > 0.5%
 Przeglądarki z ponad 0,5% udziału w rynku. 
 Informacje o rynku pochodzą z różnych źródeł, są agregowane i przygotowywane później przez caniuse i następnie udostępniane.
