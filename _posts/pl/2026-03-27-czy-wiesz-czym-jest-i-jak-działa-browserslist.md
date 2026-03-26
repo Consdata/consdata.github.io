@@ -18,7 +18,8 @@ Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazw
 z jednej strony, po jego otwarciu wiadomo, co jest jego treścią, ale z drugiej strony, po co on jest? 
 Kto z niego korzysta i na co wpływają dokonywane w nim zmiany?
 
-Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje ważne najczęściej **na etapie kompilacji**. 
+## Czym jest Browserslist?
+Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje najczęściej związane z **etapem kompilacji**. 
 Na przykład:
 - jakie polyfille zastosować,
 - jaka wersja JS będzie „bezpieczna”,
