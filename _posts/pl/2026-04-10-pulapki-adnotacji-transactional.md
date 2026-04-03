@@ -2,15 +2,17 @@
 layout: post
 title: Pułapki adnotacji @Transactional
 description: ""
-date: 2025-11-20T08:00:00+01:00
+date: 2026-04-10T08:00:00+01:00
 published: false
 didyouknow: false
 lang: pl
 author: kdudek
-image: TODO
+image: /assets/img/posts/2026-04-10-pulapki-adnotacji-transactional/thumbnail.webp
 tags:
 - java
 - spring
+- transactional
+- transakcje
 ---
 
 Wykorzystanie adnotacji `@Transactional` w frameworku Spring stanowi jedno z podstawowych narzędzi w zarządzaniu transakcjami bazodanowymi. Choć jej zastosowanie jest wygodne i upraszcza kod, niesie ze sobą również potencjalne pułapki, które mogą powodować trudne do zdiagnozowania błędy.
