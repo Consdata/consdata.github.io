@@ -445,7 +445,6 @@ Pierwszą reakcją może być myśl, że zapytanie jest niepoprawne, jednak w ty
 
 Jeśli pozbędziemy się adnotacji `@Transactional`, test będzie przechodził zgodnie z oczekiwaniami. W takim przypadku jednak musimy sami zadbać o wyczyszczenie bazy po wykonanym teście - np. używając adnotacji `@AfterEach` i metody `carRepository.deleteAll()`.
 
-#### Więcej o @Transactional w testach
-
-O innym ciekawym problemie z adnotacją `@Transactional` można przeczytać we wpisie: [Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?](https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html)
+#### Więcej o @Transactional
+Więcej informacji o transakcjach w Javie można znaleźć w [Zarządzanie transakcjami w Java - jak to robić dobrze?]({% post_url pl\2022-01-25-transactions.md %}), a o innym ciekawym problemie z adnotacją `@Transactional` w testach można przeczytać we wpisie: [Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?]({% post_url pl\2025-09-01-transactional-w-testach-integracyjnych-hibernate %}).
 

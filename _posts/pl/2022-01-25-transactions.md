@@ -274,3 +274,7 @@ public class MailService {
 
 ## Podsumowanie
 Teoretyczne wprowadzenie do systemu zarządzania transakcjami w Javie już za nami! Na początku dowiedzieliśmy się czym w ogóle są transakcje, dlaczego są ważne i co je cechuje. Następnie przedstawiony został mechanizm działania transakcji w JDBC po to, by na koniec zaprezentować uproszczenie implementacji tego mechanizmu w Springu. W kolejnym artykule z tej serii dowiemy się jakie problemy napotkaliśmy wykorzystując mechanizm zarządzania transakcjami, jak udało się go zlokalizować oraz na czym polegała poprawka. 
+
+### Więcej o @Transactional
+
+Więcej o adnotacji _@Transactional_ można przeczytać w [Pułapki adnotacji @Transactional]({% post_url pl\2026-06-10-pulapki-adnotacji-transactional %}).
