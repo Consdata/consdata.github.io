@@ -277,4 +277,4 @@ Teoretyczne wprowadzenie do systemu zarządzania transakcjami w Javie już za na
 
 ### Więcej o @Transactional
 
-Więcej o adnotacji _@Transactional_ można przeczytać w [Pułapki adnotacji @Transactional]({% post_url pl\2026-06-10-pulapki-adnotacji-transactional %}).
+Więcej o adnotacji _@Transactional_ można przeczytać w [Pułapki adnotacji @Transactional]({% post_url pl\2026-04-10-pulapki-adnotacji-transactional %}).
