@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Pułapki adnotacji @Transactional
-description: ""
+description: "Najczęstsze pułapki związane z @Transactional w Springu i Hibernate - od proxy i self-invocation, przez dirty checking, po cache Hibernate."
 date: 2026-04-10T08:00:00+01:00
-published: false
+published: true
 didyouknow: false
 lang: pl
 author: kdudek
@@ -61,8 +61,8 @@ public class CarOwner {
 }
 ```
 
-## 1. @Transactional domyślnie jest realizowany przez proxy
-Domyślnie Spring dla wszystkich klas lub metod oznaczonych adnotacją `@Transactional` tworzy proxy (dynamiczne proxy JDK albo proxy CGLIB w zależności od sytuacji oraz ustawień), co umożliwia zastosowanie logiki transakcyjnej (np. rozpoczęcia i commitowania transakcji) przed oraz po wykonaniu wywoływanej metody. Oznacza to, że adnotacja ta będzie działała tylko w przypadku metod publicznych - metody o innej widoczności po prostu zignorują tę adnotację bez żadnych ostrzeżeń, ponieważ nie są one obsługiwane przez proxy. Dodatkowo przechwytywane będą tylko zewnętrzne wywołania metod, czyli takie, które przechodzą przez proxy. Wszelkie wywołania metod wewnątrz tego samego komponentu nie spowodują rozpoczęcia transakcji, nawet jeśli metoda jest oznaczona adnotacją `@Transactional`. W przypadku, gdy chcemy, aby wewnętrzna metoda działała jednak w sposób transakcyjny możemy posiłkować się wstrzyknięciem beana do samego siebie (self-injection), co pozwala nam na użycie proxy stworzonego przez Springa.
+### 1. @Transactional domyślnie jest realizowany przez proxy
+Domyślnie Spring dla wszystkich klas lub metod oznaczonych adnotacją `@Transactional` tworzy proxy (dynamiczne proxy JDK albo proxy CGLIB w zależności od sytuacji oraz ustawień), co umożliwia zastosowanie logiki transakcyjnej (np. rozpoczęcia i commitowania transakcji) przed oraz po wykonaniu wywoływanej metody. Oznacza to, że adnotacja ta będzie działała tylko w przypadku metod publicznych - metody o innej widoczności po prostu zignorują tę adnotację bez żadnych ostrzeżeń, ponieważ nie są one obsługiwane przez proxy. Dodatkowo przechwytywane będą tylko zewnętrzne wywołania metod, czyli takie, które przechodzą przez proxy. Wszelkie wywołania metod wewnątrz tego samego komponentu nie spowodują rozpoczęcia transakcji, nawet jeśli metoda jest oznaczona adnotacją `@Transactional`. W przypadku gdy chcemy, aby wewnętrzna metoda działała jednak w sposób transakcyjny, możemy posiłkować się wstrzyknięciem beana do samego siebie (self-injection), co pozwala nam na użycie proxy stworzonego przez Springa.
 
 ```java
 @Service
@@ -143,7 +143,7 @@ public class WorkingTransactionalCarService {
 ```
 Powyższy przykład reprezentuje ten sam proces, jednak tym razem wywołanie metody `saveCar()` odbyło się poprzez użycie wstrzykniętego proxy - w takiej sytuacji wycofanie transakcji działa poprawnie.
 
-### AdviceMode.ASPECTJ - @Transactional jako aspekt
+#### AdviceMode.ASPECTJ - @Transactional jako aspekt
 Spring w trybie `AdviceMode.ASPECTJ` zamiast domyślnego `AdviceMode.PROXY` realizuje `@Transactional` poprzez aspekty AspectJ oraz modyfikacje kodu bajtowego, a nie przez proxy. Pozwala na ominięcie powyższych ograniczeń - w takiej formie oprócz modyfikatora publicznego obsługiwane są również inne modyfikatory dostępu, a także działa wewnętrzne wywoływanie metod. Minusem takiego rozwiązania jest jednak skomplikowanie procesu budowania aplikacji (wymagany jest kompilator AspectJ albo konfiguracja `load-time weavingu`) oraz trudniejsze jej utrzymywanie względem domyślnego trybu z proxy.
 
 ```java
@@ -193,9 +193,9 @@ public class AspectJTransactionalService {
 ```
 Przedstawiona klasa `AspectJTransactionalService` poprawnie wycofa transakcję, pomimo że metoda `saveCar()` jest prywatna oraz jest wywoływana wewnętrznie.
 
-## 2. @Transactional, Hibernate i dirty checking 
+### 2. @Transactional, Hibernate i dirty checking 
 
-### Hibernate aktualizuje zarządzane obiekty niewprost
+#### Hibernate aktualizuje zarządzane obiekty niewprost
 Cykl życia encji w Hibernate składa się z czterech stanów:
 1. `Transient` - obiekt został stworzony w aplikacji, ale nie jest jeszcze zarządzany przez Hibernate
 2. `Persistent` - obiekt jest zarządzany przez Hibernate i jest powiązany z sesją
@@ -250,7 +250,7 @@ public class MileageUpdater {
 ```
 W tym przykładowym serwisie walidacja opiera się na sprawdzeniu, czy nowy przebieg samochodu nie jest niższy od starego. Jeśli nowy przebieg jest niepoprawny, to metoda `carRepository.save(car)`, która wprost zapisuje tę encję do bazy, nie zostanie wykonana. Ponieważ jednak znajdujemy się w transakcji, a encja ta znajduje się w kontekście persystencji (została wcześniej wyciągnięta z bazy za pośrednictwem `carRepository.findById(carId)`), w przypadku ustawienia niepoprawnej wartości poprzez `car.setMileage()` zmiana ta zostanie odzwierciedlona na bazie danych, nawet jeśli kod naszego serwisu nie wskazuje na to wprost.
 
-Rozwiązaniem tego problemu jest pilnowanie, aby wszelkie zmiany stanu obiektu znajdującego się w kontekście persystencji odbywały się w momencie, w którym dozwolony jest jego zapis. Jeśli z jakiegoś powodu nie jest to możliwe możemy ratować się np. odłączając obiekt z kontekstu persystencji lub korzystając z obiektu pośredniczącego, który na końcu zostanie zsynchronizowany z oryginalnym obiektem. Poniżej znajduje się przykładowa implementacja `MileageUpdater` z poprawioną logiką.
+Rozwiązaniem tego problemu jest pilnowanie, aby wszelkie zmiany stanu obiektu znajdującego się w kontekście persystencji odbywały się w momencie, w którym dozwolony jest jego zapis. Jeśli z jakiegoś powodu nie jest to możliwe, możemy ratować się, np. odłączając obiekt z kontekstu persystencji lub korzystając z obiektu pośredniczącego, który na końcu zostanie zsynchronizowany z oryginalnym obiektem. Poniżej znajduje się przykładowa implementacja `MileageUpdater` z poprawioną logiką.
 
 ```java
 @Service
@@ -297,9 +297,9 @@ public class CorrectMileageUpdater {
 }
 ```
 
-### Hibernate porównuje obiekty z tym co znajduje się w kontekście persystencji
+#### Hibernate porównuje obiekty z tym co znajduje się w kontekście persystencji
 
-W ramach transakcji `dirty checking` jest podstawowym mechanizmem, dzięki któremu Hibernate wie jakie encje muszą zostać zaktualizowane, a które tego nie wymagają. Warto mieć na uwadze, że Hibernate załaduje do kontekstu persystencji wszystkie obiekty zwrócone przez zapytania bazodanowe, nawet jeśli zwrócą one rekordy, które w praktyce nie istnieją.
+W ramach transakcji `dirty checking` jest podstawowym mechanizmem, dzięki któremu Hibernate wie, jakie encje muszą zostać zaktualizowane, a które tego nie wymagają. Warto mieć na uwadze, że Hibernate załaduje do kontekstu persystencji wszystkie obiekty zwrócone przez zapytania bazodanowe, nawet jeśli zwrócą one rekordy, które w praktyce nie istnieją.
 ```java
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
@@ -343,13 +343,13 @@ public class NotExistingCarService {
     */
 }
 ```
-Zapytanie `returnNotExistingCars()` zwraca samochód, który został stworzony bezpośrednio w tym zapytaniu i nie jest zapisany w bazie danych. Metoda `tryToAddNotExistingCars()` próbuje zapisać ten samochód, jednak tabela pozostanie pusta pomimo tego, że używamy `carRepository.saveAll(cars)`. Z punktu widzenia Hibernate, nieistniejący samochód istnieje w kontekście persystencji (jest zarządzany przez Hibernate) i jego stan nie został zmieniony, dlatego nie ma potrzeby wykonania operacji `INSERT` do bazy danych. W tej sytuacji aby dodać tę encję trzeba np. odłączyć ją od kontekstu za pośrednictwem `EntityManager.detach()`.
+Zapytanie `returnNotExistingCars()` zwraca samochód, który został stworzony bezpośrednio w tym zapytaniu i nie jest zapisany w bazie danych. Metoda `tryToAddNotExistingCars()` próbuje zapisać ten samochód, jednak tabela pozostanie pusta pomimo tego, że używamy `carRepository.saveAll(cars)`. Z punktu widzenia Hibernate, nieistniejący samochód istnieje w kontekście persystencji (jest zarządzany przez Hibernate) i jego stan nie został zmieniony, dlatego nie ma potrzeby wykonania operacji `INSERT` do bazy danych. W tej sytuacji, aby dodać tę encję, trzeba np. odłączyć ją od kontekstu za pośrednictwem `EntityManager.detach()`.
 
-## 3. @Transactional, a checked exceptions
-Jednym z kluczowych mechanizmów transakcji jest rollback, który wycofuje wszystkie zmiany w przypadku natrafienia na wyjątek. Domyślnie mechanizm ten wyzwalany jest przy wyjątkach `unchecked exceptions` dziedziczących po `RuntimeException` oraz przy wyjątkach dziedziczących po klasie `Error`, natomiast nie działa w przypadku `checked exceptions`, czyli wyjątków dziedziczących po klasie `Exception`. Aby mechanizm ten działał także w tym przypadku, należy wprost określić wyjątki, które mają uruchamiać rollback używając parametru `rollbackFor` w adnotacji `@Transactional` - przykładowo `@Transactional(rollbackFor = SomeBusinessException.class)` 
+### 3. @Transactional, a checked exceptions
+Jednym z kluczowych mechanizmów transakcji jest rollback, który wycofuje wszystkie zmiany w przypadku natrafienia na wyjątek. Domyślnie mechanizm ten wyzwalany jest przy wyjątkach `unchecked exceptions` dziedziczących po `RuntimeException` oraz przy wyjątkach dziedziczących po klasie `Error`, natomiast nie działa w przypadku `checked exceptions`, czyli wyjątków dziedziczących po klasie `Exception`. Aby mechanizm ten działał także w tym przypadku, należy wprost określić wyjątki, które mają uruchamiać rollback, używając parametru `rollbackFor` w adnotacji `@Transactional` - przykładowo `@Transactional(rollbackFor = SomeBusinessException.class)` 
 
-## 4. @Transactional w testach
-Popularną praktyką w testach integracyjnych zahaczających o bazę danych jest użycie w nich adnotacji `@Transactional` (bezpośrednio lub pośrednio np. przez adnotację `@DataJpaTest`). Z pozoru jest to wygodne rozwiązanie, które np. gwarantuje nam czyszczenie bazy po każdym teście, jednak w praktyce może prowadzić do kilku pułapek. Istnieje ryzyko, że transakcje i ich zakresy obecne w naszych testach będą różniły się od tych obecnych w kodach produkcyjnych przez co nasze testy nie będą działały zgodnie z oczekiwaniami.
+### 4. @Transactional w testach
+Popularną praktyką w testach integracyjnych zahaczających o bazę danych jest użycie w nich adnotacji `@Transactional` (bezpośrednio lub pośrednio, np. przez adnotację `@DataJpaTest`). Z pozoru jest to wygodne rozwiązanie, które np. gwarantuje nam czyszczenie bazy po każdym teście, jednak w praktyce może prowadzić do kilku pułapek. Istnieje ryzyko, że transakcje i ich zakresy obecne w naszych testach będą różniły się od tych obecnych w kodach produkcyjnych, przez co nasze testy nie będą działały zgodnie z oczekiwaniami.
 
 Załóżmy, że chcemy wyciągnąć z bazy właścicieli samochodów z konkretnymi numerami VIN. Dodatkowo chcemy, żeby zwrócone rekordy właścicieli (klasa `CarOwner`) zawierały jedynie wyfiltrowane samochody posiadające te numery VIN. Przykładowo dla właściciela o `id=1` oraz tabeli `car`:
 ```
@@ -447,6 +447,12 @@ Pierwszą reakcją może być myśl, że zapytanie jest niepoprawne, jednak w ty
 
 Jeśli pozbędziemy się adnotacji `@Transactional`, test będzie przechodził zgodnie z oczekiwaniami. W takim przypadku jednak musimy sami zadbać o wyczyszczenie bazy po wykonanym teście - np. używając adnotacji `@AfterEach` i metody `carRepository.deleteAll()`.
 
-#### Więcej o @Transactional
-Więcej informacji o transakcjach w Javie można znaleźć w [Zarządzanie transakcjami w Java - jak to robić dobrze?]({% post_url pl\2022-01-25-transactions.md %}), a o innym ciekawym problemie z adnotacją `@Transactional` w testach można przeczytać we wpisie: [Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?]({% post_url pl\2025-09-01-transactional-w-testach-integracyjnych-hibernate %}).
+### Więcej o @Transactional
+Więcej informacji o transakcjach w Javie można znaleźć w [Zarządzanie transakcjami w Java - jak to robić dobrze?]({% post_url pl/2022-01-25-transactions %}), a o innym ciekawym problemie z adnotacją `@Transactional` w testach można przeczytać we wpisie: [Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?]({% post_url pl/2025-09-01-transactional-w-testach-integracyjnych-hibernate %}).
+
+#### Źródła
+
+[Spring - Declarative Transation Management](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative.html)
+
+[Hibernate ORM User Guide](https://docs.hibernate.org/orm/current/userguide/html_single)
 
