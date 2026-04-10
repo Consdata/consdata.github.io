@@ -195,7 +195,7 @@ Przedstawiona klasa `AspectJTransactionalService` poprawnie wycofa transakcję, 
 
 ### 2. @Transactional, Hibernate i dirty checking 
 
-#### Hibernate aktualizuje zarządzane obiekty niewprost
+#### Hibernate aktualizuje zarządzane obiekty nie wprost
 Cykl życia encji w Hibernate składa się z czterech stanów:
 1. `Transient` - obiekt został stworzony w aplikacji, ale nie jest jeszcze zarządzany przez Hibernate
 2. `Persistent` - obiekt jest zarządzany przez Hibernate i jest powiązany z sesją
