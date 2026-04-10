@@ -437,7 +437,7 @@ class CarRepositoryTest {
     }
 }
 ```
-Powyższy test wypełnia bazę danych w metodzie `populateDb()`, a następnie wykonuje testowane zapytanie do bazy. Następnie robi asercje, aby upewnić się, że zwrócony został właściciel z dokładnie jednym, szukanym samochodem. Uruchomienie tego testu zakończy się jednak błędem:
+Powyższy test wypełnia bazę danych w metodzie populateDb(), po czym wykonuje testowane zapytanie do bazy. Następnie robi asercje, aby upewnić się, że zwrócony został właściciel z dokładnie jednym, szukanym samochodem. Uruchomienie tego testu zakończy się jednak błędem:
 ```
 Expected size: 1 but was: 2 in:
 [Car(id=1, vin=SZUKANY, model=Toyota Yaris, mileage=199989),
