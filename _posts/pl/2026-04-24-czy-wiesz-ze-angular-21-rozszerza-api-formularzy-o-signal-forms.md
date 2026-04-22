@@ -22,20 +22,20 @@ To rozwiązanie pozwala na scentralizowany kod, lepsze wsparcie typowania, prost
 ## Dlaczego Signal Forms? Różnica w podejściu do danych
 Signal Forms stanowią zmianę paradygmatu w porównaniu do Template-Driven Forms i Reactive Forms. Kluczowe zasady to:
 
-1. **Model jako źródło prawdy**: Zamiast wydobywać dane z wewnętrznych struktur frameworka, to Ty dostarczasz własny sygnał, który formularz jedynie odzwierciedla i synchronizuje
-2. **Deklaratywna logika**: Logika walidacji jest opisywana w schemacie.
-3. **Strukturalne mapowanie**: Struktura pól odzwierciedla model danych w stosunku 1:1, a struktura formularza jest automatycznie wyprowadzana z modelu danych.
+1. **Model jako źródło prawdy**: zamiast wydobywać dane z wewnętrznych struktur frameworka, to Ty dostarczasz własny sygnał, który formularz jedynie odzwierciedla i synchronizuje.
+2. **Deklaratywna logika**: logika walidacji jest opisywana w schemacie.
+3. **Strukturalne mapowanie**: struktura pól odzwierciedla model danych w stosunku 1:1, a struktura formularza jest automatycznie wyprowadzana z modelu danych.
 W tym podejściu formularz to hierarchia pól, z której automatycznie **wyprowadzany jest stan** (błędy, stan disabled, touched itp.).
-**Kluczowa Różnica**: W Signal Forms model formularza jest **źródłem prawdy** (source of truth), a nie **wynikiem/wyjściem** (output).
+**Kluczowa różnica**: w Signal Forms model formularza jest **źródłem prawdy** (source of truth), a nie **wynikiem** (output).
 
 **Korzyści w pigułce**:
-- **Brak boilerplate'u**: Drastyczna redukcja kodu.
-- **Silne typowanie**: Wyprowadzane jest z modelu.
-- **Automatyczne dwukierunkowe wiązanie**: Za pomocą dyrektywy `[field]`.
-- **Brak subskrypcji**: Wykorzystanie wbudowanej reaktywności sygnałów.
+- **Brak boilerplate'u**: drastyczna redukcja kodu.
+- **Silne typowanie**: wyprowadzane jest z modelu.
+- **Automatyczne dwukierunkowe wiązanie**: za pomocą dyrektywy `[field]`.
+- **Brak subskrypcji**: wykorzystanie wbudowanej reaktywności sygnałów.
 
 ## Tworzenie Formularza
-Rekomendowanym sposobem definicji formularza jest związanie go z dedykowanym interfejsem.
+Rekomendowanym sposobem definiowania formularza jest powiązanie go z dedykowanym interfejsem.
 
 ```typescript
 export interface UserAccountRegistration {
@@ -55,20 +55,20 @@ protected readonly userAccountRegistrationForm = form(this.userAccountRegistrati
 Metoda `form(model, schema)` tworzy `FieldTree` (drzewo pól), które odzwierciedla model danych. 
 Aby uzyskać aktualny stan i wartość danego pola, wywołujemy je jako funkcję, otrzymując `FieldState` (np. `form.email().value()`).
 
-### Komponenty w Szablonie
+### Komponenty w szablonie
 Do połączenia pól formularza z szablonem używamy dyrektywy **Field**.
 
 ```html
 <input type="email" [field]="userAccountRegistrationForm.email" />
 ```
 
-### Komponenty Formularza (Custom Controls)
+### Komponenty formularza (Custom controls)
 Tworzenie własnych komponentów formularza jest znacząco przyjemniejsze do implementacji niż w Reactive Forms, gdzie wymagany był `ControlValueAccessor`.
 
 Aby tworzony komponent mógł być użyty jako pole formularza z dyrektywą `[field]`, należy zaimplementować jeden z dedykowanych interfejsów:
 
-1. `FormValueControl<T>`: Dla większości pól edytujących pojedynczą wartość (np. pole tekstowe, wybór daty).
-2. `FormCheckboxControl`: Dla kontrolek typu checkbox lub toggle, które reprezentują stan boolean (w tym przypadku wymagana jest właściwość checked zamiast value).
+1. `FormValueControl<T>`: dla większości pól edytujących pojedynczą wartość (np. pole tekstowe, wybór daty).
+2. `FormCheckboxControl`: dla kontrolek typu checkbox lub toggle, które reprezentują stan boolean (w tym przypadku wymagana jest właściwość checked zamiast value).
 Oba interfejsy dziedziczą z `FormUiControl` i wymagają jedynie, aby komponent udostępniał właściwość **value** (lub checked) jako `ModelSignal`.
 
 ```typescript
@@ -115,7 +115,7 @@ export const registrationValidationSchema = schema<UserAccountRegistration>((sch
 }
 ```
 
-### Walidacja Międzypolowa (validateTree)
+### Walidacja międzypolowa (validateTree)
 
 Możliwe jest powiązanie walidatorów z innymi polami formularza, co jest niezbędne np. do sprawdzania zgodności haseł. Używamy do tego funkcji `validateTree()`.
 
@@ -131,7 +131,7 @@ validateTree(schemaPath.password, (ctx) => {
 });
 ```
 
-### Walidacja Asynchroniczna (validateAsync)
+### Walidacja asynchroniczna (validateAsync)
 
 Signal Forms wspierają walidację asynchroniczną (np. sprawdzanie dostępności nazwy użytkownika lub e-maila na serwerze) za pomocą `validateAsync`.
 
@@ -163,7 +163,7 @@ export const registrationValidationSchema= schema((schemaPath) => {
 
 Podczas oczekiwania na wynik walidacji asynchronicznej pole ma ustawiony stan `pending()` na true, co można wykorzystać do wyświetlania informacji zwrotnej w UI.
 
-### Walidacja Warunkowa i Kontrola Stanu
+### Walidacja warunkowa i kontrola stanu
 
 Możemy warunkowo stosować schematy lub kontrolować stan pól (`disabled`, `hidden`, `readonly`) w oparciu o inne wartości w formularzu, używając `applyWhenValue` lub `applyWhen`.
 
@@ -199,18 +199,18 @@ validateAsync(schemaPath.email, { ... });
 
 Dzięki temu aktualizacje do modelu i walidatory asynchroniczne są uruchamiane dopiero po ustaniu pisania na dany czas.
 
-### Integracja z Zewnętrznymi Schematami
+### Integracja z zewnętrznymi schematami
 
-Zespół Angular umożliwił również walidację za pomocą zewnętrznych bibliotek implementujących reguły walidacyjne za pomocą **Standard Schema** (np. Zod, czy Valibot). Odbywa się to za pomocą helpera `validateStandardSchema`.
+Zespół Angular umożliwił również walidację za pomocą zewnętrznych bibliotek implementujących reguły walidacyjne w oparciu o **Standard Schema** (np. Zod, czy Valibot). Odbywa się to za pomocą helpera `validateStandardSchema`.
 
 ```typescript
 import {z} from 'zod';
 validateStandardSchema(schemaPath.phoneNumber, z.e164("Not a phone number!"))
 ```
 
-## Zarządzanie Stanem Wysyłania i Błędami Serwera
+## Zarządzanie stanem wysyłania i błędami serwera
 
-Do obsługi wysyłania formularza (szczególnie operacji asynchronicznych) zaleca się użycie dedykowanej funkcji `submit()`.
+Do obsługi wysyłania formularza (szczególnie w przypadku operacji asynchronicznych) zaleca się użycie dedykowanej funkcji `submit()`.
 
 Funkcja `submit()` automatycznie zarządza stanem `submitting()` (dostępnym jako sygnał: `form().submitting()`).
 
@@ -236,20 +236,18 @@ protected submitForm() {
 }
 ```
 
-Dzięki Signal Forms w o wiele prostszy sposób można, implementować złożone reguły walidacyjne (np. asynchroniczne czy między polowe) w jednym, centralnym schemacie.
+Dzięki Signal Forms w znacznie prostszy sposób można implementować złożone reguły walidacyjne (np. asynchroniczne czy międzypolowe) w jednym, centralnym schemacie.
 
-Ten nowy, reaktywny model znacząco redukuje boilerplate i gwarantuje silne typowanie-cechy, których brakowało w tradycyjnych Reactive Forms. 
+Ten nowy, reaktywny model znacząco redukuje boilerplate i gwarantuje silne typowanie - cechy, których brakowało w tradycyjnych Reactive Forms.
 Choć Signal Forms pozostają funkcją eksperymentalną w Angular v21, stanowią optymalny wybór dla nowych projektów opartych na sygnałach, 
 oferując lepsze doświadczenie deweloperskie i fine-grained reactivity.
 
-## Stan Signal Forms i Podsumowanie
+## Stan Signal Forms i podsumowanie
 Signal Forms (dostępne w @angular/forms/signals) zostały wprowadzone w Angular v21 jako funkcja eksperymentalna.
 Oznacza to, że API i funkcjonalność mogą ulec zmianie w przyszłych wydaniach, zanim zostaną ustabilizowane.
 
-Zespół Angulara rekomenduje Signal Forms do nowych projektów, pamiętając jednak, że to wciąż funkcja eksperymentalna,
-która może ulec zmianie przed stabilizacją.
-
-Mimo to, nowy model reaktywny z Signal Forms rozwiązuje wiele problemów związanych z Reactive Forms:
+Mimo to zespół Angulara rekomenduje Signal Forms do nowych projektów
+Co ważne, nowy model reaktywny z Signal Forms rozwiązuje wiele problemów związanych z Reactive Forms:
 
 | Obszar              | Reactive Forms                             | Signal Forms                                |
 |---------------------|--------------------------------------------|---------------------------------------------|
@@ -259,10 +257,9 @@ Mimo to, nowy model reaktywny z Signal Forms rozwiązuje wiele problemów związ
 | **Custom Controls** | Wymaga ControlValueAccessor                | Wymaga FormValueControl (znacznie prostsze) |
 | **Źródło Prawdy**   | Hierarchia FormControl/FormGroup           | Writable Signal Model (dane użytkownika)    |
 
-
+<br>
 Signal Forms demonstrują, w jakim kierunku ewoluuje Angular.
-Po Template-Driven Forms i Reactive Forms, Signal Forms są **trzecim głównym podejściem** do obsługi formularzy w Angularze,
-które ma na celu uczynienie ich bardziej **bezpiecznymi pod kątem typowania, reaktywnymi i deklaratywnymi.**
-
+Po Template-Driven Forms i Reactive Forms, Signal Forms stanowią **trzecie główne podejście** do obsługi formularzy w Angularze,
+zaprojektowane tak, aby były bardziej bezpieczne pod kątem typowania, reaktywne i deklaratywne
 
 CodeSandbox: https://codesandbox.io/p/github/wkulczi/ngsignals/master
