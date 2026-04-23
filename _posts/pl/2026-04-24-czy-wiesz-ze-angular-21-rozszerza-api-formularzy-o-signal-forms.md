@@ -34,7 +34,7 @@ W tym podejściu formularz to hierarchia pól, z której automatycznie **wyprowa
 - **Automatyczne dwukierunkowe wiązanie**: za pomocą dyrektywy `[field]`.
 - **Brak subskrypcji**: wykorzystanie wbudowanej reaktywności sygnałów.
 
-## Tworzenie Formularza
+## Tworzenie formularza
 Rekomendowanym sposobem definiowania formularza jest powiązanie go z dedykowanym interfejsem.
 
 ```typescript
@@ -100,7 +100,7 @@ export class PasswordStrength implements FormValueControl<string> {
 Dyrektywa `[field]` automatycznie łączy ten model z modelem formularza i przekazuje stany takie jak disabled, invalid, 
 required i errors jako opcjonalne sygnały `input()` do komponentu.
 
-## Walidacje: Schemat Deklaratywny
+## Walidacje: schemat deklaratywny
 
 Walidacje tworzone są za pomocą metody schema, a następnie przekazywane do metody form. Schemat jest definiowany deklaratywnie w jednym miejscu.
 
@@ -187,7 +187,7 @@ applyWhen(schemaPath, (ctx) => ctx.value().newsletter, (schemaPathWhenTrue) => {
 })
 ```
 
-### Debouncing (Opóźnianie Aktualizacji)
+### Debouncing (opóźnianie aktualizacji)
 
 Aby zapobiec nadmiernej liczbie wywołań API podczas szybkiego wpisywania (np. w walidacji asynchronicznej), możemy łatwo zastosować debouncing za pomocą funkcji `debounce()`:
 
@@ -201,7 +201,8 @@ Dzięki temu aktualizacje do modelu i walidatory asynchroniczne są uruchamiane 
 
 ### Integracja z zewnętrznymi schematami
 
-Zespół Angular umożliwił również walidację za pomocą zewnętrznych bibliotek implementujących reguły walidacyjne w oparciu o **Standard Schema** (np. Zod, czy Valibot). Odbywa się to za pomocą helpera `validateStandardSchema`.
+Zespół Angular umożliwił również walidację za pomocą zewnętrznych bibliotek implementujących reguły walidacyjne w oparciu o **Standard Schema** (np. Zod czy Valibot). 
+Odbywa się to za pomocą helpera `validateStandardSchema`.
 
 ```typescript
 import {z} from 'zod';
@@ -246,20 +247,20 @@ oferując lepsze doświadczenie deweloperskie i fine-grained reactivity.
 Signal Forms (dostępne w @angular/forms/signals) zostały wprowadzone w Angular v21 jako funkcja eksperymentalna.
 Oznacza to, że API i funkcjonalność mogą ulec zmianie w przyszłych wydaniach, zanim zostaną ustabilizowane.
 
-Mimo to zespół Angulara rekomenduje Signal Forms do nowych projektów
+Mimo to zespół Angulara rekomenduje Signal Forms do nowych projektów.
 Co ważne, nowy model reaktywny z Signal Forms rozwiązuje wiele problemów związanych z Reactive Forms:
 
 | Obszar              | Reactive Forms                             | Signal Forms                                |
 |---------------------|--------------------------------------------|---------------------------------------------|
-| **Boilerplate**     | Duży (FormGroup, FormControl, FormBuilder) | Bardzo niski (Czysty model + schema)        |
+| **Boilerplate**     | Duży (FormGroup, FormControl, FormBuilder) | Bardzo niski (czysty model + schema)        |
 | **Typowanie**       | Wymaga jawnych typów lub Typed Forms       | Silne, wyprowadzane z modelu                |
 | **Reaktywność**     | Oparta na Observables (subskrypcje)        | Oparta na Signals (Fine-grained reactivity) |
 | **Custom Controls** | Wymaga ControlValueAccessor                | Wymaga FormValueControl (znacznie prostsze) |
-| **Źródło Prawdy**   | Hierarchia FormControl/FormGroup           | Writable Signal Model (dane użytkownika)    |
+| **Źródło prawdy**   | Hierarchia FormControl/FormGroup           | Writable Signal Model (dane użytkownika)    |
 
 <br>
 Signal Forms demonstrują, w jakim kierunku ewoluuje Angular.
 Po Template-Driven Forms i Reactive Forms, Signal Forms stanowią **trzecie główne podejście** do obsługi formularzy w Angularze,
-zaprojektowane tak, aby były bardziej bezpieczne pod kątem typowania, reaktywne i deklaratywne
+zaprojektowane tak, aby były bardziej bezpieczne pod kątem typowania, reaktywne i deklaratywne.
 
 CodeSandbox: https://codesandbox.io/p/github/wkulczi/ngsignals/master
