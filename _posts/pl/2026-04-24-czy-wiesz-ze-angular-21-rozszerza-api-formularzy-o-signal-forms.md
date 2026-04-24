@@ -263,4 +263,4 @@ Signal Forms demonstrują, w jakim kierunku ewoluuje Angular.
 Po Template-Driven Forms i Reactive Forms, Signal Forms stanowią **trzecie główne podejście** do obsługi formularzy w Angularze,
 zaprojektowane tak, aby były bardziej bezpieczne pod kątem typowania, reaktywne i deklaratywne.
 
-CodeSandbox: https://codesandbox.io/p/github/wkulczi/ngsignals/master
+[Link do CodeSandbox](https://codesandbox.io/p/github/wkulczi/ngsignals/master) 
