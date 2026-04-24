@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/" rel="alternate" type="text/html" />
+  <updated>2026-04-24T03:37:27-05:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że Angular 21 rozszerza API formularzy o Signal Forms?</title>
+      <link href="https://blog.consdata.tech/2026/04/24/czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms.html" rel="alternate" type="text/html" title="Czy wiesz, że Angular 21 rozszerza API formularzy o Signal Forms?" />
+      <published>2026-04-24T02:00:00-05:00</published>
+      <updated>2026-04-24T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/04/24/czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Kulczak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+        <category term="signals" />
+      
+
+      
+        <summary type="html">Wraz z publikacją Angulara w wersji 21 opracowano nowy system definicji formularzy za pomocą sygnałów, dostępny w pakiecie @angular/forms/signals. Choć jest to obecnie funkcja eksperymentalna, wyraźnie wyznacza przyszły kierunek rozwoju frameworka.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-04-24-czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Pułapki adnotacji @Transactional</title>
+      <link href="https://blog.consdata.tech/2026/04/10/pulapki-adnotacji-transactional.html" rel="alternate" type="text/html" title="Pułapki adnotacji @Transactional" />
+      <published>2026-04-10T02:00:00-05:00</published>
+      <updated>2026-04-10T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/04/10/pulapki-adnotacji-transactional</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kamil Dudek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="java" />
+      
+        <category term="spring" />
+      
+        <category term="transactional" />
+      
+        <category term="transakcje" />
+      
+
+      
+        <summary type="html">Wykorzystanie adnotacji @Transactional w frameworku Spring stanowi jedno z podstawowych narzędzi w zarządzaniu transakcjami bazodanowymi. Choć jej zastosowanie jest wygodne i upraszcza kod, niesie ze sobą również potencjalne pułapki, które mogą powodować trudne do zdiagnozowania błędy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-04-10-pulapki-adnotacji-transactional/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak działa Browserslist?</title>
+      <link href="https://blog.consdata.tech/2026/03/27/czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak działa Browserslist?" />
+      <published>2026-03-27T02:00:00-05:00</published>
+      <updated>2026-03-27T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/03/27/czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="frontend" />
+      
+        <category term="javascript" />
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie browserslist, który jest mało intuicyjny. Na pierwszy rzut oka jego zawartość jest czytelna, ale pojawia się pytanie: po co on właściwie istnieje? Kto z niego korzysta i jakie skutki mają wprowadzane w nim zmiany?</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-03-27-czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że zależności w Springu powinniśmy wstrzykiwać przez konstruktor?</title>
+      <link href="https://blog.consdata.tech/2026/03/16/czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor.html" rel="alternate" type="text/html" title="Czy wiesz, że zależności w Springu powinniśmy wstrzykiwać przez konstruktor?" />
+      <published>2026-03-16T02:00:00-05:00</published>
+      <updated>2026-03-16T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/03/16/czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartosz Pietrowiak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="spring boot" />
+      
+        <category term="java" />
+      
+
+      
+        <summary type="html">Czy wiesz, że sposób wstrzykiwania zależności w Springu może mieć ogromny wpływ na jakość Twojego kodu, jego bezpieczeństwo i łatwość testowania? Jeśli chcesz pisać lepsze aplikacje, warto poznać najważniejsze techniki i wybrać tę, która przynosi najlepsze efekty.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-03-16-czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest narzędzie artillery?</title>
+      <link href="https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest narzędzie artillery?" />
+      <published>2026-02-13T01:00:00-06:00</published>
+      <updated>2026-02-13T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kamil Dudek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="artillery" />
+      
+        <category term="tests" />
+      
+
+      
+        <summary type="html">Artillery to oparte o Node.js narzędzie do wykonywania testów wydajnościowych, które może być prostszą alternatywą dla np. Gatlinga. Charakteryzuje się ono prostotą użycia, wspiera różne technologie (np. HTTP API, WebSockety), daje możliwość testowania rozproszonego oraz może być rozszerzane przez pluginy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?</title>
+      <link href="https://blog.consdata.tech/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any.html" rel="alternate" type="text/html" title="Czy wiesz, że TypeScript ma typ bezpieczniejszy niż Any?" />
+      <published>2025-12-03T23:00:00-06:00</published>
+      <updated>2025-12-03T23:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/12/03/czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Stolarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="typescript" />
+      
+
+      
+        <summary type="html">W TypeScript, poza string czy number, mamy też kilka specjalnych typów do obsługi sytuacji, gdy nie znamy typu danych. Przyjrzyjmy się im z bliska.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-12-04-czy-wiesz-ze-typescript-ma-typ-bezpieczniejszy-niz-any/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że za pomocą operatora shareReplay możesz cache’ować dane z observable?</title>
+      <link href="https://blog.consdata.tech/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable.html" rel="alternate" type="text/html" title="Czy wiesz, że za pomocą operatora shareReplay możesz cache'ować dane z observable?" />
+      <published>2025-11-17T01:00:00-06:00</published>
+      <updated>2025-11-17T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2025/11/17/czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Tatarski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="rxjs" />
+      
+        <category term="observable" />
+      
+
+      
+        <summary type="html">Często zdarza się, że nie chcemy za każdym razem ponownie wykonywać całej logiki z danego Observable — zamiast tego wolimy przechować jego wynik w pamięci. W Angularze (i ogólnie w RxJS) możemy to zrobić za pomocą operatora shareReplay.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-11-17-czy-wiesz-ze-za-pomoca-operatora-sharereplay-mozesz-cache-owac-dane-z-observable/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Jak wykryć i naprawić błędne konfiguracje w działającym klastrze Kubernetes</title>
+      <link href="https://blog.consdata.tech/2025/09/26/jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s.html" rel="alternate" type="text/html" title="Jak wykryć i naprawić błędne konfiguracje w działającym klastrze Kubernetes" />
+      <published>2025-09-26T02:00:00-05:00</published>
+      <updated>2025-09-26T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/09/26/jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartłomiej Domżalski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="kubernetes" />
+      
+
+      
+        <summary type="html">Kubernetes na dobre wpisał się w krajobraz nowoczesnych technologii. To narzędzie, które usprawnia codzienną pracę zespołów DevOps, pozwalając łatwo uruchamiać, skalować i utrzymywać aplikacje oparte na kontenerach. Nic dziwnego, że tak szybko zdobyło popularność – daje sporą swobodę i elastyczność w budowaniu usług.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-09-26-jak-wykryc-i-naprawic-bledne-konfiguracje-w-dzialajacym-klastrze-k8s/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?</title>
+      <link href="https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate.html" rel="alternate" type="text/html" title="Czy wiesz dlaczego nie powinno się stosować adnotacji @Transactional w testach integracyjnych z Hibernate?" />
+      <published>2025-09-01T01:00:00-05:00</published>
+      <updated>2025-09-01T01:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/09/01/transactional-w-testach-integracyjnych-hibernate</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Robert Mastalerek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="transactions" />
+      
+        <category term="spring" />
+      
+        <category term="java" />
+      
+        <category term="transactional" />
+      
+
+      
+        <summary type="html">Testy integracyjne z użyciem Springa i Hibernate mają za zadanie możliwie wiernie odwzorować zachowanie aplikacji na środowisku produkcyjnym. Często, aby uprościć ich tworzenie, sięgamy po adnotację @Transactional, która automatycznie rollbackuje wszystkie zmiany w bazie danych po zakończeniu testu. Brzmi idealnie – nie musimy martwić się o „czystość” bazy, a każdy scenariusz startuje od świeżego punktu.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-09-01-transactional-w-testach-integracyjnych-hibernate/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, do czego służy untracked w Angular?</title>
+      <link href="https://blog.consdata.tech/2025/07/31/angular-untracked.html" rel="alternate" type="text/html" title="Czy wiesz, do czego służy untracked w Angular?" />
+      <published>2025-07-31T18:00:00-05:00</published>
+      <updated>2025-07-31T18:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2025/07/31/angular-untracked</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dorian Mejer</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">W bibliotekach opartych na reaktywnych sygnałach, takich jak Angular Signals, każda zmiana wartości sygnału używanego w funkcjach computed() lub effect() powoduje automatyczną rekalkulację lub ponowne wykonanie efektu. Dzięki temu aplikacja utrzymuje spójny stan i dynamicznie reaguje na zmiany danych. W niektórych sytuacjach jednak warto pobrać wartość sygnału bez uruchamiania reakcji. Można to osiągnąć za pomocą funkcji untracked(), która pozwala na odczyt wartości sygnału z pominięciem mechanizmu śledzenia zależności.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2025-06-09-angular-untracked/thumbnail.webp" />
+      
+    </entry>
+  
+</feed>
