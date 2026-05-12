@@ -18,6 +18,8 @@ Budowa karty, która jest w całości klikalna, a jednocześnie zawiera w sobie 
 
 ## Opisywany komponent karty
 
+![Klikalny komoponent karty](/assets/img/posts/2026-05-13-czy-wiesz-jak-stworzyc-klikalna-karte-card-component-zgodnie-z-wcag/clickable-card.png)
+
 ### Na czym polega problem?
 
 Zgodnie ze standardami HTML i WCAG nie wolno umieszczać elementów interaktywnych wewnątrz innych elementów interaktywnych.
