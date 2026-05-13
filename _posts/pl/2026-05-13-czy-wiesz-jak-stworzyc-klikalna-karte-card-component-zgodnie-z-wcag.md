@@ -2,7 +2,7 @@
 layout:    post
 title:     "Czy wiesz, jak stworzyć klikalną kartę (Card component) zgodnie z WCAG?"
 description: Budowa karty, która jest w całości klikalna, a jednocześnie zawiera w sobie dodatkowe akcje (jak przycisk „Ulubione”), to jedno z częstych wyzwań UX/UI.
-date:      2026-05-12T08:00:00+01:00
+date:      2026-05-13T07:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
@@ -22,7 +22,7 @@ Budowa karty, która jest w całości klikalna, a jednocześnie zawiera w sobie 
 
 ### Na czym polega problem?
 
-Zgodnie ze standardami HTML i WCAG nie wolno umieszczać elementów interaktywnych wewnątrz innych elementów interaktywnych.
+Zgodnie ze standardami HTML i WCAG, nie wolno umieszczać elementów interaktywnych wewnątrz innych elementów interaktywnych.
 
 Taka konstrukcja prowadzi do błędów w drzewie dostępności, utrudniając poprawną nawigację przy użyciu czytników ekranowych.
 
@@ -51,8 +51,7 @@ jako oddzielne elementy.
 
 ### Kluczowa idea
 
-Link umieszczamy tam, gdzie ma sens semantyczny, najczęściej w tytule.
-
+Link umieszczamy tam, gdzie ma on sens semantyczny, najczęściej w tytule.
 Następnie:
 
 - Rozciągamy link: za pomocą `::after` sprawiamy, że link z nagłówka pokrywa całą powierzchnię karty.
@@ -145,11 +144,11 @@ export class AccessibleCardComponent {
 }
 ```
 
-## Dlaczego to podejście wygrywa?
+## Co wyróżnia to podejście?
 
-- Prawidłowa semantyka: Czytnik ekranu ogłasza tylko krótki, konkretny tytuł jako link.
-- Niezależne akcje: Możemy dodać przycisk „Ulubione”, „Koszyk” czy „Tagi”, m.in. dzięki `z-index: 2`.
-- Zgodność z HTML5: Unikamy błędu zagnieżdżania przycisku wewnątrz linku.
+- Prawidłowa semantyka: czytnik ekranu ogłasza tylko krótki, konkretny tytuł jako link.
+- Niezależne akcje: możemy dodać przycisk „Ulubione”, „Koszyk” czy „Tagi”, m.in. dzięki `z-index: 2`.
+- Zgodność z HTML5: unikamy błędu zagnieżdżania przycisku wewnątrz linku.
 
 ## Demo
 
