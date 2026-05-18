@@ -1,9 +1,9 @@
 ---
 layout:    post
 title:     "Czy wiesz, czym jest i jak działa Browserslist?"
-date:      2026-03-16T08:00:00+01:00
+date:      2026-03-27T08:00:00+01:00
 published: true
-didyouknow: false
+didyouknow: true
 lang: pl
 author: pgrobelny
 image: /assets/img/posts/2026-03-27-czy-wiesz-czym-jest-i-jak-działa-browserslist/thumbnail.webp
@@ -14,9 +14,9 @@ tags:
 - angular
 ---
 
-Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`. Jest mało intuicyjny:
-z jednej strony, po jego otwarciu wiadomo, co jest jego treścią, ale z drugiej strony, po co on jest? 
-Kto z niego korzysta i na co wpływają dokonywane w nim zmiany?
+Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie `browserslist`, który jest mało intuicyjny.
+Na pierwszy rzut oka jego zawartość jest czytelna, ale pojawia się pytanie: po co on właściwie istnieje? 
+Kto z niego korzysta i jakie skutki mają wprowadzane w nim zmiany?
 
 ## Czym jest Browserslist?
 Browserslist to **konfiguracja**, z której czytają inne narzędzia i na jej podstawie podejmują decyzje najczęściej związane z **etapem kompilacji**. 
@@ -30,7 +30,7 @@ które ich potrzebują.
 
 ## Przykładowy plik browserslist
 Przejdźmy teraz do tego, jak wygląda przykładowy plik konfiguracyjny i omówmy sobie, z czego się składa.
-Poniżej przykład konfiguracji z często spotykanymi parametrami:
+Poniżej znajduje się przykład konfiguracji z często spotykanymi parametrami:
 
 ```text
 last 2 versions
@@ -43,10 +43,10 @@ last 5 iOS major versions
 Każda linia pliku to informacja o wspieraniu lub niewspieraniu konkretnych urządzeń i przeglądarek.
 
 ## Omówienie linia po linii
-Przejdźmy sobie po każdym wpisie i wyjaśnijmy, co on oznacza:
+Przejdźmy przez każdy z wpisów i wyjaśnijmy, co on oznacza:
 
 ### last 2 versions
-Są to dwie ostatnie wersje każdej wspieranej przeglądarki. Na przykład dla chrome są to wersje 144 i 143.
+Są to dwie ostatnie wersje każdej wspieranej przeglądarki. Dla Google Chrome oznacza to aktualnie wersje 144 i 143.
 ### > 0.5%
 Przeglądarki z ponad 0,5% udziału w rynku. 
 Informacje o rynku pochodzą z różnych źródeł, są agregowane i przygotowywane później przez caniuse i następnie udostępniane.
@@ -55,12 +55,11 @@ Najnowsza wersja Firefox Extended Support Release.
 ### not dead
 Wyklucza przeglądarki, które nie były aktualizowane przez ostatnie dwa lata.
 ### last 5 iOS major versions
-Wyklucza wszystko z wyjątkiem 5 ostatnich wersji systemu iOS, czyli od 15 do 26 (w numerach wersji był przeskok). 
-Jeżeli byśmy nie umieścili w parametrze major (czyli last 5 iOS versions), to wynikiem byłyby wersje:  26.2, 26.1, 26.0, 18.7, 18.6.
-
+Wyklucza wszystko z wyjątkiem 5 ostatnich wersji systemu iOS, czyli od 15 do 26, uwzględniając przeskoki w numeracji kolejnych wersji.
+Jeżeli nie umieścilibyśmy tej informacji w parametrze major (last 5 iOS major versions), to wynikiem byłyby wersje: 26.2, 26.1, 26.0, 18.7, 18.6.
 ## Angular 20 i plik .browserslistrc
 
-Warto jeszcze wspomnieć, że od wersji Angulara 20 pojawił się nowy plik o nazwie `.browserslistrc` o podobnej roli. 
+Warto jeszcze wspomnieć o tym, że od wersji Angulara 20 pojawił się nowy plik o nazwie `.browserslistrc`, który pełni podobną funkcję.
 Jest on jednak bardziej szczegółowy i zwykle polega na określaniu **konkretnych wersji przeglądarek**, 
 żeby lepiej panować nad stabilnością i powtarzalnością buildów.
 

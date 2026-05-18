@@ -64,27 +64,6 @@ businessBlog:
 hrDepartment:
   en: "HR department"
   pl: "Dział HR"
-signUpFor:
-  en: "Sign up for a"
-  pl: "Zapisz się na"
-technical:
-  en: "technical"
-  pl: "techniczny"
-newsletter:
-  en: "newsletter"
-  pl: "newsletter"
-signUp:
-  en: "Sign up"
-  pl: "Zapisz się"
-newsletterConsent:
-  en: "By submitting the form, you consent to the processing of your data in accordance with the Privacy Policy*."
-  pl: "Wysyłając formularz, wyrażasz zgodę na przetwarzanie swoich danych zgodnie z Polityką Prywatności.*"
-name:
-  en: "Name *"
-  pl: "Imię *"
-email:
-  en: "E-mail"
-  pl: "Adres e-mail *"
 solutions:
   en: Solutions
   pl: Rozwiązania

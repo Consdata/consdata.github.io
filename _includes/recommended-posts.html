@@ -3,7 +3,8 @@
         {{ site.data.translations['recommendedPosts'][page.lang] }}
     </h2>
     <div id="latest-posts-container" class="latest-posts-container">
-        {%- for post in posts limit:3 -%}
+        {%- assign recommended_posts = posts | where_exp: "p", "p.url != page.url" -%}
+        {%- for post in recommended_posts limit:3 -%}
         {% include small-post-tile.html post=post %}
         {%- endfor -%}
     </div>
