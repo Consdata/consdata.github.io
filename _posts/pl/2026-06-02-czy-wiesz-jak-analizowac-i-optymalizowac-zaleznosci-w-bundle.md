@@ -33,11 +33,11 @@ W zależności, czy używamy `esbuild`, czy `webpack`, należy użyć odpowiedni
 
 Po otwarciu pliku można zobaczyć poniższy ekran:
 
-![Interfejs narzędzia do analizy rozmiaru bundle'a JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/pierwszy.png)
+![Interfejs narzędzia do analizy rozmiaru bundle'a JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/interface.png)
 
 Przyjrzyjmy się w takim razie plikowi, który zajmuje sporo miejsca, czyli w naszym przypadku będzie to `lodash.js`. Przed zmianami wyglądał tak:
 
-![Analiza rozmiaru i importów biblioteki lodash w bundle'u JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/drugi.png)
+![Analiza rozmiaru i importów biblioteki lodash w bundle'u JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/loadash.png)
 
 Jest to spowodowane tym, że importowana jest cała biblioteka przez użycie niepoprawnego importu w plikach, co powoduje załadowanie całej zależności.
 
@@ -60,7 +60,7 @@ Możemy to zoptymalizować na dwa sposoby.
     
     po zmianach:
     
-    ![Zredukowany rozmiar biblioteki lodash w narzędziu do analizy bundle'a po zastosowaniu selektywnych importów](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/trzeci.png)
+    ![Zredukowany rozmiar biblioteki lodash w narzędziu do analizy bundle'a po zastosowaniu selektywnych importów](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/po-optymalizacji.png)
 
     z ~75KB na ~21KB, czyli prawie 4 krotna optymalizacja bundle dla wybranej zależności!
 
