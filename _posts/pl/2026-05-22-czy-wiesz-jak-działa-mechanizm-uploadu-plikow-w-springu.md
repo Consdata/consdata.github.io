@@ -14,6 +14,10 @@ tags:
 - file upload
 ---
 
+Upload plików w Springu to temat, który na pierwszy rzut oka wygląda prosto, ale kilka ustawień potrafi mocno wpłynąć na działanie aplikacji. 
+W tym wpisie przejdziemy przez najważniejsze parametry `spring.servlet.multipart` i pokażemy, 
+jak bezpiecznie oraz praktycznie obsłużyć plik po stronie serwera.
+
 ## Konfiguracja obsługi plików
 
 Spring umożliwia skonfigurowanie następujących parametrów (prefix `spring.servlet.multipart`):
@@ -67,44 +71,44 @@ Możemy zrealizować to na dwa sposoby:
 
 1. Ustawiając parametr `file-size-threshold` na większą wartość niż domyślna
 
-Na przykład ustawienie wartości `file-size-threshold` na 5 MB spowoduje zapisanie się wszystkich plików poniżej 5 MB w pamięci aplikacji. 
-Pliki te zostaną usunięcie w momencie, w którym aplikacja nie będzie wykorzystywała referencji na nie.
-
-Jest to prostszy sposób, jednak trzeba liczyć się z tym, żeby monitorować pamięć aplikacji, gdyż jej zużycie może wzrosnąć.
+    Na przykład ustawienie wartości `file-size-threshold` na 5 MB spowoduje zapisanie się wszystkich plików poniżej 5 MB w pamięci aplikacji. 
+    Pliki te zostaną usunięcie w momencie, w którym aplikacja nie będzie wykorzystywała referencji na nie.
+    
+    Jest to prostszy sposób, jednak trzeba liczyć się z tym, żeby monitorować pamięć aplikacji, gdyż jej zużycie może wzrosnąć.
 
 2. Zapisując plik w momencie obsługi żądania na nośniku, bazie danych lub w systemie
-
-Poniżej zaprezentuje przykład Controller`a, który w momencie otrzymania pliku zapisuje go w katalogu tymczasowym systemu operacyjnego.
-
-```java
-package com.example.uploadfiles;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-@Slf4j
-@Controller
-public class FileUploadWithSaveController {
-
-	@PostMapping("/")
-	public void handleFileUpload(@RequestParam("file") MultipartFile file) {
-		File systemFile = new File(Paths.get(System.getProperty("java.io.tmpdir"), file.getOriginalFilename()).toString());
-		file.transferTo(systemFile);
-	}
-
-}
-```
-
-Tak przygotowany kontroler zapisze otrzymany plik w katalogu oznaczonym w zmiennej systemowej `java.io.tmpdir`.
-
-Co ważne od momentu wywołania metody `transferTo()` należy posługiwać się plikiem zapisanym w systemie, 
-ponieważ obiekt `MultipartFile` od tego momentu nie posiada już strumienia danych zapisanych w pliku.
-
-W takim rozwiązaniu plik będzie się znajdował w katalogu tymczasowym, do momentu jawnego usunięcia go przez aplikacje. 
-Należy więc pamiętać o przygotowaniu mechanizmu, który zarządzałby czyszczeniem katalogu z nieużywanych plików.
+    
+    Poniżej zaprezentuje przykład Controller`a, który w momencie otrzymania pliku zapisuje go w katalogu tymczasowym systemu operacyjnego.
+    
+    ```java
+    package com.example.uploadfiles;
+    
+    import lombok.extern.slf4j.Slf4j;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestParam;
+    import org.springframework.web.multipart.MultipartFile;
+    
+    @Slf4j
+    @Controller
+    public class FileUploadWithSaveController {
+    
+        @PostMapping("/")
+        public void handleFileUpload(@RequestParam("file") MultipartFile file) {
+            File systemFile = new File(Paths.get(System.getProperty("java.io.tmpdir"), file.getOriginalFilename()).toString());
+            file.transferTo(systemFile);
+        }
+    
+    }
+    ```
+    
+    Tak przygotowany kontroler zapisze otrzymany plik w katalogu oznaczonym w zmiennej systemowej `java.io.tmpdir`.
+    
+    Co ważne od momentu wywołania metody `transferTo()` należy posługiwać się plikiem zapisanym w systemie, 
+    ponieważ obiekt `MultipartFile` od tego momentu nie posiada już strumienia danych zapisanych w pliku.
+    
+    W takim rozwiązaniu plik będzie się znajdował w katalogu tymczasowym, do momentu jawnego usunięcia go przez aplikacje. 
+    Należy więc pamiętać o przygotowaniu mechanizmu, który zarządzałby czyszczeniem katalogu z nieużywanych plików.
 
 ### Żródła
 - [docs.spring.io - Multipart Forms](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/multipart-forms.html)
