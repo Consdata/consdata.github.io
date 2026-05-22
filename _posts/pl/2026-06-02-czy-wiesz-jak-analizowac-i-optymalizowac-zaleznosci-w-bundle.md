@@ -9,9 +9,11 @@ author: aburzec
 image: /assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/thumbnail.webp
 description: ""
 tags:
+- CommonJS
+- ESM
+- webpack
+- esbuild
 - frontend
-- javascript
-- angular
 ---
 
 Przy budowaniu projektu Angularowego można natrafić na poniższy błąd:
