@@ -29,7 +29,7 @@ Spring umożliwia skonfigurowanie następujących parametrów (prefix `spring.se
 - `location` - określa tymczasową lokalizację plików obsługiwanych przez serwer (domyślnie katalog tymczasowy systemu),
 - `resolve-lazily` - odpowiada za sposób przetwarzania żądań multipart. Działanie w zależności od wartości:
   - `false` - Spring od razu analizuje (resolve) i przetwarza dane multipart przy odbieraniu żądania (domyślna wartość),
-  - `true` - Przetwarzanie multipart jest opóźnione (lazy), czyli wykonywane dopiero w momencie, gdy aplikacja rzeczywiście potrzebuje dostępu do plików (np. wywołania `request.getPart()` lub `request.getParameter()`).
+  - `true` - Przetwarzanie multipart jest opóźnione (lazy), czyli wykonywane dopiero w momencie, gdy aplikacja rzeczywiście potrzebuje dostępu do plików (np. wywołania `request.getPart()` lub `request.getParameter()`),
 - `strict-servlet-compilance` - w Spring Boot określa, czy Spring ma przestrzegać ścisłej zgodności ze specyfikacją Servlet API podczas obsługi żądań multipart. W zależności od wartości:
   - `true` - przetwarza tylko żądania typu `multipart/form-data`, pozostałe muszą zostać przetworzone ręcznie,
   - `false` - próbuje przetworzyć każde żądanie typu `multipart/*` (domyślna wartość).
