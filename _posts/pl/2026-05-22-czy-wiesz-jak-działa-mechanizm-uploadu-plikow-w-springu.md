@@ -25,7 +25,7 @@ Spring umożliwia skonfigurowanie następujących parametrów (prefix `spring.se
 - `enabled` - czy obsługa żądań typu `multipart/form-data` ma zostać obsłużona przez Springa (domyślnie true),
 - `max-file-size` - określa maksymalny rozmiar pliku, który zostanie obsłużony przez serwer (domyślnie 1 MB),
 - `max-request-size` - określa maksymalny rodzaj żądania typu `multipart/form-data` (domyślnie 10 MB),
-- `file-size-threshold` - określa rozmiar, po którym pliku zostaną zapisane na dysku (domyślnie 0),
+- `file-size-threshold` - określa rozmiar, po którym pliki zostaną zapisane na dysku (domyślnie 0),
 - `location` - określa tymczasową lokalizację plików obsługiwanych przez serwer (domyślnie katalog tymczasowy systemu),
 - `resolve-lazily` - odpowiada za sposób przetwarzania żądań multipart. Działanie w zależności od wartości:
   - `false` - Spring od razu analizuje (resolve) i przetwarza dane multipart przy odbieraniu żądania (domyślna wartość),
@@ -78,7 +78,7 @@ Możemy zrealizować to na dwa sposoby:
 
 2. Zapisując plik w momencie obsługi żądania na nośniku w bazie danych lub w systemie
     
-    Poniżej zaprezentuje przykład Controllera, który w momencie otrzymania pliku zapisuje go w katalogu tymczasowym systemu operacyjnego.
+    Poniżej zaprezentuję przykład Controllera, który w momencie otrzymania pliku zapisuje go w katalogu tymczasowym systemu operacyjnego.
     
     ```java
     package com.example.uploadfiles;
