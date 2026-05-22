@@ -24,10 +24,9 @@ Application bundle generation complete. [28.317 seconds]
 
 Rozpoczynamy śledztwo od zbudowania aplikacji z flagą `statsJson`. Ustawiamy ją w `angular.json`/`project.json` lub uruchamiamy z nią build.
 
-Po zbudowaniu tak aplikacji, w katalogu wynikowym pojawi się dodatkowy, wygenerowany plik - `stats.json`.
+Po zbudowaniu aplikacji w ten sposób w katalogu wynikowym pojawi się dodatkowy wygenerowany plik - `stats.json`.
 
-W zależności, czy używamy `esbuild`, czy `webpack`, należy użyć odpowiedniego narzędzia:
-
+W zależności od tego, czy używamy esbuild, czy webpack, należy użyć odpowiedniego narzędzia:
 - `esbuild-visualizer`
 - `webpack-bundle-analyzer`
 
@@ -35,22 +34,22 @@ Po otwarciu pliku można zobaczyć poniższy ekran:
 
 ![Interfejs narzędzia do analizy rozmiaru bundle'a JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/interface.png)
 
-Przyjrzyjmy się w takim razie plikowi, który zajmuje sporo miejsca, czyli w naszym przypadku będzie to `lodash.js`. Przed zmianami wyglądał tak:
+Przyjrzyjmy się w takim razie plikowi, który zajmuje sporo miejsca. W naszym przypadku będzie to lodash.js. Przed zmianami wyglądał tak:
 
 ![Analiza rozmiaru i importów biblioteki lodash w bundle'u JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/loadash.png)
 
-Jest to spowodowane tym, że importowana jest cała biblioteka przez użycie niepoprawnego importu w plikach, co powoduje załadowanie całej zależności.
+Jest to spowodowane tym, że przez użycie niepoprawnego importu w plikach importowana jest cała biblioteka, co powoduje załadowanie całej zależności.
 
 ```ts
 import {uniqWith, isEqual} from 'lodash';
 import lodash from 'lodash';
 ```
 
-Możemy to zoptymalizować na dwa sposoby.
+Możemy to zoptymalizować na dwa sposoby:
 
 1. (Common JS) Zawężanie importu
 
-    Należy zawęzić import do rzeczy, które są używane:
+    Należy zawęzić import do elementów, które są używane:
     
     ```ts
     import uniqWith from 'lodash/uniqWith';
@@ -74,7 +73,7 @@ Możemy to zoptymalizować na dwa sposoby.
     import {uniqWith, isEqual, unset} from 'lodash-es';
     ```
     
-    Tree shaking sprawia, że ładowane są tylko używane zależności, zmniejszając przy tym rozmiar bundla.
+    Tree shaking sprawia, że ładowane są tylko używane zależności, zmniejszając przy tym rozmiar bundle'a.
 
 ### Przydatne linki
 - [esbuild-visualizer](https://www.npmjs.com/package/esbuild-visualizer)
