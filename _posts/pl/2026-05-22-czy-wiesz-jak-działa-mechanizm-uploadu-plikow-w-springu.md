@@ -23,7 +23,7 @@ jak bezpiecznie oraz praktycznie obsłużyć plik po stronie serwera.
 Spring umożliwia skonfigurowanie następujących parametrów (prefix `spring.servlet.multipart`):
 
 - `enabled` - czy obsługa żądań typu `multipart/form-data` ma zostać obsłużona przez Springa (domyślnie true),
-- `max-file-size` - określa maksymalny rozmiar pliku, który zostanie obsłużony przez serwer, (domyślnie 1 MB),
+- `max-file-size` - określa maksymalny rozmiar pliku, który zostanie obsłużony przez serwer (domyślnie 1 MB),
 - `max-request-size` - określa maksymalny rodzaj żądania typu `multipart/form-data` (domyślnie 10 MB),
 - `file-size-threshold` - określa rozmiar, po którym pliku zostaną zapisane na dysku (domyślnie 0),
 - `location` - określa tymczasową lokalizację plików obsługiwanych przez serwer (domyślnie katalog tymczasowy systemu),
