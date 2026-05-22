@@ -1,7 +1,7 @@
 ---
 layout:    post
 title:     "Czy wiesz, jak analizować i optymalizować zależności w bundle?"
-date:      2026-05-18T08:00:00+01:00
+date:      2026-05-22T08:00:00+01:00
 published: true
 didyouknow: true
 lang: pl
