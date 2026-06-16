@@ -57,6 +57,7 @@ Następnie:
 - Rozciągamy link: za pomocą `::after` sprawiamy, że link z nagłówka pokrywa całą powierzchnię karty.
 - Warstwujemy akcje: przyciski (np. „Ulubione”) wyciągamy na wierzch przez `z-index`, by pozostały niezależne i klikalne.
 
+{% raw %}
 ```typescript
 @Component({
   selector: 'app-accessible-card',
@@ -112,6 +113,7 @@ export class AccessibleCardComponent {
   }
 }
 ```
+{% endraw %}
 
 ## Kluczowe fragmenty CSS
 

@@ -1,13 +1,13 @@
 ---
 layout:    post
 title:     "Czy wiesz, jak analizować i optymalizować zależności w bundle?"
-date:      2026-05-22T08:00:00+01:00
+date:      2026-06-16T08:00:00+02:00
 published: true
 didyouknow: true
 lang: pl
 author: aburzec
-image: /assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/thumbnail.webp
-description: ""
+image: /assets/img/posts/2026-06-16-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/thumbnail.webp
+description: "Pokażę, jak analizować plik stats.json i skutecznie zmniejszać rozmiar bundle'a w Angularze poprzez optymalizację importów CommonJS oraz wykorzystanie ESM (lodash-es)."
 tags:
 - CommonJS
 - ESM
@@ -34,11 +34,11 @@ W zależności od tego, czy używamy esbuild, czy webpack, należy użyć odpowi
 
 Po otwarciu pliku można zobaczyć poniższy ekran:
 
-![Interfejs narzędzia do analizy rozmiaru bundle'a JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/interface.png)
+![Interfejs narzędzia do analizy rozmiaru bundle'a JavaScript](/assets/img/posts/2026-06-16-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/interface.png)
 
 Przyjrzyjmy się w takim razie plikowi, który zajmuje sporo miejsca. W naszym przypadku będzie to lodash.js. Przed zmianami wyglądał tak:
 
-![Analiza rozmiaru i importów biblioteki lodash w bundle'u JavaScript](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/loadash.png)
+![Analiza rozmiaru i importów biblioteki lodash w bundle'u JavaScript](/assets/img/posts/2026-06-16-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/loadash.png)
 
 Jest to spowodowane tym, że przez użycie niepoprawnego importu w plikach importowana jest cała biblioteka, co powoduje załadowanie całej zależności.
 
@@ -61,7 +61,7 @@ Możemy to zoptymalizować na dwa sposoby:
     
     po zmianach:
     
-    ![Zredukowany rozmiar biblioteki lodash w narzędziu do analizy bundle'a po zastosowaniu selektywnych importów](/assets/img/posts/2026-06-02-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/po-optymalizacji.png)
+    ![Zredukowany rozmiar biblioteki lodash w narzędziu do analizy bundle'a po zastosowaniu selektywnych importów](/assets/img/posts/2026-06-16-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/po-optymalizacji.png)
 
     z ~75KB na ~21KB, czyli prawie 4 krotna optymalizacja bundle dla wybranej zależności!
 
