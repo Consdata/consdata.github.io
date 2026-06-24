@@ -34,8 +34,8 @@ Warto zaznaczyć, że posiadają je także JDK budowane przez niezależnych dost
 ## Zbieranie danych
 
 Aby uruchomić zbieranie danych za pomocą JFR, konieczne jest dodanie opcji uruchomieniowych dla testowanej aplikacji.
-Na przykład jeżeli aplikacja wdrażana jest na serwerze Tomcat, możemy to zrobić poprzez edycję pliku `bin/setenv.sh`. 
-Do zmiennej `CATALINA_OPTS` dodajemy odpowiednią konfigurację:
+Na przykład jeżeli aplikacja wdrażana jest na serwerze Tomcat, możemy to zrobić poprzez edycję pliku `bin/setenv.sh`.
+Do zmiennej CATALINA_OPTS dodajemy wówczas odpowiednią konfigurację:
 
 ```bash
 CATALINA_OPTS="$CATALINA_OPTS -XX:+FlightRecorder -XX:StartFlightRecording=filename=/var/log/profiling/profiling.jfr,delay=240s,duration=300s"
@@ -43,8 +43,8 @@ CATALINA_OPTS="$CATALINA_OPTS -XX:+FlightRecorder -XX:StartFlightRecording=filen
 
 W tym przypadku dane profilowania zostaną zapisane w pliku `/var/log/profiling/profiling.jfr`. 
 Profilowanie rozpocznie się po 240 sekundach od uruchomienia aplikacji (parametr delay) i potrwa 300 sekund (parametr duration). 
-Ważne, aby aplikacja miała uprawnienia do zapisu we wskazanym pliku. 
-Opóźnienie rejestrowania jest przydatne, ponieważ zazwyczaj nie chcemy profilować samego startu aplikacji.
+Ważne, aby aplikacja miała uprawnienia do zapisu we wskazanym pliku.
+Jako że zazwyczaj nie chcemy profilować samego startu aplikacji, w takiej sytuacji przydatne jest opóźnienie rejestrowania.
 
 Opis poszczególnych parametrów możemy znaleźć na stronie [DEV Java - Configuring the JDK Flight Recorder](https://dev.java/learn/jvm/jfr/configure/).
 
