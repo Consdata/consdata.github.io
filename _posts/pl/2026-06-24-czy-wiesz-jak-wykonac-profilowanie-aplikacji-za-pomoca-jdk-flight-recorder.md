@@ -1,13 +1,13 @@
 ---
 layout:    post
 title:     "Czy wiesz, jak wykonać profilowanie aplikacji za pomocą JDK Flight Recorder?"
-date:      2026-06-16T08:00:00+02:00
+date:      2026-06-24T08:00:00+02:00
 published: true
 didyouknow: true
 lang: pl
 author: jwilczewski
-image: /assets/img/posts/2026-06-23-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/thumbnail.webp
-description: "Przeprowadzając testy wydajnościowe czasami napotykamy sytuację, w której wyniki testów nie są zadowalające. Powstaje wtedy pytanie jak sprawdzić co dzieje się wewnątrz aplikacji, na co aplikacja zużywa najwięcej czasu."
+image: /assets/img/posts/2026-06-24-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/thumbnail.webp
+description: "Podczas przeprowadzania testów wydajnościowych czasami napotykamy sytuację, w której ich wyniki nie są zadowalające. Pojawia się wtedy pytanie, jak sprawdzić, co dzieje się wewnątrz aplikacji i na co zużywa ona najwięcej czasu."
 tags:
 - jdk-flight-recorder
 - java
@@ -15,8 +15,8 @@ tags:
 - profiling
 ---
 
-Przeprowadzając testy wydajnościowe, czasami napotykamy sytuację, w której wyniki testów nie są zadowalające. 
-Powstaje wtedy pytanie, jak sprawdzić, co dzieje się wewnątrz aplikacji i na co aplikacja zużywa najwięcej czasu. 
+Podczas przeprowadzania testów wydajnościowych czasami napotykamy sytuację, w której ich wyniki nie są zadowalające.
+Pojawia się wtedy pytanie, jak sprawdzić, co dzieje się wewnątrz aplikacji i na co zużywa ona najwięcej czasu.
 W takiej sytuacji możemy np.:
 
 - analizować logi,
@@ -24,17 +24,17 @@ W takiej sytuacji możemy np.:
 - zbierać metryki za pomocą agenta OpenTelemetry.
 
 Innym sposobem jest uruchomienie samplera zbierającego statystyki z wątków pracujących w aplikacji. 
-W tym przypadku możemy użyć np. [VisualVM](https://visualvm.github.io/). Kiedyś wchodził on w skład JDK, dlatego jest dość popularny. 
-Ma jednak wadę polegającą na tym, że trzeba go podłączyć do działającego procesu javy co może być utrudnione, jeżeli testy przeprowadzamy na środowisku, 
+W tym celu możemy użyć np. [VisualVM](https://visualvm.github.io/). Kiedyś wchodził on w skład JDK, dlatego jest dość popularny.
+Ma jednak pewną wadę - trzeba go podłączyć do działającego procesu javy, co może być utrudnione, jeżeli testy przeprowadzamy na środowisku,
 do którego nie mamy takiego dostępu.
 
-Z pomocą może przyjść nam [JDK Flight Recorder](https://dev.java/learn/jvm/jfr/configure/) – narzędzie wbudowane w JDK. 
+Wtedy z pomocą może przyjść nam [JDK Flight Recorder](https://dev.java/learn/jvm/jfr/configure/) – narzędzie wbudowane w JDK. 
 Warto zaznaczyć, że posiadają je także JDK budowane przez niezależnych dostawców.
 
 ## Zbieranie danych
 
 Aby uruchomić zbieranie danych za pomocą JFR, konieczne jest dodanie opcji uruchomieniowych dla testowanej aplikacji.
-Na przykład, jeżeli aplikacja wdrażana jest na serwerze Tomcat możemy to zrobić poprzez edycję pliku `bin/setenv.sh`. 
+Na przykład jeżeli aplikacja wdrażana jest na serwerze Tomcat, możemy to zrobić poprzez edycję pliku `bin/setenv.sh`. 
 Do zmiennej `CATALINA_OPTS` dodajemy odpowiednią konfigurację:
 
 ```bash
@@ -50,8 +50,8 @@ Opis poszczególnych parametrów możemy znaleźć na stronie [DEV Java - Config
 
 ## Analiza danych
 
-Zebrane dane możemy analizować za pomocą narzędzia JDK Mission Control, dostępnego na stronie [Oracle - JDK Mission Control](https://www.oracle.com/java/technologies/jdk-mission-control.html). 
-Z punktu widzenia analizy tego, gdzie aplikacja spędziła najwięcej czasu interesować nas może ekran Java Application→Method Profiling, 
+Zebrane dane możemy analizować za pomocą narzędzia JDK Mission Control dostępnego na stronie [Oracle](https://www.oracle.com/java/technologies/jdk-mission-control.html). 
+Z punktu widzenia analizy tego, gdzie aplikacja spędziła najwięcej czasu, interesować nas może ekran Java Application→Method Profiling, 
 który pokazuje najczęściej używane metody podczas samplowania wątków. Pamiętać należy o tym, żeby podczas zbierania danych uruchomione były testy, 
 które obciążają aplikację.
 
