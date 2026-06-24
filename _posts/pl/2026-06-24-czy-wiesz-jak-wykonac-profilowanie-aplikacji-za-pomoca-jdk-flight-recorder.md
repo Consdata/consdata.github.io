@@ -55,4 +55,4 @@ Z punktu widzenia analizy tego, gdzie aplikacja spędziła najwięcej czasu, int
 który pokazuje najczęściej używane metody podczas samplowania wątków. Pamiętać należy o tym, żeby podczas zbierania danych uruchomione były testy, 
 które obciążają aplikację.
 
-![Analiza aplikacji z narzędzia JDK Mission Control](/assets/img/posts/2026-06-23-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/jdk-mission-control.png)
+![Analiza aplikacji z narzędzia JDK Mission Control](/assets/img/posts/2026-06-24-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/jdk-mission-control.png)
