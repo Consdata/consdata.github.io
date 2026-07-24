@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz, jak wykonać profilowanie aplikacji za pomocą JDK Flight Recorder?"
-date:      2026-06-25T08:00:00+02:00
+date:      2026-07-24T08:00:00+02:00
 published: true
 didyouknow: true
 lang: pl
 author: jwilczewski
-image: /assets/img/posts/2026-06-25-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/thumbnail.webp
+image: /assets/img/posts/2026-07-24-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/thumbnail.webp
 description: "Podczas przeprowadzania testów wydajnościowych czasami napotykamy sytuację, w której ich wyniki nie są zadowalające. Pojawia się wtedy pytanie, jak sprawdzić, co dzieje się wewnątrz aplikacji i na co zużywa ona najwięcej czasu."
 tags:
 - jdk-flight-recorder
@@ -55,4 +55,4 @@ Z punktu widzenia analizy tego, gdzie aplikacja spędziła najwięcej czasu, int
 który pokazuje najczęściej używane metody podczas samplowania wątków. Pamiętać należy o tym, żeby podczas zbierania danych uruchomione były testy, 
 które obciążają aplikację.
 
-![Analiza aplikacji z narzędzia JDK Mission Control](/assets/img/posts/2026-06-25-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/jdk-mission-control.png)
+![Analiza aplikacji z narzędzia JDK Mission Control](/assets/img/posts/2026-07-24-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/jdk-mission-control.png)
