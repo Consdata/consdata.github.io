@@ -1,12 +1,12 @@
 ---
 layout:    post
 title:     "Czy wiesz, że w Angularze istnieje sygnałowa alternatywa @ViewChild?"
-date:      2026-08-07T07:00:00+02:00
+date:      2026-08-04T07:00:00+02:00
 published: true
 didyouknow: true
 lang: pl
 author: mbartosik
-image: /assets/img/posts/2026-08-07-czy-wiesz-ze-w-angularze-istnieje-sygnalowa-alternatywa-viewchild/thumbnail.webp
+image: /assets/img/posts/2026-08-04-czy-wiesz-ze-w-angularze-istnieje-sygnalowa-alternatywa-viewchild/thumbnail.webp
 description: "Pokażę sygnałową alternatywę dla @ViewChild w Angularze i jej zalety względem klasycznego podejścia z AfterViewInit."
 tags:
 - angular
