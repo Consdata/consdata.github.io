@@ -1,0 +1,4 @@
+@import "simple-datatables_original.css";
+.dataTable-pagination {
+	display: none;
+}

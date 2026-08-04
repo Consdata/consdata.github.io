@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator>
+  <link href="https://blog.consdata.tech/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://blog.consdata.tech/" rel="alternate" type="text/html" />
+  <updated>2026-08-04T06:47:40-05:00</updated>
+  <id>https://blog.consdata.tech/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Consdata - blog techniczny | </title>
+  
+
+  
+
+  
+
+  
+  
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że w Angularze istnieje sygnałowa alternatywa @ViewChild?</title>
+      <link href="https://blog.consdata.tech/2026/08/04/czy-wiesz-ze-w-angularze-istnieje-sygnalowa-alternatywa-viewchild.html" rel="alternate" type="text/html" title="Czy wiesz, że w Angularze istnieje sygnałowa alternatywa @ViewChild?" />
+      <published>2026-08-04T00:00:00-05:00</published>
+      <updated>2026-08-04T00:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/08/04/czy-wiesz-ze-w-angularze-istnieje-sygnalowa-alternatywa-viewchild</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Mariusz Bartosik</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+        <category term="signals" />
+      
+        <category term="frontend" />
+      
+
+      
+        <summary type="html">@ViewChild służy do pobrania referencji elementu z szablonu. Jego standardowe wykorzystanie może wyglądać tak:</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-08-04-czy-wiesz-ze-w-angularze-istnieje-sygnalowa-alternatywa-viewchild/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak wykonać profilowanie aplikacji za pomocą JDK Flight Recorder?</title>
+      <link href="https://blog.consdata.tech/2026/07/24/czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder.html" rel="alternate" type="text/html" title="Czy wiesz, jak wykonać profilowanie aplikacji za pomocą JDK Flight Recorder?" />
+      <published>2026-07-24T01:00:00-05:00</published>
+      <updated>2026-07-24T01:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/07/24/czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Jakub Wilczewski</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="jdk-flight-recorder" />
+      
+        <category term="java" />
+      
+        <category term="visual-vm" />
+      
+        <category term="profiling" />
+      
+
+      
+        <summary type="html">Podczas przeprowadzania testów wydajnościowych czasami napotykamy sytuację, w której ich wyniki nie są zadowalające. Pojawia się wtedy pytanie, jak sprawdzić, co dzieje się wewnątrz aplikacji i na co zużywa ona najwięcej czasu. W takiej sytuacji możemy np.:</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-07-24-czy-wiesz-jak-wykonac-profilowanie-aplikacji-za-pomoca-jdk-flight-recorder/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak analizować i optymalizować zależności w bundle?</title>
+      <link href="https://blog.consdata.tech/2026/06/16/czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle.html" rel="alternate" type="text/html" title="Czy wiesz, jak analizować i optymalizować zależności w bundle?" />
+      <published>2026-06-16T01:00:00-05:00</published>
+      <updated>2026-06-16T01:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/06/16/czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Aleksander Burzec</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="CommonJS" />
+      
+        <category term="ESM" />
+      
+        <category term="webpack" />
+      
+        <category term="esbuild" />
+      
+        <category term="frontend" />
+      
+
+      
+        <summary type="html">Przy budowaniu projektu Angularowego można natrafić na poniższy błąd:</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-06-16-czy-wiesz-jak-analizowac-i-optymalizowac-zaleznosci-w-bundle/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak działa mechanizm uploadu plików w Springu?</title>
+      <link href="https://blog.consdata.tech/2026/05/22/czy-wiesz-jak-dzia%C5%82a-mechanizm-uploadu-plikow-w-springu.html" rel="alternate" type="text/html" title="Czy wiesz, jak działa mechanizm uploadu plików w Springu?" />
+      <published>2026-05-22T02:00:00-05:00</published>
+      <updated>2026-05-22T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/05/22/czy-wiesz-jak-dzia%C5%82a-mechanizm-uploadu-plikow-w-springu</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartosz Pietrowiak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="spring boot" />
+      
+        <category term="java" />
+      
+        <category term="file upload" />
+      
+
+      
+        <summary type="html">Upload plików w Springu to temat, który na pierwszy rzut oka wygląda prosto, ale kilka ustawień potrafi mocno wpłynąć na działanie aplikacji. W tym wpisie przejdziemy przez najważniejsze parametry spring.servlet.multipart i pokażemy, jak bezpiecznie oraz praktycznie obsłużyć plik po stronie serwera.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-05-22-czy-wiesz-jak-dzia%C5%82a-mechanizm-uploadu-plikow-w-springu/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, jak stworzyć klikalną kartę (Card component) zgodnie z WCAG?</title>
+      <link href="https://blog.consdata.tech/2026/05/13/czy-wiesz-jak-stworzyc-klikalna-karte-card-component-zgodnie-z-wcag.html" rel="alternate" type="text/html" title="Czy wiesz, jak stworzyć klikalną kartę (Card component) zgodnie z WCAG?" />
+      <published>2026-05-13T01:00:00-05:00</published>
+      <updated>2026-05-13T01:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/05/13/czy-wiesz-jak-stworzyc-klikalna-karte-card-component-zgodnie-z-wcag</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Mariusz Bartosik</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+        <category term="wcag" />
+      
+        <category term="html" />
+      
+
+      
+        <summary type="html">Budowa karty, która jest w całości klikalna, a jednocześnie zawiera w sobie dodatkowe akcje (jak przycisk „Ulubione”), to jedno z częstych wyzwań UX/UI.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-05-13-czy-wiesz-jak-stworzyc-klikalna-karte-card-component-zgodnie-z-wcag/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że Angular 21 rozszerza API formularzy o Signal Forms?</title>
+      <link href="https://blog.consdata.tech/2026/04/24/czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms.html" rel="alternate" type="text/html" title="Czy wiesz, że Angular 21 rozszerza API formularzy o Signal Forms?" />
+      <published>2026-04-24T02:00:00-05:00</published>
+      <updated>2026-04-24T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/04/24/czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Wojciech Kulczak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="angular" />
+      
+        <category term="signals" />
+      
+
+      
+        <summary type="html">Wraz z publikacją Angulara w wersji 21 opracowano nowy system definicji formularzy za pomocą sygnałów, dostępny w pakiecie @angular/forms/signals. Choć jest to obecnie funkcja eksperymentalna, wyraźnie wyznacza przyszły kierunek rozwoju frameworka.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-04-24-czy-wiesz-ze-angular-21-rozszerza-api-formularzy-o-signal-forms/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Pułapki adnotacji @Transactional</title>
+      <link href="https://blog.consdata.tech/2026/04/10/pulapki-adnotacji-transactional.html" rel="alternate" type="text/html" title="Pułapki adnotacji @Transactional" />
+      <published>2026-04-10T02:00:00-05:00</published>
+      <updated>2026-04-10T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/04/10/pulapki-adnotacji-transactional</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kamil Dudek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="java" />
+      
+        <category term="spring" />
+      
+        <category term="transactional" />
+      
+        <category term="transakcje" />
+      
+
+      
+        <summary type="html">Wykorzystanie adnotacji @Transactional w frameworku Spring stanowi jedno z podstawowych narzędzi w zarządzaniu transakcjami bazodanowymi. Choć jej zastosowanie jest wygodne i upraszcza kod, niesie ze sobą również potencjalne pułapki, które mogą powodować trudne do zdiagnozowania błędy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-04-10-pulapki-adnotacji-transactional/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest i jak działa Browserslist?</title>
+      <link href="https://blog.consdata.tech/2026/03/27/czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest i jak działa Browserslist?" />
+      <published>2026-03-27T02:00:00-05:00</published>
+      <updated>2026-03-27T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/03/27/czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Piotr Grobelny</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="frontend" />
+      
+        <category term="javascript" />
+      
+        <category term="angular" />
+      
+
+      
+        <summary type="html">Od czasu do czasu każda osoba pracująca nad frontendem natrafia na plik o nazwie browserslist, który jest mało intuicyjny. Na pierwszy rzut oka jego zawartość jest czytelna, ale pojawia się pytanie: po co on właściwie istnieje? Kto z niego korzysta i jakie skutki mają wprowadzane w nim zmiany?</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-03-27-czy-wiesz-czym-jest-i-jak-dzia%C5%82a-browserslist/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, że zależności w Springu powinniśmy wstrzykiwać przez konstruktor?</title>
+      <link href="https://blog.consdata.tech/2026/03/16/czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor.html" rel="alternate" type="text/html" title="Czy wiesz, że zależności w Springu powinniśmy wstrzykiwać przez konstruktor?" />
+      <published>2026-03-16T02:00:00-05:00</published>
+      <updated>2026-03-16T02:00:00-05:00</updated>
+      <id>https://blog.consdata.tech/2026/03/16/czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Bartosz Pietrowiak</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="spring boot" />
+      
+        <category term="java" />
+      
+
+      
+        <summary type="html">Czy wiesz, że sposób wstrzykiwania zależności w Springu może mieć ogromny wpływ na jakość Twojego kodu, jego bezpieczeństwo i łatwość testowania? Jeśli chcesz pisać lepsze aplikacje, warto poznać najważniejsze techniki i wybrać tę, która przynosi najlepsze efekty.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-03-16-czy-wiesz-ze-zaleznosci-w-springu-powinnismy-wstrzykiwac-przez-konstruktor/thumbnail.webp" />
+      
+    </entry>
+  
+    <entry xml:lang="pl">
+      <title type="html">Czy wiesz, czym jest narzędzie artillery?</title>
+      <link href="https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery.html" rel="alternate" type="text/html" title="Czy wiesz, czym jest narzędzie artillery?" />
+      <published>2026-02-13T01:00:00-06:00</published>
+      <updated>2026-02-13T01:00:00-06:00</updated>
+      <id>https://blog.consdata.tech/2026/02/13/czy-wiesz-czym-jest-narzedzie-artillery</id>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Kamil Dudek</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="artillery" />
+      
+        <category term="tests" />
+      
+
+      
+        <summary type="html">Artillery to oparte o Node.js narzędzie do wykonywania testów wydajnościowych, które może być prostszą alternatywą dla np. Gatlinga. Charakteryzuje się ono prostotą użycia, wspiera różne technologie (np. HTTP API, WebSockety), daje możliwość testowania rozproszonego oraz może być rozszerzane przez pluginy.</summary>
+      
+
+      
+      
+        
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blog.consdata.tech/assets/img/posts/2026-02-13-czy-wiesz-czym-jest-narzedzie-artillery/thumbnail.webp" />
+      
+    </entry>
+  
+</feed>
