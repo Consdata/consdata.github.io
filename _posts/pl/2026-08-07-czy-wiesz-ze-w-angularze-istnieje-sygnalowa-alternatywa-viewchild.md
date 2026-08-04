@@ -39,12 +39,12 @@ export class PlaygroundComponent implements AfterViewInit {
 }
 ```
 
-Wykorzystując `@ViewChild` zmienna przechowująca referencję jest uzupełniana dopiero po zainicjowaniu widoku. 
+Podczas wykorzystania @ViewChild zmienna przechowująca referencję jest uzupełniana dopiero po zainicjowaniu widoku.
 Dlatego TypeScript dla takiego przypadku wymaga określenia dodatkowego typu `undefined` lub wyłączonej non-null asercji.
 
 Angular 17.2 wprowadził metodę `viewChild`, która zwraca referencję w postaci sygnału.
 
-Przy użyciu metody `viewChild` powyższy komponent wygląda tak.
+W wersji z `viewChild` powyższy komponent wygląda następująco:
 
 ```ts
 @Component({
@@ -73,11 +73,10 @@ export class PlaygroundComponent {
 
 Sygnałowe podejście poprawia czytelność kodu i upraszcza rozwiązanie. W drugim przykładzie zamiast `AfterViewInit` została użyta sygnałowa funkcja `effect`, aby wykonać działanie na elemencie w momencie, gdy jego referencja zostanie zwrócona przez sygnał.
 
-Można używać również funkcji `computed()`, aby wyprowadzać wartości z sygnału.
-
+W tej sytuacji można używać również funkcji `computed()`, aby wyprowadzać wartości z sygnału.
 Dodatkową zaletą jest możliwość użycia metody `required`, która wymusza obecność żądanego elementu w szablonie komponentu, dlatego warto ją stosować dla statycznie zdefiniowanych elementów, aby ograniczyć konieczność stosowania dodatkowych asercji.
 
-Sygnałowym podejściem możemy zastąpić również dekoratory `@ViewChildren`, `@ContentChild` i `@ContentChildren`, odpowiednio metodami `viewChildren()`, `contentChild()` i `contentChildren()`.
+W sygnałach odpowiednikami dekoratorów `@ViewChildren`, `@ContentChild` i `@ContentChildren` są metody `viewChildren()`, `contentChild()` i `contentChildren()`.
 
 ### Źródła
 
